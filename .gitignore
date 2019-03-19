@@ -1,0 +1,17 @@
+*.jar
+*.war
+*.ear
+*.log
+*.class
+/StoreCraft/nbproject/private/
+/StoreCraft/build/
+/StoreCraft/dist/
+/StoreCraft/StoreCraft-ejb/nbproject/private/
+/StoreCraft/StoreCraft-ejb/build/
+/StoreCraft/StoreCraft-ejb/dist/
+/StoreCraft/StoreCraftCustomers/nbproject/private/
+/StoreCraft/StoreCraftCustomers/build/
+/StoreCraft/StoreCraftCustomers/dist/
+/StoreCraft/StoreCraftStaff/nbproject/private/
+/StoreCraft/StoreCraftStaff/build/
+/StoreCraft/StoreCraftStaff/dist/
