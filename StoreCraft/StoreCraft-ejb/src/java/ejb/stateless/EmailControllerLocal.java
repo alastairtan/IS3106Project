@@ -7,13 +7,12 @@ package ejb.stateless;
 
 import entity.SaleTransactionEntity;
 import java.util.concurrent.Future;
-import javax.ejb.Local;
 
 /**
  *
  * @author shawn
  */
-@Local
+
 public interface EmailControllerLocal {
 
     public Boolean emailCheckoutNotificationSync(SaleTransactionEntity saleTransactionEntity, String fromEmailAddress, String toEmailAddress);

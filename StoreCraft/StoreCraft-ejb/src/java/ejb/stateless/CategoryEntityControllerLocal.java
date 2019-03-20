@@ -7,7 +7,6 @@ package ejb.stateless;
 
 import entity.CategoryEntity;
 import java.util.List;
-import javax.ejb.Local;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewCategoryException;
 import util.exception.DeleteCategoryException;
@@ -18,7 +17,6 @@ import util.exception.UpdateCategoryException;
  *
  * @author shawn
  */
-@Local
 public interface CategoryEntityControllerLocal {
 
     public CategoryEntity createNewCategoryEntity(CategoryEntity newCategoryEntity, Long parentCategoryId) throws InputDataValidationException, CreateNewCategoryException;

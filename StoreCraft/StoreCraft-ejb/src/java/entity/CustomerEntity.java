@@ -77,7 +77,7 @@ public class CustomerEntity implements Serializable {
     
     //RELATIONSHIPS
     
-    @ManyToMany
+    @ManyToMany(mappedBy = "customerEntities")
     private List<DiscountCodeEntity> discountCodeEntities;
     
     @OneToMany(mappedBy = "customerEntity")

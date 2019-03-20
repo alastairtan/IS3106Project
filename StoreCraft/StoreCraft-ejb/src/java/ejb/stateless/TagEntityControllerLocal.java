@@ -7,7 +7,6 @@ package ejb.stateless;
 
 import entity.TagEntity;
 import java.util.List;
-import javax.ejb.Local;
 import util.exception.CreateNewTagException;
 import util.exception.DeleteTagException;
 import util.exception.InputDataValidationException;
@@ -18,7 +17,6 @@ import util.exception.UpdateTagException;
  *
  * @author shawn
  */
-@Local
 public interface TagEntityControllerLocal {
 
     public TagEntity createNewTagEntity(TagEntity newTagEntity) throws InputDataValidationException, CreateNewTagException;

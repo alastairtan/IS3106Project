@@ -5,15 +5,27 @@
  */
 package ejb.stateless;
 
+import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author shawn
  */
 @Stateless
+@Local (ScavengerHuntEntityControllerLocal.class)
+
 public class ScavengerHuntEntityController implements ScavengerHuntEntityControllerLocal {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @PersistenceContext(unitName = "StoreCraft-ejbPU")
+    private EntityManager em;
+
+    public ScavengerHuntEntityController() {
+    }
+    
+    // keep track of all the winner
+    
+    
 }

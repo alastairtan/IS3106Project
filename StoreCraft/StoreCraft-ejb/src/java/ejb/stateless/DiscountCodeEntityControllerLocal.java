@@ -5,13 +5,10 @@
  */
 package ejb.stateless;
 
-import javax.ejb.Local;
-
 /**
  *
  * @author shawn
  */
-@Local
 public interface DiscountCodeEntityControllerLocal {
     
 }

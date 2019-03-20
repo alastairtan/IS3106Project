@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -23,6 +24,7 @@ import util.exception.SaleTransactionNotFoundException;
  * @author shawn
  */
 @Stateless
+@Local(SaleTransactionEntityControllerLocal.class)
 public class SaleTransactionEntityController implements SaleTransactionEntityControllerLocal {
 
     @PersistenceContext(unitName = "StoreCraft-ejbPU")

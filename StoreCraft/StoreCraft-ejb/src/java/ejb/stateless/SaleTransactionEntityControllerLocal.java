@@ -8,7 +8,6 @@ package ejb.stateless;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import java.util.List;
-import javax.ejb.Local;
 import util.exception.SaleTransactionAlreadyVoidedRefundedException;
 import util.exception.SaleTransactionNotFoundException;
 
@@ -16,7 +15,6 @@ import util.exception.SaleTransactionNotFoundException;
  *
  * @author shawn
  */
-@Local
 public interface SaleTransactionEntityControllerLocal {
 
     public List<SaleTransactionLineItemEntity> retrieveSaleTransactionLineItemsByProductId(Long productId);

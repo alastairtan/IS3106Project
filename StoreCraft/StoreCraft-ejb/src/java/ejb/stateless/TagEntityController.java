@@ -8,6 +8,7 @@ package ejb.stateless;
 import entity.TagEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +29,7 @@ import util.exception.UpdateTagException;
  * @author shawn
  */
 @Stateless
+@Local(TagEntityControllerLocal.class)
 public class TagEntityController implements TagEntityControllerLocal {
 
     @PersistenceContext(unitName = "StoreCraft-ejbPU")

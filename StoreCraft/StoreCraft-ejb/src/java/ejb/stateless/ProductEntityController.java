@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -40,6 +41,7 @@ import util.exception.UpdateProductException;
  * @author shawn
  */
 @Stateless
+@Local(ProductEntityControllerLocal.class)
 public class ProductEntityController implements ProductEntityControllerLocal {
 
     @PersistenceContext(unitName = "StoreCraft-ejbPU")

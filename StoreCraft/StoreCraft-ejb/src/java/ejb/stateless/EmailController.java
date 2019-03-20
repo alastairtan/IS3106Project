@@ -9,6 +9,7 @@ import entity.SaleTransactionEntity;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import util.email.EmailManager;
 
@@ -17,6 +18,7 @@ import util.email.EmailManager;
  * @author shawn
  */
 @Stateless
+@Local(EjbTimerSessionBeanLocal.class)
 public class EmailController implements EmailControllerLocal {
 
     private final String UNIX_USERNAME = "<REPLACE_WITH_SOC_EMAIL_USERNAME>";

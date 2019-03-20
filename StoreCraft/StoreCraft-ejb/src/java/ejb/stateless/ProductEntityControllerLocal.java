@@ -7,7 +7,6 @@ package ejb.stateless;
 
 import entity.ProductEntity;
 import java.util.List;
-import javax.ejb.Local;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewProductException;
 import util.exception.DeleteProductException;
@@ -21,7 +20,6 @@ import util.exception.UpdateProductException;
  *
  * @author shawn
  */
-@Local
 public interface ProductEntityControllerLocal {
 
     public ProductEntity createNewProduct(ProductEntity newProductEntity, Long categoryId, List<Long> tagIds) throws InputDataValidationException, CreateNewProductException;
