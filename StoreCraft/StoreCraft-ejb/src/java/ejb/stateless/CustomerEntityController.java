@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.CustomerEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -19,16 +20,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.MembershipTierEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UpdateCustomerException;
 import util.security.CryptographicHelper;
 
-/**
- *
- * @author shawn
- */
+
 @Stateless
 @Local (CustomerEntityControllerLocal.class)
 
@@ -63,6 +62,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
     }
     
+    @Override
     public List<CustomerEntity> retrieveAllCustomer()
     {
         Query query = entityManager.createQuery("SELECT c FROM CustomerEntity c");
@@ -194,13 +194,60 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     - Purchase discount (minus remaining points) 
     - Monthly reset of pointOfTheMonth (EJB Timer Service)
     
-    */
-    public void updatePoint()
-    {
-        // **** Persistent context **** //
         // Update remaining and total point (check multiplier/membership)
         // Update pointOfTheMonth -- Timer to reset every month
         // Update multiplier/membership accordingly based on total point
+    
+    */
+    public void updatePoint(CustomerEntity customerEntity, BigDecimal basePointToUpdate) throws CustomerNotFoundException
+    {
+        if(customerEntity.getCustomerId() != null)
+        {
+            // **** Persistent context **** //
+            CustomerEntity customerEntityToUpdate = retrieveCustomerByCustomerId(customerEntity.getCustomerId());
+            // If point to update is positive non-zero
+            if(basePointToUpdate.compareTo(BigDecimal.ZERO) == 1)
+            {
+                BigDecimal multiplier = customerEntity.getMultiplier();
+                BigDecimal actualPointToUpdate = basePointToUpdate.multiply(multiplier);
+            
+                customerEntityToUpdate.setPointsForCurrentMonth(customerEntity.getPointsForCurrentMonth().add(actualPointToUpdate));
+                customerEntityToUpdate.setRemainingPoints(customerEntity.getRemainingPoints().add(actualPointToUpdate));
+                customerEntityToUpdate.setTotalPoints(customerEntity.getTotalPoints().add(actualPointToUpdate));
+                
+                // Update multiplier / membership tier if necessary
+                if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("35000")) >= 1)
+                {
+                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.GRANDMASTER);
+                    customerEntityToUpdate.setMultiplier(new BigDecimal("2.5"));
+                }
+                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("23000")) >= 1)
+                {
+                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
+                    customerEntityToUpdate.setMultiplier(new BigDecimal("2.0"));
+                }
+                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("15000")) >= 1)
+                {
+                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
+                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.6"));
+                }
+                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("10000")) >= 1)
+                {
+                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.GOLD);
+                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.4"));
+                }
+                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("5000")) >= 1)
+                {
+                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.SILVER);
+                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.2"));
+                }
+            }
+            // If point to update is negative non-zero
+            else if (basePointToUpdate.compareTo(BigDecimal.ZERO) == -1)
+            {
+                customerEntityToUpdate.setRemainingPoints(customerEntity.getRemainingPoints().add(basePointToUpdate));
+            }
+        }
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomerEntity>>constraintViolations)

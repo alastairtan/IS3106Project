@@ -24,9 +24,9 @@ import util.enumeration.MembershipTierEnum;
 import util.security.CryptographicHelper;
 
 /**
- *
- * @author shawn
+ * Should we add an attribute of hasWon? To make sure that they don't win again
  */
+
 @Entity
 public class CustomerEntity implements Serializable {
 
@@ -85,6 +85,8 @@ public class CustomerEntity implements Serializable {
     
     @OneToMany(mappedBy = "customerEntity")
     private List<SaleTransactionEntity> saleTransactionEntities;
+    
+    
     
     public CustomerEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
@@ -263,6 +265,10 @@ public class CustomerEntity implements Serializable {
 
     public void setDiscountCodeEntities(List<DiscountCodeEntity> discountCodeEntities) {
         this.discountCodeEntities = discountCodeEntities;
+    }
+
+    public String getId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

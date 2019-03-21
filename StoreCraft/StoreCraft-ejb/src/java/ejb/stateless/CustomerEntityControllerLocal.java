@@ -5,11 +5,16 @@
  */
 package ejb.stateless;
 
+import entity.CustomerEntity;
+import java.util.List;
+
 /**
  *
  * @author shawn
  */
 
 public interface CustomerEntityControllerLocal {
-    
+
+    public List<CustomerEntity> retrieveAllCustomer();
+
 }

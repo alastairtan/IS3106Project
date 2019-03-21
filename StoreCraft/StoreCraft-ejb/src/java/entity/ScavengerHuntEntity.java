@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -43,16 +44,17 @@ public class ScavengerHuntEntity implements Serializable {
     @NotNull
     private Integer numWinnersRemaining;
     
-    //RELATIONSHIPS 
+    //RELATIONSHIPS
     
     @OneToMany //unidirectional
     private List<CustomerEntity> customerEntities; 
 
     public ScavengerHuntEntity() {
+        customerEntities = new ArrayList();
     }
 
     public ScavengerHuntEntity(Date scavengerHuntDate, Integer numWinnersRemaining) {
-        this.scavengerHuntDate = scavengerHuntDate;
+        this.scavengerHuntDate = scavengerHuntDate;     
         this.numWinnersRemaining = numWinnersRemaining;
         int index = (int) (Math.random() * 3);
         this.rewardTypeEnum = RewardTypeEnum.values()[index]; //randomly select reward type 

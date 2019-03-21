@@ -38,8 +38,11 @@ import util.exception.UpdateProductException;
 
 /**
  *
- * @author shawn
+ * Method
+ * - check for whether the item is treasure, if yes, then pop up dialog. How to do tho? Followed by updating of ScavengerHuntEntity
+ * - check whether the customer has won for the day, if yes, don't allow the customer to win on the same product again
  */
+
 @Stateless
 @Local(ProductEntityControllerLocal.class)
 public class ProductEntityController implements ProductEntityControllerLocal {
