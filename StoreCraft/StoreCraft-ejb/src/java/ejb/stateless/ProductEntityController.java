@@ -7,6 +7,7 @@ package ejb.stateless;
 
 import entity.CategoryEntity;
 import entity.ProductEntity;
+import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import entity.TagEntity;
 import java.util.ArrayList;
@@ -447,6 +448,19 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         }
     }
     
+    @Override
+    public boolean hasCustomerPurchasedProduct(Long productId, Long customerId){
+        
+        List<SaleTransactionEntity> customerSaleTransactions = saleTransactionEntityControllerLocal.retrieveSaleTransactionByCustomer(customerId);
+        for (SaleTransactionEntity st : customerSaleTransactions){
+            for (SaleTransactionLineItemEntity stli : st.getSaleTransactionLineItemEntities()){
+                if (stli.getProductEntity().getProductId().equals(productId)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ProductEntity>>constraintViolations)
     {

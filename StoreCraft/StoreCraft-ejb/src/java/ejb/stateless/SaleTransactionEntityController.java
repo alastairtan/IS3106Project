@@ -5,6 +5,7 @@
  */
 package ejb.stateless;
 
+import entity.CustomerEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import java.util.List;
@@ -15,6 +16,9 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.CreateNewSaleTransactionException;
+import util.exception.CustomerNotFoundException;
+import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
 import util.exception.SaleTransactionAlreadyVoidedRefundedException;
 import util.exception.SaleTransactionNotFoundException;
@@ -41,9 +45,39 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     public SaleTransactionEntityController(){
     }
         
-    public SaleTransactionEntity createNewSaleTransaction(){
-        //TODO
-        return null;
+    public SaleTransactionEntity createNewSaleTransaction(Long customerId, SaleTransactionEntity newSaleTransactionEntity) throws CustomerNotFoundException, CreateNewSaleTransactionException{
+        
+        if(newSaleTransactionEntity != null)
+        {
+            try
+            {
+                CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
+                newSaleTransactionEntity.setCustomerEntity(customerEntity);
+                customerEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
+
+                entityManager.persist(newSaleTransactionEntity);
+
+                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity:newSaleTransactionEntity.getSaleTransactionLineItemEntities())
+                {
+                    productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
+                    entityManager.persist(saleTransactionLineItemEntity);
+                }
+
+                entityManager.flush();
+
+                return newSaleTransactionEntity;
+            }
+            catch(ProductNotFoundException | ProductInsufficientQuantityOnHandException ex)
+            {
+                // The line below rolls back all changes made to the database.
+                eJBContext.setRollbackOnly();
+                throw new CreateNewSaleTransactionException(ex.getMessage());
+            }
+        }
+        else
+        {
+            throw new CreateNewSaleTransactionException("Sale transaction information not provided");
+        }
     }
     
     @Override
@@ -57,8 +91,15 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     @Override
     public List<SaleTransactionLineItemEntity> retrieveSaleTransactionLineItemsByProductId(Long productId)
     {
-        Query query = entityManager.createNamedQuery("selectAllSaleTransactionLineItemsByProductId");
+        Query query = entityManager.createQuery("SELECT stli FROM SaleTransactionLineItemEntity stli WHERE stli.productEntity.productId = :inProductId");
         query.setParameter("inProductId", productId);
+        
+        return query.getResultList();
+    }
+    
+    public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId){
+        Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerEntity = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
         
         return query.getResultList();
     }

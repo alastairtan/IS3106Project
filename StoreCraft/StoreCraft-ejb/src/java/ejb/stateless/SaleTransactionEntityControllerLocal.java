@@ -28,5 +28,7 @@ public interface SaleTransactionEntityControllerLocal {
     public void deleteSaleTransaction(SaleTransactionEntity saleTransactionEntity);
 
     public void updateSaleTransaction(SaleTransactionEntity saleTransactionEntity);
+
+    public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId);
     
 }

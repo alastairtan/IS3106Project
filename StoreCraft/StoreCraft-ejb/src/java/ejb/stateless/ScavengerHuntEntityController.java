@@ -43,6 +43,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
     
     // keep track of all the winner
     
+    @Override
     public ScavengerHuntEntity retrieveScavengerHuntEntityByDate(Date date) throws ScavengerHuntNotFoundException
     {
         Query query = entityManager.createQuery("SELECT sh FROM ScavengerHuntEntity sh WHERE sh.scavengerHuntDate = :inDate");
@@ -64,6 +65,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
     /*
         Triggered by productEntityController method
     */
+    @Override
     public void updateWinnerForScavengerHunt(CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException
     {
         if(customerEntity.getCustomerId() != null)
@@ -94,6 +96,17 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         }
     }
     
+    @Override
+    public boolean hasCustomerWonToday(Long customerId) throws ScavengerHuntNotFoundException{
+        Date today = new Date();
+        ScavengerHuntEntity todaysHunt = retrieveScavengerHuntEntityByDate(today);
+        for (CustomerEntity ce : todaysHunt.getCustomerEntities()){
+            if (ce.getCustomerId().equals(customerId)){
+                return true;
+            }
+        }
+        return false;
+    }
     
     
 }

@@ -5,11 +5,15 @@
  */
 package ejb.stateless;
 
+import entity.ReviewEntity;
+
 /**
  *
  * @author shawn
  */
 
 public interface ReviewEntityControllerLocal {
+
+    public ReviewEntity retrieveReviewByReviewId(Long reviewId);
     
 }
