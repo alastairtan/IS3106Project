@@ -66,6 +66,8 @@ public class ProductEntity implements Serializable {
     @NotNull
     private Boolean isScavengerHuntPrize;
     
+    private String productImageUrl;
+    
     //RELATIONSHIPS
     
     @OneToMany(mappedBy = "productEntity")
@@ -84,6 +86,18 @@ public class ProductEntity implements Serializable {
     public ProductEntity() {
         isScavengerHuntPrize = false;
     }
+
+    public ProductEntity(String skuCode, String name, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, String productImageUrl) {
+        this.skuCode = skuCode;
+        this.name = name;
+        this.description = description;
+        this.quantityOnHand = quantityOnHand;
+        this.reorderQuantity = reorderQuantity;
+        this.unitPrice = unitPrice;
+        this.productImageUrl = productImageUrl;
+    }
+    
+    
 
     public Long getProductId() {
         return productId;
@@ -242,5 +256,19 @@ public class ProductEntity implements Serializable {
      */
     public void setDiscountCodeEntities(List<DiscountCodeEntity> discountCodeEntities) {
         this.discountCodeEntities = discountCodeEntities;
+    }
+
+    /**
+     * @return the productImageUrl
+     */
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    /**
+     * @param productImageUrl the productImageUrl to set
+     */
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 }

@@ -48,6 +48,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     {
         entityManager.persist(new ScavengerHuntEntity(new Date(), 3));
         entityManager.flush();
+        
+        System.out.println("******** Scavenger Hunt Created! *********");
     }
 
 }
