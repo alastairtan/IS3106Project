@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -62,9 +63,12 @@ public class DiscountCodeEntity implements Serializable {
     private List<ProductEntity> productEntities;
    
     public DiscountCodeEntity() {
+        this.customerEntities = new ArrayList<>();
+        this.productEntities = new ArrayList<>();
     }
 
     public DiscountCodeEntity(Date startDate, Date endDate, Integer numAvailable, String discountCode) {
+        this();
         this.startDate = startDate;
         this.endDate = endDate;
         this.numAvailable = numAvailable;

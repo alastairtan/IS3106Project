@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,6 +57,7 @@ public class StaffEntity implements Serializable {
 
     public StaffEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        this.communityGoalEntities = new ArrayList<>();
     }
 
     public StaffEntity(String firstName, String lastName, String username, String password) {

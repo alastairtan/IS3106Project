@@ -54,6 +54,7 @@ public class ScavengerHuntEntity implements Serializable {
     }
 
     public ScavengerHuntEntity(Date scavengerHuntDate, Integer numWinnersRemaining) {
+        this();
         this.scavengerHuntDate = scavengerHuntDate;     
         this.numWinnersRemaining = numWinnersRemaining;
         int index = (int) (Math.random() * 3);

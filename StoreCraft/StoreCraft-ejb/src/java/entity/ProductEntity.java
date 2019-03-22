@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -84,10 +85,13 @@ public class ProductEntity implements Serializable {
     private List<DiscountCodeEntity> discountCodeEntities;
 
     public ProductEntity() {
-        isScavengerHuntPrize = false;
+        this.isScavengerHuntPrize = false;
+        this.tagEntities = new ArrayList<>();
+        this.discountCodeEntities = new ArrayList<>();
     }
 
     public ProductEntity(String skuCode, String name, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, String productImageUrl) {
+        this();
         this.skuCode = skuCode;
         this.name = name;
         this.description = description;

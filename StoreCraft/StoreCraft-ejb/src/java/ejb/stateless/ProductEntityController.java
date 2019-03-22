@@ -91,8 +91,9 @@ public class ProductEntityController implements ProductEntityControllerLocal {
                     throw new CreateNewProductException("Selected category for the new product is not a leaf category");
                 }
                 
-                entityManager.persist(newProductEntity);
                 newProductEntity.setCategoryEntity(categoryEntity);
+                entityManager.persist(newProductEntity);
+                categoryEntity.getProductEntities().add(newProductEntity);
                 
                 if(tagIds != null && (!tagIds.isEmpty()))
                 {

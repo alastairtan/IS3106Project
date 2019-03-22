@@ -91,6 +91,8 @@ public class CustomerEntity implements Serializable {
     public CustomerEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         this.reviewEntities = new ArrayList<>();
+        this.saleTransactionEntities = new ArrayList<>();
+        this.discountCodeEntities = new ArrayList<>();
         this.totalPoints = new BigDecimal(0.00);
         this.remainingPoints = new BigDecimal(0.00);
         this.pointsForCurrentMonth = new BigDecimal(0.00);

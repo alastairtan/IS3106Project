@@ -38,7 +38,7 @@ public class DataInitSessionBean {
     @EJB
     private ProductEntityControllerLocal productEntityControllerLocal;
     @EJB
-    private CategoryEntityControllerLocal hpCategoryontrollerLocal;
+    private CategoryEntityControllerLocal categoryEntityControllerLocal;
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
 
@@ -58,15 +58,15 @@ public class DataInitSessionBean {
 
         try {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password"));
-
-            CategoryEntity categoryEntityElectronics = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
-            CategoryEntity categoryEntityFashions = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
-            CategoryEntity asusCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), categoryEntityElectronics.getCategoryId());
-            CategoryEntity dellCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("Dell", "Dell Laptop"), categoryEntityElectronics.getCategoryId());
-            CategoryEntity hpCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("HP", "HP Laptop"), categoryEntityElectronics.getCategoryId());
-            CategoryEntity zaraCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("ZARA", "Zara Clothing"), categoryEntityFashions.getCategoryId());
-            CategoryEntity topmanCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("Topman", "Topman Clothing"), categoryEntityFashions.getCategoryId());
-            CategoryEntity supremeCategory = hpCategoryontrollerLocal.createNewCategoryEntity(new CategoryEntity("SUPREME", "Supreme Clothing"), categoryEntityFashions.getCategoryId());
+            
+            CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
+            CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
+            CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity dellCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Dell", "Dell Laptop"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity hpCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("HP", "HP Laptop"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity zaraCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("ZARA", "Zara Clothing"), categoryEntityFashions.getCategoryId());
+            CategoryEntity topmanCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Topman", "Topman Clothing"), categoryEntityFashions.getCategoryId());
+            CategoryEntity supremeCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("SUPREME", "Supreme Clothing"), categoryEntityFashions.getCategoryId());
 
             TagEntity tagEntityPopular = tagEntityControllerLocal.createNewTagEntity(new TagEntity("Popular"));
             TagEntity tagEntityDiscount = tagEntityControllerLocal.createNewTagEntity(new TagEntity("Discount"));
