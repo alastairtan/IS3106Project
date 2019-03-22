@@ -18,7 +18,7 @@ import util.email.EmailManager;
  * @author shawn
  */
 @Stateless
-@Local(EjbTimerSessionBeanLocal.class)
+@Local(EmailControllerLocal.class)
 public class EmailController implements EmailControllerLocal {
 
     private final String UNIX_USERNAME = "<REPLACE_WITH_SOC_EMAIL_USERNAME>";

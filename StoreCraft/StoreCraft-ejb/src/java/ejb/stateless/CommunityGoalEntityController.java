@@ -13,7 +13,7 @@ import javax.ejb.Stateless;
  * @author shawn
  */
 @Stateless
-@Local (CategoryEntityControllerLocal.class)
+@Local (CommunityGoalEntityControllerLocal.class)
 public class CommunityGoalEntityController implements CommunityGoalEntityControllerLocal {
 
     // Add business logic below. (Right-click in editor and choose
