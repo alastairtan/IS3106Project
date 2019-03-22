@@ -68,7 +68,7 @@ public class ProductEntity implements Serializable {
     
     //RELATIONSHIPS
     
-    @OneToMany
+    @OneToMany(mappedBy = "productEntity")
     private List<ReviewEntity> reviewEntities;
     
     @ManyToMany
@@ -174,11 +174,11 @@ public class ProductEntity implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public List<ReviewEntity> getReviewEntity() {
+    public List<ReviewEntity> getReviewEntities() {
         return reviewEntities;
     }
 
-    public void setReviewEntity(List<ReviewEntity> reviewEntities) {
+    public void setReviewEntities(List<ReviewEntity> reviewEntities) {
         this.reviewEntities = reviewEntities;
     }
 
@@ -228,5 +228,19 @@ public class ProductEntity implements Serializable {
                 }
             }
         }
+    }
+
+    /**
+     * @return the discountCodeEntities
+     */
+    public List<DiscountCodeEntity> getDiscountCodeEntities() {
+        return discountCodeEntities;
+    }
+
+    /**
+     * @param discountCodeEntities the discountCodeEntities to set
+     */
+    public void setDiscountCodeEntities(List<DiscountCodeEntity> discountCodeEntities) {
+        this.discountCodeEntities = discountCodeEntities;
     }
 }
