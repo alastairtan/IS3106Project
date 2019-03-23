@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title>Facelet Title</title>
+        <title>Login Page</title>
         <h:outputStylesheet library="css" name="loginPage.css"/>
     </h:head>
 
@@ -16,29 +16,34 @@
         <div id="page" class="ui-g">
             <div id="header" class="ui-g-12" style="text-align: center">
                 <p:graphicImage library="images" name="sclogo.JPG" height="200" width="200" alt="storeCraftLogo"/>
-                <h1> StoreCraft </h1>   
+                <h1 class="brand"> StoreCraft </h1>   
             </div>
 
-            <div id="loginForm" class="ui-g-12" >
-                <p:panel header="Login" style="width: 70%; text-align: center; margin: 0 auto">
-                    <h:form id="loginForm">
-                        <h:panelGrid columns="2" style="text-align: center" >
-                            
-                            <p:outputLabel for="username" value="Username" />
-                            <p:inputText id="username" size="16" required="true" requiredMessage="Username is required" maxlength="32">
-                                <f:validateLength minimum="4" />
-                            </p:inputText>
+            <div id="login" class="ui-g-12" >
+                <h:form id="loginForm">
+                    <p:messages id="loginMessages" closable="true" redisplay="false"/>
+                    <p:panel header="Login" style="width: 30%; text-align: center; margin: 0 auto" >
+                        <h:panelGrid columns="1" width="100%" >
+                            <h:panelGroup style="display:block; margin-bottom: 10px;">
+                                <p:inputText class="inputField" id="username" value="#{loginManagedBean.username}" size="16" placeholder="Username" required="true" requiredMessage="Username is required" maxlength="32">
+                                    <f:validateLength minimum="4" />
+                                </p:inputText>
 
-                            <p:outputLabel for="password" value="Password" />
-                            <p:password id="password"  size="16" required="true" requiredMessage="Password is required" maxlength="32">
-                                <f:validateLength minimum="4" />
-                            </p:password>
-                            
-                            <p:commandButton type="reset" value="Clear" icon="fa fa-undo" />
-                            <p:commandButton type="submit" value="Login"  icon="fa fa-sign-in" />
+                            </h:panelGroup>
+
+                            <h:panelGroup style="display:block; margin-bottom: 10px">
+                                <p:password class="inputField" id="password"  value="#{loginManagedBean.password}" size="16" placeholder="Password" required="true" requiredMessage="Password is required" maxlength="32">
+                                    <f:validateLength minimum="4" />
+                                </p:password>
+                            </h:panelGroup>
+
+                            <h:panelGroup style="display:block">
+                                <p:commandButton type="reset" value="Clear" icon="fa fa-undo" />
+                                <p:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" icon="fa fa-sign-in" update="loginForm:loginMessages"/>
+                            </h:panelGroup>
                         </h:panelGrid>
-                    </h:form>
-                </p:panel>
+                    </p:panel>
+                </h:form>
             </div>
         </div>
         <br />

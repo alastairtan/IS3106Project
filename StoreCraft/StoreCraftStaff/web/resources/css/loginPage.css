@@ -8,7 +8,29 @@ and open the template in the editor.
     Author     : shawn
 */
 
+html{
+    height: 100%;
+}
 body {
-    background-color: #0084b4
+    background: linear-gradient(180deg,transparent,#000),url(https://images.pexels.com/photos/994517/pexels-photo-994517.jpeg?cs=srgb&dl=apparel-attire-blur-994517.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+}
+
+.brand {
+    font-family: Helvetica, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin-bottom: -0.5vw;
+    margin-top: 0vw;
+    color: white;
+}
+
+.inputField {
+    width: 80%;
 }
 
