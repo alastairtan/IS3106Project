@@ -178,6 +178,32 @@ public class StaffEntityController implements StaffEntityControllerLocal {
         }
     }
     
+    @Override
+    public void updatePassword(StaffEntity staffEntity, String oldPasword, String newPassword) throws StaffNotFoundException, InvalidLoginCredentialException
+    {   
+        if(staffEntity.getStaffId() != null)
+        {   
+            // Persistent context
+            StaffEntity staffEntityToUpdate = retrieveStaffByStaffId(staffEntity.getStaffId());
+            
+            String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPasword + staffEntity.getSalt()));
+        
+            if(staffEntity.getPassword().equals(oldPasswordHash))
+            {   
+                staffEntityToUpdate.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
+                staffEntityToUpdate.setPassword(newPassword);
+            }
+            else
+            {
+                throw new InvalidLoginCredentialException("The old password is incorrect!");
+            }
+        }
+        else
+        {
+            throw new StaffNotFoundException("Staff ID not provided for staff to update password");
+        }
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StaffEntity>>constraintViolations)
     {
         String msg = "Input data validation error!:";

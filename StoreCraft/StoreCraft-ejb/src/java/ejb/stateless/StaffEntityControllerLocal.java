@@ -33,5 +33,7 @@ public interface StaffEntityControllerLocal {
     public void deleteStaff(Long staffId) throws StaffNotFoundException, DeleteStaffException;
 
     public void updateStaff(StaffEntity staffEntity) throws InputDataValidationException, StaffNotFoundException, UpdateStaffException;
+
+    public void updatePassword(StaffEntity staffEntity, String oldPasword, String newPassword) throws StaffNotFoundException, InvalidLoginCredentialException;
     
 }

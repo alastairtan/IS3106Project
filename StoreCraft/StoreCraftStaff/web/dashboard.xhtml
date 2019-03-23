@@ -1,12 +1,54 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <style type="text/css">
+        .ui-panel, div.ui-state-hover {
+                margin: 10px;
+                width: 95%;
+        }
+        .ui-dashboard-column {
+                width: 33%;
+        }
+        </style>
+        
+        <div>
+            <h:form>
+                <p:growl id="msgs" showDetail="true" />
+
+                <p:dashboard id="board" model="#{dashboardView.model}" style="width: 100%">
+                    <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs" />
+
+                    <p:panel id="topCustomersAllTime" header="Top Customers (All Time)">
+                        <h:outputText value="Top Customers (All Time) Content" />
+                    </p:panel>
+
+                    <p:panel id="topCustomersMonth" header="Top Customers (Month)">
+                        <h:outputText value="Top Customers (Month) Content" />
+                    </p:panel>
+
+                    <p:panel id="salesForMonth" header="Sales For The Month">
+                        <h:outputText value="Sales For the Month Content"  />
+                    </p:panel>
+
+                    <p:panel id="topSellingProductsMonth" header="Top Selling Products (Month)">
+                        <h:outputText value="Top Selling Products (Month) Content" />
+                    </p:panel>
+
+                    <p:panel id="topSellingProductsAllTime" header="Top Selling Products (All Time)">
+                        <h:outputText value="Top Selling Products (All Time) " />
+                    </p:panel>
+                </p:dashboard>
+
+                <div style="clear:both" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
 
