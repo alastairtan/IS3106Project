@@ -70,6 +70,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         return query.getResultList();
     }
     
+    @Override
     public CustomerEntity retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException
     {
         if(customerId == null)
@@ -89,6 +90,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
     }
     
+    @Override
     public CustomerEntity retrieveCustomerByEmail(String email) throws CustomerNotFoundException
     {
         Query query = entityManager.createQuery("SELECT c FROM CustomerEntity c WHERE c.email = :inEmail");
@@ -104,6 +106,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
     }
     
+    @Override
     public CustomerEntity customerLogin(String email, String password) throws InvalidLoginCredentialException
     {
         try
@@ -127,7 +130,8 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     }
     
     // Does not include password
-    public void updateCustomerParticular(CustomerEntity customerEntity) throws CustomerNotFoundException, InputDataValidationException, UpdateCustomerException
+    @Override
+    public void updateCustomerDetails(CustomerEntity customerEntity) throws CustomerNotFoundException, InputDataValidationException, UpdateCustomerException
     {
         Set<ConstraintViolation<CustomerEntity>> constraintViolations = validator.validate(customerEntity);
         
@@ -163,6 +167,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
     }
     
+    @Override
     public void updatePassword(CustomerEntity customerEntity, String oldPasword, String newPassword) throws CustomerNotFoundException, InvalidLoginCredentialException
     {   
         if(customerEntity.getCustomerId() != null)
@@ -199,7 +204,8 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         // Update multiplier/membership accordingly based on total point
     
     */
-    public void updatePoint(CustomerEntity customerEntity, BigDecimal basePointToUpdate) throws CustomerNotFoundException
+    @Override
+    public void updateCustomerPoints(CustomerEntity customerEntity, BigDecimal basePointToUpdate) throws CustomerNotFoundException
     {
         if(customerEntity.getCustomerId() != null)
         {

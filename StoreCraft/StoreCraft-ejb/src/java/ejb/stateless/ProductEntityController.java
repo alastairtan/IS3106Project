@@ -8,6 +8,7 @@ package ejb.stateless;
 import entity.CategoryEntity;
 import entity.CustomerEntity;
 import entity.ProductEntity;
+import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import entity.ScavengerHuntEntity;
 import entity.TagEntity;
@@ -97,8 +98,9 @@ public class ProductEntityController implements ProductEntityControllerLocal {
                     throw new CreateNewProductException("Selected category for the new product is not a leaf category");
                 }
                 
-                entityManager.persist(newProductEntity);
                 newProductEntity.setCategoryEntity(categoryEntity);
+                entityManager.persist(newProductEntity);
+                categoryEntity.getProductEntities().add(newProductEntity);
                 
                 if(tagIds != null && (!tagIds.isEmpty()))
                 {
@@ -479,6 +481,19 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         return Boolean.FALSE;
     }
     
+    @Override
+    public boolean hasCustomerPurchasedProduct(Long productId, Long customerId){
+        
+        List<SaleTransactionEntity> customerSaleTransactions = saleTransactionEntityControllerLocal.retrieveSaleTransactionByCustomer(customerId);
+        for (SaleTransactionEntity st : customerSaleTransactions){
+            for (SaleTransactionLineItemEntity stli : st.getSaleTransactionLineItemEntities()){
+                if (stli.getProductEntity().getProductId().equals(productId)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ProductEntity>>constraintViolations)
     {

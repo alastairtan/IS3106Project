@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -70,9 +71,11 @@ public class SaleTransactionEntity implements Serializable {
     
     public SaleTransactionEntity() {
         voidRefund = false; 
+        saleTransactionLineItemEntities = new ArrayList<>();
     }
 
     public SaleTransactionEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Boolean voidRefund, CustomerEntity customerEntity, List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities) {
+        this();
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;

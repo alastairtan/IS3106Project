@@ -21,5 +21,7 @@ public interface ScavengerHuntEntityControllerLocal {
     public ScavengerHuntEntity retrieveScavengerHuntEntityByDate(Date date) throws ScavengerHuntNotFoundException;
 
     public void updateWinnerForScavengerHunt(CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException;
+
+    public boolean hasCustomerWonToday(Long customerId) throws ScavengerHuntNotFoundException;
     
 }

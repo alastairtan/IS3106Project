@@ -44,4 +44,6 @@ public interface ProductEntityControllerLocal {
 
     public void creditQuantityOnHand(Long productId, Integer quantityToCredit) throws ProductNotFoundException;
     
+    public boolean hasCustomerPurchasedProduct(Long productId, Long customerId);
+    
 }

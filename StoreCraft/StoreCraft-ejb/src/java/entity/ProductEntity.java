@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,9 +67,11 @@ public class ProductEntity implements Serializable {
     @NotNull
     private Boolean isScavengerHuntPrize;
     
+    private String productImageUrl;
+    
     //RELATIONSHIPS
     
-    @OneToMany
+    @OneToMany(mappedBy = "productEntity")
     private List<ReviewEntity> reviewEntities;
     
     @ManyToMany
@@ -82,8 +85,23 @@ public class ProductEntity implements Serializable {
     private List<DiscountCodeEntity> discountCodeEntities;
 
     public ProductEntity() {
-        isScavengerHuntPrize = false;
+        this.isScavengerHuntPrize = false;
+        this.tagEntities = new ArrayList<>();
+        this.discountCodeEntities = new ArrayList<>();
     }
+
+    public ProductEntity(String skuCode, String name, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, String productImageUrl) {
+        this();
+        this.skuCode = skuCode;
+        this.name = name;
+        this.description = description;
+        this.quantityOnHand = quantityOnHand;
+        this.reorderQuantity = reorderQuantity;
+        this.unitPrice = unitPrice;
+        this.productImageUrl = productImageUrl;
+    }
+    
+    
 
     public Long getProductId() {
         return productId;
@@ -174,11 +192,11 @@ public class ProductEntity implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public List<ReviewEntity> getReviewEntity() {
+    public List<ReviewEntity> getReviewEntities() {
         return reviewEntities;
     }
 
-    public void setReviewEntity(List<ReviewEntity> reviewEntities) {
+    public void setReviewEntities(List<ReviewEntity> reviewEntities) {
         this.reviewEntities = reviewEntities;
     }
 
@@ -228,5 +246,33 @@ public class ProductEntity implements Serializable {
                 }
             }
         }
+    }
+
+    /**
+     * @return the discountCodeEntities
+     */
+    public List<DiscountCodeEntity> getDiscountCodeEntities() {
+        return discountCodeEntities;
+    }
+
+    /**
+     * @param discountCodeEntities the discountCodeEntities to set
+     */
+    public void setDiscountCodeEntities(List<DiscountCodeEntity> discountCodeEntities) {
+        this.discountCodeEntities = discountCodeEntities;
+    }
+
+    /**
+     * @return the productImageUrl
+     */
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    /**
+     * @param productImageUrl the productImageUrl to set
+     */
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 }

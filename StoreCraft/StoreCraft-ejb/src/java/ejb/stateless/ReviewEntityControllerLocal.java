@@ -5,11 +5,25 @@
  */
 package ejb.stateless;
 
+import entity.ReviewEntity;
+import javax.persistence.NoResultException;
+import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
+import util.exception.ProductNotFoundException;
+
 /**
  *
  * @author shawn
  */
 
 public interface ReviewEntityControllerLocal {
+
+    public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws NoResultException;
+
+    public ReviewEntity deleteReview(Long reviewId) throws NoResultException;
+
+    public ReviewEntity updateReview(Long reviewId, String newContent, Integer newProductRating) throws NoResultException;
+
+    public ReviewEntity createNewReview(Long customerId, String content, Integer productRating, Long productId) throws InputDataValidationException, CustomerNotFoundException, ProductNotFoundException;
     
 }

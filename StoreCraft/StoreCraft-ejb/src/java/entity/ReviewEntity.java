@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -39,18 +42,28 @@ public class ReviewEntity implements Serializable {
     @Max(5)
     private Integer productRating; 
     
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    @NotNull
+    private Date reviewDate; 
+    
     //RELATIONSHIPS
     
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private CustomerEntity customerEntity;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private ProductEntity productEntity;
 
     public ReviewEntity() {
     }
 
-    public ReviewEntity(String content, Integer productRating) {
+    public ReviewEntity(String content, Integer productRating, Date reviewDate) {
         this.content = content;
         this.productRating = productRating;
+        this.reviewDate = reviewDate;
     }
     
     public Long getReviewId() {
@@ -108,6 +121,34 @@ public class ReviewEntity implements Serializable {
 
     public void setCustomerEntity(CustomerEntity customerEntity) {
         this.customerEntity = customerEntity;
+    }
+
+    /**
+     * @return the reviewDate
+     */
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    /**
+     * @param reviewDate the reviewDate to set
+     */
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    /**
+     * @return the productEntity
+     */
+    public ProductEntity getProductEntity() {
+        return productEntity;
+    }
+
+    /**
+     * @param productEntity the productEntity to set
+     */
+    public void setProductEntity(ProductEntity productEntity) {
+        this.productEntity = productEntity;
     }
     
 }
