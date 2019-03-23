@@ -6,15 +6,19 @@
 package ejb.stateless;
 
 import entity.CategoryEntity;
+
 import entity.DiscountCodeEntity;
+import entity.CustomerEntity;
 import entity.ProductEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
+import entity.ScavengerHuntEntity;
 import entity.TagEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -32,16 +36,18 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewProductException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteProductException;
 import util.exception.InputDataValidationException;
 import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
+import util.exception.ScavengerHuntNotFoundException;
 import util.exception.TagNotFoundException;
 import util.exception.UpdateProductException;
 
 /**
  *
- * Method
+ * Front-end --> render only when product isScavengerHuntPrize and 
  * - check for whether the item is treasure, if yes, then pop up dialog. How to do tho? Followed by updating of ScavengerHuntEntity
  * - check whether the customer has won for the day, if yes, don't allow the customer to win on the same product again
  */
@@ -59,7 +65,9 @@ public class ProductEntityController implements ProductEntityControllerLocal {
     private TagEntityControllerLocal tagEntityControllerLocal;
     @EJB
     private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
-    
+    @EJB
+    private ScavengerHuntEntityControllerLocal scavengerHuntEntityControllerLocal;
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
@@ -449,6 +457,31 @@ public class ProductEntityController implements ProductEntityControllerLocal {
             
             return productEntities;
         }
+    }
+    
+    public Boolean checkIsScavengerHuntWinner(ProductEntity productEntity, CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException
+    {
+        if( customerEntity.getCustomerId() != null && productEntity.getProductId() != null)
+        {
+            if (productEntity.getIsScavengerHuntPrize().equals(Boolean.TRUE))
+            {
+                ScavengerHuntEntity scavengerHuntEntity = scavengerHuntEntityControllerLocal.retrieveScavengerHuntEntityByDate(new Date());
+                List<CustomerEntity> winners = scavengerHuntEntity.getCustomerEntities();
+                
+                for(CustomerEntity winner : winners)
+                {   
+                    // If the customer has already won for the day
+                    if(winner.getCustomerId().equals(customerEntity.getCustomerId()))
+                    {
+                        return Boolean.FALSE;
+                    }
+                }
+                // If the customer does not exist in the list of winners, make the customer one of the winner of the day
+                scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerEntity);
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
     
     @Override
