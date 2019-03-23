@@ -140,12 +140,52 @@ public class DiscountCodeEntity implements Serializable {
         this.customerEntities = customerEntities;
     }
 
+    public Integer getNumAvailable() {
+        return numAvailable;
+    }
+
+    public void setNumAvailable(Integer numAvailable) {
+        this.numAvailable = numAvailable;
+    }
+
     public List<ProductEntity> getProductEntities() {
         return productEntities;
     }
 
     public void setProductEntities(List<ProductEntity> productEntities) {
         this.productEntities = productEntities;
+    }
+    
+    public void addCustomer(CustomerEntity customerEntity)
+    {
+        if(customerEntity != null)
+        {
+            if(!this.customerEntities.contains(customerEntity))
+            {
+                this.customerEntities.add(customerEntity);
+                
+                if(!customerEntity.getDiscountCodeEntities().contains(this))
+                {                    
+                    customerEntity.getDiscountCodeEntities().add(this);
+                }
+            }
+        }
+    }
+    
+    public void addProduct(ProductEntity productEntity)
+    {
+        if(productEntity != null)
+        {
+            if(!this.productEntities.contains(productEntity))
+            {
+                this.productEntities.add(productEntity);
+                
+                if(!productEntity.getDiscountCodeEntities().contains(this))
+                {                    
+                    productEntity.getDiscountCodeEntities().add(this);
+                }
+            }
+        }
     }
     
 }
