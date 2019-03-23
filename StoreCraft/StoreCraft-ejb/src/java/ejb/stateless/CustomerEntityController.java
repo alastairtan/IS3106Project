@@ -6,7 +6,9 @@
 package ejb.stateless;
 
 import entity.CustomerEntity;
+import entity.DiscountCodeEntity;
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
