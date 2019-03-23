@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.CategoryEntity;
+import entity.DiscountCodeEntity;
 import entity.ProductEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
@@ -13,6 +14,7 @@ import entity.TagEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
