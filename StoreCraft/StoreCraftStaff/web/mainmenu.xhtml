@@ -30,8 +30,8 @@
         
         <h:form id="changePasswordForm">
             <p:dialog id="dialogChangePassword" widgetVar="dialogChangePassword" header="Change Password" closable="true">
-                <p:messages id="messagesChangePassword" redisplay="false" closable="true"/>
-                <p:panelGrid>
+                <p:messages id="messagesChangePassword" redisplay="false" closable="true" globalOnly="true"/>
+                <p:panelGrid styleClass="ui-noborder">
                     <p:row>
                         <p:column>
                             <p:outputLabel for="oldPassword" value="Old Password: " style="font-weight: bold;" />
@@ -68,7 +68,7 @@
                     <p:row>
                         <p:column colspan="3" style="text-align: center">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton value="Change Password" update="@form" actionListener="#{changePasswordManagedBean.changePassword}" oncomplete="PF('dialogChangePassword').show();" />
+                            <p:commandButton id="changePwButton" value="Change Password" update="@form" actionListener="#{changePasswordManagedBean.changePassword}" oncomplete="PF('dialogChangePassword').show();" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>
