@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -48,6 +49,15 @@ public class CommunityGoalEntity implements Serializable {
     
     @NotNull
     private String country;
+    
+    @Column(nullable = false, length = 200)
+    @NotNull
+    @Size(max = 200)
+    private String goalTitle;
+    
+    @Column(nullable = false)
+    @NotNull
+    private String description;
     
     //RELATIONSHIPS
 
@@ -137,6 +147,22 @@ public class CommunityGoalEntity implements Serializable {
     
     public void setStaffEntity(StaffEntity staffEntity) {
         this.staffEntity = staffEntity;
+    }
+
+    public String getGoalTitle() {
+        return goalTitle;
+    }
+
+    public void setGoalTitle(String goalTitle) {
+        this.goalTitle = goalTitle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

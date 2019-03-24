@@ -5,10 +5,27 @@
  */
 package ejb.stateless;
 
+import entity.CommunityGoalEntity;
+import java.util.List;
+import util.exception.CommunityGoalNotFoundException;
+import util.exception.CreateNewCommunityGoalException;
+import util.exception.InputDataValidationException;
+import util.exception.StaffNotFoundException;
+
 /**
  *
  * @author shawn
  */
 public interface CommunityGoalEntityControllerLocal {
+
+    public CommunityGoalEntity createNewCommunityGoal(CommunityGoalEntity communityGoalEntity, Long staffId) throws InputDataValidationException, StaffNotFoundException, CreateNewCommunityGoalException;
+
+    public List<CommunityGoalEntity> retrieveAllCommunityGoals();
+
+    public CommunityGoalEntity retrieveCommunityGoalByCommunityGoalId(Long communityGoalId) throws CommunityGoalNotFoundException;
+
+    public void deleteCommunityGoal(Long communityGoalId) throws CommunityGoalNotFoundException;
+
+    public void updateCommunityGoal(CommunityGoalEntity newCommunityGoalEntity, Long communityGoalId) throws InputDataValidationException, CommunityGoalNotFoundException;
     
 }
