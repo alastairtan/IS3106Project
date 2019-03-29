@@ -9,17 +9,26 @@ and open the template in the editor.
 */
 
 .headerBox {
-    border: 1px solid black;
     display: flex;
     align-items: center;
-    background-color: #dddddd;
+    background-color: seashell;
 }
 
 .staffPortalHeading {
     font-weight: bold;
     float: left;
+    font-size: 3vw;
+    color: white;
 }
 
-body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";   
+#logoutForm {
+    float:right;
+    font-size: 1.3vw;
+    font-weight: bold;
+    color: white;
+}
+
+#logo {
+    height: 100%;
+    margin-right: -3vw;
 }

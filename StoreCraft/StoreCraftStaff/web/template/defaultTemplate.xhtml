@@ -8,7 +8,8 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"/>
         <title>StoreCraft Staff System</title>
     </h:head>
 
@@ -16,14 +17,14 @@
 
         <div id="page" class="ui-g">
             
-            <div id="header" class="ui-g-12">
+            <div id="header" class="ui-g-12" style="width:100%; margin: 0">
                 <ui:insert name="header">
                     <ui:include src="/header.xhtml" />
                 </ui:insert>
             </div>
             
             <div id="menuAndContent" class="ui-g-12 ui-g-nopad">
-                <div class="ui-g">
+                <div id="menuContentRow" class="ui-g">
                     
                     <div id="mainMenu" class="ui-g-3">
                         <ui:insert name="mainmenu">
@@ -39,12 +40,13 @@
                     
                 </div>
             </div>
-            
+            <!--
             <div id="footer" class="ui-g-12">
                 <ui:insert name="footer">
                     <ui:include src="/footer.xhtml" />
                 </ui:insert>
             </div>
+            -->
         </div>
     </h:body>
 
