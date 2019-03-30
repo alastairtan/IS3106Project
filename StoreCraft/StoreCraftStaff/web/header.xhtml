@@ -10,25 +10,11 @@
     </h:head>
     <h:body>
         <div id="header" class="ui-g headerBox">
-            
-            <div id="logo" class="ui-g-1">
-                <p:graphicImage library="images" name="sclogo.png" alt="storeCraftLogo" style="height:100%; width: auto"/>
+
+            <div id="logo" class="ui-g-12">
+                <p:graphicImage library="images" name="sclogotransparent.png" alt="storeCraftLogo" style="height:100%; width: auto"/>
             </div>
-            
-            <div class="ui-g-8">
-                <h:panelGroup>
-                    <h1 class="staffPortalHeading"> Store<span style="color:gold">Craft</span> Staff Portal </h1>
-                </h:panelGroup>
-            </div>
-            
-            <div class="ui-g-3">
-                <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-                    <h:form id="logoutForm" class="loggedInText">
-                        <h:outputText value="Welcome, #{sessionScope.currentStaffEntity.firstName} #{sessionScope.currentStaffEntity.lastName}"/>&nbsp;
-                        <p:commandButton value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" />
-                    </h:form>
-                </h:panelGroup>
-            </div>
+
         </div>
     </h:body>
 </ui:composition> 

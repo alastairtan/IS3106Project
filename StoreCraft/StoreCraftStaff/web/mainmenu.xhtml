@@ -4,10 +4,22 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    
+
     <section id="mainmenu" class="mainmenu">
-        
-        <h:form style="padding: 2%">
+
+        <h:form style="padding: 3%">
+            <h:panelGroup rendered="#{sessionScope.isLogin == true}"  >
+                <div class="ui-g"> 
+                    <div class="ui-g-4">
+                        <p:graphicImage library="images" name="avatar.png" alt="avatar" style="height:auto; width: 100%; border-radius:50%"/>
+                    </div>
+                    <div class="ui-g-8" style="display:flex; align-items: center; flex-wrap: wrap; justify-content: center">
+                        <span style="font-size: 1.4vw">Welcome, <strong>#{sessionScope.currentStaffEntity.firstName} #{sessionScope.currentStaffEntity.lastName}</strong></span>
+                        <p:commandButton style="height: 40%" value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out"/>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <hr/>
             <h3>Main Menu</h3>
             <p:menu style="width: 95%">
                 <p:submenu label="System">
@@ -24,10 +36,10 @@
                     <p:menuitem value="Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" icon="fa fa-trophy"/>
                     <p:menuitem value="Community Goals" outcome="/gameFeatures/communityGoals.xhtml" icon="fa fa-rocket"/>
                 </p:submenu>
-                    
+
             </p:menu>
         </h:form>
-        
+
         <h:form id="changePasswordForm">
             <p:dialog id="dialogChangePassword" widgetVar="dialogChangePassword" header="Change Password" closable="true">
                 <p:messages id="messagesChangePassword" redisplay="false" closable="true" globalOnly="true"/>
@@ -75,6 +87,6 @@
             </p:dialog>
         </h:form>
     </section>
-    
+
 </ui:composition>
 

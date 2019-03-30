@@ -11,24 +11,17 @@ and open the template in the editor.
 .headerBox {
     display: flex;
     align-items: center;
-    background-color: seashell;
+    width: 100%;
 }
 
 .staffPortalHeading {
     font-weight: bold;
-    float: left;
     font-size: 3vw;
     color: white;
-}
-
-#logoutForm {
-    float:right;
-    font-size: 1.3vw;
-    font-weight: bold;
-    color: white;
+    width: 100%;
 }
 
 #logo {
     height: 100%;
-    margin-right: -3vw;
+    margin-right: -3.5vw;
 }

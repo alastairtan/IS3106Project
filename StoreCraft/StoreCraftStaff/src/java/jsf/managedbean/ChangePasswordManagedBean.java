@@ -41,6 +41,10 @@ public class ChangePasswordManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New Passwords Do Not Match!", null));
             return;
         }
+        if (newPassword1.equals(oldPassword)){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Old and New Password Cannot Be the Same!", null));
+            return;
+        }
         StaffEntity currentStaffEntity = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
         if (currentStaffEntity == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Not Logged In!", null));
