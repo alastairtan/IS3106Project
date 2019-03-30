@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import util.enumeration.StaffTypeEnum;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 
@@ -57,7 +58,7 @@ public class DataInitSessionBean {
     private void initializeData() {
 
         try {
-            staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password"));
+            staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER));
             
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
