@@ -93,9 +93,18 @@ public class ProductManagementManagedBean implements Serializable {
         System.out.println("Updating");
     }
     
-    public void closeDialog(CloseEvent event){
+    public void creating(ActionEvent event){
+        this.newProductEntity = new ProductEntity();
+    }
+    
+    public void closeViewDialog(CloseEvent event){
         setIsUpdating(false);
-        System.out.println("Not Updating");
+        System.out.println("Close View Dialog");
+    }
+    
+    public void closeCreateDialog(CloseEvent event){
+        this.newProductEntity = new ProductEntity();
+        System.out.println("Close Create Dialog");
     }
     
     public void saveChanges(ActionEvent event){       

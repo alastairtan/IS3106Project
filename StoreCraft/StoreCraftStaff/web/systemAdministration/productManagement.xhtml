@@ -30,7 +30,8 @@
                         <div class="ui-g">
                             <div class="ui-g-3" style="padding: 0">
                                 <p:commandButton value="Create New Product" style="float:left;"
-                                                 oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()"/>
+                                                 oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()"
+                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct"/>
                             </div>
                             <div class="ui-g-6" style="padding: 0">
                                 <p:inputText id="globalFilter" onkeyup="PF('productDataTable').filter()" style="width:100%;" placeholder="Search All Fields"/>
@@ -84,7 +85,7 @@
             <h:form id="formViewProduct">
                 <p:dialog id="dialogViewProduct" widgetVar="dialogViewProduct" closable="true" modal="true" 
                           position="center" closeOnEscape="true">
-                    <p:ajax event="close" listener="#{productManagementManagedBean.closeDialog}" oncomplete="PF('dialogViewProduct').toggleMaximize()"/>
+                    <p:ajax event="close" listener="#{productManagementManagedBean.closeViewDialog}" oncomplete="PF('dialogViewProduct').toggleMaximize()"/>
                     <f:facet name="header">
                         <p:outputPanel style="text-align: center">
                             <h:outputText style="color: red" rendered="#{productManagementManagedBean.isUpdating}" value="Updating Product"/>  
@@ -199,7 +200,7 @@
             <h:form id="formCreateProduct">
                 <p:dialog id="dialogCreateProduct" widgetVar="dialogCreateProduct" closable="true" modal="true" 
                           position="center" closeOnEscape="true">
-                    <p:ajax event="close" oncomplete="PF('dialogViewProduct').toggleMaximize()"/>
+                    <p:ajax event="close" listener="#{productManagementManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateProduct').toggleMaximize()"/>
                     <f:facet name="header">
                         <p:outputPanel style="text-align: center">
                             <h:outputText value="Create Product"/>  
@@ -209,7 +210,11 @@
                     <div class="ui-g">
 
                         <div class="ui-g-5">
-                            <p:graphicImage id="productPic" style="height: auto; width: 100%; border: 1px solid grey" url="#{productManagementManagedBean.newProductEntity.productImageUrl}" />
+                            <p:outputPanel id="productPic">
+                                <p:graphicImage rendered="#{productManagementManagedBean.newProductEntity.productImageUrl == null}" style="height: auto; width: 100%; border: 1px solid grey" url="https://www.blakleysflooring.com/wp-content/uploads/2016/03/Placeholder.png"/>
+                                <p:graphicImage rendered="#{productManagementManagedBean.newProductEntity.productImageUrl.length() > 0}" 
+                                                style="height: auto; width: 100%; border: 1px solid grey" url="#{productManagementManagedBean.newProductEntity.productImageUrl}" />
+                            </p:outputPanel>
                         </div>
 
                         <div class="ui-g-7">
@@ -279,7 +284,7 @@
 
                             <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="dataTableForm" 
                                              oncomplete="PF('dialogCreateProduct').hide()" icon="fa fa-pencil-square" title="Update"/>
-                     
+
                         </div>
                     </div>
 
