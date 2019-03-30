@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.StaffTypeEnum;
 import util.security.CryptographicHelper;
 
 /**
@@ -54,18 +55,25 @@ public class StaffEntity implements Serializable {
     
     @OneToMany(mappedBy = "staffEntity")
     private List<CommunityGoalEntity> communityGoalEntities;
+    
+    @OneToMany(mappedBy = "staffEntity")
+    private List<ReviewEntity> reviewEntities; 
+    
+    @NotNull
+    private StaffTypeEnum staffTypeEnum;
 
     public StaffEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         this.communityGoalEntities = new ArrayList<>();
     }
 
-    public StaffEntity(String firstName, String lastName, String username, String password) {
+    public StaffEntity(String firstName, String lastName, String username, String password, StaffTypeEnum staffTypeEnum) {
         this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.staffTypeEnum = staffTypeEnum;
         
         setPassword(password);
     }
@@ -156,6 +164,22 @@ public class StaffEntity implements Serializable {
 
     public void setCommunityGoalEntities(List<CommunityGoalEntity> communityGoalEntities) {
         this.communityGoalEntities = communityGoalEntities;
+    }
+
+    public StaffTypeEnum getStaffTypeEnum() {
+        return staffTypeEnum;
+    }
+
+    public void setStaffTypeEnum(StaffTypeEnum staffTypeEnum) {
+        this.staffTypeEnum = staffTypeEnum;
+    }
+
+    public List<ReviewEntity> getReviewEntities() {
+        return reviewEntities;
+    }
+
+    public void setReviewEntities(List<ReviewEntity> reviewEntities) {
+        this.reviewEntities = reviewEntities;
     }
     
 }

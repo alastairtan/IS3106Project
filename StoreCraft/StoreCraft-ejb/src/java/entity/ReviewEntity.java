@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
@@ -56,6 +58,16 @@ public class ReviewEntity implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ProductEntity productEntity;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
+    private StaffEntity staffEntity;
+    
+    @OneToMany(mappedBy = "parentReviewEntity")
+    private List<ReviewEntity> listOfReviews;
+    
+    @ManyToOne
+    private ReviewEntity parentReviewEntity;
 
     public ReviewEntity() {
     }
@@ -149,6 +161,30 @@ public class ReviewEntity implements Serializable {
      */
     public void setProductEntity(ProductEntity productEntity) {
         this.productEntity = productEntity;
+    }
+
+    public StaffEntity getStaffEntity() {
+        return staffEntity;
+    }
+
+    public void setStaffEntity(StaffEntity staffEntity) {
+        this.staffEntity = staffEntity;
+    }
+
+    public List<ReviewEntity> getListOfReviews() {
+        return listOfReviews;
+    }
+
+    public void setListOfReviews(List<ReviewEntity> listOfReviews) {
+        this.listOfReviews = listOfReviews;
+    }
+
+    public ReviewEntity getParentReviewEntity() {
+        return parentReviewEntity;
+    }
+
+    public void setParentReviewEntity(ReviewEntity parentReviewEntity) {
+        this.parentReviewEntity = parentReviewEntity;
     }
     
 }
