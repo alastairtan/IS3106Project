@@ -8,17 +8,18 @@
 
     <ui:define name="content"> 
         <div>
-            <h:form id="dataTableForm">
+            <h:form id="formMain">
                 <p:tabMenu activeIndex="#{param.i}">
-                    <p:menuitem value="Manage" outcome="/systemAdministration/productManagement.xhtml" icon="fa fa-tags">
+                    <p:menuitem value="Standard View" outcome="/systemAdministration/productManagement.xhtml" icon="fa fa-tags">
                         <f:param name="i" value="0" />
                     </p:menuitem>
-                    <p:menuitem value="Filter By Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" icon="fa -fa-search">
+                    <p:menuitem value="By Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" icon="fa fa-sitemap  ">
                         <f:param name="i" value="1" />
                     </p:menuitem>
                 </p:tabMenu>
                 <br/>
-                <p:dataTable value="#{productManagementManagedBean.productEntities}" var="productEntity" 
+
+                <p:dataTable id="dataTableMain" value="#{productManagementManagedBean.productEntities}" var="productEntity" 
                              widgetVar="productDataTable" filteredValue="#{productManagementManagedBean.filteredProductEntities}"
                              rows="10" paginator="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -28,16 +29,27 @@
 
                     <f:facet name="header"> 
                         <div class="ui-g">
-                            <div class="ui-g-3" style="padding: 0">
+                            <div class="ui-g-4" style="padding: 0">
                                 <p:commandButton value="Create New Product" style="float:left;"
                                                  oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()"
-                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct"/>
+                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct"/>                                                     
                             </div>
-                            <div class="ui-g-6" style="padding: 0">
-                                <p:inputText id="globalFilter" onkeyup="PF('productDataTable').filter()" style="width:100%;" placeholder="Search All Fields"/>
+                            <div class="ui-g-4" style="padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('productDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
                             </div>
-                            <div class="ui-g-3" style="padding: 0">
-                                &nbsp;
+                            <div class="ui-g-4" style="padding: 0">
+                                <p:selectCheckboxMenu id="tagFilterMenu" value="#{productManagementManagedBean.filterTagIds}" label="Filter By Tag(s)"
+                                                      filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag.tagId}"/>
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                </p:selectCheckboxMenu>
+                                <p:selectOneMenu id="selCondition" value="#{productManagementManagedBean.condition}">
+                                    <f:selectItem itemValue="" itemLabel="Filter Condition" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="OR" itemLabel="OR (default)" itemDescription="OR" />
+                                    <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                </p:selectOneMenu>
                             </div>
                         </div>
                     </f:facet>
@@ -177,7 +189,7 @@
                                              update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange" id="saveChangesButton"/>
 
                             <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Delete Product" actionListener="#{productManagementManagedBean.deleteProduct}" 
-                                             update="dataTableForm" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
+                                             update="formMain" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
                                              id="deleteProductButton">
                                 <p:confirm header="Confirmation" message="Are you sure you want to delete this product?" icon="fa fa-warning" />
                             </p:commandButton>
@@ -188,7 +200,6 @@
                                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
                                 </div>
                             </p:confirmDialog> 
-
 
                             <p:messages id="productUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
                         </div>
@@ -282,7 +293,7 @@
 
                             </p:panelGrid>
 
-                            <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="dataTableForm" 
+                            <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="formMain" 
                                              oncomplete="PF('dialogCreateProduct').hide()" icon="fa fa-pencil-square" title="Update"/>
 
                         </div>

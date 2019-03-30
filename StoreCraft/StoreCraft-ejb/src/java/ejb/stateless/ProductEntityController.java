@@ -210,6 +210,10 @@ public class ProductEntityController implements ProductEntityControllerLocal {
     {
         List<ProductEntity> productEntities = new ArrayList<>();
         
+        if (condition == null || condition.equals("")) {
+            condition = "OR";
+        } //default
+        
         if(tagIds == null || tagIds.isEmpty() || (!condition.equals("AND") && !condition.equals("OR")))
         {
             return productEntities;

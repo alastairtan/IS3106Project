@@ -64,6 +64,10 @@ public class ProductManagementManagedBean implements Serializable {
     private List<String> tagIdsStringNew;
     //****************************
     
+    //****
+    private List<String> filterTagIds;
+    private String condition;
+    
     public ProductManagementManagedBean() {
         isUpdating = false;
         newProductEntity = new ProductEntity();
@@ -219,6 +223,25 @@ public class ProductManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
         }
     }
+    
+    public void filterProduct()
+    {
+        List<Long> tagIds = new ArrayList<>();
+        
+        if(filterTagIds != null && filterTagIds.size() > 0)
+        {
+            for(String tagId:filterTagIds)
+            {
+                tagIds.add(Long.valueOf(tagId));
+            }
+            
+            productEntities = productEntityControllerLocal.filterProductsByTags(tagIds, condition);
+        }
+        else
+        {
+            productEntities = productEntityControllerLocal.retrieveAllProducts();
+        }
+    }
             
     public List<ProductEntity> getProductEntities() {
         return productEntities;
@@ -307,5 +330,21 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setTagIdsStringNew(List<String> tagIdsStringNew) {
         this.tagIdsStringNew = tagIdsStringNew;
+    }
+
+    public List<String> getFilterTagIds() {
+        return filterTagIds;
+    }
+
+    public void setFilterTagIds(List<String> filterTagIds) {
+        this.filterTagIds = filterTagIds;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
