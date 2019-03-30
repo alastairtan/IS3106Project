@@ -76,6 +76,11 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void updating(ActionEvent event){
         setIsUpdating(true);
+        this.categoryIdUpdate = selectedProductEntity.getCategoryEntity().getCategoryId();
+        tagIdsStringUpdate = new ArrayList<String>();
+        for (TagEntity t : selectedProductEntity.getTagEntities()){
+            this.tagIdsStringUpdate.add(t.getTagId().toString());
+        }
         System.out.println("Updating");
     }
     
