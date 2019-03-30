@@ -88,6 +88,7 @@ public class ProductEntity implements Serializable {
         this.isScavengerHuntPrize = false;
         this.tagEntities = new ArrayList<>();
         this.discountCodeEntities = new ArrayList<>();
+        this.reviewEntities = new ArrayList<>();
     }
 
     public ProductEntity(String skuCode, String name, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, String productImageUrl) {

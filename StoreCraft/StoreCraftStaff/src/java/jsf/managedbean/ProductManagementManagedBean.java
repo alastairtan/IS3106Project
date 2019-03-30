@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
+import util.exception.DeleteProductException;
 import util.exception.ProductNotFoundException;
 
 /**
@@ -40,21 +41,23 @@ public class ProductManagementManagedBean implements Serializable {
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
 
+    //*** For Initial Load ***
     private List<ProductEntity> productEntities;
-
-    private ProductEntity selectedProductEntity;
     
-    private ProductEntity updatingProductEntity;
-
     private List<CategoryEntity> categoryEntities;
 
     private List<TagEntity> tagEntities;
+    // ***********************
+    
+    private List<ProductEntity> filteredProductEntities; //for search all fields
+    
+    private ProductEntity selectedProductEntity; //updated when user clicks on actions button, used for both viewing and updating
 
-    private boolean isUpdating;
+    private boolean isUpdating; //to keep track when user is updating a product
     
-    private Long categoryIdUpdate;
+    private Long categoryIdUpdate; //category ID when updating product
     
-    private List<String> tagIdsStringUpdate; 
+    private List<String> tagIdsStringUpdate; //list of tag IDs when updating product
 
     public ProductManagementManagedBean() {
         isUpdating = false;
@@ -76,10 +79,10 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void updating(ActionEvent event){
         setIsUpdating(true);
-        this.categoryIdUpdate = selectedProductEntity.getCategoryEntity().getCategoryId();
-        tagIdsStringUpdate = new ArrayList<String>();
+        this.categoryIdUpdate = selectedProductEntity.getCategoryEntity().getCategoryId(); //to show the current category when updating
+        tagIdsStringUpdate = new ArrayList<>();
         for (TagEntity t : selectedProductEntity.getTagEntities()){
-            this.tagIdsStringUpdate.add(t.getTagId().toString());
+            this.tagIdsStringUpdate.add(t.getTagId().toString()); //to show the current tags when updating
         }
         System.out.println("Updating");
     }
@@ -93,7 +96,7 @@ public class ProductManagementManagedBean implements Serializable {
         
         System.out.println("savechanges");
         
-        List<Long> tagIdsUpdate = null;
+        List<Long> tagIdsUpdate = new ArrayList<>();
         
         if(categoryIdUpdate  == 0)
         {
@@ -102,7 +105,6 @@ public class ProductManagementManagedBean implements Serializable {
         
         if(tagIdsStringUpdate != null && (!tagIdsStringUpdate.isEmpty()))
         {
-            tagIdsUpdate = new ArrayList<>();
             
             for(String tagIdString:tagIdsStringUpdate)
             {
@@ -146,6 +148,26 @@ public class ProductManagementManagedBean implements Serializable {
         }
     
     }
+    
+    public void deleteProduct(ActionEvent event){
+        try
+        {
+            ProductEntity productEntityToDelete = selectedProductEntity;
+            productEntityControllerLocal.deleteProduct(productEntityToDelete.getProductId());
+            
+            productEntities.remove(productEntityToDelete);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        }
+        catch(ProductNotFoundException | DeleteProductException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting product: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
             
     public List<ProductEntity> getProductEntities() {
         return productEntities;
@@ -188,14 +210,6 @@ public class ProductManagementManagedBean implements Serializable {
         this.isUpdating = isUpdating;
     }
 
-    public ProductEntity getUpdatingProductEntity() {
-        return updatingProductEntity;
-    }
-
-    public void setUpdatingProductEntity(ProductEntity updatingProductEntity) {
-        this.updatingProductEntity = updatingProductEntity;
-    }
-
     public Long getCategoryIdUpdate() {
         return categoryIdUpdate;
     }
@@ -210,5 +224,13 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setTagIdsStringUpdate(List<String> tagIdsStringUpdate) {
         this.tagIdsStringUpdate = tagIdsStringUpdate;
+    }
+
+    public List<ProductEntity> getFilteredProductEntities() {
+        return filteredProductEntities;
+    }
+
+    public void setFilteredProductEntities(List<ProductEntity> filteredProductEntities) {
+        this.filteredProductEntities = filteredProductEntities;
     }
 }

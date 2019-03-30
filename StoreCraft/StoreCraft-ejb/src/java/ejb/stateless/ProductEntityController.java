@@ -7,9 +7,9 @@ package ejb.stateless;
 
 import entity.CategoryEntity;
 
-import entity.DiscountCodeEntity;
 import entity.CustomerEntity;
 import entity.ProductEntity;
+import entity.ReviewEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import entity.ScavengerHuntEntity;
@@ -17,7 +17,6 @@ import entity.TagEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +66,8 @@ public class ProductEntityController implements ProductEntityControllerLocal {
     private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
     @EJB
     private ScavengerHuntEntityControllerLocal scavengerHuntEntityControllerLocal;
+    @EJB
+    private ReviewEntityControllerLocal reviewEntityControllerLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -400,7 +401,9 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         
         List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = saleTransactionEntityControllerLocal.retrieveSaleTransactionLineItemsByProductId(productId);
         
-        if(saleTransactionLineItemEntities.isEmpty())
+        List<ReviewEntity> reviewEntities = reviewEntityControllerLocal.retrieveReviewsForProduct(productId);
+        
+        if(saleTransactionLineItemEntities.isEmpty() && reviewEntities.isEmpty())
         {
             productEntityToRemove.getCategoryEntity().getProductEntities().remove(productEntityToRemove);
             
