@@ -371,6 +371,10 @@ public class ProductEntityController implements ProductEntityControllerLocal {
                     productEntityToUpdate.setQuantityOnHand(productEntity.getQuantityOnHand());
                     productEntityToUpdate.setReorderQuantity(productEntity.getReorderQuantity());
                     productEntityToUpdate.setUnitPrice(productEntity.getUnitPrice());
+                    productEntityToUpdate.setIsScavengerHuntPrize(productEntity.getIsScavengerHuntPrize());
+                    productEntityToUpdate.setProductImageUrl(productEntity.getProductImageUrl());
+                    
+                    //TODO REVIEW ENTITITES AND DISCOUNT CODE ENTITIES
                 }
                 else
                 {

@@ -166,6 +166,7 @@ public class ProductEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+        System.out.println("Set Description");
     }
 
     public Integer getQuantityOnHand() {
@@ -213,7 +214,23 @@ public class ProductEntity implements Serializable {
     }
 
     public void setCategoryEntity(CategoryEntity categoryEntity) {
+        if(this.categoryEntity != null)
+        {
+            if(this.categoryEntity.getProductEntities().contains(this))
+            {
+                this.categoryEntity.getProductEntities().remove(this);
+            }
+        }
+        
         this.categoryEntity = categoryEntity;
+        
+        if(this.categoryEntity != null)
+        {
+            if(!this.categoryEntity.getProductEntities().contains(this))
+            {
+                this.categoryEntity.getProductEntities().add(this);
+            }
+        }
     }
     
     public void addTag(TagEntity tagEntity)
