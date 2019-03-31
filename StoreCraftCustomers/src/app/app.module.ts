@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +19,8 @@ import { CommunityGoalsComponent } from './community-goals/community-goals.compo
 import { ViewProductDetailsComponent } from './view-product-details/view-product-details.component';
 import { IndexComponent } from './index/index.component';
 import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.component';
+import {MatInputModule, MatInput} from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +41,11 @@ import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.componen
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatGridListModule,
+    MatToolbarModule,
+    MatInputModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
