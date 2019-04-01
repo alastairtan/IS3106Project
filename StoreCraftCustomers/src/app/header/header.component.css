@@ -1,20 +1,36 @@
-
+.topToolbar{
+    /*background-color:#e40046*/
+}
 .topMenu{
-    background-color:slategrey;
-    margin: 0;
+    margin-right: 0;
     max-width: 100%;
-    height: 5vw;
+    height: 3vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;    
+    border-bottom: 1px solid rgba(241,248,233,.2);
+    background-color: #5e35b1
 }
 
-
 .mainHeaderContent{
-    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.phone{
+    display: inline-flex;
+    vertical-align: middle;
+    flex-direction: row;
+    justify-content: center;
+}
 
+.topMenuButtons{
+    vertical-align: middle;
 }
 
 .sclogo{
-    height: 100%;
-    width: auto;
+    height: 70%;
+    width: auto; 
 }
 
 .searchBar{
@@ -24,4 +40,30 @@
 
 .row{
     height: 100%;
+}
+
+.mat-button-focus-overlay{
+    opacity: 0
+}
+
+a:hover{
+    color: #ffd740;
+    text-decoration-line: none;
+}
+
+.search-form{
+    border-radius: 22px;
+    overflow: hidden;
+    flex-direction: row;
+    display: flex;
+    background: white;
+    justify-self: center;
+    width: 50%;
+}
+
+.search-box{
+    padding: 0;
+    padding-left:1vw;
+    border: 0;
+    width: 100%;
 }

@@ -2,9 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +22,7 @@ import { CommunityGoalsComponent } from './community-goals/community-goals.compo
 import { ViewProductDetailsComponent } from './view-product-details/view-product-details.component';
 import { IndexComponent } from './index/index.component';
 import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.component';
-import {MatInputModule, MatInput} from '@angular/material/input';
+import { MatInputModule, MatInput } from '@angular/material/input';
 
 
 @NgModule({
@@ -45,7 +48,10 @@ import {MatInputModule, MatInput} from '@angular/material/input';
     MatGridListModule,
     MatToolbarModule,
     MatInputModule,
-    BrowserAnimationsModule
+    MatIconModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
