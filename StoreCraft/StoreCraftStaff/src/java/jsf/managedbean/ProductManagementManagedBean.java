@@ -64,9 +64,10 @@ public class ProductManagementManagedBean implements Serializable {
     private List<String> tagIdsStringNew;
     //****************************
     
-    //****
+    //*** For filtering ***
     private List<String> filterTagIds;
     private String condition;
+    //*********************
     
     public ProductManagementManagedBean() {
         isUpdating = false;

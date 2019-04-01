@@ -2,17 +2,17 @@
 
     <mat-toolbar-row class="topMenu">
         <span class="phone">
-            <a mat-button disabled style="color:white; padding: 0">
+            <button mat-button disabled style="color:white; padding: 0">
                 <mat-icon class="phone-icon">phone</mat-icon>&nbsp;&nbsp;+65 3106 3106
-            </a>
+            </button>
             &nbsp;&nbsp;&nbsp;
-            <a mat-button disabled style="color:white; padding: 0">
+            <button mat-button disabled style="color:white; padding: 0">
                 <mat-icon class="phone-icon">email</mat-icon>&nbsp;&nbsp;support@storecraft.com
-            </a>
+            </button>
         </span>
         <div class="topMenuButtons">
-            <a mat-button routerLink=".">Login</a>
-            <a mat-button routerLink=".">Register</a>
+            <button mat-button (click)="openDialog()">Login</button>
+            <button mat-button routerLink=".">Register</button>
         </div>
     </mat-toolbar-row>
 
@@ -25,7 +25,7 @@
         </form>
 
         <div class="shopping-cart-section">
-            <button mat-button [matMenuTriggerFor]="shoppingCartMenu">
+            <button id="shoppingCartBtn" mat-button [matMenuTriggerFor]="shoppingCartMenu">
                 <mat-icon>shopping_cart</mat-icon>&nbsp;Shopping Cart
             </button>
         </div>

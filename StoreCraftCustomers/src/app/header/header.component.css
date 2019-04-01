@@ -9,7 +9,7 @@
     flex-direction: row;
     justify-content: space-between;    
     border-bottom: 1px solid rgba(241,248,233,.2);
-    background-color: #5e35b1
+    background-color:#1a237e;
 }
 
 .mainHeaderContent{
@@ -46,11 +46,6 @@
     opacity: 0
 }
 
-a:hover{
-    color: #ffd740;
-    text-decoration-line: none;
-}
-
 .search-form{
     border-radius: 22px;
     overflow: hidden;
@@ -67,3 +62,9 @@ a:hover{
     border: 0;
     width: 100%;
 }
+
+button:hover{
+    color: #ff4081;
+}
+
+

@@ -6,10 +6,12 @@
 package ejb.singleton;
 
 import ejb.stateless.CategoryEntityControllerLocal;
+import ejb.stateless.CustomerEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
+import entity.CustomerEntity;
 import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.TagEntity;
@@ -22,6 +24,7 @@ import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import util.enumeration.StaffTypeEnum;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 
@@ -35,6 +38,9 @@ import util.exception.StaffNotFoundException;
 public class DataInitSessionBean {
 
     @EJB
+    private CustomerEntityControllerLocal customerEntityControllerLocal;
+
+    @EJB
     private StaffEntityControllerLocal staffEntityControllerLocal;
     @EJB
     private ProductEntityControllerLocal productEntityControllerLocal;
@@ -42,6 +48,7 @@ public class DataInitSessionBean {
     private CategoryEntityControllerLocal categoryEntityControllerLocal;
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
+    
 
     public DataInitSessionBean() {
     }
@@ -50,7 +57,8 @@ public class DataInitSessionBean {
     public void postConstruct() {
         try {
             staffEntityControllerLocal.retrieveStaffByUsername("manager");
-        } catch (StaffNotFoundException ex) {
+            customerEntityControllerLocal.retrieveCustomerByEmail("steve@gmail.com");
+        } catch (StaffNotFoundException | CustomerNotFoundException ex) {
             initializeData();
         }
     }
@@ -59,7 +67,10 @@ public class DataInitSessionBean {
 
         try {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER));
-            
+            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America"));
+            System.out.println("****************************" + c.getFirstName());
+            System.out.println("******************DATA INIT******************");
+                             
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
             CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), categoryEntityElectronics.getCategoryId());

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { ViewProductDetailsComponent } from './view-product-details/view-product
 import { IndexComponent } from './index/index.component';
 import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.component';
 import { MatInputModule, MatInput } from '@angular/material/input';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 
 @NgModule({
@@ -38,7 +40,8 @@ import { MatInputModule, MatInput } from '@angular/material/input';
     CommunityGoalsComponent,
     ViewProductDetailsComponent,
     IndexComponent,
-    ScavengerHuntComponent
+    ScavengerHuntComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +54,11 @@ import { MatInputModule, MatInput } from '@angular/material/input';
     MatIconModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LoginDialogComponent]
 })
 export class AppModule { }

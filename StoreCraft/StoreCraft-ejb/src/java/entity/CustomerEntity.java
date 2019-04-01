@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,9 +60,12 @@ public class CustomerEntity implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt; 
     
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @NotNull
     private MembershipTierEnum membershipTierEnum;
     
+    @Column(nullable = false)
     @NotNull
     private String country;
     
@@ -97,6 +102,8 @@ public class CustomerEntity implements Serializable {
         this.remainingPoints = new BigDecimal(0.00);
         this.pointsForCurrentMonth = new BigDecimal(0.00);
         this.multiplier = new BigDecimal(1.00);
+        this.membershipTierEnum = MembershipTierEnum.BRONZE;
+        this.profilePicUrl = "";
     }
 
     public CustomerEntity(String firstName, String lastName, String email, String password, String country) {
@@ -106,6 +113,8 @@ public class CustomerEntity implements Serializable {
         this.email = email;
         this.password = password;
         this.country = country;
+        
+        setPassword(password);
     }
     
     public void setPassword(String password)
