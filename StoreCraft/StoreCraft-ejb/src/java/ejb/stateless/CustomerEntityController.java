@@ -47,6 +47,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         validator = validatorFactory.getValidator();
     }
     
+    @Override
     public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws InputDataValidationException
     {
         Set<ConstraintViolation<CustomerEntity>> constraintViolations = validator.validate(newCustomerEntity);

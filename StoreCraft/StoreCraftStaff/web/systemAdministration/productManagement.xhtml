@@ -8,23 +8,51 @@
 
     <ui:define name="content"> 
         <div>
-            <p:tabMenu activeIndex="#{param.i}">
-                <p:menuitem value="All Products" outcome="/systemAdministration/productManagement.xhtml" icon="fa fa-tags">
-                    <f:param name="i" value="0" />
-                </p:menuitem>
-                <p:menuitem value="Filter" outcome="/systemAdministration/filterProducts.xhtml" icon="fa -fa-search">
-                    <f:param name="i" value="1" />
-                </p:menuitem>
-            </p:tabMenu>
-            <br/>
-            <h:form>
-                <p:dataTable value="#{productManagementManagedBean.productEntities}" var="productEntity"
+            <h:form id="formMain">
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Standard View" outcome="/systemAdministration/productManagement.xhtml" icon="fa fa-tags">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                    <p:menuitem value="By Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" icon="fa fa-sitemap  ">
+                        <f:param name="i" value="1" />
+                    </p:menuitem>
+                </p:tabMenu>
+                <br/>
+
+                <p:dataTable id="dataTableMain" value="#{productManagementManagedBean.productEntities}" var="productEntity" 
+                             widgetVar="productDataTable" filteredValue="#{productManagementManagedBean.filteredProductEntities}"
                              rows="10" paginator="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10,15,20"
+                             rowKey="#{productEntity.productId}"
                              >
 
-                    <f:facet name="header"> All Products </f:facet>
+                    <f:facet name="header"> 
+                        <div class="ui-g">
+                            <div class="ui-g-4" style="padding: 0">
+                                <p:commandButton value="Create New Product" style="float:left;"
+                                                 oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()"
+                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct"/>                                                     
+                            </div>
+                            <div class="ui-g-4" style="padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('productDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                            </div>
+                            <div class="ui-g-4" style="padding: 0">
+                                <p:selectCheckboxMenu id="tagFilterMenu" value="#{productManagementManagedBean.filterTagIds}" label="Filter By Tag(s)"
+                                                      filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag.tagId}"/>
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                </p:selectCheckboxMenu>
+                                <p:selectOneMenu id="selCondition" value="#{productManagementManagedBean.condition}">
+                                    <f:selectItem itemValue="" itemLabel="Filter Condition" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="OR" itemLabel="OR (default)" itemDescription="OR" />
+                                    <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </f:facet>
 
                     <p:column headerText="Product ID" sortBy="#{productEntity.productId}" filterBy="#{productEntity.productId}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.productId}" />
@@ -56,19 +84,20 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Actions" style="text-align: center" >
-                        <p:commandButton update="formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                    <p:column headerText="More" style="text-align: center" >
+                        <p:commandButton update="formViewProduct" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-search" title="View">
                             <f:setPropertyActionListener value="#{productEntity}" target="#{productManagementManagedBean.selectedProductEntity}" />
                         </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
+                <p:growl globalOnly="true" />
             </h:form>
 
             <h:form id="formViewProduct">
                 <p:dialog id="dialogViewProduct" widgetVar="dialogViewProduct" closable="true" modal="true" 
-                          position="center" fitViewport="true" >
-                    <p:ajax event="close" listener="#{productManagementManagedBean.closeDialog}" />
+                          position="center" closeOnEscape="true">
+                    <p:ajax event="close" listener="#{productManagementManagedBean.closeViewDialog}" oncomplete="PF('dialogViewProduct').toggleMaximize()"/>
                     <f:facet name="header">
                         <p:outputPanel style="text-align: center">
                             <h:outputText style="color: red" rendered="#{productManagementManagedBean.isUpdating}" value="Updating Product"/>  
@@ -121,7 +150,7 @@
                                 <p:message for="unitPrice"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Scavenger Hunt Prize: " /> 
-                                <h:outputText rendered="#{!productManagementManagedBean.isUpdating}" style="width: 80%"  value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize}" />
+                                <h:outputText rendered="#{!productManagementManagedBean.isUpdating}" style="width: 80%"  value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize.toString().toUpperCase()}" />
                                 <p:selectOneRadio id="scavengerHunt" rendered="#{productManagementManagedBean.isUpdating}" value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize}"
                                                   required="true" requiredMessage="Scavenger Hunt Prize is required">
                                     <f:selectItem itemLabel="True" itemValue="true"/>
@@ -154,18 +183,123 @@
                             </p:panelGrid>
 
                             <p:commandButton value="Update Product" actionListener="#{productManagementManagedBean.updating}" update="dialogViewProduct" 
-                                             oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-pencil" title="Update"/>
-                            
-                            
+                                             oncomplete="PF('dialogViewProduct').show()" icon="fa fa-pencil-square" title="Update"/>
+
                             <p:commandButton rendered="#{productManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{productManagementManagedBean.saveChanges}" 
-                                             update="@form" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-pencil" title="SaveChange"/>
-                            
-                            
+                                             update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange" id="saveChangesButton"/>
+
+                            <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Delete Product" actionListener="#{productManagementManagedBean.deleteProduct}" 
+                                             update="formMain" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
+                                             id="deleteProductButton">
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete this product?" icon="fa fa-warning" />
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <div align="center">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                                </div>
+                            </p:confirmDialog> 
+
                             <p:messages id="productUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
                         </div>
                     </div>
 
                 </p:dialog>
+            </h:form>
+
+            <h:form id="formCreateProduct">
+                <p:dialog id="dialogCreateProduct" widgetVar="dialogCreateProduct" closable="true" modal="true" 
+                          position="center" closeOnEscape="true">
+                    <p:ajax event="close" listener="#{productManagementManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateProduct').toggleMaximize()"/>
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: center">
+                            <h:outputText value="Create Product"/>  
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <div class="ui-g">
+
+                        <div class="ui-g-5">
+                            <p:outputPanel id="productPic">
+                                <p:graphicImage rendered="#{productManagementManagedBean.newProductEntity.productImageUrl == null}" style="height: auto; width: 100%; border: 1px solid grey" url="https://www.blakleysflooring.com/wp-content/uploads/2016/03/Placeholder.png"/>
+                                <p:graphicImage rendered="#{productManagementManagedBean.newProductEntity.productImageUrl.length() > 0}" 
+                                                style="height: auto; width: 100%; border: 1px solid grey" url="#{productManagementManagedBean.newProductEntity.productImageUrl}" />
+                            </p:outputPanel>
+                        </div>
+
+                        <div class="ui-g-7">
+                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-5, ui-g-4" layout="grid">
+
+
+                                <h:outputLabel style="font-weight: bold" value="SKU Code: " />
+                                <p:inputText id="skuCode" value="#{productManagementManagedBean.newProductEntity.skuCode}" required="true" requiredMessage="SKU Code is required" />
+                                <p:message for="skuCode"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Name: " />
+                                <p:inputText id="newName" style="width: 80%; font-weight: normal" 
+                                             value="#{productManagementManagedBean.newProductEntity.name}" required="true" requiredMessage="Name is required"/>
+                                <p:message for="newName"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Description: " />
+                                <p:inputText id="newDescription" style="width: 80%; font-weight: normal"  
+                                             value="#{productManagementManagedBean.newProductEntity.description}" required="true" requiredMessage="Description is required" />
+                                <p:message for="newDescription"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Quantity On Hand: " />
+                                <p:inputText id="newQuantityOnHand" style="width: 80%; font-weight: normal"  
+                                             value="#{productManagementManagedBean.newProductEntity.quantityOnHand}" required="true" requiredMessage="Quantity on hand is required"/>
+                                <p:message for="newQuantityOnHand"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Reorder Quantity: " />
+                                <p:inputText id="newReorderQuantity" style="width: 80%; font-weight: normal" 
+                                             value="#{productManagementManagedBean.newProductEntity.reorderQuantity}" required="true" requiredMessage="Reorder quantity is required"/>
+                                <p:message for="newReorderQuantity"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Unit Price: " />
+                                <p:inputText id="newUnitPrice" style="width: 80%; font-weight: normal" 
+                                             value="#{productManagementManagedBean.newProductEntity.unitPrice}" required="true" requiredMessage="Unit price is required">
+                                    <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                                </p:inputText>
+                                <p:message for="newUnitPrice"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Scavenger Hunt Prize: " /> 
+                                <p:selectOneRadio id="newScavengerHunt" value="#{productManagementManagedBean.newProductEntity.isScavengerHuntPrize}"
+                                                  required="true" requiredMessage="Scavenger Hunt Prize is required">
+                                    <f:selectItem itemLabel="True" itemValue="true"/>
+                                    <f:selectItem itemLabel="False" itemValue="false"/>
+                                </p:selectOneRadio>
+                                <p:message for="newScavengerHunt"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Product Image URL: " />
+                                <p:inputText id="newProductImageUrl" style="width: 80%; font-weight: normal" 
+                                             value="#{productManagementManagedBean.newProductEntity.productImageUrl}"  required="true" requiredMessage="Product image URL is required" >
+                                    <p:ajax event="change" update="formCreateProduct:productPic" oncomplete="PF('dialogCreateProduct').show()"/>
+                                </p:inputText>
+                                <p:message for="newProductImageUrl"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Category: " />
+                                <p:selectOneMenu id="newSelCategory" value="#{productManagementManagedBean.categoryIdNew}" required="true" requiredMessage="Category is required">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{productManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
+                                </p:selectOneMenu>
+                                <p:message for="newSelCategory"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Tag(s): " />
+                                <p:selectManyMenu id="newSelTags" value="#{productManagementManagedBean.tagIdsStringNew}" showCheckbox="true">
+                                    <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
+                                </p:selectManyMenu>
+                                <p:message for="newSelTags"/>
+
+                            </p:panelGrid>
+
+                            <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="formMain" 
+                                             oncomplete="PF('dialogCreateProduct').hide()" icon="fa fa-pencil-square" title="Update"/>
+
+                        </div>
+                    </div>
+
+                </p:dialog>      
             </h:form>
         </div>
     </ui:define>

@@ -34,4 +34,6 @@ public interface CustomerEntityControllerLocal {
 
     public void updateCustomerPoints(CustomerEntity customerEntity, BigDecimal basePointToUpdate) throws CustomerNotFoundException;
 
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws InputDataValidationException;
+
 }

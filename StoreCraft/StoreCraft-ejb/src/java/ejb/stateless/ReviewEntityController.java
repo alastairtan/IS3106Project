@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.ProductEntity;
 import entity.ReviewEntity;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -58,6 +59,14 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
         query.setParameter("inReviewId", reviewId);
         
         return (ReviewEntity) query.getSingleResult();
+    }
+    
+    @Override
+    public List<ReviewEntity> retrieveReviewsForProduct(Long productId) throws NoResultException{
+        Query query  = entityManager.createQuery("SELECT re FROM ReviewEntity re WHERE re.productEntity.productId = :inProductId");
+        query.setParameter("inProductId", productId);
+        
+        return query.getResultList();
     }
 
     @Override

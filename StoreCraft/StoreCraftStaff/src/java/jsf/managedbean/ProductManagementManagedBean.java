@@ -23,6 +23,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
+import util.exception.CreateNewProductException;
+import util.exception.DeleteProductException;
+import util.exception.InputDataValidationException;
 import util.exception.ProductNotFoundException;
 
 /**
@@ -40,24 +43,35 @@ public class ProductManagementManagedBean implements Serializable {
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
 
-    private List<ProductEntity> productEntities;
-
-    private ProductEntity selectedProductEntity;
-    
-    private ProductEntity updatingProductEntity;
-
+    //*** For Initial Load ***
+    private List<ProductEntity> productEntities;   
     private List<CategoryEntity> categoryEntities;
-
     private List<TagEntity> tagEntities;
-
-    private boolean isUpdating;
+    // ***********************
     
-    private Long categoryIdUpdate;
+    private List<ProductEntity> filteredProductEntities; //for search all fields
     
-    private List<String> tagIdsStringUpdate; 
-
+    //*** For Updating Product ***
+    private ProductEntity selectedProductEntity; //updated when user clicks on actions button, used for both viewing and updating
+    private boolean isUpdating; //to keep track when user is updating a product   
+    private Long categoryIdUpdate; //category ID when updating product
+    private List<String> tagIdsStringUpdate; //list of tag IDs when updating product
+    //****************************
+    
+    //*** For Creating Product ***
+    private ProductEntity newProductEntity;
+    private Long categoryIdNew;
+    private List<String> tagIdsStringNew;
+    //****************************
+    
+    //*** For filtering ***
+    private List<String> filterTagIds;
+    private String condition;
+    //*********************
+    
     public ProductManagementManagedBean() {
         isUpdating = false;
+        newProductEntity = new ProductEntity();
     }
 
     @PostConstruct
@@ -76,19 +90,33 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void updating(ActionEvent event){
         setIsUpdating(true);
+        this.categoryIdUpdate = selectedProductEntity.getCategoryEntity().getCategoryId(); //to show the current category when updating
+        tagIdsStringUpdate = new ArrayList<>();
+        for (TagEntity t : selectedProductEntity.getTagEntities()){
+            this.tagIdsStringUpdate.add(t.getTagId().toString()); //to show the current tags when updating
+        }
         System.out.println("Updating");
     }
     
-    public void closeDialog(CloseEvent event){
+    public void creating(ActionEvent event){
+        this.newProductEntity = new ProductEntity();
+    }
+    
+    public void closeViewDialog(CloseEvent event){
         setIsUpdating(false);
-        System.out.println("Not Updating");
+        System.out.println("Close View Dialog");
+    }
+    
+    public void closeCreateDialog(CloseEvent event){
+        this.newProductEntity = new ProductEntity();
+        System.out.println("Close Create Dialog");
     }
     
     public void saveChanges(ActionEvent event){       
         
         System.out.println("savechanges");
         
-        List<Long> tagIdsUpdate = null;
+        List<Long> tagIdsUpdate = new ArrayList<>();
         
         if(categoryIdUpdate  == 0)
         {
@@ -97,7 +125,6 @@ public class ProductManagementManagedBean implements Serializable {
         
         if(tagIdsStringUpdate != null && (!tagIdsStringUpdate.isEmpty()))
         {
-            tagIdsUpdate = new ArrayList<>();
             
             for(String tagIdString:tagIdsStringUpdate)
             {
@@ -141,6 +168,81 @@ public class ProductManagementManagedBean implements Serializable {
         }
     
     }
+    
+    public void deleteProduct(ActionEvent event){
+        try
+        {
+            ProductEntity productEntityToDelete = selectedProductEntity;
+            productEntityControllerLocal.deleteProduct(productEntityToDelete.getProductId());
+            
+            productEntities.remove(productEntityToDelete);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        }
+        catch(ProductNotFoundException | DeleteProductException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting product: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void createNewProduct(ActionEvent event){
+        List<Long> tagIdsNew = null;
+        
+        if(categoryIdNew == 0)
+        {
+            categoryIdNew = null;
+        }
+        
+        if(tagIdsStringNew != null && (!tagIdsStringNew.isEmpty()))
+        {
+            tagIdsNew = new ArrayList<>();
+            
+            for(String tagIdString:tagIdsStringNew)
+            {
+                tagIdsNew.add(Long.valueOf(tagIdString));
+            }
+        }
+        
+        try
+        {
+            ProductEntity pe = productEntityControllerLocal.createNewProduct(newProductEntity, categoryIdNew, tagIdsNew);
+            productEntities.add(pe);
+            
+            newProductEntity = new ProductEntity();
+            categoryIdNew = null;
+            tagIdsStringNew = null;
+            
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + pe.getProductId() + ")", null));
+        }
+        catch(InputDataValidationException | CreateNewProductException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void filterProduct()
+    {
+        List<Long> tagIds = new ArrayList<>();
+        
+        if(filterTagIds != null && filterTagIds.size() > 0)
+        {
+            for(String tagId:filterTagIds)
+            {
+                tagIds.add(Long.valueOf(tagId));
+            }
+            
+            productEntities = productEntityControllerLocal.filterProductsByTags(tagIds, condition);
+        }
+        else
+        {
+            productEntities = productEntityControllerLocal.retrieveAllProducts();
+        }
+    }
             
     public List<ProductEntity> getProductEntities() {
         return productEntities;
@@ -183,14 +285,6 @@ public class ProductManagementManagedBean implements Serializable {
         this.isUpdating = isUpdating;
     }
 
-    public ProductEntity getUpdatingProductEntity() {
-        return updatingProductEntity;
-    }
-
-    public void setUpdatingProductEntity(ProductEntity updatingProductEntity) {
-        this.updatingProductEntity = updatingProductEntity;
-    }
-
     public Long getCategoryIdUpdate() {
         return categoryIdUpdate;
     }
@@ -205,5 +299,53 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setTagIdsStringUpdate(List<String> tagIdsStringUpdate) {
         this.tagIdsStringUpdate = tagIdsStringUpdate;
+    }
+
+    public List<ProductEntity> getFilteredProductEntities() {
+        return filteredProductEntities;
+    }
+
+    public void setFilteredProductEntities(List<ProductEntity> filteredProductEntities) {
+        this.filteredProductEntities = filteredProductEntities;
+    }
+
+    public ProductEntity getNewProductEntity() {
+        return newProductEntity;
+    }
+
+    public void setNewProductEntity(ProductEntity newProductEntity) {
+        this.newProductEntity = newProductEntity;
+    }
+
+    public Long getCategoryIdNew() {
+        return categoryIdNew;
+    }
+
+    public void setCategoryIdNew(Long categoryIdNew) {
+        this.categoryIdNew = categoryIdNew;
+    }
+
+    public List<String> getTagIdsStringNew() {
+        return tagIdsStringNew;
+    }
+
+    public void setTagIdsStringNew(List<String> tagIdsStringNew) {
+        this.tagIdsStringNew = tagIdsStringNew;
+    }
+
+    public List<String> getFilterTagIds() {
+        return filterTagIds;
+    }
+
+    public void setFilterTagIds(List<String> filterTagIds) {
+        this.filterTagIds = filterTagIds;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
