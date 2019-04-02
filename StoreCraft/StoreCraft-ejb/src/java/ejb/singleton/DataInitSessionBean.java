@@ -66,16 +66,12 @@ public class DataInitSessionBean {
     private void initializeData() {
 
         try {
-<<<<<<< HEAD
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER, "http://www.gstatic.com/tv/thumb/persons/1805/1805_v9_bb.jpg"));
-            
-=======
-            staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER));
+
             CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America"));
             System.out.println("****************************" + c.getFirstName());
             System.out.println("******************DATA INIT******************");
-                             
->>>>>>> dc7b25a9c042a4b89851e2923e4937a3d3025487
+
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
             CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), categoryEntityElectronics.getCategoryId());
