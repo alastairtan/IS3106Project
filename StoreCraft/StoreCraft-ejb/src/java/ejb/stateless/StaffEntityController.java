@@ -157,10 +157,12 @@ public class StaffEntityController implements StaffEntityControllerLocal {
             {
                 StaffEntity staffEntityToUpdate = retrieveStaffByStaffId(staffEntity.getStaffId());
                 
-                if(staffEntityToUpdate.getUsername().equals(staffEntity.getUsername()))
+                if(staffEntityToUpdate.getStaffId().equals(staffEntity.getStaffId()))
                 {
                     staffEntityToUpdate.setFirstName(staffEntity.getFirstName());
-                    staffEntityToUpdate.setLastName(staffEntity.getLastName());              
+                    staffEntityToUpdate.setLastName(staffEntity.getLastName());
+                    staffEntityToUpdate.setUsername(staffEntity.getUsername());
+                    staffEntityToUpdate.setProfilePicUrl(staffEntity.getProfilePicUrl());
                 }
                 else
                 {

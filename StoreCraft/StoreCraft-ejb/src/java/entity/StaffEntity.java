@@ -50,6 +50,8 @@ public class StaffEntity implements Serializable {
     @NotNull
     private String password;
     
+    private String profilePicUrl; 
+    
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
     
@@ -67,13 +69,14 @@ public class StaffEntity implements Serializable {
         this.communityGoalEntities = new ArrayList<>();
     }
 
-    public StaffEntity(String firstName, String lastName, String username, String password, StaffTypeEnum staffTypeEnum) {
+    public StaffEntity(String firstName, String lastName, String username, String password, StaffTypeEnum staffTypeEnum, String profilePicUrl) {
         this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.staffTypeEnum = staffTypeEnum;
+        this.profilePicUrl = profilePicUrl;
         
         setPassword(password);
     }
@@ -180,6 +183,14 @@ public class StaffEntity implements Serializable {
 
     public void setReviewEntities(List<ReviewEntity> reviewEntities) {
         this.reviewEntities = reviewEntities;
+    }
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
     }
     
 }

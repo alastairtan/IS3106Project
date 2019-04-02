@@ -1,12 +1,129 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
 
+    <ui:define name="content">
+        <div>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="All Staff(s)" outcome="/systemAdministration/staffManagement.xhtml" icon="fa fa-tags">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Filter" outcome="/systemAdministration/filterProducts.xhtml" icon="fa -fa-search">
+                    <f:param name="i" value="1" />
+                </p:menuitem>
+            </p:tabMenu>
+            <br/>
+            
+            <h:form>
+                <p:dataTable value="#{staffManagementManagedBean.staffEntities}" var="staffEntity"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             >
+
+                    <f:facet name="header"> All Staff(s) </f:facet>
+
+                    <p:column headerText="Staff ID" sortBy="#{staffEntity.staffId}" filterBy="#{staffEntity.staffId}" filterMatchMode="contains">
+                        <h:outputText value="#{staffEntity.staffId}" />
+                    </p:column>    
+                    
+                    <p:column headerText="Username" sortBy="#{staffEntity.username}" filterBy="#{staffEntity.username}" filterMatchMode="contains">
+                        <h:outputText value="#{staffEntity.username}" />
+                    </p:column>
+                    
+                    <p:column headerText="First Name" sortBy="#{staffEntity.firstName}" filterBy="#{staffEntity.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{staffEntity.firstName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Last Name" sortBy="#{staffEntity.lastName}" filterBy="#{staffEntity.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{staffEntity.lastName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Access Right" sortBy="#{staffEntity.staffTypeEnum}" filterBy="#{staffEntity.staffTypeEnum}" filterMatchMode="contains">
+                        <h:outputText value="#{staffEntity.staffTypeEnum}" />
+                    </p:column>
+                    
+                    <p:column headerText="Actions" style="text-align: center" >
+                        <p:commandButton update="formViewStaff" oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{staffEntity}" target="#{staffManagementManagedBean.selectedStaffEntity}" />
+                        </p:commandButton>
+                    </p:column>
+                    
+                </p:dataTable>
+            </h:form>
+            
+            <h:form id="formViewStaff">
+                <p:dialog id="dialogViewStaff" widgetVar="dialogViewStaff" closable="true" modal="true" 
+                          position="center" fitViewport="true" >
+                    <p:ajax event="close" listener="#{staffManagementManagedBean.closeDialog}" />
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: center">
+                            <h:outputText style="color: red" rendered="#{staffManagementManagedBean.isUpdating}" value="Updating Staff Details"/>  
+                            <h:outputText rendered="#{!staffManagementManagedBean.isUpdating}" value="Viewing Staff Details"/> 
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <div class="ui-g">
+
+                        <div class="ui-g-5">
+                            <p:graphicImage style="height: auto; width: 100%; border: 1px solid grey" url="#{staffManagementManagedBean.selectedStaffEntity.profilePicUrl}" />
+                        </div>
+
+                        <div class="ui-g-7">
+                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-5, ui-g-4" layout="grid">
+
+                                <h:outputLabel style="font-weight: bold" value="Staff ID: " />
+                                <h:outputText style="width: 80%"  value="#{staffManagementManagedBean.selectedStaffEntity.staffId}" />
+                                <p:column>&nbsp;</p:column>
+
+                                <h:outputLabel style="font-weight: bold" value="SKU Code: " />
+                                <h:outputText style="width: 80%"  value="#{staffManagementManagedBean.selectedStaffEntity.staffTypeEnum}" />
+                                <p:column>&nbsp;</p:column>
+                                
+                                <h:outputLabel style="font-weight: bold" value="Username: " />
+                                <p:inputText id="userName" style="width: 80%; font-weight: normal" readonly="#{!staffManagementManagedBean.isUpdating}" 
+                                             value="#{staffManagementManagedBean.selectedStaffEntity.username}" required="true" requiredMessage="Username is required"/>
+                                <p:message for="userName"/>
+
+                                <h:outputLabel style="font-weight: bold" value="First Name: " />
+                                <p:inputText id="firstName" style="width: 80%; font-weight: normal" readonly="#{!staffManagementManagedBean.isUpdating}" 
+                                             value="#{staffManagementManagedBean.selectedStaffEntity.firstName}" required="true" requiredMessage="First Name is required"/>
+                                <p:message for="firstName"/>
+                                
+                                <h:outputLabel style="font-weight: bold" value="Last Name: " />
+                                <p:inputText id="lastName" style="width: 80%; font-weight: normal" readonly="#{!staffManagementManagedBean.isUpdating}" 
+                                             value="#{staffManagementManagedBean.selectedStaffEntity.lastName}" required="true" requiredMessage="Last Name is required"/>
+                                <p:message for="lastName"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Staff Image URL: " />
+                                <p:inputText id="staffImageUrl" style="width: 80%; font-weight: normal" readonly="#{!staffManagementManagedBean.isUpdating}" 
+                                             value="#{staffManagementManagedBean.selectedStaffEntity.profilePicUrl}" required="true" requiredMessage="Staff image URL is required"/>                              
+                                <p:message for="staffImageUrl"/>
+
+
+                            </p:panelGrid>
+                            <p:commandButton value="Update Staff" actionListener="#{staffManagementManagedBean.updating}" update="dialogViewStaff" 
+                                             oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-pencil" title="Update"/>
+                            
+                            
+                            <p:commandButton rendered="#{staffManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{staffManagementManagedBean.saveChanges}" 
+                                             update="@form" oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-pencil" title="SaveChange"/>
+                            
+                            
+                            <p:messages id="staffUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
+                            
+                        </div>
+                    </div>
+
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+    
+</ui:composition>
+    
+   
