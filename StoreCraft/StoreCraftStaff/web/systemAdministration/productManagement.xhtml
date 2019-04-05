@@ -91,7 +91,7 @@
                     </p:column>
 
                 </p:dataTable>
-                <p:growl globalOnly="true" />
+                <p:growl id="formMainGrowl" globalOnly="true" />
             </h:form>
 
             <h:form id="formViewProduct">
@@ -182,14 +182,17 @@
 
                             </p:panelGrid>
 
-                            <p:commandButton value="Update Product" actionListener="#{productManagementManagedBean.updating}" update="dialogViewProduct" 
+                            <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Update Product" actionListener="#{productManagementManagedBean.updating}" update="dialogViewProduct" 
                                              oncomplete="PF('dialogViewProduct').show()" icon="fa fa-pencil-square" title="Update"/>
 
                             <p:commandButton rendered="#{productManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{productManagementManagedBean.saveChanges}" 
-                                             update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange" id="saveChangesButton"/>
+                                             update="formMain:dataTableMain dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange" />
 
+                            <p:commandButton rendered="#{productManagementManagedBean.isUpdating}" value="Cancel Update" actionListener="#{productManagementManagedBean.cancelUpdating}"
+                                             update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
+                            
                             <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Delete Product" actionListener="#{productManagementManagedBean.deleteProduct}" 
-                                             update="formMain" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
+                                             update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
                                              id="deleteProductButton">
                                 <p:confirm header="Confirmation" message="Are you sure you want to delete this product?" icon="fa fa-warning" />
                             </p:commandButton>
