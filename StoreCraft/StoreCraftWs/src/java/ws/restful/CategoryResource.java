@@ -23,55 +23,62 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.InvalidLoginCredentialException;
 
-
-
 @Path("Category")
-public class CategoryResource
-{    
-
+public class CategoryResource {
 
     @Context
     private UriInfo context;
-    
+
     private CategoryEntityControllerLocal categoryEntityControllerLocal;
 
-    
-    public CategoryResource() 
-    {
+    public CategoryResource() {
         categoryEntityControllerLocal = lookupCategoryEntityControllerLocal();
     }
-    
-    
-    
+
     @Path("retrieveAllCategories")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllCategories()
-    {
-        try{
-        
-            List<CategoryEntity> categoryEntities = categoryEntityControllerLocal.retrieveAllCategories();
-            
-            for(CategoryEntity categoryEntity:categoryEntities)
-            {
-                if(categoryEntity.getParentCategoryEntity() != null)
+    public Response retrieveAllCategories() {
+        try {
+
+            List<CategoryEntity> rootCategoryEntities = categoryEntityControllerLocal.retrieveAllRootCategories();
+
+            for (CategoryEntity rootCategoryEntity : rootCategoryEntities) {
+
+                    clearChildToParentRelationship(rootCategoryEntity);
+                
+                /*
+                if(categoryEntity.getParentCategoryEntity() != null) //not root
                 {
-                    categoryEntity.getParentCategoryEntity().getSubCategoryEntities().clear();
+                    //categoryEntity.getParentCategoryEntity().getSubCategoryEntities().clear();
+                    categoryEntity.setParentCategoryEntity(null);
                 }
                 
-                categoryEntity.getSubCategoryEntities().clear();
+                //categoryEntity.getSubCategoryEntities().clear();
+                categoryEntity.getSubCategoryEntities();
                 categoryEntity.getProductEntities().clear();
+                 */
             }
-            
-            return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(categoryEntities)).build();
-        
-            
-        }catch(Exception ex){
-            
+
+            return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(rootCategoryEntities)).build();
+
+        } catch (Exception ex) {
+
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    private void clearChildToParentRelationship(CategoryEntity subCategory) {
+        subCategory.setParentCategoryEntity(null);
+        subCategory.getProductEntities().clear();
+        if (subCategory.getSubCategoryEntities().isEmpty() || subCategory.getSubCategoryEntities() == null) {
+            return;
+        }
+        for (CategoryEntity c : subCategory.getSubCategoryEntities()) {
+            clearChildToParentRelationship(c);
         }
     }
 
@@ -84,8 +91,5 @@ public class CategoryResource
             throw new RuntimeException(ne);
         }
     }
-
-    
-    
 
 }

@@ -285,7 +285,7 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setSelectedProductEntity(ProductEntity selectedProductEntity) {
         this.selectedProductEntity = selectedProductEntity;
-        System.out.println("set selected pe");
+        //System.out.println("set selected pe");
     }
 
     public boolean isIsUpdating() {

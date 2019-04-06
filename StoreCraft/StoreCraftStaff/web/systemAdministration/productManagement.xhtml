@@ -32,7 +32,9 @@
                             <div class="ui-g-4" style="padding: 0">
                                 <p:commandButton value="Create New Product" style="float:left;"
                                                  oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()"
-                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct"/>                                                     
+                                                 actionListener="#{productManagementManagedBean.creating}" update="formCreateProduct">
+                                    <p:resetInput target="formCreateProduct"/>
+                                </p:commandButton>                                                    
                             </div>
                             <div class="ui-g-4" style="padding: 0">
                                 <p:inputText id="globalFilter" onkeyup="PF('productDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
@@ -87,6 +89,7 @@
                     <p:column headerText="More" style="text-align: center" >
                         <p:commandButton update="formViewProduct" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-search" title="View">
                             <f:setPropertyActionListener value="#{productEntity}" target="#{productManagementManagedBean.selectedProductEntity}" />
+                            <p:resetInput target="formViewProduct"/>
                         </p:commandButton>
                     </p:column>
 
@@ -112,45 +115,45 @@
                         </div>
 
                         <div class="ui-g-7">
-                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-5, ui-g-4" layout="grid">
+                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-4, ui-g-5" layout="grid">
 
                                 <h:outputLabel style="font-weight: bold" value="Product ID: " />
-                                <h:outputText style="width: 80%"  value="#{productManagementManagedBean.selectedProductEntity.productId}" />
+                                <h:outputText style="width: 100%"  value="#{productManagementManagedBean.selectedProductEntity.productId}" />
                                 <p:column>&nbsp;</p:column>
 
                                 <h:outputLabel style="font-weight: bold" value="SKU Code: " />
-                                <h:outputText style="width: 80%"  value="#{productManagementManagedBean.selectedProductEntity.skuCode}" />
+                                <h:outputText style="width: 100%"  value="#{productManagementManagedBean.selectedProductEntity.skuCode}" />
                                 <p:column>&nbsp;</p:column>
 
                                 <h:outputLabel style="font-weight: bold" value="Name: " />
-                                <p:inputText id="name" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="name" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.name}" required="true" requiredMessage="Name is required"/>
                                 <p:message for="name"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Description: " />
-                                <p:inputText id="description" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="description" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.description}" required="true" requiredMessage="Description is required" />
                                 <p:message for="description"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Quantity On Hand: " />
-                                <p:inputText id="quantityOnHand" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="quantityOnHand" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.quantityOnHand}" required="true" requiredMessage="Quantity on hand is required"/>
                                 <p:message for="quantityOnHand"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Reorder Quantity: " />
-                                <p:inputText id="reorderQuantity" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="reorderQuantity" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.reorderQuantity}" required="true" requiredMessage="Reorder quantity is required"/>
                                 <p:message for="reorderQuantity"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Unit Price: " />
-                                <p:inputText id="unitPrice" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="unitPrice" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.unitPrice}" required="true" requiredMessage="Unit price is required">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </p:inputText>
                                 <p:message for="unitPrice"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Scavenger Hunt Prize: " /> 
-                                <h:outputText rendered="#{!productManagementManagedBean.isUpdating}" style="width: 80%"  value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize.toString().toUpperCase()}" />
+                                <h:outputText rendered="#{!productManagementManagedBean.isUpdating}" style="width: 100%"  value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize.toString().toUpperCase()}" />
                                 <p:selectOneRadio id="scavengerHunt" rendered="#{productManagementManagedBean.isUpdating}" value="#{productManagementManagedBean.selectedProductEntity.isScavengerHuntPrize}"
                                                   required="true" requiredMessage="Scavenger Hunt Prize is required">
                                     <f:selectItem itemLabel="True" itemValue="true"/>
@@ -159,7 +162,7 @@
                                 <p:message for="scavengerHunt"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Product Image URL: " />
-                                <p:inputText id="productImageUrl" style="width: 80%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="productImageUrl" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.productImageUrl}" required="true" requiredMessage="Product image URL is required"/>                              
                                 <p:message for="productImageUrl"/>
 
@@ -214,7 +217,7 @@
             <h:form id="formCreateProduct">
                 <p:dialog id="dialogCreateProduct" widgetVar="dialogCreateProduct" closable="true" modal="true" 
                           position="center" closeOnEscape="true">
-                    <p:ajax event="close" listener="#{productManagementManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateProduct').toggleMaximize()"/>
+                    <p:ajax event="close" listener="#{productManagementManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateProduct').toggleMaximize()" update="formCreateProduct"/>
                     <f:facet name="header">
                         <p:outputPanel style="text-align: center">
                             <h:outputText value="Create Product"/>  
@@ -232,35 +235,35 @@
                         </div>
 
                         <div class="ui-g-7">
-                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-5, ui-g-4" layout="grid">
+                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-4, ui-g-5" layout="grid">
 
 
                                 <h:outputLabel style="font-weight: bold" value="SKU Code: " />
-                                <p:inputText id="skuCode" value="#{productManagementManagedBean.newProductEntity.skuCode}" required="true" requiredMessage="SKU Code is required" />
+                                <p:inputText id="skuCode" style="width: 100%" value="#{productManagementManagedBean.newProductEntity.skuCode}" required="true" requiredMessage="SKU Code is required" />
                                 <p:message for="skuCode"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Name: " />
-                                <p:inputText id="newName" style="width: 80%; font-weight: normal" 
+                                <p:inputText id="newName" style="width: 100%; font-weight: normal" 
                                              value="#{productManagementManagedBean.newProductEntity.name}" required="true" requiredMessage="Name is required"/>
                                 <p:message for="newName"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Description: " />
-                                <p:inputText id="newDescription" style="width: 80%; font-weight: normal"  
+                                <p:inputText id="newDescription" style="width: 100%; font-weight: normal"  
                                              value="#{productManagementManagedBean.newProductEntity.description}" required="true" requiredMessage="Description is required" />
                                 <p:message for="newDescription"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Quantity On Hand: " />
-                                <p:inputText id="newQuantityOnHand" style="width: 80%; font-weight: normal"  
+                                <p:inputText id="newQuantityOnHand" style="width: 100%; font-weight: normal"  
                                              value="#{productManagementManagedBean.newProductEntity.quantityOnHand}" required="true" requiredMessage="Quantity on hand is required"/>
                                 <p:message for="newQuantityOnHand"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Reorder Quantity: " />
-                                <p:inputText id="newReorderQuantity" style="width: 80%; font-weight: normal" 
+                                <p:inputText id="newReorderQuantity" style="width: 100%; font-weight: normal" 
                                              value="#{productManagementManagedBean.newProductEntity.reorderQuantity}" required="true" requiredMessage="Reorder quantity is required"/>
                                 <p:message for="newReorderQuantity"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Unit Price: " />
-                                <p:inputText id="newUnitPrice" style="width: 80%; font-weight: normal" 
+                                <p:inputText id="newUnitPrice" style="width: 100%; font-weight: normal" 
                                              value="#{productManagementManagedBean.newProductEntity.unitPrice}" required="true" requiredMessage="Unit price is required">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </p:inputText>
@@ -275,7 +278,7 @@
                                 <p:message for="newScavengerHunt"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Product Image URL: " />
-                                <p:inputText id="newProductImageUrl" style="width: 80%; font-weight: normal" 
+                                <p:inputText id="newProductImageUrl" style="width: 100%; font-weight: normal" 
                                              value="#{productManagementManagedBean.newProductEntity.productImageUrl}"  required="true" requiredMessage="Product image URL is required" >
                                     <p:ajax event="change" update="formCreateProduct:productPic" oncomplete="PF('dialogCreateProduct').show()"/>
                                 </p:inputText>
@@ -296,9 +299,10 @@
 
                             </p:panelGrid>
 
-                            <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="formMain" 
-                                             oncomplete="PF('dialogCreateProduct').hide()" icon="fa fa-pencil-square" title="Update"/>
+                            <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="dialogCreateProduct formMain:dataTableMain" 
+                                             oncomplete="PF('dialogCreateProduct').show()" icon="fa fa-pencil-square" title="Update"/>
 
+                            <p:messages id="productCreateMessages" globalOnly="true" redisplay="false" closable="true"/>
                         </div>
                     </div>
 
