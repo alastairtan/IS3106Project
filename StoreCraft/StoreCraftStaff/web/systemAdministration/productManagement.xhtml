@@ -185,14 +185,14 @@
 
                             </p:panelGrid>
 
-                            <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Update Product" actionListener="#{productManagementManagedBean.updating}" update="dialogViewProduct" 
-                                             oncomplete="PF('dialogViewProduct').show()" icon="fa fa-pencil-square" title="Update"/>
+                            <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Update Product" actionListener="#{productManagementManagedBean.updating}" update="dialogViewProduct formMain:dataTableMain" 
+                                             oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-pencil-square" title="Update"/>
 
                             <p:commandButton rendered="#{productManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{productManagementManagedBean.saveChanges}" 
-                                             update="formMain:dataTableMain dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange" />
+                                             update="formMain:dataTableMain dialogViewProduct" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
 
                             <p:commandButton rendered="#{productManagementManagedBean.isUpdating}" value="Cancel Update" actionListener="#{productManagementManagedBean.cancelUpdating}"
-                                             update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
+                                             update="dialogViewProduct formMain:dataTableMain" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
                             
                             <p:commandButton rendered="#{!productManagementManagedBean.isUpdating}" value="Delete Product" actionListener="#{productManagementManagedBean.deleteProduct}" 
                                              update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
@@ -300,7 +300,7 @@
                             </p:panelGrid>
 
                             <p:commandButton value="Create New Product" actionListener="#{productManagementManagedBean.createNewProduct}" update="dialogCreateProduct formMain:dataTableMain" 
-                                             oncomplete="PF('dialogCreateProduct').show()" icon="fa fa-pencil-square" title="Update"/>
+                                             oncomplete="PF('dialogCreateProduct').show(); PF('dialogCreateProduct').toggleMaximize()" icon="fa fa-pencil-square" title="Update"/>
 
                             <p:messages id="productCreateMessages" globalOnly="true" redisplay="false" closable="true"/>
                         </div>
