@@ -23,4 +23,10 @@
         <local>ejb.stateless.CategoryEntityControllerLocal</local>
         <ejb-link>StoreCraft-ejb.jar#CategoryEntityController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ProductEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.ProductEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#ProductEntityController</ejb-link>
+    </ejb-local-ref>
 </web-app>

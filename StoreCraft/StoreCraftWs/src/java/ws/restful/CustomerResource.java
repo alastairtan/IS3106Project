@@ -75,7 +75,6 @@ public class CustomerResource {
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch(Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            System.out.println("*******************ERRORR*****");
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
             

@@ -6,40 +6,36 @@ import { SessionService } from './session.service';
 
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class CategoryService {
 
-  baseUrl: string = "/api/Category";
+	baseUrl: string = "/api/Category";
 
-  constructor(private httpClient: HttpClient,
-    private sessionService: SessionService) {
-  }
+	constructor(private httpClient: HttpClient,
+		private sessionService: SessionService) {
+	}
 
-  getCategories(): Observable<any>
-	{		
+	getCategories(): Observable<any> {
 		return this.httpClient.get<any>(this.baseUrl + "/retrieveAllCategories").pipe
-		(
-			catchError(this.handleError)
-		);
-  }
-  
-  private handleError(error: HttpErrorResponse)
-	{
+			(
+				catchError(this.handleError)
+			);
+	}
+
+	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
-		
-		if (error.error instanceof ErrorEvent) 
-		{		
+
+		if (error.error instanceof ErrorEvent) {
 			errorMessage = "An unknown error has occurred: " + error.error.message;
-		} 
-		else 
-		{		
+		}
+		else {
 			errorMessage = "A HTTP error has occurred: " + `HTTP ${error.status}: ${error.error.message}`;
 		}
-		
+
 		console.error(errorMessage);
-		
-		return throwError(errorMessage);		
-  }
-  
+
+		return throwError(errorMessage);
+	}
+
 }

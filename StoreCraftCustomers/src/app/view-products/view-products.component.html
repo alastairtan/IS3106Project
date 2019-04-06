@@ -1,3 +1,48 @@
-<p>
-  view-products works!
-</p>
+<div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="start" class="card-deck-container">
+
+  <div class="sidebar mat-elevate-z3" fxFlex="0 1 20%" fxFlexOrder="1">
+    <mat-accordion style="height: 100%" displayMode="flat" multi="true">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Categories
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>I'm visible because I am open</p>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Price
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <input matInput placeholder="Minimum Price">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Maximum Price">
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tags
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>I'm visible because I am open</p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div fxFlex fxFlexOrder="2">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="start">
+      <ng-container *ngFor="let product of products" class="card-item">
+        <app-product-card fxFlex="0 1 25%" [product]="product"></app-product-card>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

@@ -154,6 +154,8 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         {
             productEntity.getCategoryEntity();
             productEntity.getTagEntities().size();
+            productEntity.getReviewEntities().size();
+            productEntity.getDiscountCodeEntities().size();
         }
         
         return productEntities;
@@ -185,7 +187,7 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         
         if(categoryEntity.getSubCategoryEntities().isEmpty())
         {
-            productEntities = categoryEntity.getProductEntities();            
+            productEntities = categoryEntity.getProductEntities();   
         }
         else
         {
@@ -200,6 +202,13 @@ public class ProductEntityController implements ProductEntityControllerLocal {
                     return pe1.getSkuCode().compareTo(pe2.getSkuCode());
                 }
             });
+        
+        for (ProductEntity p: productEntities){
+            p.getTagEntities().size();
+            p.getDiscountCodeEntities().size();
+            p.getReviewEntities().size();
+        }
+                
 
         return productEntities;
     }

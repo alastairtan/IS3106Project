@@ -10,6 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +32,8 @@ import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.componen
 import { MatInputModule, MatInput } from '@angular/material/input';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CategoryBarComponent } from './category-bar/category-bar.component';
+import { CategoryMenuItemComponent } from './category-menu-item/category-menu-item.component';
+import { ProductCardComponent } from './product-card/product-card.component';
 
 
 @NgModule({
@@ -44,7 +51,9 @@ import { CategoryBarComponent } from './category-bar/category-bar.component';
     IndexComponent,
     ScavengerHuntComponent,
     LoginDialogComponent,
-    CategoryBarComponent
+    CategoryBarComponent,
+    CategoryMenuItemComponent,
+    ProductCardComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +68,12 @@ import { CategoryBarComponent } from './category-bar/category-bar.component';
     MatButtonModule,
     MatMenuModule,
     MatDialogModule,
-    MatListModule
+    MatListModule,
+    MatCardModule,
+    MatPaginatorModule,
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent],

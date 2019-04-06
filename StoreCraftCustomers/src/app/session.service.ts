@@ -31,4 +31,12 @@ export class SessionService {
     sessionStorage.currentCustomer = JSON.stringify(currentCustomer);
   }
 
+  setSelectedCategory(categoryId: number): void{
+    sessionStorage.selectedCategory = categoryId;
+  }
+
+  getSelectedCategory(): number{
+    return sessionStorage.selectedCategory;
+  }
+
 }

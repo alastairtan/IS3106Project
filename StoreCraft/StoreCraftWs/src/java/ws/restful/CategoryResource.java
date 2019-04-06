@@ -48,17 +48,6 @@ public class CategoryResource {
 
                     clearChildToParentRelationship(rootCategoryEntity);
                 
-                /*
-                if(categoryEntity.getParentCategoryEntity() != null) //not root
-                {
-                    //categoryEntity.getParentCategoryEntity().getSubCategoryEntities().clear();
-                    categoryEntity.setParentCategoryEntity(null);
-                }
-                
-                //categoryEntity.getSubCategoryEntities().clear();
-                categoryEntity.getSubCategoryEntities();
-                categoryEntity.getProductEntities().clear();
-                 */
             }
 
             return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(rootCategoryEntities)).build();
@@ -71,7 +60,7 @@ public class CategoryResource {
         }
     }
 
-    private void clearChildToParentRelationship(CategoryEntity subCategory) {
+    private void clearChildToParentRelationship(CategoryEntity subCategory) { //so relationships are unidirectional, goes top-down
         subCategory.setParentCategoryEntity(null);
         subCategory.getProductEntities().clear();
         if (subCategory.getSubCategoryEntities().isEmpty() || subCategory.getSubCategoryEntities() == null) {

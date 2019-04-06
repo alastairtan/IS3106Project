@@ -35,22 +35,24 @@
         <button mat-button>
             Home
         </button>
-        <mat-list-item *ngFor="let rootCategory of rootCategories">
-            <button mat-button (click)="getSubCategoriesFor(rootCategory)" [matMenuTriggerFor]="categoryMenu">
-                {{rootCategory.name}}
-            </button>
-        </mat-list-item>
+        <span *ngFor="let category of rootCategories">
+            <!-- Handle branch node buttons here -->
+            <span *ngIf="category.subCategoryEntities && category.subCategoryEntities.length > 0">
+                <button mat-button [matMenuTriggerFor]="menu.childMenu"  #menuTrigger="matMenuTrigger">
+                    {{category.name}}
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+                <app-category-menu-item #menu [categoryItems]="category.subCategoryEntities"></app-category-menu-item>
+            </span>
+            <!-- Leaf node buttons here -->
+            <span *ngIf="!category.subCategoryEntities || category.subCategoryEntities.length === 0">
+                <button mat-button >
+                    {{category.name}}
+                </button>
+            </span>
+        </span>
     </mat-toolbar-row>
-
 </mat-toolbar>
-
-<mat-menu #categoryMenu="matMenu">
-    <mat-nav-list>
-        <mat-list-item *ngFor="let subCategory of subCategories">
-            <a routerLink=".">{{subCategory.name}}</a>
-        </mat-list-item>
-    </mat-nav-list>
-</mat-menu>
 
 <mat-menu #shoppingCartMenu="matMenu">
     <button mat-menu-item>Item 1</button>
