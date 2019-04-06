@@ -1,0 +1,17 @@
+.content{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+}
+
+.mat-card-header{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.card{
+    text-align: center
+}

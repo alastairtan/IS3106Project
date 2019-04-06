@@ -1,10 +1,15 @@
-<mat-card class="mat-elevation-z3">
-  <mat-card-header>
-    <mat-card-title>{{product.name}}</mat-card-title>
-    <mat-card-subtitle>{{product.description}}</mat-card-subtitle>
-  </mat-card-header>
+<mat-card class="mat-elevation-z3 card">
   <img mat-card-image src="{{product.productImageUrl}}" />
-  <mat-card-content>
-    <p> Price: {{product.unitPrice}} </p>
+  <mat-card-header class="header">
+    <mat-card-title>{{product.name}}</mat-card-title>
+    <mat-card-subtitle>{{product.categoryEntity.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="content">
+    <h5> $ {{product.unitPrice}} </h5>
   </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button color="primary">View</button>
+  </mat-card-actions>
 </mat-card>
