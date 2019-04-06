@@ -171,14 +171,14 @@
 
                             </p:panelGrid>
 
-                            <p:commandButton rendered="#{!filterProductsByCategoryManagedBean.isUpdating}" value="Update Product" actionListener="#{filterProductsByCategoryManagedBean.updating}" update="dialogViewProduct" 
-                                             oncomplete="PF('dialogViewProduct').show()" icon="fa fa-pencil-square" title="Update"/>
+                            <p:commandButton rendered="#{!filterProductsByCategoryManagedBean.isUpdating}" value="Update Product" actionListener="#{filterProductsByCategoryManagedBean.updating}" update="dialogViewProduct formMain:dataTableMain" 
+                                             oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-pencil-square" title="Update"/>
 
                             <p:commandButton rendered="#{filterProductsByCategoryManagedBean.isUpdating}" value="Save Changes" actionListener="#{filterProductsByCategoryManagedBean.saveChanges}" 
-                                             update="formMain:dataTableMain dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-save" title="SaveChange"/>
-                            
+                                             update="formMain:dataTableMain dialogViewProduct" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
+
                             <p:commandButton rendered="#{filterProductsByCategoryManagedBean.isUpdating}" value="Cancel Update" actionListener="#{filterProductsByCategoryManagedBean.cancelUpdating}"
-                                             update="dialogViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
+                                             update="dialogViewProduct formMain:dataTableMain" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
                             
                             <p:commandButton rendered="#{!filterProductsByCategoryManagedBean.isUpdating}" value="Delete Product" actionListener="#{filterProductsByCategoryManagedBean.deleteProduct}" 
                                              update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteProduct" style="color: red" oncomplete="PF('dialogViewProduct').hide()"
