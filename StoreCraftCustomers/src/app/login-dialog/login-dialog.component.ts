@@ -34,9 +34,6 @@ export class LoginDialogComponent implements OnInit {
 
   login(): void {
 
-    //this.sessionService.setUsername(this.username);
-    //this.sessionService.setPassword(this.password);
-
     this.customerService.customerLogin(this.username, this.password).subscribe(
       response => {
         let customer: Customer = response.customerEntity;

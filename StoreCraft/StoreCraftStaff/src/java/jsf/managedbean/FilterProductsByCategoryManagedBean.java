@@ -11,7 +11,6 @@ import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
 import entity.ProductEntity;
 import entity.TagEntity;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,38 +19,40 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
-import util.exception.CreateNewProductException;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
+import util.exception.CategoryNotFoundException;
 import util.exception.DeleteProductException;
-import util.exception.InputDataValidationException;
 import util.exception.ProductNotFoundException;
 
 /**
  *
  * @author shawn
  */
-@Named(value = "productManagementManagedBean")
+@Named(value = "filterProductsByCategoryManagedBean")
 @ViewScoped
-public class ProductManagementManagedBean implements Serializable {
-
+public class FilterProductsByCategoryManagedBean implements Serializable {
+    
     @EJB
     private ProductEntityControllerLocal productEntityControllerLocal;
     @EJB
     private CategoryEntityControllerLocal categoryEntityControllerLocal;
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
-
-    //*** For Initial Load ***
-    private List<ProductEntity> productEntities;   
-    private List<CategoryEntity> categoryEntities;
-    private List<TagEntity> tagEntities;
-    // ***********************
     
-    private List<ProductEntity> filteredProductEntities; //for search all fields
+    private List<ProductEntity> filteredProductEntities;
+
+    private TreeNode treeNode;
+    private TreeNode selectedTreeNode;
+    
+    private List<TagEntity> tagEntities;
+    private List<ProductEntity> productEntities;
+    private List<CategoryEntity> categoryEntities;
     
     //*** For Updating Product ***
     private ProductEntity selectedProductEntity; //updated when user clicks on actions button, used for both viewing and updating
@@ -60,36 +61,98 @@ public class ProductManagementManagedBean implements Serializable {
     private List<String> tagIdsStringUpdate; //list of tag IDs when updating product
     //****************************
     
-    //*** For Creating Product ***
-    private ProductEntity newProductEntity;
-    private Long categoryIdNew;
-    private List<String> tagIdsStringNew;
-    //****************************
     
-    //*** For filtering ***
-    private List<String> filterTagIds;
-    private String condition;
-    //*********************
-    
-    public ProductManagementManagedBean() {
-        isUpdating = false;
-        newProductEntity = new ProductEntity();
+    public FilterProductsByCategoryManagedBean() {
     }
-
+    
     @PostConstruct
-    public void postConstruct() {
-        productEntities = productEntityControllerLocal.retrieveAllProducts();
-        categoryEntities = categoryEntityControllerLocal.retrieveAllLeafCategories();
-        tagEntities = tagEntityControllerLocal.retrieveAllTags();
-        //System.out.println("constructed");
-    }
+    public void PostConstruct(){
+        this.tagEntities = tagEntityControllerLocal.retrieveAllTags();
+        this.categoryEntities = categoryEntityControllerLocal.retrieveAllLeafCategories();
+        
+        List<CategoryEntity> rootCategoryEntities = categoryEntityControllerLocal.retrieveAllRootCategories();
+        
+        treeNode = new DefaultTreeNode("All", null);
+        
+        for(CategoryEntity categoryEntity:rootCategoryEntities)
+        {
+            createTreeNode(categoryEntity, treeNode);
+        }
+        
+        //retain filter even on page refresh
+        Long selectedCategoryId = (Long)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productFilterCategory");
+        
+        if(selectedCategoryId != null){
+            for(TreeNode tn:treeNode.getChildren()) //other root categories e.g. electronics and fashion
+            {
+                CategoryEntity ce = (CategoryEntity)tn.getData();
 
-    public void viewProductDetails(ActionEvent event) throws IOException {
-        Long productIdToView = (Long) event.getComponent().getAttributes().get("productId");
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("productIdToView", productIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("viewProductDetails.xhtml");
+                if(ce.getCategoryId().equals(selectedCategoryId))
+                {
+                    selectedTreeNode = tn;
+                    break;
+                }
+                else
+                {
+                    selectedTreeNode = searchTreeNode(selectedCategoryId, tn);
+                }            
+            }
+        }
+        
+        filterProduct();
+        
     }
-
+    
+    public void filterProduct()
+    {
+        if(selectedTreeNode != null)
+        {               
+            try
+            {
+                CategoryEntity ce = (CategoryEntity)selectedTreeNode.getData();
+                productEntities = productEntityControllerLocal.filterProductsByCategory(ce.getCategoryId());
+            }
+            catch(CategoryNotFoundException ex)
+            {
+                productEntities = productEntityControllerLocal.retrieveAllProducts();
+            }
+        }
+        else
+        {
+            productEntities = productEntityControllerLocal.retrieveAllProducts();
+        }
+    }
+    
+    private void createTreeNode(CategoryEntity categoryEntity, TreeNode parentTreeNode)
+    {
+        TreeNode treeNode = new DefaultTreeNode(categoryEntity, parentTreeNode);
+                
+        for(CategoryEntity ce:categoryEntity.getSubCategoryEntities())
+        {
+            createTreeNode(ce, treeNode);
+        }
+               
+    }
+    
+    private TreeNode searchTreeNode(Long selectedCategoryId, TreeNode treeNode)
+    {
+        for(TreeNode tn:treeNode.getChildren())
+        {
+            CategoryEntity ce = (CategoryEntity)tn.getData();
+            
+            if(ce.getCategoryId().equals(selectedCategoryId))
+            {
+                return tn;
+            }
+            else
+            {
+                return searchTreeNode(selectedCategoryId, tn);
+            }            
+        }
+        
+        return null;
+    }
+    
     public void updating(ActionEvent event){
         setIsUpdating(true);
         this.categoryIdUpdate = selectedProductEntity.getCategoryEntity().getCategoryId(); //to show the current category when updating
@@ -109,23 +172,14 @@ public class ProductManagementManagedBean implements Serializable {
         }
     }
     
-    public void creating(ActionEvent event){
-        this.newProductEntity = new ProductEntity();
-    }
-    
     public void closeViewDialog(CloseEvent event){
         setIsUpdating(false);
-        //System.out.println("Close View Dialog");
-    }
-    
-    public void closeCreateDialog(CloseEvent event){
-        this.newProductEntity = new ProductEntity();
-        //System.out.println("Close Create Dialog");
+        System.out.println("Close View Dialog");
     }
     
     public void saveChanges(ActionEvent event){       
         
-        //System.out.println("savechanges");
+        System.out.println("savechanges");
         
         List<Long> tagIdsUpdate = new ArrayList<>();
         
@@ -134,8 +188,7 @@ public class ProductManagementManagedBean implements Serializable {
             categoryIdUpdate = null;
         }
         
-        if(tagIdsStringUpdate != null && (!tagIdsStringUpdate.isEmpty()))
-        {
+        if(tagIdsStringUpdate != null && (!tagIdsStringUpdate.isEmpty())){
             
             for(String tagIdString:tagIdsStringUpdate)
             {
@@ -147,7 +200,7 @@ public class ProductManagementManagedBean implements Serializable {
         {
             productEntityControllerLocal.updateProduct(selectedProductEntity, categoryIdUpdate, tagIdsUpdate);
                         
-            for(CategoryEntity ce:categoryEntities)
+            for(CategoryEntity ce:categoryEntityControllerLocal.retrieveAllLeafCategories()) //to update the selectedProductEntity  (previously not associated with updated categoryEntities)
             {
                 if(ce.getCategoryId().equals(categoryIdUpdate))
                 {
@@ -156,7 +209,7 @@ public class ProductManagementManagedBean implements Serializable {
                 }                
             }
             
-            selectedProductEntity.getTagEntities().clear();
+            selectedProductEntity.getTagEntities().clear(); //to update the selectedProductEntity (previously not associated with updated tagEntities)
             
             for(TagEntity te:tagEntities)
             {
@@ -199,62 +252,28 @@ public class ProductManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-    
-    public void createNewProduct(ActionEvent event){
-        List<Long> tagIdsNew = null;
-        
-        if(categoryIdNew == 0)
-        {
-            categoryIdNew = null;
-        }
-        
-        if(tagIdsStringNew != null && (!tagIdsStringNew.isEmpty()))
-        {
-            tagIdsNew = new ArrayList<>();
-            
-            for(String tagIdString:tagIdsStringNew)
-            {
-                tagIdsNew.add(Long.valueOf(tagIdString));
-            }
-        }
-        
-        try
-        {
-            ProductEntity pe = productEntityControllerLocal.createNewProduct(newProductEntity, categoryIdNew, tagIdsNew);
-            productEntities.add(pe);
-            
-            newProductEntity = new ProductEntity();
-            categoryIdNew = null;
-            tagIdsStringNew = null;
-            
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + pe.getProductId() + ")", null));
-        }
-        catch(InputDataValidationException | CreateNewProductException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
-        }
+    public TreeNode getTreeNode() {
+        return treeNode;
     }
-    
-    public void filterProduct()
-    {
-        List<Long> tagIds = new ArrayList<>();
+
+    public void setTreeNode(TreeNode treeNode) {
+        this.treeNode = treeNode;
+    }
+
+    public TreeNode getSelectedTreeNode() {
+        return selectedTreeNode;
+    }
+
+    public void setSelectedTreeNode(TreeNode selectedTreeNode) {
+        this.selectedTreeNode = selectedTreeNode;
         
-        if(filterTagIds != null && filterTagIds.size() > 0)
+        if(selectedTreeNode != null)
         {
-            for(String tagId:filterTagIds)
-            {
-                tagIds.add(Long.valueOf(tagId));
-            }
-            
-            productEntities = productEntityControllerLocal.filterProductsByTags(tagIds, condition);
-        }
-        else
-        {
-            productEntities = productEntityControllerLocal.retrieveAllProducts();
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("productFilterCategory", ((CategoryEntity)selectedTreeNode.getData()).getCategoryId());
         }
     }
-            
+
     public List<ProductEntity> getProductEntities() {
         return productEntities;
     }
@@ -263,12 +282,12 @@ public class ProductManagementManagedBean implements Serializable {
         this.productEntities = productEntities;
     }
 
-    public List<CategoryEntity> getCategoryEntities() {
-        return categoryEntities;
+    public ProductEntity getSelectedProductEntity() {
+        return selectedProductEntity;
     }
 
-    public void setCategoryEntities(List<CategoryEntity> categoryEntities) {
-        this.categoryEntities = categoryEntities;
+    public void setSelectedProductEntity(ProductEntity selectedProductEntity) {
+        this.selectedProductEntity = selectedProductEntity;
     }
 
     public List<TagEntity> getTagEntities() {
@@ -277,15 +296,6 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setTagEntities(List<TagEntity> tagEntities) {
         this.tagEntities = tagEntities;
-    }
-
-    public ProductEntity getSelectedProductEntity() {
-        return selectedProductEntity;
-    }
-
-    public void setSelectedProductEntity(ProductEntity selectedProductEntity) {
-        this.selectedProductEntity = selectedProductEntity;
-        System.out.println("set selected pe");
     }
 
     public boolean isIsUpdating() {
@@ -320,43 +330,12 @@ public class ProductManagementManagedBean implements Serializable {
         this.filteredProductEntities = filteredProductEntities;
     }
 
-    public ProductEntity getNewProductEntity() {
-        return newProductEntity;
+    public List<CategoryEntity> getCategoryEntities() {
+        return categoryEntities;
     }
 
-    public void setNewProductEntity(ProductEntity newProductEntity) {
-        this.newProductEntity = newProductEntity;
+    public void setCategoryEntities(List<CategoryEntity> categoryEntities) {
+        this.categoryEntities = categoryEntities;
     }
-
-    public Long getCategoryIdNew() {
-        return categoryIdNew;
-    }
-
-    public void setCategoryIdNew(Long categoryIdNew) {
-        this.categoryIdNew = categoryIdNew;
-    }
-
-    public List<String> getTagIdsStringNew() {
-        return tagIdsStringNew;
-    }
-
-    public void setTagIdsStringNew(List<String> tagIdsStringNew) {
-        this.tagIdsStringNew = tagIdsStringNew;
-    }
-
-    public List<String> getFilterTagIds() {
-        return filterTagIds;
-    }
-
-    public void setFilterTagIds(List<String> filterTagIds) {
-        this.filterTagIds = filterTagIds;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
+    
 }

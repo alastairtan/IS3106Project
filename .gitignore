@@ -1,4 +1,5 @@
 *.jar
+!flick-1.0.10.jar
 *.war
 *.ear
 *.log
