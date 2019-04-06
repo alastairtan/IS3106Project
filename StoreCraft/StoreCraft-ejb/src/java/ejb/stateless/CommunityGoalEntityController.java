@@ -6,7 +6,6 @@
 package ejb.stateless;
 
 import entity.CommunityGoalEntity;
-import entity.DiscountCodeEntity;
 import entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
@@ -23,8 +22,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
-import util.exception.CreateNewDiscountCodeException;
-import util.exception.DiscountCodeNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 
@@ -54,15 +51,23 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
     @Override
     public CommunityGoalEntity createNewCommunityGoal(CommunityGoalEntity communityGoalEntity,Long staffId) throws InputDataValidationException, StaffNotFoundException, CreateNewCommunityGoalException
     {        
+        System.err.println("staff id" + staffId);
         Set<ConstraintViolation<CommunityGoalEntity>>constraintViolations = validator.validate(communityGoalEntity);
-        
+        System.err.println("sff123456789ff");
         if(constraintViolations.isEmpty())
         {
             try{
+                System.err.println("sffff");
             StaffEntity staffEntity = staffEntityControllerLocal.retrieveStaffByStaffId(staffId);
+            System.err.println("sdddd");
+            communityGoalEntity.setStaffEntity(staffEntity);
+            System.err.println("sdfeff");
+            staffEntity.getCommunityGoalEntities().add(communityGoalEntity);
+            System.err.println("sagagaga");
             entityManager.persist(communityGoalEntity);
+            System.err.println("sagagaga");
             entityManager.flush();
-
+            System.err.println("sagagaga");
             return communityGoalEntity;
             } catch(PersistenceException ex)
             {                
@@ -80,6 +85,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         }
         else
         {
+            System.err.println("sf09876543f");
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
@@ -138,7 +144,6 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
             communityGoalEntity.setDescription(newCommunityGoalEntity.getDescription());
             communityGoalEntity.setEndDate(newCommunityGoalEntity.getEndDate());
             communityGoalEntity.setStartDate(newCommunityGoalEntity.getStartDate());
-            communityGoalEntity.setGoalTitle(newCommunityGoalEntity.getGoalTitle());
             communityGoalEntity.setTargetPoints(newCommunityGoalEntity.getTargetPoints());
         }
         else

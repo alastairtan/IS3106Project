@@ -50,7 +50,7 @@ public class CommunityGoalEntity implements Serializable {
     @NotNull
     private String country;
     
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 200,unique=true)
     @NotNull
     @Size(max = 200)
     private String goalTitle;
@@ -58,6 +58,9 @@ public class CommunityGoalEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private String description;
+    
+    @NotNull
+    private BigDecimal currentPoints = new BigDecimal(0);
     
     //RELATIONSHIPS
 
@@ -163,6 +166,14 @@ public class CommunityGoalEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(BigDecimal currentPoints) {
+        this.currentPoints = currentPoints;
     }
     
 }
