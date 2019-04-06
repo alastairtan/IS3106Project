@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { IndexComponent } from './index/index.component';
 import { ScavengerHuntComponent } from './scavenger-hunt/scavenger-hunt.component';
 import { MatInputModule, MatInput } from '@angular/material/input';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { CategoryBarComponent } from './category-bar/category-bar.component';
 
 
 @NgModule({
@@ -41,7 +43,8 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     ViewProductDetailsComponent,
     IndexComponent,
     ScavengerHuntComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    CategoryBarComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent],

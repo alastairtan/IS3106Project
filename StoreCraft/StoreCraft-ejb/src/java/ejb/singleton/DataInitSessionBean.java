@@ -74,9 +74,14 @@ public class DataInitSessionBean {
 
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
-            CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), categoryEntityElectronics.getCategoryId());
-            CategoryEntity dellCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Dell", "Dell Laptop"), categoryEntityElectronics.getCategoryId());
-            CategoryEntity hpCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("HP", "HP Laptop"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity laptopsCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Laptops", "Laptops"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), laptopsCategory.getCategoryId());
+            CategoryEntity dellCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Dell", "Dell Laptop"), laptopsCategory.getCategoryId());
+            CategoryEntity hpCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("HP", "HP Laptop"), laptopsCategory.getCategoryId());
+            CategoryEntity phonesCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Phones", "Mobile Phones"), categoryEntityElectronics.getCategoryId());
+            CategoryEntity samsungCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Samsung", "Samsung Phones"), phonesCategory.getCategoryId());
+            CategoryEntity huaweiCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Huawei", "Huawei Phones"), phonesCategory.getCategoryId());
+            CategoryEntity xiaomiCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Xiaomi", "Xiaomi Phones"), phonesCategory.getCategoryId());
             CategoryEntity zaraCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("ZARA", "Zara Clothing"), categoryEntityFashions.getCategoryId());
             CategoryEntity topmanCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Topman", "Topman Clothing"), categoryEntityFashions.getCategoryId());
             CategoryEntity supremeCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("SUPREME", "Supreme Clothing"), categoryEntityFashions.getCategoryId());
