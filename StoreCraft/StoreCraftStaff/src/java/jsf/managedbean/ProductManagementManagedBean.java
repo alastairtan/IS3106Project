@@ -147,6 +147,7 @@ public class ProductManagementManagedBean implements Serializable {
         {
             productEntityControllerLocal.updateProduct(selectedProductEntity, categoryIdUpdate, tagIdsUpdate);
                         
+            /*
             for(CategoryEntity ce:categoryEntities)
             {
                 if(ce.getCategoryId().equals(categoryIdUpdate))
@@ -165,9 +166,10 @@ public class ProductManagementManagedBean implements Serializable {
                     selectedProductEntity.getTagEntities().add(te);
                 }                
             }
+            */
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully", null));
-            setIsUpdating(false);
+            cancelUpdating(null);
         }
         catch(ProductNotFoundException ex)
         {

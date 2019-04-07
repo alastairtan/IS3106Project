@@ -43,14 +43,14 @@
                                 <p:selectCheckboxMenu id="tagFilterMenu" value="#{productManagementManagedBean.filterTagIds}" label="Filter By Tag(s)"
                                                       filter="true" filterMatchMode="startsWith">
                                     <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag.tagId}"/>
-                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
-                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" oncomplete="PF('productDataTable').filter()"/>
+                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" oncomplete="PF('productDataTable').filter()" />
                                 </p:selectCheckboxMenu>
                                 <p:selectOneMenu id="selCondition" value="#{productManagementManagedBean.condition}">
                                     <f:selectItem itemValue="" itemLabel="Filter Condition" noSelectionOption="true"/>
                                     <f:selectItem itemValue="OR" itemLabel="OR (default)" itemDescription="OR" />
                                     <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
-                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" />
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{productManagementManagedBean.filterProduct}" oncomplete="PF('productDataTable').filter()"/>
                                 </p:selectOneMenu>
                             </div>
                         </div>
@@ -136,19 +136,19 @@
                                 <p:message for="description"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Quantity On Hand: " />
-                                <p:inputText id="quantityOnHand" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="quantityOnHand" type="number" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.quantityOnHand}" required="true" requiredMessage="Quantity on hand is required"/>
                                 <p:message for="quantityOnHand"/>
 
                                 <h:outputLabel style="font-weight: bold" value="Reorder Quantity: " />
-                                <p:inputText id="reorderQuantity" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <p:inputText id="reorderQuantity" type="number" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.reorderQuantity}" required="true" requiredMessage="Reorder quantity is required"/>
                                 <p:message for="reorderQuantity"/>
 
-                                <h:outputLabel style="font-weight: bold" value="Unit Price: " />
-                                <p:inputText id="unitPrice" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
+                                <h:outputLabel style="font-weight: bold" value="Unit Price ($): " />
+                                <p:inputText id="unitPrice" type="number" style="width: 100%; font-weight: normal" readonly="#{!productManagementManagedBean.isUpdating}" 
                                              value="#{productManagementManagedBean.selectedProductEntity.unitPrice}" required="true" requiredMessage="Unit price is required">
-                                    <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                                    <f:convertNumber type="number" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </p:inputText>
                                 <p:message for="unitPrice"/>
 
