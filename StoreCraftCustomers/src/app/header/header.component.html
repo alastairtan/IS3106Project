@@ -3,16 +3,26 @@
     <mat-toolbar-row class="topMenu">
         <span class="phone">
             <button mat-button disabled style="color:white; padding: 0">
-                <mat-icon class="phone-icon">phone</mat-icon>&nbsp;&nbsp;+65 3106 3106
+                <mat-icon>phone</mat-icon>&nbsp;&nbsp;+65 3106 3106
             </button>
             &nbsp;&nbsp;&nbsp;
             <button mat-button disabled style="color:white; padding: 0">
-                <mat-icon class="phone-icon">email</mat-icon>&nbsp;&nbsp;support@storecraft.com
+                <mat-icon>email</mat-icon>&nbsp;&nbsp;support@storecraft.com
             </button>
         </span>
-        <div class="topMenuButtons">
+        <div *ngIf="sessionService.getIsLogin() == false" class="topMenuButtons">
             <button mat-button (click)="openDialog()">Login</button>
-            <button mat-button routerLink=".">Register</button>
+            <button mat-button routerLink="profile/{{sessionService.getCurrentCustomer.customerId}}">Register</button>
+        </div>
+        <div *ngIf="sessionService.getIsLogin() == true">
+            <button mat-button disabled style="color:white; padding: 0">
+                Welcome, {{sessionService.getCurrentCustomer().firstName 
+                        + " " + sessionService.getCurrentCustomer().lastName }}
+            </button>
+            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer().customerId]">
+                <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
+            </button>
+            <button mat-button (click)="logout()">Logout</button>
         </div>
     </mat-toolbar-row>
 
@@ -38,7 +48,7 @@
         <span *ngFor="let category of rootCategories">
             <!-- Handle branch node buttons here -->
             <span *ngIf="category.subCategoryEntities && category.subCategoryEntities.length > 0">
-                <button mat-button [matMenuTriggerFor]="menu.childMenu"  #menuTrigger="matMenuTrigger">
+                <button mat-button [matMenuTriggerFor]="menu.childMenu" #menuTrigger="matMenuTrigger">
                     {{category.name}}
                     <mat-icon>expand_more</mat-icon>
                 </button>
@@ -46,7 +56,7 @@
             </span>
             <!-- Leaf node buttons here -->
             <span *ngIf="!category.subCategoryEntities || category.subCategoryEntities.length === 0">
-                <button mat-button >
+                <button mat-button>
                     {{category.name}}
                 </button>
             </span>

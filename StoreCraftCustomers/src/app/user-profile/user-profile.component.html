@@ -1,3 +1,90 @@
-<p>
-  user-profile works!
-</p>
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+  <div class="mat-elevate-z3" fxFlex="1 1 80%" fxFlexOrder="1">
+    <mat-card class="card">
+
+      <mat-card-header class="header">
+        <img mat-card-avatar class="avatar" src="{{customer.profilePicUrl}}">
+        <mat-card-title class="headerText">{{customer.firstName + " " + customer.lastName}}</mat-card-title>
+      </mat-card-header>
+      <br>
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="content">
+
+        <div fxLayout="row wrap" fxLayoutGap="6px grid" fxLayoutAlign="center">
+
+          <div fxFlex="1 1 40%" fxFlexOrder="1">
+
+            <mat-card>
+              <mat-card-header class="header2">
+                <img mat-card-avatar class="avatar2" src="{{bronzeTierUrl}}">
+                <mat-card-title><strong>TIER: </strong>{{customerMemTierString}}</mat-card-title>
+                <mat-card-subtitle style="margin-bottom: 0">Come on, Bronzie!</mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content class="content2">
+                <table mat-table class="table">
+                  <tr mat-row>
+                    <td mat-cell class="leftCell"><strong>Multiplier:</strong></td>
+                    <td mat-cell>{{customer.multiplier}}X</td>
+                  </tr>
+                  <tr mat-row>
+                    <td mat-cell class="leftCell"><strong>Total Points:</strong></td>
+                    <td mat-cell>{{customer.totalPoints}}</td>
+                  </tr>
+                  <tr mat-row>
+                    <td mat-cell class="leftCell"><strong>Remaining Points:</strong></td>
+                    <td mat-cell>{{customer.remainingPoints}}</td>
+                  </tr>
+                  <tr mat-row>
+                    <td mat-cell class="leftCell"><strong>Points for Current Month:</strong></td>
+                    <td mat-cell>{{customer.pointsForCurrentMonth}}</td>
+                  </tr>
+                </table>
+              </mat-card-content>
+
+            </mat-card>
+          </div>
+
+          <div fxFlex="1 1 60%" fxFlexOrder="2" style="margin-top: 1.2vw">
+
+            <mat-form-field class="formField">
+              <input matInput placeholder="Email" [(ngModel)]="customer.email" readonly="{{!isUpdating}}">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field class="formField">
+              <input matInput placeholder="Country" [(ngModel)]="customer.country" readonly="{{!isUpdating}}">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field class="formField">
+              <input matInput placeholder="Profile Picture URL" [(ngModel)]="customer.profilePicUrl"
+                readonly="{{!isUpdating}}">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field class="formField" *ngIf="isUpdating">
+              <input matInput placeholder="First Name" [(ngModel)]="customer.firstName" readonly="{{!isUpdating}}">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field class="formField" *ngIf="isUpdating">
+              <input matInput placeholder="Last Name" [(ngModel)]="customer.lastName" readonly="{{!isUpdating}}">
+            </mat-form-field>
+            <br>
+          </div>
+
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button *ngIf="!isUpdating" mat-raised-button color="primary" (click)="updating()">
+          Update
+        </button>
+        <button *ngIf="isUpdating" mat-raised-button color="warn" (click)="cancelUpdating()">
+          Cancel Updating
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

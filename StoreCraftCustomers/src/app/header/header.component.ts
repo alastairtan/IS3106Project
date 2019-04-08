@@ -3,6 +3,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { LoginDialogComponent } from "../login-dialog/login-dialog.component";
 import { CategoryService } from "../category.service";
 import { Category } from '../category';
+import { SessionService } from '../session.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -14,7 +17,8 @@ export class HeaderComponent implements OnInit {
   rootCategories: Category[];
 
   constructor(public dialog: MatDialog,
-    public categoryService: CategoryService) { 
+    public categoryService: CategoryService,
+    public sessionService:SessionService) { 
 
       this.rootCategories = [];
  
@@ -40,6 +44,11 @@ export class HeaderComponent implements OnInit {
         this.rootCategories = response.categoryEntities;  
       }
     )
+  }
+
+  logout(){
+    this.sessionService.setIsLogin(false);
+    this.sessionService.setCurrentCustomer(null);
   }
 
 }
