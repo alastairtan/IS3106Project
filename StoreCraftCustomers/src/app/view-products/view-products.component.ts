@@ -11,9 +11,7 @@ import { Tag } from '../tag';
 
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material';
-import { MatListOption } from '@angular/material';
 import { Observable, forkJoin } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
 
 
 @Component({
@@ -51,7 +49,7 @@ export class ViewProductsComponent implements OnInit {
   allTags: Tag[];
   selectedTagOptions: number[];
   condition: string;
-  
+
   constructor(public productService: ProductService,
     public categoryService: CategoryService,
     public sessionService: SessionService,
@@ -79,7 +77,7 @@ export class ViewProductsComponent implements OnInit {
         this.maxPrice = 1000;
         //************
 
-        this.handleSort();
+        this.doFilter();
       })
       this.categoryService.retrieveCategoryByCategoryId(selectedCategory).subscribe(response => {
         this.subCategories = response.categoryEntity.subCategoryEntities;
@@ -93,7 +91,7 @@ export class ViewProductsComponent implements OnInit {
   handlePageEvent(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    this.handleCategoryChange(); //cannot use renderView here, otherwise when paginator changes, the price range filter is undone since it doesnt change fiteredProducts permanently
+    this.doFilter(); 
   }
 
   renderView() {
@@ -104,36 +102,38 @@ export class ViewProductsComponent implements OnInit {
     let start: number = this.currentPage * this.pageSize;
     let end: number = this.currentPage * this.pageSize + this.pageSize;
     this.viewProducts = this.filteredProducts.slice(start, end);
-    
+
     //console.log("RENDER");
-    //console.log(this.viewProducts);
   }
 
   handleCategoryChange() {
 
-    if (this.selectedCategoryOptions == null || this.selectedCategoryOptions.length == 0) { //all not selected
-      this.filteredProducts = this.allProducts;
-      this.handleTagChange();
-      return;
-    }
+    return new Promise((resolve, reject) => {
 
-    let observables: Observable<any>[] = [];
-
-    for (let categoryId of this.selectedCategoryOptions) {
-      observables.push(this.productService.getProductsByCategory(categoryId));
-    }
-
-    let filtered: Product[] = []
-    forkJoin(observables).subscribe(dataArray => {
-      for (let response of dataArray) {
-        filtered = filtered.concat(response.productEntities);
-        //console.log(filtered);
+      if (this.selectedCategoryOptions == null || this.selectedCategoryOptions.length == 0) { //all not selected
+        this.filteredProducts = this.allProducts;
+       //console.log("CATEGORY")
+        resolve();
       }
-      this.filteredProducts = filtered;
-      //console.log("DONE");
-      this.handleTagChange();
-    })
 
+      let observables: Observable<any>[] = [];
+
+      for (let categoryId of this.selectedCategoryOptions) {
+        observables.push(this.productService.getProductsByCategory(categoryId));
+      }
+
+      let filtered: Product[] = []
+      forkJoin(observables).subscribe(dataArray => {
+        for (let response of dataArray) {
+          filtered = filtered.concat(response.productEntities);
+        }
+        this.filteredProducts = filtered;
+        //console.log("CATEGORY");
+        console.log(this.filteredProducts)
+        resolve();
+      })
+
+    })
   }
 
   handleSort() {
@@ -142,7 +142,6 @@ export class ViewProductsComponent implements OnInit {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.name.localeCompare(b.name);
         })
-        this.handlePriceRange();
         break;
       }
       case "alphDsc": {
@@ -150,14 +149,12 @@ export class ViewProductsComponent implements OnInit {
           return a.name.localeCompare(b.name);
         })
         this.filteredProducts.reverse();
-        this.handlePriceRange();
         break;
       }
       case "pAsc": {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.unitPrice - b.unitPrice;
         })
-        this.handlePriceRange();
         break;
       }
       case "pDsc": {
@@ -165,10 +162,10 @@ export class ViewProductsComponent implements OnInit {
           return a.unitPrice - b.unitPrice;
         })
         this.filteredProducts.reverse();
-        this.handlePriceRange();
         break;
       }
     }
+    //console.log("SORT");
   }
 
   handlePriceRange() {
@@ -176,33 +173,31 @@ export class ViewProductsComponent implements OnInit {
     this.filteredProducts = filteredProductsCopy.filter(product => {
       return (product.unitPrice >= this.minPrice && product.unitPrice <= this.maxPrice)
     })
-    //console.log(this.filteredProducts);
-    this.renderView();
-    this.filteredProducts = filteredProductsCopy; //so that original filtered products wont be permanently changed
+    //console.log("PRICE RANGE");
+    console.log(this.filteredProducts);
   }
 
-  handleTagChange(){
+  handleTagChange() {
+    //console.log("TAG CHANGE");
     if (this.selectedTagOptions == null || this.selectedTagOptions.length == 0) { //all not selected
-      this.filteredProducts = this.allProducts;
-      this.handleSort();
       return;
     }
 
-    if (this.condition == null || this.condition == "OR"){
+    if (this.condition == null || this.condition == "OR") {
       this.filteredProducts = this.productService.filterProductsByTagsOR(this.filteredProducts, this.selectedTagOptions);
-      this.handleSort();
-    } else if (this.condition == "AND"){
+    } else if (this.condition == "AND") {
       this.filteredProducts = this.productService.filterProductsByTagsAND(this.filteredProducts, this.selectedTagOptions);
-      this.handleSort();
     }
+    console.log(this.filteredProducts);
   }
 
-  doFilter(){
-    this.handleCategoryChange();
+  doFilter() {
+    this.handleCategoryChange().then(() => {
     this.handleTagChange();
     this.handleSort();
     this.handlePriceRange();
     this.renderView();
+    })
   }
 
 

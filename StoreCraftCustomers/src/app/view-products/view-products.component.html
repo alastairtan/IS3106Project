@@ -12,7 +12,7 @@
         </mat-expansion-panel-header>
         <div *ngIf="subCategories?.length > 0; else elseBlock">
           <mat-selection-list #categoryList [(ngModel)]="selectedCategoryOptions" 
-          (selectionChange)="handleCategoryChange()">
+          (selectionChange)="doFilter()">
             <mat-list-option *ngFor="let subCategory of subCategories" [value]="subCategory.categoryId">
               {{subCategory.name}}
             </mat-list-option>
@@ -29,7 +29,7 @@
         </mat-expansion-panel-header>
         <mat-form-field>
           <mat-label>Select an option</mat-label>
-          <mat-select #sortSelect [(ngModel)]="sortSelection" (selectionChange)="handleSort()">
+          <mat-select #sortSelect [(ngModel)]="sortSelection" (selectionChange)="doFilter()">
             <mat-option value="alphAsc">Alphabetical (a-Z)</mat-option>
             <mat-option value="alphDsc">Alphabetical (Z-a)</mat-option>
             <mat-option value="pAsc">Price (Low to High)</mat-option>
@@ -47,20 +47,20 @@
         <span>
           <strong>Minimum:</strong> $
           <mat-form-field style="width: 50%">
-            <input matInput [(ngModel)]="minPrice" type="number" (input)="handlePriceRange()">
+            <input matInput [(ngModel)]="minPrice" type="number" (input)="doFilter()">
           </mat-form-field>
           <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="minPrice"
-            (change)="handlePriceRange()">
+            (change)="doFilter()">
           </mat-slider>
         </span>
 
         <span>
           <strong>Maximum:</strong> $
           <mat-form-field style="width: 50%">
-            <input matInput [(ngModel)]="maxPrice" type="number" (input)="handlePriceRange()">
+            <input matInput [(ngModel)]="maxPrice" type="number" (input)="doFilter()">
           </mat-form-field>
           <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="maxPrice"
-            (change)="handlePriceRange()">
+            (change)="doFilter()">
           </mat-slider>
         </span>
       </mat-expansion-panel>
@@ -71,14 +71,14 @@
             Tags
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-selection-list #tagList [(ngModel)]="selectedTagOptions" (selectionChange)="handleTagChange()">
+        <mat-selection-list #tagList [(ngModel)]="selectedTagOptions" (selectionChange)="doFilter()">
           <mat-list-option *ngFor="let tag of allTags" [value]="tag.tagId">
             {{tag.name}}
           </mat-list-option>
         </mat-selection-list>
         <mat-form-field>
           <mat-label>Condition</mat-label>
-          <mat-select [(ngModel)]="condition" (selectionChange)="handleTagChange()">
+          <mat-select [(ngModel)]="condition" (selectionChange)="doFilter()">
             <mat-option value="OR">OR (default)</mat-option>
             <mat-option value="AND">AND</mat-option>
           </mat-select>
