@@ -12,7 +12,7 @@
         </span>
         <div *ngIf="sessionService.getIsLogin() == false" class="topMenuButtons">
             <button mat-button (click)="openDialog()">Login</button>
-            <button mat-button routerLink="profile/{{sessionService.getCurrentCustomer.customerId}}">Register</button>
+            <button mat-button routerLink=".">Register</button>
         </div>
         <div *ngIf="sessionService.getIsLogin() == true">
             <button mat-button disabled style="color:white; padding: 0">
@@ -42,12 +42,12 @@
     </mat-toolbar-row>
 
     <mat-toolbar-row class="categoryNavbar">
-        <button mat-button>
+        <button mat-button routerLink="/index">
             Home
         </button>
         <span *ngFor="let category of rootCategories">
             <!-- Handle branch node buttons here -->
-            <span *ngIf="category.subCategoryEntities && category.subCategoryEntities.length > 0">
+            <span *ngIf="category.subCategoryEntities.length > 0">
                 <button mat-button [matMenuTriggerFor]="menu.childMenu" #menuTrigger="matMenuTrigger">
                     {{category.name}}
                     <mat-icon>expand_more</mat-icon>
@@ -55,9 +55,9 @@
                 <app-category-menu-item #menu [categoryItems]="category.subCategoryEntities"></app-category-menu-item>
             </span>
             <!-- Leaf node buttons here -->
-            <span *ngIf="!category.subCategoryEntities || category.subCategoryEntities.length === 0">
+            <span *ngIf="category.subCategoryEntities.length === 0">
                 <button mat-button>
-                    {{category.name}}
+                    {{category.name}}  
                 </button>
             </span>
         </span>

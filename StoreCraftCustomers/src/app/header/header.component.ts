@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
     this.categoryService.getCategories().subscribe(
       response => {
         this.rootCategories = response.categoryEntities;  
+        //console.log(this.rootCategories);
       }
     )
   }
