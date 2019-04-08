@@ -1,5 +1,5 @@
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div class="mat-elevate-z3" fxFlex="1 1 80%" fxFlexOrder="1">
+  <div class="mat-elevate-z3" fxFlex="1 1 90%" fxFlexOrder="1">
     <mat-card class="card">
 
       <mat-card-header class="header">
@@ -11,15 +11,15 @@
 
       <mat-card-content class="content">
 
-        <div fxLayout="row wrap" fxLayoutGap="6px grid" fxLayoutAlign="center">
+        <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
 
-          <div fxFlex="1 1 40%" fxFlexOrder="1">
+          <div fxFlex="1 1 45%" fxFlexOrder="1">
 
             <mat-card>
               <mat-card-header class="header2">
-                <img mat-card-avatar class="avatar2" src="{{bronzeTierUrl}}">
+                <img mat-card-avatar class="avatar2" src="{{tierUrl}}">
                 <mat-card-title><strong>TIER: </strong>{{customerMemTierString}}</mat-card-title>
-                <mat-card-subtitle style="margin-bottom: 0">Come on, Bronzie!</mat-card-subtitle>
+                <mat-card-subtitle style="margin-bottom: 0">{{tierMessage}}</mat-card-subtitle>
               </mat-card-header>
 
               <mat-card-content class="content2">
@@ -46,7 +46,9 @@
             </mat-card>
           </div>
 
-          <div fxFlex="1 1 60%" fxFlexOrder="2" style="margin-top: 1.2vw">
+          <div fxFlex="1 1 55%" fxFlexOrder="2">
+
+            <mat-card>
 
             <mat-form-field class="formField">
               <input matInput placeholder="Email" [(ngModel)]="customer.email" readonly="{{!isUpdating}}">
@@ -73,13 +75,30 @@
               <input matInput placeholder="Last Name" [(ngModel)]="customer.lastName" readonly="{{!isUpdating}}">
             </mat-form-field>
             <br>
+
+            </mat-card>
+          </div>
+
+          <div fxFlex="1 1 45%" fxFlexOrder="3">
+
+          </div>
+
+          <div fxFlex="1 1 55%" fxFlexOrder="4">
+
+          </div>
+
+          <div fxFlex="1 1 100%" fxFlexOrder="5">
+
           </div>
 
         </div>
       </mat-card-content>
       <mat-card-actions>
         <button *ngIf="!isUpdating" mat-raised-button color="primary" (click)="updating()">
-          Update
+          Update Profile
+        </button>
+        <button *ngIf="isUpdating" mat-raised-button color="primary" (click)="saveChanges()">
+          Save Changes
         </button>
         <button *ngIf="isUpdating" mat-raised-button color="warn" (click)="cancelUpdating()">
           Cancel Updating
