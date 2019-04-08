@@ -1,4 +1,4 @@
-<mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[4,8,12,16,20]"
+<mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[2,4,8,12,16,20]"
   [pageIndex]="currentPage" (page)="handlePageEvent($event)" class="paginator mat-elevate-z4"></mat-paginator>
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container">
 
@@ -11,7 +11,8 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div *ngIf="subCategories?.length > 0; else elseBlock">
-          <mat-selection-list #categoryList (selectionChange)="handleCategoryChange(categoryList.selectedOptions.selected)">
+          <mat-selection-list #categoryList [(ngModel)]="selectedCategoryOptions" 
+          (selectionChange)="handleCategoryChange()">
             <mat-list-option *ngFor="let subCategory of subCategories" [value]="subCategory.categoryId">
               {{subCategory.name}}
             </mat-list-option>
@@ -28,13 +29,13 @@
         </mat-expansion-panel-header>
         <mat-form-field>
           <mat-label>Select an option</mat-label>
-          <mat-select #sortSelect [(value)] = "sortSelection" (selectionChange)="handleSort(sortSelect.selected)">
+          <mat-select #sortSelect [(ngModel)]="sortSelection" (selectionChange)="handleSort()">
             <mat-option value="alphAsc">Alphabetical (a-Z)</mat-option>
             <mat-option value="alphDsc">Alphabetical (Z-a)</mat-option>
             <mat-option value="pAsc">Price (Low to High)</mat-option>
             <mat-option value="pDsc">Price (High to Low)</mat-option>
           </mat-select>
-        </mat-form-field> 
+        </mat-form-field>
       </mat-expansion-panel>
 
       <mat-expansion-panel expanded>
@@ -43,12 +44,25 @@
             Price
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-form-field>
-          <input matInput placeholder="Minimum Price">
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="Maximum Price">
-        </mat-form-field>
+        <span>
+          <strong>Minimum:</strong> $
+          <mat-form-field style="width: 50%">
+            <input matInput [(ngModel)]="minPrice" type="number" (input)="handlePriceRange()">
+          </mat-form-field>
+          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="minPrice"
+            (change)="handlePriceRange()">
+          </mat-slider>
+        </span>
+
+        <span>
+          <strong>Maximum:</strong> $
+          <mat-form-field style="width: 50%">
+            <input matInput [(ngModel)]="maxPrice" type="number" (input)="handlePriceRange()">
+          </mat-form-field>
+          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="maxPrice"
+            (change)="handlePriceRange()">
+          </mat-slider>
+        </span>
       </mat-expansion-panel>
 
       <mat-expansion-panel expanded>
@@ -57,7 +71,18 @@
             Tags
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <p>I'm visible because I am open</p>
+        <mat-selection-list #tagList [(ngModel)]="selectedTagOptions" (selectionChange)="handleTagChange()">
+          <mat-list-option *ngFor="let tag of allTags" [value]="tag.tagId">
+            {{tag.name}}
+          </mat-list-option>
+        </mat-selection-list>
+        <mat-form-field>
+          <mat-label>Condition</mat-label>
+          <mat-select [(ngModel)]="condition" (selectionChange)="handleTagChange()">
+            <mat-option value="OR">OR (default)</mat-option>
+            <mat-option value="AND">AND</mat-option>
+          </mat-select>
+        </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
