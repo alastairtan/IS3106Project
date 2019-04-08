@@ -1,11 +1,10 @@
 package ws.restful;
 
+import datamodel.ws.rest.CategoryRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.RetrieveAllCategoriesRsp;
 import ejb.stateless.CategoryEntityControllerLocal;
-import ejb.stateless.StaffEntityControllerLocal;
 import entity.CategoryEntity;
-import entity.StaffEntity;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.InvalidLoginCredentialException;
 
 @Path("Category")
 public class CategoryResource {
@@ -54,6 +52,26 @@ public class CategoryResource {
 
         } catch (Exception ex) {
 
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveCategoryByCategoryId")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCategoryByCategoryId(@QueryParam("categoryId") Long categoryId){
+        try{
+            
+            CategoryEntity category = categoryEntityControllerLocal.retrieveCategoryByCategoryId(categoryId);
+            
+            clearChildToParentRelationship(category);
+            
+            return Response.status(Status.OK).entity(new CategoryRsp(category)).build();
+                 
+        } catch (Exception ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();

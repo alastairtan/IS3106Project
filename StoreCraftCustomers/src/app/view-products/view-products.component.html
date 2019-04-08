@@ -1,4 +1,6 @@
-<div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="start" class="card-deck-container">
+<mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[4,8,12,16,20]"
+  [pageIndex]="currentPage" (page)="handlePageEvent($event)" class="paginator mat-elevate-z4"></mat-paginator>
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container">
 
   <div class="sidebar mat-elevate-z3" fxFlex="0 1 20%" fxFlexOrder="1">
     <mat-accordion style="height: 100%" displayMode="flat" multi="true">
@@ -8,7 +10,31 @@
             Categories
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <p>I'm visible because I am open</p>
+        <div *ngIf="subCategories?.length > 0; else elseBlock">
+          <mat-selection-list #categoryList (selectionChange)="handleCategoryChange(categoryList.selectedOptions.selected)">
+            <mat-list-option *ngFor="let subCategory of subCategories" [value]="subCategory.categoryId">
+              {{subCategory.name}}
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+        <ng-template #elseBlock>No subcategories</ng-template>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sort
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>Select an option</mat-label>
+          <mat-select #sortSelect [(value)] = "sortSelection" (selectionChange)="handleSort(sortSelect.selected)">
+            <mat-option value="alphAsc">Alphabetical (a-Z)</mat-option>
+            <mat-option value="alphDsc">Alphabetical (Z-a)</mat-option>
+            <mat-option value="pAsc">Price (Low to High)</mat-option>
+            <mat-option value="pDsc">Price (High to Low)</mat-option>
+          </mat-select>
+        </mat-form-field> 
       </mat-expansion-panel>
 
       <mat-expansion-panel expanded>
@@ -17,7 +43,6 @@
             Price
           </mat-panel-title>
         </mat-expansion-panel-header>
-
         <mat-form-field>
           <input matInput placeholder="Minimum Price">
         </mat-form-field>
@@ -38,9 +63,9 @@
   </div>
 
   <div fxFlex fxFlexOrder="2">
-    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="start">
-      <ng-container *ngFor="let product of products" class="card-item">
-        <app-product-card fxFlex="0 1 25%" [product]="product"></app-product-card>
+    <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start">
+      <ng-container *ngFor="let product of viewProducts" class="card-item">
+        <app-product-card fxFlex="1 1 25%" [product]="product"></app-product-card>
       </ng-container>
     </div>
   </div>

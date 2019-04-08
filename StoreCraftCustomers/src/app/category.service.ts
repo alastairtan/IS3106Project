@@ -23,6 +23,12 @@ export class CategoryService {
 			);
 	}
 
+	retrieveCategoryByCategoryId(categoryId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/retrieveCategoryByCategoryId?categoryId=" + categoryId).pipe(
+			catchError(this.handleError)
+		);
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 
