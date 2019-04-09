@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HeaderComponent } from '../header/header.component';
 import { Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { CustomerService } from '../customer.service';
 import { SessionService } from '../session.service';
@@ -19,11 +20,18 @@ export class LoginDialogComponent implements OnInit {
   username: string;
   password: string;
 
+  loginError: boolean;
+  errorMessage: string;
+
   constructor(
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     public sessionService: SessionService,
     public customerService: CustomerService,
-  ) { }
+    public router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { 
+    this.loginError = false;
+  }
 
   ngOnInit() {
   }
@@ -66,19 +74,20 @@ export class LoginDialogComponent implements OnInit {
 
           console.log("Customer " + JSON.parse(sessionStorage.currentCustomer).firstName);
 
-          //this.loginError = false;
+          this.loginError = false;
 
           //this.childEvent.emit();
 
-          //this.router.navigate(["/index"]);
+          this.dialogRef.close();
+
+          this.router.navigate(this.activatedRoute.snapshot.url);
         }
         else {
-          //this.loginError = true;
+          this.loginError = true;
         }
-      },
-      error => {
-        //this.loginError = true;
-        //this.errorMessage = error
+      }, error => {
+        this.loginError = true;
+        this.errorMessage = error
       })
   }
 

@@ -4,6 +4,7 @@
     border-radius: 2px;
     padding: 10px 10px 30px;
     margin: 10px 10px 10px 10px;
+    background-color: whitesmoke;
 }
 
 .card-item {
@@ -16,4 +17,4 @@
 
 html, body {
     height: 100%;
-  }
+}

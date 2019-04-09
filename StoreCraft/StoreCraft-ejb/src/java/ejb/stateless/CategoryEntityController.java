@@ -173,6 +173,7 @@ public class CategoryEntityController implements CategoryEntityControllerLocal {
         
         if(categoryEntity != null)
         {
+            lazilyLoadSubCategories(categoryEntity);
             return categoryEntity;
         }
         else

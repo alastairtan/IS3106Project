@@ -1,0 +1,53 @@
+.content{
+    justify-content: center;
+    align-content: center;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+}
+.content2{
+    justify-content: center;
+    justify-items:center;
+    align-content: center;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+}
+
+.leftCell{
+    text-align: left;
+}
+
+.table{
+    width: 100%;
+    align-self: center;
+}
+
+.mat-card-header{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.headerText{
+    margin-bottom: 0 !important;
+    font-size: 4vw;
+}
+.card{
+    text-align: center;
+    margin-top: 1vw;
+}
+
+.formField{
+    width: 90%;
+}
+
+.avatar{
+    height: 10vw;
+    width: auto;
+}
+
+.avatar2{
+    height: 7vw;
+    width: auto;
+}

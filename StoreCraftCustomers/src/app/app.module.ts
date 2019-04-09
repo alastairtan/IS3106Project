@@ -1,3 +1,4 @@
+import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -73,7 +78,10 @@ import { ProductCardComponent } from './product-card/product-card.component';
     MatPaginatorModule,
     FlexLayoutModule,
     MatSidenavModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

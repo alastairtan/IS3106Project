@@ -106,13 +106,14 @@ public class CustomerEntity implements Serializable {
         this.profilePicUrl = "";
     }
 
-    public CustomerEntity(String firstName, String lastName, String email, String password, String country) {
+    public CustomerEntity(String firstName, String lastName, String email, String password, String country, String profilePicUrl) {
         this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.country = country;
+        this.profilePicUrl = profilePicUrl;
         
         setPassword(password);
     }

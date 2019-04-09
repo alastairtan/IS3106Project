@@ -82,7 +82,7 @@ public class DataInitSessionBean {
         try {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER, "http://www.gstatic.com/tv/thumb/persons/1805/1805_v9_bb.jpg"));
 
-            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America"));
+            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
             
             List<Long> customerEntityIds = new ArrayList<>();
             customerEntityIds.add(c.getCustomerId());
