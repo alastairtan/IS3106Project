@@ -97,6 +97,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         return query.getResultList();
     }
     
+    @Override
     public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId){
         Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerEntity = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
@@ -161,8 +162,22 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     }
     
     @Override
-    public void deleteSaleTransaction(SaleTransactionEntity saleTransactionEntity)
-    {
-        throw new UnsupportedOperationException();
+    public void deleteSaleTransaction(Long saleTransactionEntityId) throws SaleTransactionNotFoundException
+    {   
+        // Persistent context
+        SaleTransactionEntity saleTransactionEntityToRemove = retrieveSaleTransactionBySaleTransactionId(saleTransactionEntityId);
+        
+        List<SaleTransactionLineItemEntity> saleTransactionLineItems = saleTransactionEntityToRemove.getSaleTransactionLineItemEntities();
+        
+        if( !saleTransactionLineItems.isEmpty() )
+        {
+            saleTransactionEntityToRemove.setSaleTransactionLineItemEntities(null);
+            
+            for(SaleTransactionLineItemEntity saleTransactionLineItem : saleTransactionLineItems)
+            {   
+                entityManager.remove(saleTransactionLineItem);
+            }
+        }
+        entityManager.remove(saleTransactionEntityToRemove);
     }
 }
