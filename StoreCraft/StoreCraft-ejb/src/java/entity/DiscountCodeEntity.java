@@ -6,53 +6,61 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.DiscountCodeTypeEnum;
 
 /**
  *
  * @author shawn
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class DiscountCodeEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long discountCodeId;
+    private Long discountCodeId;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    protected Date startDate;
+    private Date startDate;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    protected Date endDate; 
+    private Date endDate; 
     
     @Min(1)
     @NotNull
-    protected Integer numAvailable;
+    private Integer numAvailable;
     
     @Column(unique = true, nullable = false, length = 6)
     @Size(max = 6)
-    protected String discountCode;
+    private String discountCode;
+    
+    @DecimalMin("0.00")
+    private BigDecimal discountAmountOrRate;
+    
+    @Enumerated(EnumType.STRING)
+    private DiscountCodeTypeEnum discountCodeTypeEnum;
     
     //RELATIONSHIPS
     
@@ -67,12 +75,14 @@ public class DiscountCodeEntity implements Serializable {
         this.productEntities = new ArrayList<>();
     }
 
-    public DiscountCodeEntity(Date startDate, Date endDate, Integer numAvailable, String discountCode) {
+    public DiscountCodeEntity(Date startDate, Date endDate, Integer numAvailable, String discountCode, DiscountCodeTypeEnum discountCodeTypeEnum, BigDecimal discountAmountOrRate) {
         this();
         this.startDate = startDate;
         this.endDate = endDate;
         this.numAvailable = numAvailable;
         this.discountCode = discountCode;
+        this.discountCodeTypeEnum = discountCodeTypeEnum;
+        this.discountAmountOrRate = discountAmountOrRate;
     }
     
     public Long getDiscountCodeId() {
@@ -186,6 +196,23 @@ public class DiscountCodeEntity implements Serializable {
                 }
             }
         }
+    }
+
+
+    public DiscountCodeTypeEnum getDiscountCodeTypeEnum() {
+        return discountCodeTypeEnum;
+    }
+
+    public void setDiscountCodeTypeEnum(DiscountCodeTypeEnum discountCodeTypeEnum) {
+        this.discountCodeTypeEnum = discountCodeTypeEnum;
+    }
+
+    public BigDecimal getDiscountAmountOrRate() {
+        return discountAmountOrRate;
+    }
+
+    public void setDiscountAmountOrRate(BigDecimal discountAmountOrRate) {
+        this.discountAmountOrRate = discountAmountOrRate;
     }
     
 }

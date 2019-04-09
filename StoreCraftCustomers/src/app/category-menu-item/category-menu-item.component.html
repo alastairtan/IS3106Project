@@ -1,0 +1,18 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
+  <span *ngFor="let child of categoryItems">
+    <!-- Handle branch node menu items -->
+    <span *ngIf="child.subCategoryEntities && child.subCategoryEntities.length > 0">
+      <button mat-menu-item [matMenuTriggerFor]="menu.childMenu" (click)="selectCategory(child.categoryId)"
+        routerLink="/viewProductsByCategory/{{child.categoryId}}">
+        <span>{{child.name}}</span>
+      </button>
+      <app-category-menu-item #menu [categoryItems]="child.subCategoryEntities"></app-category-menu-item>
+    </span>
+    <!-- Handle leaf node menu items -->
+    <span *ngIf="!child.subCategoryEntities || child.subCategoryEntities.length === 0">
+      <button mat-menu-item (click)="selectCategory(child.categoryId)" routerLink="/viewProductsByCategory/{{child.categoryId}}">
+        <span>{{child.name}}</span>
+      </button>
+    </span>
+  </span>
+</mat-menu>

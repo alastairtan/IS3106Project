@@ -3,6 +3,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { LoginDialogComponent } from "../login-dialog/login-dialog.component";
 import { CategoryService } from "../category.service";
 import { Category } from '../category';
+import { SessionService } from '../session.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -12,16 +15,13 @@ import { Category } from '../category';
 export class HeaderComponent implements OnInit {
 
   rootCategories: Category[];
-  allCategories: Category[];
-  subCategories: Category[];
-
 
   constructor(public dialog: MatDialog,
-    public categoryService: CategoryService) { 
+    public categoryService: CategoryService,
+    public sessionService:SessionService) { 
 
       this.rootCategories = [];
-      this.allCategories = [];
-      this.subCategories = [];
+ 
     }
 
   ngOnInit() {
@@ -41,27 +41,15 @@ export class HeaderComponent implements OnInit {
   getCategories() {
     this.categoryService.getCategories().subscribe(
       response => {
-        let categories: Category[] = response.categoryEntities;
-        
-        categories.forEach(c => {
-          this.allCategories.push(c);
-          if (c.parentCategoryEntity == null) {
-            this.rootCategories.push(c);
-          }
-        })
+        this.rootCategories = response.categoryEntities;  
+        //console.log(this.rootCategories);
       }
-
     )
   }
 
-  getSubCategoriesFor(parentCategory: Category): void {
-    this.subCategories = [];
-    this.allCategories.forEach(c => {
-      if (c.parentCategoryEntity != null && c.parentCategoryEntity.categoryId === parentCategory.categoryId){
-        this.subCategories.push(c);
-      }
-    })
+  logout(){
+    this.sessionService.setIsLogin(false);
+    this.sessionService.setCurrentCustomer(null);
   }
-
 
 }

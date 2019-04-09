@@ -9,12 +9,7 @@ package util.enumeration;
  *
  * @author shawn
  */
-public enum MembershipTierEnum {
-    BRONZE,
-    SILVER,
-    GOLD,
-    PLATINUM,
-    DIAMOND,
-    MASTER,
-    GRANDMASTER
+public enum DiscountCodeTypeEnum {
+    FLAT,
+    PERCENTAGE
 }

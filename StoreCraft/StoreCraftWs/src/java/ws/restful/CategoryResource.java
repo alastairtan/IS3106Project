@@ -1,11 +1,10 @@
 package ws.restful;
 
+import datamodel.ws.rest.CategoryRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.RetrieveAllCategoriesRsp;
 import ejb.stateless.CategoryEntityControllerLocal;
-import ejb.stateless.StaffEntityControllerLocal;
 import entity.CategoryEntity;
-import entity.StaffEntity;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.InvalidLoginCredentialException;
 
 @Path("Category")
 public class CategoryResource {
@@ -48,17 +46,6 @@ public class CategoryResource {
 
                     clearChildToParentRelationship(rootCategoryEntity);
                 
-                /*
-                if(categoryEntity.getParentCategoryEntity() != null) //not root
-                {
-                    //categoryEntity.getParentCategoryEntity().getSubCategoryEntities().clear();
-                    categoryEntity.setParentCategoryEntity(null);
-                }
-                
-                //categoryEntity.getSubCategoryEntities().clear();
-                categoryEntity.getSubCategoryEntities();
-                categoryEntity.getProductEntities().clear();
-                 */
             }
 
             return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(rootCategoryEntities)).build();
@@ -70,8 +57,28 @@ public class CategoryResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveCategoryByCategoryId")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCategoryByCategoryId(@QueryParam("categoryId") Long categoryId){
+        try{
+            
+            CategoryEntity category = categoryEntityControllerLocal.retrieveCategoryByCategoryId(categoryId);
+            
+            clearChildToParentRelationship(category);
+            
+            return Response.status(Status.OK).entity(new CategoryRsp(category)).build();
+                 
+        } catch (Exception ex){
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
-    private void clearChildToParentRelationship(CategoryEntity subCategory) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    private void clearChildToParentRelationship(CategoryEntity subCategory) { //so relationships are unidirectional, goes top-down
         subCategory.setParentCategoryEntity(null);
         subCategory.getProductEntities().clear();
         if (subCategory.getSubCategoryEntities().isEmpty() || subCategory.getSubCategoryEntities() == null) {

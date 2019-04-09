@@ -1,12 +1,80 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:dataTable id="dataTableMain" value="#{discountCodeManagedBean.discountCodeEntities}" var="discountCodeEntity" 
+                         widgetVar="discountCodeDataTable" filteredValue="#{discountCodeManagedBean.filteredDiscountCodeEntities}"
+                         rows="10" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20"
+                         rowKey="#{discountCodeEntity.discountCodeId}"
+                         >
+                <f:facet name="header">
+
+                    <div class="ui-g">
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:commandButton value="Create New Discount Code" style="float:left;" icon="fa fa-plus"
+                                             actionListener="#{discountCodeManagedBean.createNewDiscountCode}"/>                                                 
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:inputText id="globalFilter" onkeyup="PF('discountCodeDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            &nbsp;
+                        </div>
+                    </div>
+                </f:facet>
+
+                <p:column headerText="Discount Code ID" sortBy="#{discountCodeEntity.discountCodeId}" filterBy="#{discountCodeEntity.discountCodeId}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.discountCodeId}" />
+                </p:column>    
+
+                <p:column headerText="Discount Code" sortBy="#{discountCodeEntity.discountCode}" filterBy="#{discountCodeEntity.discountCode}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.discountCode}" />
+                </p:column>   
+
+                <p:column headerText="Type" sortBy="#{discountCodeEntity.discountCodeTypeEnum}" filterBy="#{discountCodeEntity.discountCodeTypeEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.discountCodeTypeEnum}" />
+                </p:column>
+
+                <p:column headerText="Amount/Rate">
+                    <h:outputText rendered="#{discountCodeEntity.discountCodeTypeEnum == 'FLAT'}" value="$ &nbsp; #{discountCodeEntity.discountAmountOrRate}" />
+                    <h:outputText rendered="#{discountCodeEntity.discountCodeTypeEnum == 'PERCENTAGE'}" value="#{discountCodeEntity.discountAmountOrRate}%" />
+                </p:column>
+
+                <p:column headerText="Number Available" sortBy="#{discountCodeEntity.numAvailable}" filterBy="#{discountCodeEntity.numAvailable}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.numAvailable}" />
+                </p:column>
+
+
+                <p:column headerText="Start Date" sortBy="#{discountCodeEntity.startDate}" filterBy="#{discountCodeEntity.startDate}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.startDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="End Date" sortBy="#{discountCodeEntity.endDate}" filterBy="#{discountCodeEntity.endDate}" filterMatchMode="contains">
+                    <h:outputText value="#{discountCodeEntity.endDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="View/Update" style="text-align: center">
+                    <p:commandButton icon="fa fa-search" actionListener="#{discountCodeManagedBean.viewDiscountCode}" title="View">
+                        <f:attribute name="discountCodeEntityToUpdate" value="#{discountCodeEntity}" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define> 
+
+</ui:composition>
 

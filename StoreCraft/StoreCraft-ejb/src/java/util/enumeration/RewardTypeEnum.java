@@ -5,8 +5,6 @@
  */
 package util.enumeration;
 
-import entity.DiscountCodeFlatEntity;
-
 /**
  *
  * @author shawn

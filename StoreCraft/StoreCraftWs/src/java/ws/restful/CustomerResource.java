@@ -60,9 +60,9 @@ public class CustomerResource {
             CustomerEntity customerEntity = customerEntityControllerLocal.customerLogin(email, password);
             customerEntity.setPassword(null);
             customerEntity.setSalt(null);
-            //customerEntity.getSaleTransactionEntities().clear();
-            //customerEntity.getReviewEntities().clear();
-            //customerEntity.getDiscountCodeEntities().clear();
+            customerEntity.getSaleTransactionEntities().clear();
+            customerEntity.getReviewEntities().clear();
+            customerEntity.getDiscountCodeEntities().clear();
 
             
             CustLoginRsp response = new CustLoginRsp(customerEntity);
@@ -75,20 +75,12 @@ public class CustomerResource {
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch(Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            System.out.println("*******************ERRORR*****");
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
             
     }
 
-    /**
-     * PUT method for updating or creating an instance of CustomerResource
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
-    }
+    
 
     private CustomerEntityControllerLocal lookupCustomerEntityControllerLocal() {
         try {

@@ -7,22 +7,27 @@ package ejb.singleton;
 
 import ejb.stateless.CategoryEntityControllerLocal;
 import ejb.stateless.CustomerEntityControllerLocal;
+import ejb.stateless.DiscountCodeEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
 import entity.CustomerEntity;
+import entity.DiscountCodeEntity;
 import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import util.enumeration.DiscountCodeTypeEnum;
 import util.enumeration.StaffTypeEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -48,6 +53,8 @@ public class DataInitSessionBean {
     private CategoryEntityControllerLocal categoryEntityControllerLocal;
     @EJB
     private TagEntityControllerLocal tagEntityControllerLocal;
+    @EJB
+    private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
     
 
     public DataInitSessionBean() {
@@ -68,9 +75,18 @@ public class DataInitSessionBean {
         try {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER, "http://www.gstatic.com/tv/thumb/persons/1805/1805_v9_bb.jpg"));
 
-            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America"));
-            System.out.println("****************************" + c.getFirstName());
-            System.out.println("******************DATA INIT******************");
+            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
+            
+            List<Long> customerEntityIds = new ArrayList<>();
+            customerEntityIds.add(c.getCustomerId());
+            List<Long> productEntityIds = new ArrayList<>();
+            Date startDate = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(startDate);
+            cal.add(Calendar.DAY_OF_YEAR, 7);
+            Date endDate = cal.getTime();
+            DiscountCodeEntity newDiscountCodeEntity = new DiscountCodeEntity(startDate, endDate, 10, "ABCDEF", DiscountCodeTypeEnum.PERCENTAGE, BigDecimal.valueOf(5.00));
+            DiscountCodeEntity dce = discountCodeEntityControllerLocal.createNewDiscountCode(newDiscountCodeEntity, customerEntityIds, productEntityIds);
 
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
