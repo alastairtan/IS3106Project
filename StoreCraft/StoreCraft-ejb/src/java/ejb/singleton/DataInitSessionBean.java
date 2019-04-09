@@ -9,12 +9,15 @@ import ejb.stateless.CategoryEntityControllerLocal;
 import ejb.stateless.CustomerEntityControllerLocal;
 import ejb.stateless.DiscountCodeEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
+import ejb.stateless.SaleTransactionEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
 import entity.CustomerEntity;
 import entity.DiscountCodeEntity;
 import entity.ProductEntity;
+import entity.SaleTransactionEntity;
+import entity.SaleTransactionLineItemEntity;
 import entity.StaffEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
@@ -43,6 +46,9 @@ import util.exception.StaffNotFoundException;
 public class DataInitSessionBean {
 
     @EJB
+    private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
+
+    @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
 
     @EJB
@@ -55,6 +61,7 @@ public class DataInitSessionBean {
     private TagEntityControllerLocal tagEntityControllerLocal;
     @EJB
     private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
+    
     
 
     public DataInitSessionBean() {
@@ -146,6 +153,13 @@ public class DataInitSessionBean {
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD016", "Supreme 1", "Supreme 1", 100, 10, new BigDecimal("95.00"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD017", "Supreme 2", "Supreme 2", 100, 10, new BigDecimal("19.05"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD018", "Supreme 3", "Supreme 3", 100, 10, new BigDecimal("10.50"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
+            
+            // Load transactions
+            List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = new ArrayList<>();
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 5, new BigDecimal(10), new BigDecimal(50)));
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
+            
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());
         } catch (Exception ex) {
