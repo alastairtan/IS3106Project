@@ -30,8 +30,10 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.restful.CategoryResource.class);
+        resources.add(ws.restful.CommunityGoalResource.class);
         resources.add(ws.restful.CustomerResource.class);
         resources.add(ws.restful.ProductResource.class);
+        resources.add(ws.restful.SaleTransactionResource.class);
         resources.add(ws.restful.TagResource.class);
     }
     

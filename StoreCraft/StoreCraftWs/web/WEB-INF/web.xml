@@ -35,4 +35,52 @@
         <local>ejb.stateless.TagEntityControllerLocal</local>
         <ejb-link>StoreCraft-ejb.jar#TagEntityController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CommunityGoalEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CommunityGoalEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CommunityGoalEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>SaleTransactionEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.SaleTransactionEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#SaleTransactionEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CustomerEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CustomerEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>SaleTransactionEntityControllerLocal1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.SaleTransactionEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#SaleTransactionEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ProductEntityControllerLocal1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.ProductEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#ProductEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerEntityControllerLocal1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CustomerEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CustomerEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerEntityControllerLocal2</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CustomerEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CustomerEntityController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerEntityControllerLocal3</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CustomerEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CustomerEntityController</ejb-link>
+    </ejb-local-ref>
 </web-app>
