@@ -7,22 +7,20 @@ package jsf.managedbean;
 
 import ejb.stateless.CommunityGoalEntityControllerLocal;
 import entity.CommunityGoalEntity;
-import entity.StaffEntity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.SelectEvent;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
 import util.exception.InputDataValidationException;
@@ -33,13 +31,15 @@ import util.exception.StaffNotFoundException;
  * @author bryan
  */
 @Named(value = "communityGoalsManagedBean")
-@RequestScoped
-public class CommunityGoalsManagedBean {
+@ViewScoped
+public class CommunityGoalsManagedBean implements Serializable{
 
     @EJB
     private CommunityGoalEntityControllerLocal communityGoalEntityControllerLocal;
 
     private List<CommunityGoalEntity> communityGoals;
+    
+    private List<CommunityGoalEntity> filteredCommunityGoals;
     
     private CommunityGoalEntity newCommunityGoal;
     
@@ -75,9 +75,11 @@ public class CommunityGoalsManagedBean {
     
     public void closeCreateDialog(CloseEvent event){
         newCommunityGoal = new CommunityGoalEntity();
+        currentDate = new Date();
+        afterStartDate = new Date();
     }
-    
-    public Date afterDate(ValueChangeEvent event){
+    //for update
+    public Date afterDate(SelectEvent event){
         
         afterStartDate = selectedCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
@@ -88,10 +90,21 @@ public class CommunityGoalsManagedBean {
         Date currentDatePlusOne = c.getTime();
         return currentDatePlusOne;
     }
+    //for create
+    public Date afterCreateDate(SelectEvent event){
+        afterStartDate = newCommunityGoal.getStartDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+
+        c.add(Calendar.DATE, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+        Date currentDatePlusOne = c.getTime();
+        return currentDatePlusOne;
+    }
     
     public void updateCommunityGoal(ActionEvent event){
         try {
-            communityGoalEntityControllerLocal.updateCommunityGoal(newCommunityGoal, newCommunityGoal.getCommunityGoalId());
+            System.out.println("community goal " + selectedCommunityGoal.getCountry());
+            communityGoalEntityControllerLocal.updateCommunityGoal(selectedCommunityGoal, selectedCommunityGoal.getCommunityGoalId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal updated successfully", null));
         } catch (InputDataValidationException | CommunityGoalNotFoundException ex) {
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating community goal: " + ex.getMessage(), null));
@@ -170,5 +183,13 @@ public class CommunityGoalsManagedBean {
 
     public void setAfterStartDate(Date afterStartDate) {
         this.afterStartDate = afterStartDate;
+    }
+
+    public List<CommunityGoalEntity> getFilteredCommunityGoals() {
+        return filteredCommunityGoals;
+    }
+
+    public void setFilteredCommunityGoals(List<CommunityGoalEntity> filteredCommunityGoals) {
+        this.filteredCommunityGoals = filteredCommunityGoals;
     }
 }
