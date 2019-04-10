@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { Customer } from './customer';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -22,6 +24,16 @@ export class CustomerService {
       email + "&password=" + password).pipe(
         catchError(this.handleError)
       )
+  }
+
+  customerRegister(customer : Customer): Observable<any> {
+    
+    let customerRegisterReq = {"customerEntity" : customer};
+
+    return this.httpClient.put<any>(this.baseUrl , customerRegisterReq, httpOptions).pipe
+    (
+      catchError(this.handleError)
+    )
   }
 
 

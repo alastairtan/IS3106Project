@@ -24,7 +24,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
+import datamodel.ws.rest.CustomerRegisterReq;
+import datamodel.ws.rest.CustomerRegisterRsp;
+import datamodel.ws.rest.RetrieveAllCustomerRsp;
+import java.util.List;
 
 /**
  * REST Web Service
@@ -78,6 +83,72 @@ public class CustomerResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
             
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerRegister(CustomerRegisterReq customerRegisterReq) {
+                                
+        if(customerRegisterReq != null) 
+        {
+            try 
+            {
+                CustomerEntity customerEntity = customerEntityControllerLocal.createNewCustomer(customerRegisterReq.getCustomerEntity());
+                
+                System.out.println(customerEntity.getCustomerId());
+                CustomerRegisterRsp customerRegisterRsp = new CustomerRegisterRsp(customerEntity);
+                System.out.println(customerRegisterReq.getCustomerEntity());
+
+                return Response.status(Response.Status.OK).entity(customerRegisterRsp).build();
+            } 
+            catch (InputDataValidationException ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp("Input data validation exception");
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+            catch (Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid register customer request");
+                
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveAllCustomers")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllCustomer() 
+    {
+        try 
+        {
+            List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveAllCustomer();
+            
+            // Clearing the relationship will not affect the database as it is not in the persistent context?
+            for(CustomerEntity customerEntity : customerEntities) {
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.getReviewEntities().clear();
+            }
+            
+            RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
+            
+            return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
+        }
+        catch ( Exception ex) 
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
 
     

@@ -39,6 +39,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CategoryBarComponent } from './category-bar/category-bar.component';
 import { CategoryMenuItemComponent } from './category-menu-item/category-menu-item.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
     LoginDialogComponent,
     CategoryBarComponent,
     CategoryMenuItemComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    RegisterDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,6 @@ import { ProductCardComponent } from './product-card/product-card.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginDialogComponent]
+  entryComponents: [LoginDialogComponent, RegisterDialogComponent]
 })
 export class AppModule { }

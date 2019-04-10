@@ -12,7 +12,7 @@
         </span>
         <div *ngIf="sessionService.getIsLogin() == false" class="topMenuButtons">
             <button mat-button (click)="openDialog()">Login</button>
-            <button mat-button routerLink=".">Register</button>
+            <button mat-button (click)="openRegisterDialog()">Register</button>
         </div>
         <div *ngIf="sessionService.getIsLogin() == true">
             <button mat-button disabled style="color:white; padding: 0">
