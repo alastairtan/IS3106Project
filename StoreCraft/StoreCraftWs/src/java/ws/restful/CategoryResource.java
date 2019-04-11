@@ -35,7 +35,6 @@ public class CategoryResource {
 
     @Path("retrieveAllCategories")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllCategories() {
         try {
@@ -60,7 +59,6 @@ public class CategoryResource {
     
     @Path("retrieveCategoryByCategoryId")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveCategoryByCategoryId(@QueryParam("categoryId") Long categoryId){
         try{
