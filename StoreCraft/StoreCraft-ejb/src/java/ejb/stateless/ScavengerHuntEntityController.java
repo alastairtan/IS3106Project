@@ -12,12 +12,14 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.enumeration.RewardTypeEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.ScavengerHuntNotFoundException;
 
@@ -59,7 +61,38 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         }
     }
     
+    public List<ScavengerHuntEntity> retrieveAllScavengerHunts()
+    {
+        Query query = entityManager.createQuery("SELECT p FROM ScavengerHuntEntity p ORDER BY p.scavengerHuntDate ASC");
+        List<ScavengerHuntEntity> scavengers = query.getResultList();
+        
+        for(ScavengerHuntEntity s:scavengers)
+        {
+            s.getProductEntity();
+            s.getCustomerEntities().size();
+        }
+        
+        return scavengers;
+    }
+    
     // EJB Timer - create a scavengerHuntEntity every day
+    @Schedule(dayOfWeek="*")
+    @Override
+    public void createScavengerHuntEntity(){
+        List<ProductEntity> products = productEntityControllerLocal.retrieveAllProducts();
+        int random = (int)Math.random() * products.size();
+        ScavengerHuntEntity scHunt = new ScavengerHuntEntity(new Date(), 5);
+        //set product
+        
+                scHunt.setProductEntity(products.get(random));
+        
+        
+        scHunt.setNumWinnersRemaining(5);
+        entityManager.persist(scHunt);
+        entityManager.flush();
+        
+    }
+    
     // Every time people click on the product (productEntityController), update the scavengerHuntEntity 
     
     /*
