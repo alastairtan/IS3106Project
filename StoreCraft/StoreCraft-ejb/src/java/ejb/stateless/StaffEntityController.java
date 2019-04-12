@@ -6,6 +6,11 @@
 package ejb.stateless;
 
 import entity.StaffEntity;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -19,6 +24,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.StaffTypeEnum;
+import util.exception.CreateNewStaffException;
 import util.exception.DeleteStaffException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -47,9 +54,13 @@ public class StaffEntityController implements StaffEntityControllerLocal {
     }
 
     @Override
-    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws InputDataValidationException
+    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws InputDataValidationException, CreateNewStaffException
     {        
         Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(newStaffEntity);
+        
+        if(newStaffEntity.getStaffTypeEnum() == null) {
+            throw new CreateNewStaffException("The staff created must have a staff type!");
+        }
         
         if(constraintViolations.isEmpty())
         {
@@ -135,9 +146,10 @@ public class StaffEntityController implements StaffEntityControllerLocal {
     public void deleteStaff(Long staffId) throws StaffNotFoundException, DeleteStaffException
     {
         StaffEntity staffEntityToRemove = retrieveStaffByStaffId(staffId);
-        
+        System.err.println("staffId" + staffId);
         if(staffEntityToRemove.getCommunityGoalEntities().isEmpty())
         {
+            System.err.println("inside staffEntityToRemove");
             entityManager.remove(staffEntityToRemove);
         }
         else
@@ -205,6 +217,42 @@ public class StaffEntityController implements StaffEntityControllerLocal {
             throw new StaffNotFoundException("Staff ID not provided for staff to update password");
         }
     }
+    
+    @Override
+    public List<StaffEntity> filterStaffsByStaffTypeEnum(List<String> staffTypes, String condition) 
+    {
+        List<StaffEntity> staffEntities = new LinkedList<>();
+//        List<String> staffTypesString = new ArrayList<>();
+//        for(int i = 0; i < staffTypes.size(); i++) {
+//            staffTypesString.add(staffTypes.get(i).toString());
+//            System.out.println("staffTypesString" + staffTypesString.get(i));
+//        }
+        
+        System.out.println("in filterSTaffBySTaffType " + condition);
+        Query query = entityManager.createQuery("SELECT DISTINCT se FROM StaffEntity se WHERE se.staffTypeEnum IN :enumList ORDER BY se.staffId ASC");
+//        for (int i = 0; i < staffTypes.size(); i++) {
+//            query.setParameter("enumList", staffTypes.get(i).toString());
+//        }
+
+        query.setParameter("enumList",staffTypes);
+        System.out.println("post filterSTaffBySTaffType " + condition);
+        staffEntities = query.getResultList();
+        Collections.sort(staffEntities, new Comparator<StaffEntity>(){
+                public int compare(StaffEntity pe1, StaffEntity pe2) {
+                    return pe1.getStaffId().compareTo(pe2.getStaffId());
+                }
+            });
+        
+        for (StaffEntity s: staffEntities){
+            s.getCommunityGoalEntities();
+            s.getReviewEntities();
+        }
+                
+
+        return staffEntities;
+    }
+    
+    
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StaffEntity>>constraintViolations)
     {

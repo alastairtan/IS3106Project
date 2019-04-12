@@ -12,20 +12,47 @@
                 <p:menuitem value="All Staff(s)" outcome="/systemAdministration/staffManagement.xhtml" icon="fa fa-tags">
                     <f:param name="i" value="0" />
                 </p:menuitem>
-                <p:menuitem value="Filter" outcome="/systemAdministration/filterProducts.xhtml" icon="fa -fa-search">
-                    <f:param name="i" value="1" />
-                </p:menuitem>
+                
             </p:tabMenu>
             <br/>
             
-            <h:form>
-                <p:dataTable value="#{staffManagementManagedBean.staffEntities}" var="staffEntity"
+            <h:form id="formMain">
+                <p:dataTable id="dataTableMain" value="#{staffManagementManagedBean.staffEntities}" var="staffEntity" widgetVar="staffDataTable"
                              rows="10" paginator="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10,15,20"
                              >
 
-                    <f:facet name="header"> All Staff(s) </f:facet>
+                    <f:facet name="header"> 
+                        <div class="ui-g">
+                            <div class="ui-g-3" style="padding: 0">
+                                <p:commandButton value="Create New Staff" style="float:left;"
+                                                 oncomplete="PF('dialogCreateStaff').show(); PF('dialogCreateStaff').toggleMaximize()"
+                                                 actionListener="#{staffManagementManagedBean.creating}" update="formCreateStaff">
+                                    <p:resetInput target="formCreateStaff"/>
+                                </p:commandButton>                                                    
+                            </div>
+                            <div class="ui-g-3" style="padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('staffDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                            </div>
+                            <div class="ui-g-6" style="padding: 0">
+                                <p:selectCheckboxMenu id="staffTypeMenu" value="#{staffManagementManagedBean.filterStaffType}" label="Filter By Staff Type(s)"
+                                                      filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemValue="MANAGER" itemLabel="Manager"/>
+                                    <f:selectItem itemValue="REGULAR" itemLabel="Regular"/>
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()"/>
+                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()" />
+                                </p:selectCheckboxMenu>
+                                <p:selectOneMenu id="selCondition" value="#{staffManagementManagedBean.condition}">
+                                    <f:selectItem itemValue="OR" itemLabel="Filter Condition" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="OR" itemLabel="OR (default)" itemDescription="OR" />
+                                    <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
+                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </f:facet>
+                  
 
                     <p:column headerText="Staff ID" sortBy="#{staffEntity.staffId}" filterBy="#{staffEntity.staffId}" filterMatchMode="contains">
                         <h:outputText value="#{staffEntity.staffId}" />
@@ -54,6 +81,7 @@
                     </p:column>
                     
                 </p:dataTable>
+                <p:growl id="formMainGrowl" globalOnly="true" />
             </h:form>
             
             <h:form id="formViewStaff">
@@ -80,7 +108,7 @@
                                 <h:outputText style="width: 80%"  value="#{staffManagementManagedBean.selectedStaffEntity.staffId}" />
                                 <p:column>&nbsp;</p:column>
 
-                                <h:outputLabel style="font-weight: bold" value="SKU Code: " />
+                                <h:outputLabel style="font-weight: bold" value="Staff Type: " />
                                 <h:outputText style="width: 80%"  value="#{staffManagementManagedBean.selectedStaffEntity.staffTypeEnum}" />
                                 <p:column>&nbsp;</p:column>
                                 
@@ -113,6 +141,18 @@
                             <p:commandButton rendered="#{staffManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{staffManagementManagedBean.saveChanges}" 
                                              update="@form" oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-pencil" title="SaveChange"/>
                             
+                            <p:commandButton rendered="#{!staffManagementManagedBean.isUpdating}" value="Delete Staff" actionListener="#{staffManagementManagedBean.deleteStaff}" 
+                                             update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteStaff" style="color: red" oncomplete="PF('dialogViewStaff').hide()"
+                                             id="deleteStaffButton">
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete this staff?" icon="fa fa-warning" />
+                            </p:commandButton>
+                            
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <div align="center">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                                </div>
+                            </p:confirmDialog> 
                             
                             <p:messages id="staffUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
                             
@@ -121,6 +161,80 @@
 
                 </p:dialog>
             </h:form>
+            
+            <h:form id="formCreateStaff">
+                <p:dialog id="dialogCreateStaff" widgetVar="dialogCreateStaff" closable="true" modal="true" 
+                          position="center" closeOnEscape="true">
+                    <p:ajax event="close" listener="#{staffManagementManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateStaff').toggleMaximize()" update="formCreateStaff"/>
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: center">
+                            <h:outputText value="Create Staff"/>  
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <div class="ui-g">
+
+                        <div class="ui-g-5">
+                            <p:outputPanel id="staffPic">
+                                <p:graphicImage rendered="#{staffManagementManagedBean.newStaffEntity.profilePicUrl  == null}" style="height: auto; width: 100%; border: 1px solid grey" url="https://www.blakleysflooring.com/wp-content/uploads/2016/03/Placeholder.png"/>
+                                <p:graphicImage rendered="#{staffManagementManagedBean.newStaffEntity.profilePicUrl.length() > 0}" 
+                                                style="height: auto; width: 100%; border: 1px solid grey" url="#{staffManagementManagedBean.newStaffEntity.profilePicUrl}" />
+                            </p:outputPanel>
+                        </div>
+
+                        <div class="ui-g-7">
+                            <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-4, ui-g-5" layout="grid">
+
+
+                                <h:outputLabel style="font-weight: bold" value="First Name: " />
+                                <p:inputText id="newFirstName" style="width: 100%" value="#{staffManagementManagedBean.newStaffEntity.firstName}" required="true" requiredMessage="First Name is required" />
+                                <p:message for="newFirstName"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Last Name: " />
+                                <p:inputText id="newLastName" style="width: 100%" 
+                                             value="#{staffManagementManagedBean.newStaffEntity.lastName}" required="true" requiredMessage="Last Name is required" />
+                                <p:message for="newLastName"/>
+                                
+                                <h:outputLabel style="font-weight: bold" value="Username: " />
+                                <p:inputText id="newUsername" style="width: 100%" 
+                                             value="#{staffManagementManagedBean.newStaffEntity.username}" required="true" requiredMessage="Username is required" />
+                                <p:message for="newUsername"/>
+                                
+                        
+                                
+                                <h:outputLabel style="font-weight: bold" value="Password: " />
+                                <p:inputText id="newPassword" style="width: 100%" 
+                                             value="#{staffManagementManagedBean.newStaffEntity.password}" required="true" requiredMessage="Password is required" />
+                                <p:message for="newPassword"/>
+                                
+
+                                <h:outputLabel style="font-weight: bold" value="Staff Image URL: " />
+                                <p:inputText id="newStaffImageUrl" style="width: 100%; font-weight: normal" 
+                                             value="#{staffManagementManagedBean.newStaffEntity.profilePicUrl}"  required="true" requiredMessage="Staff image URL is required" >
+                                    <p:ajax event="change" update="formCreateStaff:staffPic" oncomplete="PF('dialogCreateStaff').show()"/>
+                                </p:inputText>
+                                <p:message for="newStaffImageUrl"/>
+
+                                <h:outputLabel style="font-weight: bold" value="Staff Type: " />
+                                <p:selectOneMenu id="newSelStaffEnum" value="#{staffManagementManagedBean.newStaffEntity.staffTypeEnum}" required="true" requiredMessage="Staff Type is required">
+                                    <f:selectItem itemValue="-1" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItem itemValue="MANAGER" itemLabel="Manager"/>
+                                    <f:selectItem itemValue="REGULAR" itemLabel="Regular"/>
+                                </p:selectOneMenu>
+                                <p:message for="newSelStaffEnum"/>
+
+                            </p:panelGrid>
+
+                            <p:commandButton value="Create New Staff" actionListener="#{staffManagementManagedBean.createNewStaff}" update="dialogCreateStaff formMain:dataTableMain" 
+                                             oncomplete="PF('dialogCreateStaff').show(); PF('dialogCreateStaff').toggleMaximize()" icon="fa fa-pencil-square" title="Update"/>
+
+                            <p:messages id="staffCreateMessages" globalOnly="true" redisplay="false" closable="true"/>
+                        </div>
+                    </div>
+
+                </p:dialog>      
+            </h:form>
+            
         </div>
     </ui:define>
     
