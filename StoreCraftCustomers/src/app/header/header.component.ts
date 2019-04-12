@@ -5,6 +5,7 @@ import { CategoryService } from "../category.service";
 import { Category } from '../category';
 import { SessionService } from '../session.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 
 
 @Component({
@@ -30,6 +31,16 @@ export class HeaderComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openRegisterDialog(): void {
+    const dialogRef = this.dialog.open(RegisterDialogComponent, {
 
     });
 

@@ -123,11 +123,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
     @Override
     public void deleteCommunityGoal(Long communityGoalId) throws CommunityGoalNotFoundException{
         CommunityGoalEntity communityGoalEntity = retrieveCommunityGoalByCommunityGoalId(communityGoalId);
-        
         communityGoalEntity.getStaffEntity().getCommunityGoalEntities().remove(communityGoalEntity);
-        
-        communityGoalEntity.setStaffEntity(null);
-        
         entityManager.remove(communityGoalEntity);
     }
     

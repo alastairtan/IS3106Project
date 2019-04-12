@@ -59,8 +59,8 @@
                                         <f:validateLength maximum="6" minimum="6"/>
                                     </p:inputText>
 
-                                    <p:commandButton value="Generate Random" process="@this" update="discountCodeField"
-                                                     actionListener="#{createDiscountCodeManagedBean.generateDiscountCode}" resetValues="true"/>
+                                    <p:commandButton value="Generate Random" process="@this" update="discountCodeField" id="dcBtn"
+                                                     actionListener="#{createDiscountCodeManagedBean.generateDiscountCode}" />
                                 </p:outputPanel>
                                 <p:message for="discountCodeField" />
 

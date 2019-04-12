@@ -6,9 +6,7 @@
 package ejb.stateless;
 
 import entity.CustomerEntity;
-import entity.DiscountCodeEntity;
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -48,16 +46,23 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     }
     
     @Override
-    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws InputDataValidationException
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws InputDataValidationException, Exception
     {
         Set<ConstraintViolation<CustomerEntity>> constraintViolations = validator.validate(newCustomerEntity);
         
         if(constraintViolations.isEmpty())
         {
-            entityManager.persist(newCustomerEntity);
-            entityManager.flush();
+            try {
+                entityManager.persist(newCustomerEntity);
+                entityManager.flush();
             
-            return newCustomerEntity;
+                return newCustomerEntity;
+            } 
+            catch (Exception ex)
+            {
+                throw new Exception(ex.getMessage());
+            }
+            
         }
         else
         {

@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Register</h1>
+<div class="dialog-content" mat-dialog-content>
+  <p>First Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="customer.firstName">
+  </mat-form-field>
+  <p>Last Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="customer.lastName">
+  </mat-form-field>
+  <p>Email Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="customer.email">
+  </mat-form-field>
+  <p>Password</p>
+  <mat-form-field>
+    <input type="password" matInput [(ngModel)]="customer.password">
+  </mat-form-field>
+  <p>Country</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="customer.country">
+  </mat-form-field>
+</div>
+<div class="actions" mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="registerCustomer()" cdkFocusInitial>Register</button>
+  <button mat-raised-button color="warn" (click)="exit()">Exit</button>
+</div>
