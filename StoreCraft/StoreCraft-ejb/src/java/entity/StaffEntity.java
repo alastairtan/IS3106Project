@@ -64,7 +64,7 @@ public class StaffEntity implements Serializable {
     private List<ReviewEntity> reviewEntities; 
     
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     private StaffTypeEnum staffTypeEnum;
 
     public StaffEntity() {

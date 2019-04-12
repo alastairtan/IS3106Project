@@ -9,12 +9,12 @@ import ejb.stateless.StaffEntityControllerLocal;
 import entity.StaffEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -45,10 +45,7 @@ public class StaffManagementManagedBean implements Serializable {
     private StaffEntity updatingStaffEntity;
     
     private boolean isUpdating;
-    
-    //*** For Initial Load ***
-    private List<StaffTypeEnum> staffTypeEnums;
-    // ***********************
+
     
     /* to create new Staff*/
     private StaffEntity newStaffEntity;
@@ -56,26 +53,34 @@ public class StaffManagementManagedBean implements Serializable {
     /**************/
     
     //*** For filtering ***
-    private List<String> filterStaffType;
-    private String condition;
+    private List<StaffTypeEnum> filterStaffType;
+    private StaffTypeEnum[] staffTypeEnumValues;
     //*********************
 
     public StaffManagementManagedBean() {
         isUpdating = false;
         newStaffEntity = new StaffEntity();
+        staffTypeEnumValues = StaffTypeEnum.values();
+        filterStaffType = new ArrayList<>();
     }
     
     @PostConstruct
     public void postConstruct() {
-        staffTypeEnums = new ArrayList<StaffTypeEnum>(EnumSet.allOf(StaffTypeEnum.class));
-        filterStaffType = new ArrayList<String>();
         staffEntities = staffEntityControllerLocal.retrieveAllStaffs();
-        //System.out.println("constructed");
     }
     
     public void updating(ActionEvent event){
         setIsUpdating(true);
         System.out.println("Updating");
+    }
+    
+    public void cancelUpdating(ActionEvent event){
+        setIsUpdating(false);
+        try { //to reset fields in the dialog
+            selectedStaffEntity = staffEntityControllerLocal.retrieveStaffByStaffId(selectedStaffEntity.getStaffId());
+        } catch (StaffNotFoundException ex) {
+            Logger.getLogger(FilterProductsByCategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex); //exception should not occur
+        }
     }
     
     public void closeDialog(CloseEvent event){
@@ -137,32 +142,12 @@ public class StaffManagementManagedBean implements Serializable {
     }
     
     
-    public void filterStaff()
-    {
-        
-        
-        if(filterStaffType != null && filterStaffType.size() > 0)
-        {
-            System.out.println("inside filter staff");
-            staffEntities = staffEntityControllerLocal.filterStaffsByStaffTypeEnum(filterStaffType, condition); 
-            System.out.println("inside filter staff" + filterStaffType.size());
-        }
-        else
-        {
-            staffEntities = staffEntityControllerLocal.retrieveAllStaffs();
-        }
-    }
-    
     public void deleteStaff(ActionEvent event){
         try
         {
-            System.out.println("reached0");
             StaffEntity staffEntityToDelete = selectedStaffEntity;
-            System.out.println("reached");
             staffEntityControllerLocal.deleteStaff(staffEntityToDelete.getStaffId());
-            System.out.println("reached2");
             staffEntities.remove(staffEntityToDelete);
-            System.out.println("reached3");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff deleted successfully", null));
         }
         catch(StaffNotFoundException | DeleteStaffException ex)
@@ -173,17 +158,7 @@ public class StaffManagementManagedBean implements Serializable {
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
-    }
-    
-
-    public List<StaffTypeEnum> getStaffTypeEnums() {
-        return staffTypeEnums;
-    }
-
-    public void setStaffTypeEnums(List<StaffTypeEnum> staffTypeEnums) {
-        this.staffTypeEnums = staffTypeEnums;
-    }
-    
+    }    
 
     public StaffEntityControllerLocal getStaffEntityControllerLocal() {
         return staffEntityControllerLocal;
@@ -241,20 +216,20 @@ public class StaffManagementManagedBean implements Serializable {
         this.isUpdating = isUpdating;
     }
 
-    public List<String> getFilterStaffType() {
+    public List<StaffTypeEnum> getFilterStaffType() {
         return filterStaffType;
     }
 
-    public void setFilterStaffType(List<String> filterStaffType) {
+    public void setFilterStaffType(List<StaffTypeEnum> filterStaffType) {
         this.filterStaffType = filterStaffType;
     }
 
-    public String getCondition() {
-        return condition;
+    public StaffTypeEnum[] getStaffTypeEnumValues() {
+        return staffTypeEnumValues;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setStaffTypeEnumValues(StaffTypeEnum[] staffTypeEnumValues) {
+        this.staffTypeEnumValues = staffTypeEnumValues;
     }
     
 }

@@ -25,30 +25,18 @@
 
                     <f:facet name="header"> 
                         <div class="ui-g">
-                            <div class="ui-g-3" style="padding: 0">
+                            <div class="ui-g-4" style="padding: 0">
                                 <p:commandButton value="Create New Staff" style="float:left;"
                                                  oncomplete="PF('dialogCreateStaff').show(); PF('dialogCreateStaff').toggleMaximize()"
                                                  actionListener="#{staffManagementManagedBean.creating}" update="formCreateStaff">
                                     <p:resetInput target="formCreateStaff"/>
                                 </p:commandButton>                                                    
                             </div>
-                            <div class="ui-g-3" style="padding: 0">
+                            <div class="ui-g-4" style="padding: 0">
                                 <p:inputText id="globalFilter" onkeyup="PF('staffDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
                             </div>
-                            <div class="ui-g-6" style="padding: 0">
-                                <p:selectCheckboxMenu id="staffTypeMenu" value="#{staffManagementManagedBean.filterStaffType}" label="Filter By Staff Type(s)"
-                                                      filter="true" filterMatchMode="startsWith">
-                                    <f:selectItem itemValue="MANAGER" itemLabel="Manager"/>
-                                    <f:selectItem itemValue="REGULAR" itemLabel="Regular"/>
-                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()"/>
-                                    <p:ajax event="toggleSelect" process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()" />
-                                </p:selectCheckboxMenu>
-                                <p:selectOneMenu id="selCondition" value="#{staffManagementManagedBean.condition}">
-                                    <f:selectItem itemValue="OR" itemLabel="Filter Condition" noSelectionOption="true"/>
-                                    <f:selectItem itemValue="OR" itemLabel="OR (default)" itemDescription="OR" />
-                                    <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
-                                    <p:ajax process="@form" update="formMain:dataTableMain" listener="#{staffManagementManagedBean.filterStaff}" oncomplete="PF('staffDataTable').filter()"/>
-                                </p:selectOneMenu>
+                            <div class="ui-g-4" style="padding: 0">
+                                &nbsp;
                             </div>
                         </div>
                     </f:facet>
@@ -75,8 +63,9 @@
                     </p:column>
                     
                     <p:column headerText="Actions" style="text-align: center" >
-                        <p:commandButton update="formViewStaff" oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-document" title="View">
+                        <p:commandButton update="formViewStaff" oncomplete="PF('dialogViewStaff').show(); PF('dialogViewStaff').toggleMaximize()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{staffEntity}" target="#{staffManagementManagedBean.selectedStaffEntity}" />
+                            <p:resetInput target="formViewStaff"/>
                         </p:commandButton>
                     </p:column>
                     
@@ -87,7 +76,7 @@
             <h:form id="formViewStaff">
                 <p:dialog id="dialogViewStaff" widgetVar="dialogViewStaff" closable="true" modal="true" 
                           position="center" fitViewport="true" >
-                    <p:ajax event="close" listener="#{staffManagementManagedBean.closeDialog}" />
+                    <p:ajax event="close" listener="#{staffManagementManagedBean.closeDialog}" oncomplete="PF('dialogViewStaff').toggleMaximize()" />
                     <f:facet name="header">
                         <p:outputPanel style="text-align: center">
                             <h:outputText style="color: red" rendered="#{staffManagementManagedBean.isUpdating}" value="Updating Staff Details"/>  
@@ -134,12 +123,14 @@
 
 
                             </p:panelGrid>
-                            <p:commandButton value="Update Staff" actionListener="#{staffManagementManagedBean.updating}" update="dialogViewStaff" 
-                                             oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-pencil" title="Update"/>
-                            
+                            <p:commandButton rendered="#{!staffManagementManagedBean.isUpdating}" value="Update Staff" actionListener="#{staffManagementManagedBean.updating}" update="dialogViewStaff formMain:dataTableMain" 
+                                             oncomplete="PF('dialogViewStaff').show(); PF('dialogViewStaff').toggleMaximize()" icon="ui-icon-pencil" title="Update"/>
                             
                             <p:commandButton rendered="#{staffManagementManagedBean.isUpdating}" value="Save Changes" actionListener="#{staffManagementManagedBean.saveChanges}" 
-                                             update="@form" oncomplete="PF('dialogViewStaff').show()" icon="ui-icon-pencil" title="SaveChange"/>
+                                             update="formMain:dataTableMain dialogViewStaff" oncomplete="PF('dialogViewStaff').show(); PF('dialogViewStaff').toggleMaximize()" icon="ui-icon-pencil" title="SaveChange"/>
+                            
+                            <p:commandButton rendered="#{staffManagementManagedBean.isUpdating}" value="Cancel Update" actionListener="#{staffManagementManagedBean.cancelUpdating}"
+                                             update="dialogViewStaff formMain:dataTableMain" oncomplete="PF('dialogViewStaff').show(); PF('dialogViewStaff').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
                             
                             <p:commandButton rendered="#{!staffManagementManagedBean.isUpdating}" value="Delete Staff" actionListener="#{staffManagementManagedBean.deleteStaff}" 
                                              update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteStaff" style="color: red" oncomplete="PF('dialogViewStaff').hide()"
@@ -217,7 +208,7 @@
 
                                 <h:outputLabel style="font-weight: bold" value="Staff Type: " />
                                 <p:selectOneMenu id="newSelStaffEnum" value="#{staffManagementManagedBean.newStaffEntity.staffTypeEnum}" required="true" requiredMessage="Staff Type is required">
-                                    <f:selectItem itemValue="-1" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="true" />
                                     <f:selectItem itemValue="MANAGER" itemLabel="Manager"/>
                                     <f:selectItem itemValue="REGULAR" itemLabel="Regular"/>
                                 </p:selectOneMenu>

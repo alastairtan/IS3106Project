@@ -15,7 +15,19 @@
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          >
                 <f:facet name="header">
-                    <p:inputText id="globalFilter" onkeyup="PF('communityDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/> 
+                    <div class="ui-g">
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:commandButton value="Create New Community Goal" style="float:left; align-content: center;"
+                                             oncomplete="PF('dialogCreateCommunityGoal').show(); PF('dialogCreateCommunityGoal').toggleMaximize()"
+                                             update="formCreateCommunityGoal" actionListener="#{communityGoalsManagedBean.creating}"/> 
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:inputText id="globalFilter" onkeyup="PF('communityDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/> 
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            &nbsp;
+                        </div>
+                    </div>                  
                 </f:facet>
 
                 <p:column headerText="Community Goal Id" sortBy="#{communityGoal.communityGoalId}" filterBy="#{communityGoal.communityGoalId}" filterMatchMode="contains">
@@ -46,81 +58,94 @@
                 <p:column headerText="Country" sortBy="#{communityGoal.country}" filterBy="#{communityGoal.country}" filterMatchMode="contains">
                     <h:outputText value="#{communityGoal.country}" />
                 </p:column>
-                <p:column headerText="Update" style="text-align: center" >
-                <p:commandButton value="Update Community Goal" oncomplete="PF('dialogUpdateCommunityGoal').show();
-                                 PF('dialogUpdateCommunityGoal').toggleMaximize()" update="formUpdateCommunityGoal">
-                    <f:setPropertyActionListener value="#{communityGoal}" target="#{communityGoalsManagedBean.selectedCommunityGoal}" />
-                    <p:resetInput target="formUpdateCommunityGoal"/>
-                </p:commandButton>
+                <p:column headerText="More" style="text-align: center" >
+                    <p:commandButton icon="fa fa-search"  oncomplete="PF('dialogViewCommunityGoal').show();
+                                     PF('dialogViewCommunityGoal').toggleMaximize()" update="formViewCommunityGoal">
+                        <f:setPropertyActionListener value="#{communityGoal}" target="#{communityGoalsManagedBean.selectedCommunityGoal}" />
+                        <p:resetInput target="formViewCommunityGoal"/>
+                    </p:commandButton>
                 </p:column>
 
             </p:dataTable>
-            <p:commandButton value="Create New Community Goal" style="float:left; align-content: center;"
-                             oncomplete="PF('dialogCreateCommunityGoal').show(); PF('dialogCreateCommunityGoal').toggleMaximize()"
-                             update="formCreateCommunityGoal" actionListener="#{communityGoalsManagedBean.doSomething}"/> 
+            <p:growl id="formMainGrowl" globalOnly="true" />
         </h:form>
-        <h:form id="formUpdateCommunityGoal">
-            <p:dialog id="dialogUpdateCommunityGoal" widgetVar="dialogUpdateCommunityGoal" closable="true" modal="true" 
-                      position="center">
-                <p:ajax event="close" listener="#{communityGoalsManagedBean.closeUpdateDialog}" oncomplete="PF('dialogUpdateCommunityGoal').toggleMaximize()"/>
-                <f:facet name="header">
-                    <h:outputText style="color: red; font-family: 'Segoe UI',Arial,sans-serif;" value="Updating Community Goal"/> 
-                </f:facet>
-                <p:graphicImage library="images" name="sclogotransparent.png" alt="storeCraftLogo" style="width: 500px; height: 100px"/>
 
+        <h:form id="formViewCommunityGoal">
+            <p:dialog id="dialogViewCommunityGoal" widgetVar="dialogViewCommunityGoal" closable="true" modal="true" 
+                      position="center">
+                <p:ajax event="close" listener="#{communityGoalsManagedBean.closeViewDialog}" oncomplete="PF('dialogViewCommunityGoal').toggleMaximize()"/>
+                <f:facet name="header">
+                    <h:outputText rendered="#{communityGoalsManagedBean.isUpdating}" style="color: red" value="Updating Community Goal"/> 
+                    <h:outputText rendered="#{!communityGoalsManagedBean.isUpdating}" value="Viewing Community Goal Details"/> 
+                </f:facet>
 
                 <p:panelGrid columns="3" style="width: 100%; height: auto" layout="grid">
+
+                    <h:outputLabel style="font-weight: bold" value="Community Goal ID: " />
+                    <h:outputText style="width: 100%"  value="#{communityGoalsManagedBean.selectedCommunityGoal.communityGoalId}" />
+                    <p:column>&nbsp;</p:column>
+
                     <h:outputText style="font-weight: bold" value="Goal Title: " />
-                    <p:inputText id="communityGoalTitle" style="width: 80%; font-weight: normal" 
+                    <p:inputText id="communityGoalTitle" style="width: 80%; font-weight: normal" readonly="#{!communityGoalsManagedBean.isUpdating}"
                                  value="#{communityGoalsManagedBean.selectedCommunityGoal.goalTitle}" required="true" requiredMessage="Goal Title is required"/>
                     <p:message for="communityGoalTitle"/>
 
                     <h:outputText style="font-weight: bold" value="Description: " />
-                    <p:inputTextarea value="#{communityGoalsManagedBean.selectedCommunityGoal.description}" autoResize="true"
-                                     required="true" requiredMessage="Description is required" id="communityDescription" style="width: 80%; font-weight: normal"/>
+                    <p:inputTextarea value="#{communityGoalsManagedBean.selectedCommunityGoal.description}" autoResize="true" readonly="#{!communityGoalsManagedBean.isUpdating}"
+                                     required="true" requiredMessage="Description is required" id="communityDescription" 
+                                     style="width: 80%; font-weight: normal"/>
                     <p:message for="communityDescription"/>
 
                     <h:outputText style="font-weight: bold" value="Target Points: " />
                     <p:inputText id="communityTargetPoints" style="width: 80%; font-weight: normal" 
-                                 value="#{communityGoalsManagedBean.selectedCommunityGoal.targetPoints}" required="true" requiredMessage="Target Points is required"/>
+                                 value="#{communityGoalsManagedBean.selectedCommunityGoal.targetPoints}"  readonly="#{!communityGoalsManagedBean.isUpdating}"
+                                 required="true" requiredMessage="Target Points is required"/>
                     <p:message for="communityTargetPoints"/>
 
                     <h:outputText style="font-weight: bold" value="Start Date: " />
                     <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.currentDate}"
-                                  required="true" requiredMessage="Start Date is required">
+                                  required="true" requiredMessage="Start Date is required" disabled="#{!communityGoalsManagedBean.isUpdating}">
                         <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterDate}" />
                     </p:datePicker>
                     <p:message for="communityStartDate"/>
 
                     <h:outputText style="font-weight: bold" value="End Date: " />
                     <p:datePicker  id="communityEndDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.endDate}" mindate="#{communityGoalsManagedBean.afterStartDate}"
-                                   required="true" requiredMessage="End Date is required">
+                                   required="true" requiredMessage="End Date is required" disabled="#{!communityGoalsManagedBean.isUpdating}">
                         <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterDate}" />
                     </p:datePicker>
                     <p:message for="communityEndDate"/>
 
                     <h:outputText style="font-weight: bold" value="Country: " />
-                    <p:selectOneMenu id="communityCountry" value="#{communityGoalsManagedBean.selectedCommunityGoal.country}" required="true" requiredMessage="Country is required">
+                    <p:selectOneMenu id="communityCountry" value="#{communityGoalsManagedBean.selectedCommunityGoal.country}" disabled="#{!communityGoalsManagedBean.isUpdating}"                                     
+                                     required="true" requiredMessage="Country is required">
                         <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
                         <f:selectItems value="#{communityGoalsManagedBean.countries}" var="country" itemValue="#{country}" itemLabel="#{country}" />
                     </p:selectOneMenu>
                     <p:message for="communityCountry"/>
 
-                    <h:outputText style="font-weight: bold" value="Staff: " />
-                    <h:outputText style="width: 80%"  value="#{communityGoalsManagedBean.selectedCommunityGoal.staffEntity.firstName}" />
+                    <h:outputText style="font-weight: bold" value="Creator (Staff): " />
+                    <h:outputText style="width: 80%"  value="#{communityGoalsManagedBean.selectedCommunityGoal.staffEntity.firstName} #{communityGoalsManagedBean.selectedCommunityGoal.staffEntity.lastName} (Staff ID: #{communityGoalsManagedBean.selectedCommunityGoal.staffEntity.staffId})" />
                     <p:column>&nbsp;</p:column>
                 </p:panelGrid>
 
-                <p:commandButton value="Update Community Goal"  update="dialogUpdateCommunityGoal formMain:dataTableMain" actionListener="#{communityGoalsManagedBean.updateCommunityGoal}"
-                                 oncomplete="PF('dialogUpdateCommunityGoal').show(); PF('dialogUpdateCommunityGoal').toggleMaximize()" icon="fa fa-pencil-square" title="Update">
-                    <p:confirm header="Confirmation" message="Are you sure you want to update this community goal?" icon="fa fa-warning" />    
+                <p:commandButton rendered="#{!communityGoalsManagedBean.isUpdating}" value="Update Community Goal"  update="dialogViewCommunityGoal formMain:dataTableMain" 
+                                 actionListener="#{communityGoalsManagedBean.updating}" oncomplete="PF('dialogViewCommunityGoal').show(); PF('dialogViewCommunityGoal').toggleMaximize()" 
+                                 icon="fa fa-pencil-square" title="Update">
                 </p:commandButton>
 
-                <p:commandButton  value="Delete Community Goal" actionListener="#{communityGoalsManagedBean.deleteCommunityGoal}" 
-                                  update="formMain:dataTableMain" icon="fa fa-trash" title="deleteCommunityGoal" style="color: red" oncomplete="PF('dialogUpdateCommunityGoal').hide()"
+                <p:commandButton rendered="#{communityGoalsManagedBean.isUpdating}" value="Save Changes" actionListener="#{communityGoalsManagedBean.updateCommunityGoal}" 
+                                 update="formMain:dataTableMain dialogViewCommunityGoal" oncomplete="PF('dialogViewCommunityGoal').show(); PF('dialogViewCommunityGoal').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
+
+                <p:commandButton rendered="#{communityGoalsManagedBean.isUpdating}" value="Cancel Update" actionListener="#{communityGoalsManagedBean.cancelUpdating}"
+                                 update="dialogViewCommunityGoal formMain:dataTableMain" oncomplete="PF('dialogViewCommunityGoal').show(); PF('dialogViewCommunityGoal').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
+
+                <p:commandButton  rendered="#{!communityGoalsManagedBean.isUpdating}" value="Delete Community Goal" actionListener="#{communityGoalsManagedBean.deleteCommunityGoal}" 
+                                  update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteCommunityGoal" style="color: red" oncomplete="PF('dialogViewCommunityGoal').hide()"
                                   id="deleteCommunityGoalButton">
                     <p:confirm header="Confirmation" message="Are you sure you want to delete this community goal?" icon="fa fa-warning" />
                 </p:commandButton>
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <div align="center">
                         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
@@ -139,7 +164,6 @@
                 <f:facet name="header">
                     <h:outputText style="color: red; font-family: 'Segoe UI',Arial,sans-serif;" value="Creating Community Goal"/> 
                 </f:facet>
-                <p:graphicImage library="images" name="sclogotransparent.png" alt="storeCraftLogo" style="width: 500px; height: 100px"/>
 
                 <div class="ui-g">
                     <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-4, ui-g-5" layout="grid">
@@ -183,12 +207,14 @@
 
                     <p:commandButton value="Create Community Goal"  update="dialogCreateCommunityGoal formMain:dataTableMain" actionListener="#{communityGoalsManagedBean.createCommunityGoal}"
                                      oncomplete="PF('dialogCreateCommunityGoal').show(); PF('dialogCreateCommunityGoal').toggleMaximize()" icon="fa fa-pencil-square" title="Create">
-                        <p:confirm header="Confirmation" message="Are you sure you want to create this community goal?" icon="fa fa-warning" />    
+                        <p:confirm header="Confirmation" message="Are you sure you want to create this community goal?" icon="fa fa-warning"  />    
                     </p:commandButton>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
                         <div align="center">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" 
+                                             update="dialogCreateCommunityGoal formMain:dataTableMain" oncomplete="PF('dialogCreateCommunityGoal').show(); PF('dialogCreateCommunityGoal').toggleMaximize()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" 
+                                             update="dialogCreateCommunityGoal formMain:dataTableMain" oncomplete="PF('dialogCreateCommunityGoal').show(); PF('dialogCreateCommunityGoal').toggleMaximize()"/>
                         </div>
                     </p:confirmDialog> 
 
