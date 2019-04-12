@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <div>
+
+            <h:form id="formMain">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+
+
+                <p:dataTable id="dataTableSaleTransaction" value="#{customerDetailsManagedBean.saleTransactionEntities}" var="saleTransactionEntity" 
+                             widgetVar="saleTransactionDataTable" filteredValue="#{customerDetailsManagedBean.filteredSaleTransactionEntities}"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             rowKey="#{saleTransactionEntity.saleTransactionId}"
+                             >
+
+                    <f:facet name="header"> 
+                        <div class="ui-g">
+                            <div class="ui-g-4" style="text-align: center">
+                                Sale Transactions
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Sale Transaction ID" sortBy="#{saleTransactionEntity.saleTransactionId}" filterBy="#{saleTransactionEntity.saleTransactionId}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.saleTransactionId}" />
+                    </p:column>    
+
+                    <p:column headerText="Total Line Item" sortBy="#{saleTransactionEntity.totalLineItem}" filterBy="#{saleTransactionEntity.totalLineItem}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.totalLineItem}" />
+                    </p:column>    
+
+                    <p:column headerText="Total Quantity" sortBy="#{saleTransactionEntity.totalQuantity}" filterBy="#{saleTransactionEntity.totalQuantity}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.totalQuantity}" />
+                    </p:column>    
+
+                    <p:column headerText="Total Amount" sortBy="#{saleTransactionEntity.totalAmount}" filterBy="#{saleTransactionEntity.totalAmount}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.totalAmount}" />
+                    </p:column>    
+
+                    <p:column headerText="Transaction Date" sortBy="#{saleTransactionEntity.transactionDateTime}" filterBy="#{saleTransactionEntity.transactionDateTime}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
+                    </p:column>    
+
+                </p:dataTable>
+
+                <br/>
+
+
+                <p:dataTable id="dataTableDiscountCode" value="#{customerDetailsManagedBean.discountCodeEntities}" var="discountCodeEntity" 
+                             widgetVar="discountCodeDataTable" filteredValue="#{customerDetailsManagedBean.filteredDiscountCodeEntities}"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             rowKey="#{discountCodeEntity.discountCodeId}"
+                             >
+
+                    <f:facet name="header"> 
+                        <div class="ui-g">
+                            <div class="ui-g-4" style="text-align: center">
+                                Discount Codes
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Discount Code ID" sortBy="#{discountCodeEntity.discountCodeId}" filterBy="#{discountCodeEntity.discountCodeId}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.discountCodeId}" />
+                    </p:column>    
+
+                    <p:column headerText="Discount Code" sortBy="#{discountCodeEntity.discountCode}" filterBy="#{discountCodeEntity.discountCode}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.discountCode}" />
+                    </p:column>    
+
+                    <p:column headerText="Discount Code Type" sortBy="#{discountCodeEntity.discountCodeTypeEnum}" filterBy="#{discountCodeEntity.discountCodeTypeEnum}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.discountCodeTypeEnum}" />
+                    </p:column>    
+
+                    <p:column headerText="Discount Rate/Amount" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.discountAmountOrRate}" />
+                    </p:column>    
+
+                    <p:column headerText="Start Date" sortBy="#{discountCodeEntity.startDate}" filterBy="#{discountCodeEntity.startDate}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.startDate}" />
+                    </p:column>    
+
+                    <p:column headerText="End Date" sortBy="#{discountCodeEntity.endDate}" filterBy="#{discountCodeEntity.endDate}" filterMatchMode="contains">
+                        <h:outputText value="#{discountCodeEntity.endDate}" />
+                    </p:column>    
+
+                </p:dataTable>
+
+                <br/>
+
+
+
+                <p:dataTable id="dataTableReview" value="#{customerDetailsManagedBean.reviewEntities}" var="reviewEntity" 
+                             widgetVar="reviewDataTable" filteredValue="#{customerDetailsManagedBean.filteredReviewEntities}"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             rowKey="#{reviewEntity.reviewId}"
+                             >
+
+                    <f:facet name="header"> 
+                        <div class="ui-g">
+                            <div class="ui-g-4" style="text-align: center">
+                                Reviews
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="" sortBy="#{reviewEntity.reviewId}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    </p:column>    
+
+                    <p:column headerText="" sortBy="#{reviewEntity.content}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    </p:column>    
+
+                    <p:column headerText="" sortBy="#{reviewEntity.productEntity}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    </p:column>    
+
+                    <p:column headerText="" sortBy="#{reviewEntity.productRating}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    </p:column>    
+
+                    <p:column headerText="" sortBy="#{reviewEntity.reviewDate}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    </p:column>    
+
+
+                </p:dataTable>
+
+            </h:form>
+
+            <h:form id="form">
+
+                <p:dialog id="dialogViewSaleTransactionLineItems" widgetVar="dialogViewSaleTransactionLineItems" header="View Sale Transaction Line Items" closable="true">
+
+                    <p:dataTable id="dataTableSaleTransactionLineItems" value="#{saleTransactionManagedBean.selectedSaleTransactionEntity.saleTransactionLineItemEntities}" var="saleTransactionLineItem" 
+                                 widgetVar="saleTransactionLineItemsDataTable" filteredValue="#{saleTransactionManagedBean.filteredSaleTransactionLineItems}"
+                                 rows="10" paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20"
+                                 rowKey="#{saleTransactionLineItem.saleTransactionLineItemId}"
+                                 >
+
+                        <p:column headerText="Sale Transaction ID" sortBy="#{saleTransactionLineItem.saleTransactionLineItemId}" filterBy="#{saleTransactionLineItem.saleTransactionLineItemId}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.saleTransactionLineItemId}" />
+                        </p:column>
+
+                        <p:column headerText="Serial Number" sortBy="#{saleTransactionLineItem.serialNumber}" filterBy="#{saleTransactionLineItem.serialNumber}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.serialNumber}" />
+                        </p:column>
+
+                        <p:column headerText="Product Entity" sortBy="#{saleTransactionLineItem.productEntity.name}" filterBy="#{saleTransactionLineItem.productEntity.name}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.productEntity.name}" />
+                        </p:column>   
+
+                        <p:column headerText="Unit Price" sortBy="#{saleTransactionLineItem.unitPrice}" filterBy="#{saleTransactionLineItem.unitPrice}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.unitPrice}" />
+                        </p:column>
+
+                        <p:column headerText="Quantity" sortBy="#{saleTransactionLineItem.quantity}" filterBy="#{saleTransactionLineItem.quantity}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.quantity}" />
+                        </p:column>
+
+                        <p:column headerText="Sub Total" sortBy="#{saleTransactionLineItem.subTotal}" filterBy="#{saleTransactionLineItem.subTotal}" filterMatchMode="contains">
+                            <h:outputText value="#{saleTransactionLineItem.subTotal}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>
