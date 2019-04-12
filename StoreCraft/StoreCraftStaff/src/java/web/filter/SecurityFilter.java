@@ -64,6 +64,8 @@ public class SecurityFilter implements Filter {
     private Boolean checkAccessRight(String path, StaffTypeEnum staffType) {
         if (staffType.equals(StaffTypeEnum.REGULAR)) {
             if (path.equals("/systemAdministration/createDiscountCode.xhtml")
+                    || path.equals("/systemAdministration/customerDetails.xhtml")
+                    || path.equals("/systemAdministration/customerManagement.xhtml")
                     || path.equals("/dashboard.xhtml")
                     || path.equals("/systemAdministration/discountCodeManagement.xhtml")
                     || path.equals("/systemAdministration/filterProductsByCategory.xhtml")
@@ -80,6 +82,8 @@ public class SecurityFilter implements Filter {
             }
         } else if (staffType.equals(StaffTypeEnum.MANAGER)) {
             if (path.equals("/systemAdministration/createDiscountCode.xhtml")
+                    || path.equals("/systemAdministration/customerDetails.xhtml")
+                    || path.equals("/systemAdministration/customerManagement.xhtml")
                     || path.equals("/dashboard.xhtml")
                     || path.equals("/systemAdministration/discountCodeManagement.xhtml")
                     || path.equals("/systemAdministration/filterProductsByCategory.xhtml")
