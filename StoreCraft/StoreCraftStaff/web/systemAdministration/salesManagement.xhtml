@@ -26,7 +26,7 @@
                         <h:outputText value="#{saleTransactionEntity.saleTransactionId}" />
                     </p:column>    
 
-                    <p:column headerText="Customer" sortBy="#{saleTransactionEntity.customerEntity}" filterBy="#{saleTransactionEntity.customerEntity}" filterMatchMode="contains">
+                    <p:column headerText="Customer" sortBy="#{saleTransactionEntity.customerEntity.email}" filterBy="#{saleTransactionEntity.customerEntity.email}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.customerEntity.email}" />
                     </p:column>   
 

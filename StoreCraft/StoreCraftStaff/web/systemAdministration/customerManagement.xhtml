@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        
+        <div>
+            
+            <h:form id="formMain">
+                
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableCustomer" value="#{customerManagementManagedBean.customerEntities}" var="customerEntity" 
+                             widgetVar="customerDataTable" filteredValue="#{customerManagementManagedBean.filteredCustomerEntities}"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             rowKey="#{customerEntity.customerId}"
+                             >
+
+                    <p:column headerText="Customer ID" sortBy="#{customerEntity.customerId}" filterBy="#{customerEntity.customerId}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.customerId}" />
+                    </p:column>    
+
+                    <p:column headerText="First Name" sortBy="#{customerEntity.firstName}" filterBy="#{customerEntity.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.firstName}" />
+                    </p:column>   
+
+                    <p:column headerText="Last Name" sortBy="#{customerEntity.lastName}" filterBy="#{customerEntity.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.lastName}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{customerEntity.email}" filterBy="#{customerEntity.email}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.email}" />
+                    </p:column>
+
+                    <p:column headerText="Membership" sortBy="#{customerEntity.membershipTierEnum}" filterBy="#{customerEntity.membershipTierEnum}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.membershipTierEnum}" />
+                    </p:column>
+
+                    <p:column headerText="Multiplier" sortBy="#{customerEntity.multiplier}" filterBy="#{customerEntity.multiplier}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.multiplier}" />
+                    </p:column>
+
+                    <p:column headerText="Points for Current Month" sortBy="#{customerEntity.pointsForCurrentMonth}" filterBy="#{customerEntity.pointsForCurrentMonth}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.pointsForCurrentMonth}" />
+                    </p:column>
+
+                    <p:column headerText="Remaining Points" sortBy="#{customerEntity.remainingPoints}" filterBy="#{customerEntity.remainingPoints}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.remainingPoints}" />
+                    </p:column>
+
+                    <p:column headerText="Total Points" sortBy="#{customerEntity.totalPoints}" filterBy="#{customerEntity.totalPoints}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.totalPoints}" />
+                    </p:column>
+
+                    <p:column headerText="Profile picture URL" sortBy="#{customerEntity.profilePicUrl}" filterBy="#{customerEntity.profilePicUrl}" filterMatchMode="contains">
+                        <h:outputText value="#{customerEntity.profilePicUrl}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="formUpdateCustomer" oncomplete="PF('updateCustomerDialog').show()" icon="ui-icon-document" title="Edit">
+                            <f:setPropertyActionListener value="#{customerEntity}" target="#{customerManagementManagedBean.selectedCustomerEntity}" />
+                        </p:commandButton>
+                        <p:commandButton action="customerDetails" icon="ui-icon-play">
+                            <f:param name="customerId" value="${customerEntity.customerId}"/>
+                        </p:commandButton>
+                    </p:column>
+                    
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="formUpdateCustomer">
+
+                <p:dialog id="dialogUpdateCustomer" widgetVar="updateCustomerDialog" header="Edit customer details" closable="true">
+                
+                    <p:messages id="messagesUpdateCustomer" redisplay="false" />
+                    
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="First name"/>
+                            </p:column>
+                            <p:column>
+                                <h:inputText value="#{customerManagementManagedBean.selectedCustomerEntity.firstName}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Last name"/>
+                            </p:column>
+                            <p:column>
+                                <h:inputText value="#{customerManagementManagedBean.selectedCustomerEntity.lastName}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Profile pic URL"/>
+                            </p:column>
+                            <p:column>
+                                <h:inputText value="#{customerManagementManagedBean.selectedCustomerEntity.profilePicUrl}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="Update customer" update="@form formMain:dataTableCustomer formMain:messages" actionListener="#{customerManagementManagedBean.updateCustomer}" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+        </div>
+        
+    </ui:define>
+    
+</ui:composition>
