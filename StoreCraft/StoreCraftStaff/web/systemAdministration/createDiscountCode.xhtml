@@ -4,9 +4,13 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="createDiscountCode"/>
+        
         <h:form id="formMain">
             <p:panelGrid style="width: 100%; height: auto"  >
 

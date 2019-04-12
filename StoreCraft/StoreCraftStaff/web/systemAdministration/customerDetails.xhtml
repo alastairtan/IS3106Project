@@ -4,13 +4,23 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-
+        
+        <ez:Breadcrumb pageName="customerDetails"/>
+        
         <div>
 
             <h:form id="formMain">
+                
+                <p:outputPanel style="width:100%; text-align:center; background-color: white; padding: 1vw">
+                    <h:outputText value="More Details For Customer: #{customerDetailsManagedBean.customerEntity.firstName} 
+                                  #{customerDetailsManagedBean.customerEntity.lastName} (ID: #{customerDetailsManagedBean.customerEntity.customerId})"
+                                  style="font-size: 2vw; margin-top: 2vw;"/>
+                </p:outputPanel>
+         
 
                 <p:messages id="messages" redisplay="false" closable="true" />
 
@@ -26,8 +36,14 @@
 
                     <f:facet name="header"> 
                         <div class="ui-g">
-                            <div class="ui-g-4" style="text-align: center">
+                            <div class="ui-g-4" style="text-align: left; padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('saleTransactionDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                            </div>
+                            <div class="ui-g-4" style="text-align: center;">
                                 Sale Transactions
+                            </div>
+                            <div class="ui-g-4" style="text-align: center; padding: 0">
+                                &nbsp;
                             </div>
                         </div>
                     </f:facet>
@@ -67,8 +83,14 @@
 
                     <f:facet name="header"> 
                         <div class="ui-g">
-                            <div class="ui-g-4" style="text-align: center">
+                            <div class="ui-g-4" style="text-align: left; padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('discountCodeDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                            </div>
+                            <div class="ui-g-4" style="text-align: center;">
                                 Discount Codes
+                            </div>
+                            <div class="ui-g-4" style="text-align: center; padding: 0">
+                                &nbsp;
                             </div>
                         </div>
                     </f:facet>
@@ -113,8 +135,14 @@
 
                     <f:facet name="header"> 
                         <div class="ui-g">
-                            <div class="ui-g-4" style="text-align: center">
+                            <div class="ui-g-4" style="text-align: left; padding: 0">
+                                <p:inputText id="globalFilter" onkeyup="PF('reviewDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                            </div>
+                            <div class="ui-g-4" style="text-align: center;">
                                 Reviews
+                            </div>
+                            <div class="ui-g-4" style="text-align: center; padding: 0">
+                                &nbsp;
                             </div>
                         </div>
                     </f:facet>
