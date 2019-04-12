@@ -9,6 +9,7 @@ import ejb.stateless.CategoryEntityControllerLocal;
 import ejb.stateless.CustomerEntityControllerLocal;
 import ejb.stateless.DiscountCodeEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
+import ejb.stateless.ReviewEntityControllerLocal;
 import ejb.stateless.SaleTransactionEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
@@ -61,6 +62,8 @@ public class DataInitSessionBean {
     private TagEntityControllerLocal tagEntityControllerLocal;
     @EJB
     private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
+    @EJB
+    private ReviewEntityControllerLocal reviewEntityControllerLocal;
     
     
 
@@ -160,6 +163,7 @@ public class DataInitSessionBean {
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
             
+            reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "THIS IS A REVIEW", 4, new Long(1) );
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());
         } catch (Exception ex) {

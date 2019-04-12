@@ -43,9 +43,10 @@
                 <p:menuitem value="Customer Management" outcome="/systemAdministration/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement' || cc.attrs.pageName=='customerDetails'}" />
                 <p:menuitem value="Customer Details" outcome="/systemAdministration/customerDetails.xhtml" rendered="#{cc.attrs.pageName == 'customerDetails'}"/>
                 
-                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewManagement.xhtml" rendered="#{cc.attrs.pageName == 'reviewManagement'}" />
+                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewManagement.xhtml" rendered="#{cc.attrs.pageName == 'reviewManagement' || cc.attrs.pageName == 'reviewChain' }" />
+                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewChain.xhtml" rendered="#{cc.attrs.pageName == 'reviewChain' }" />
 
-            
+               
                 <p:menuitem value="Game Features" rendered="#{cc.attrs.pageName == 'communityGoals' ||
                                                                   cc.attrs.pageName == 'scavengerHunt'}"/>
                 
