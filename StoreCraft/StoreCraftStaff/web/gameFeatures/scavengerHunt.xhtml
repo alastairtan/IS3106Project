@@ -1,12 +1,97 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
+    <ui:define name="content">
+        <ezcomp:Breadcrumb pageName="scavengerHunt" />
+        <h:form id="formCurrentScavenge">
+            <p:dataTable id="dataTableCurrentScavenge" value="#{scavengerHuntManagedBean.currentScavengerHunt}" 
+                         widgetVar="scavengeDataTable"
+                         >
+                <f:facet name="header"> 
+                    <h:outputText value="Current Scavenger Hunt" />
+                </f:facet>
+                <p:column headerText="Scavenger Hunt ID">
+                    <h:outputText value="#{scavengerHuntManagedBean.currentScavengerHunt.scavengerHuntId}" />
+                </p:column>
+                <p:column headerText="Customers">
+                        <p:commandButton update="formViewCustomers" oncomplete="PF('dialogViewCustomers').show(); PF('dialogViewCustomers').toggleMaximize()" icon="fa fa-search" title="View">
+                            <f:setPropertyActionListener value="#{scavengerHuntManagedBean.currentScavengerHunt}" target="#{scavengerHuntManagedBean.selectedScavengerHunt}" />
+                        </p:commandButton>
+                </p:column> 
+                <p:column headerText="Reward" >
+                    <h:outputText value="#{scavengerHuntManagedBean.currentScavengerHunt.rewardTypeEnum}" />
+                </p:column> 
+                <p:column headerText="Product Name" >
+                        <h:outputText value="#{scavengerHuntManagedBean.currentScavengerHunt.productEntity.name}" />
+                </p:column> 
+                <p:column headerText="Date" >
+                    <h:outputText value="#{scavengerHuntManagedBean.currentScavengerHunt.scavengerHuntDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <br /> <br /> <br /> <br />
+        <h:form id="formMain">
+            <p:dataTable id="dataTableMain" value="#{scavengerHuntManagedBean.scavengers}" var="scavengeHunt" 
+                         widgetVar="scavengeDataTable" filteredValue="#{scavengerHuntManagedBean.filteredScavengers}"
+                         rows="6" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20"
+                         rowKey="#{scavengeHunt.scavengerHuntId}"
+                         >
+                <f:facet name="header"> 
+                    <h:outputText value="Scavenger Hunt History" />
+                    <div class="ui-g-4" style="padding: 0">
+                        <p:inputText id="globalFilter" onkeyup="PF('scavengeDataTable').filter()" style="width:70%;" placeholder="Search All Fields"/>  
+                    </div>
+                </f:facet>
+                
+                <p:column headerText="Scavenger Hunt ID" sortBy="#{scavengeHunt.scavengerHuntId}" filterBy="#{scavengeHunt.scavengerHuntId}" filterMatchMode="contains">
+                        <h:outputText value="#{scavengeHunt.scavengerHuntId}" />
+                </p:column>
+                <p:column headerText="Customers">
+                        <p:commandButton update="formViewCustomers" oncomplete="PF('dialogViewCustomers').show(); PF('dialogViewCustomers').toggleMaximize()" icon="fa fa-search" title="View">
+                            <f:setPropertyActionListener value="#{scavengeHunt}" target="#{scavengerHuntManagedBean.selectedScavengerHunt}" />
+                        </p:commandButton>
+                </p:column> 
+                <p:column headerText="Reward" sortBy="#{scavengeHunt.rewardTypeEnum}" filterBy="#{scavengeHunt.rewardTypeEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.rewardTypeEnum}" />
+                </p:column> 
+                <p:column headerText="Product Name" sortBy="#{scavengeHunt.productEntity.name}" filterBy="#{scavengeHunt.productEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{scavengeHunt.productEntity.name}" />
+                </p:column>
+                <p:column headerText="Date" sortBy="#{scavengeHunt.scavengerHuntDate}" filterBy="#{scavengeHunt.scavengerHuntDate}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.scavengerHuntDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
+                </p:column> 
+            </p:dataTable>
+        </h:form>
+        <h:form id="formViewCustomers">
+                <p:dialog id="dialogViewCustomers" widgetVar="dialogViewCustomers" closable="true" modal="true" 
+                          position="center" closeOnEscape="true">
+                    <p:ajax event="close" listener="#{scavengerHuntManagedBean.closeViewCustomerDialog}" oncomplete="PF('dialogViewCustomers').toggleMaximize()"/>
+                    <div class="ui-g-7" style="position: absolute; top: 40%; left: 40%;">
+                            <p:panelGrid style="width: 100%; height: auto" >
+
+                                <h:outputText style="font-size: 28; font-family: 'Segoe UI'" value="Number of winners remaining: " />
+                                <h:outputText style="font-size: 28; width: 100% "  value="#{scavengerHuntManagedBean.selectedScavengerHunt.numWinnersRemaining}" />
+                                <br />
+                                <h:outputText style="font-size: 28; font-family: 'Segoe UI'" value="Customers : " />
+                                <p:dataTable value="#{scavengerHuntManagedBean.selectedScavengerHunt.customerEntities}" var="customer">
+                                    <h:outputText style="width: 100%; font-size: 28;"  value="#{customer}" />
+                                </p:dataTable>
+                            </p:panelGrid>
+                    </div>
+                </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

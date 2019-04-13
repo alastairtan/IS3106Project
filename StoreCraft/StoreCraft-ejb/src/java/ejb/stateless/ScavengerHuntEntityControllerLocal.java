@@ -8,6 +8,7 @@ package ejb.stateless;
 import entity.CustomerEntity;
 import entity.ScavengerHuntEntity;
 import java.util.Date;
+import java.util.List;
 import util.exception.CustomerNotFoundException;
 import util.exception.ScavengerHuntNotFoundException;
 
@@ -23,5 +24,9 @@ public interface ScavengerHuntEntityControllerLocal {
     public void updateWinnerForScavengerHunt(CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException;
 
     public boolean hasCustomerWonToday(Long customerId) throws ScavengerHuntNotFoundException;
+
+    public void createScavengerHuntEntity();
+
+    public List<ScavengerHuntEntity> retrieveAllScavengerHunts();
     
 }

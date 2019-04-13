@@ -49,7 +49,7 @@
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
                     </p:column>
 
-                    <p:column headerText="Action" >
+                    <p:column headerText="Action" style="text-align: center">
                         <p:commandButton update="formViewSaleTransactionLineItems" oncomplete="PF('dialogViewSaleTransactionLineItems').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{saleTransactionManagedBean.selectedSaleTransactionEntity}" />
                         </p:commandButton>
@@ -69,13 +69,13 @@
 
             <h:form id="formViewSaleTransactionLineItems">
 
-                <p:dialog id="dialogViewSaleTransactionLineItems" widgetVar="dialogViewSaleTransactionLineItems" header="View Sale Transaction Line Items" closable="true">
+                <p:dialog id="dialogViewSaleTransactionLineItems" widgetVar="dialogViewSaleTransactionLineItems" header="View Sale Transaction Line Items" closable="true" closeOnEscape="true" width="1000" modal="true">
 
                     <p:dataTable id="dataTableSaleTransactionLineItems" value="#{saleTransactionManagedBean.selectedSaleTransactionEntity.saleTransactionLineItemEntities}" var="saleTransactionLineItem" 
                              widgetVar="saleTransactionLineItemsDataTable" filteredValue="#{saleTransactionManagedBean.filteredSaleTransactionLineItems}"
                              rows="10" paginator="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="10,15,20"
+                             rowsPerPageTemplate="10,15,20" 
                              rowKey="#{saleTransactionLineItem.saleTransactionLineItemId}"
                              >
 
@@ -102,6 +102,13 @@
                         <p:column headerText="Sub Total" sortBy="#{saleTransactionLineItem.subTotal}" filterBy="#{saleTransactionLineItem.subTotal}" filterMatchMode="contains">
                             <h:outputText value="#{saleTransactionLineItem.subTotal}" />
                         </p:column>
+                        
+                        <p:columnGroup type="footer" >
+                            <p:row>
+                                <p:column colspan="5" footerText="Total: " style="text-align:right"/>
+                                <p:column footerText="$#{saleTransactionManagedBean.selectedSaleTransactionEntity.totalAmount}" />
+                            </p:row>
+                        </p:columnGroup>
 
                     </p:dataTable>
 

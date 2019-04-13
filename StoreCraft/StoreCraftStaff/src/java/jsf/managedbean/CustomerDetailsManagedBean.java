@@ -10,6 +10,7 @@ import entity.CustomerEntity;
 import entity.DiscountCodeEntity;
 import entity.ReviewEntity;
 import entity.SaleTransactionEntity;
+import entity.SaleTransactionLineItemEntity;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -28,6 +29,14 @@ import util.exception.CustomerNotFoundException;
 @ViewScoped
 public class CustomerDetailsManagedBean implements Serializable {
 
+    public List<SaleTransactionLineItemEntity> getFilteredSaleTransactionLineItemEntities() {
+        return filteredSaleTransactionLineItemEntities;
+    }
+
+    public void setFilteredSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities) {
+        this.filteredSaleTransactionLineItemEntities = filteredSaleTransactionLineItemEntities;
+    }
+
     @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
 
@@ -41,6 +50,10 @@ public class CustomerDetailsManagedBean implements Serializable {
     private List<DiscountCodeEntity> filteredDiscountCodeEntities;
     private List<ReviewEntity> filteredReviewEntities;
     private List<SaleTransactionEntity> filteredSaleTransactionEntities;
+    
+    private List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities;
+    private List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities;
+    private SaleTransactionEntity currentSaleTransactionEntity;
     
     public CustomerDetailsManagedBean() 
     {
@@ -125,6 +138,22 @@ public class CustomerDetailsManagedBean implements Serializable {
 
     public void setFilteredSaleTransactionEntities(List<SaleTransactionEntity> filteredSaleTransactionEntities) {
         this.filteredSaleTransactionEntities = filteredSaleTransactionEntities;
+    }
+
+    public List<SaleTransactionLineItemEntity> getSaleTransactionLineItemEntities() {
+        return saleTransactionLineItemEntities;
+    }
+
+    public void setSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities) {
+        this.saleTransactionLineItemEntities = saleTransactionLineItemEntities;
+    }
+
+    public SaleTransactionEntity getCurrentSaleTransactionEntity() {
+        return currentSaleTransactionEntity;
+    }
+
+    public void setCurrentSaleTransactionEntity(SaleTransactionEntity currentSaleTransactionEntity) {
+        this.currentSaleTransactionEntity = currentSaleTransactionEntity;
     }
     
     

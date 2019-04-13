@@ -11,6 +11,7 @@ import ejb.stateless.DiscountCodeEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
 import ejb.stateless.ReviewEntityControllerLocal;
 import ejb.stateless.SaleTransactionEntityControllerLocal;
+import ejb.stateless.ScavengerHuntEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
@@ -45,6 +46,9 @@ import util.exception.StaffNotFoundException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private ScavengerHuntEntityControllerLocal scavengerHuntEntityControllerLocal;
 
     @EJB
     private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
@@ -164,6 +168,7 @@ public class DataInitSessionBean {
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
             
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "THIS IS A REVIEW", 4, new Long(1) );
+
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());
         } catch (Exception ex) {

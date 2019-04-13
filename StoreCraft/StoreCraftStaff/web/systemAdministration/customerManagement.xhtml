@@ -8,7 +8,7 @@
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        
+
         <ez:Breadcrumb pageName="customerManagement"/>
 
         <h:form id="formMain">
@@ -37,7 +37,7 @@
                 <p:column headerText="Last Name" sortBy="#{customerEntity.lastName}" filterBy="#{customerEntity.lastName}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.lastName}" />
                 </p:column>
-                
+
                 <p:column headerText="Country" sortBy="#{customerEntity.country}" filterBy="#{customerEntity.country}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.country}" />
                 </p:column>   

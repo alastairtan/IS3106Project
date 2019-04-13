@@ -55,18 +55,10 @@ public class CustomerManagementManagedBean implements Serializable {
             customerEntityControllerLocal.updateCustomerDetails(selectedCustomerEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer updated successfully", null));
         } 
-        catch (CustomerNotFoundException ex)
+        catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException  ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
         } 
-        catch (UpdateCustomerException ex) 
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
-        }
-        catch (InputDataValidationException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
-        }
         catch (Exception ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
