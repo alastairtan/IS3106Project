@@ -50,7 +50,14 @@
 
                     <p:column headerText="Transaction Date" sortBy="#{saleTransactionEntity.transactionDateTime}" filterBy="#{saleTransactionEntity.transactionDateTime}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
-                    </p:column>    
+                    </p:column>
+
+                    <p:column headerText="View Details"  style="text-align: center">
+                        <p:commandButton update="formSaleTransactionLineItem" oncomplete="PF('saleTransactionLineItemDialog').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{saleTransactionEntity.saleTransactionLineItemEntities}" target="#{customerDetailsManagedBean.saleTransactionLineItemEntities}" />
+                            <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{customerDetailsManagedBean.currentSaleTransactionEntity}" />
+                        </p:commandButton>
+                    </p:column>
 
                 </p:dataTable>
 
@@ -85,9 +92,13 @@
                         <h:outputText value="#{discountCodeEntity.discountCodeTypeEnum}" />
                     </p:column>    
 
-                    <p:column headerText="Discount Rate/Amount" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
-                        <h:outputText value="#{discountCodeEntity.discountAmountOrRate}" />
-                    </p:column>    
+                    <p:column headerText="Discount Amount" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
+                        <h:outputText rendered="#{discountCodeEntity.discountCodeTypeEnum == 'FLAT' }" value="#{discountCodeEntity.discountAmountOrRate}" />
+                    </p:column>
+
+                    <p:column rendered="#{discountCodeEntity.discountCodeTypeEnum == 'PERCENTAGE' }" headerText="Discount Rate" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
+                        <h:outputText  value="#{discountCodeEntity.discountAmountOrRate}" />
+                    </p:column>                     
 
                     <p:column headerText="Start Date" sortBy="#{discountCodeEntity.startDate}" filterBy="#{discountCodeEntity.startDate}" filterMatchMode="contains">
                         <h:outputText value="#{discountCodeEntity.startDate}" />
@@ -144,15 +155,14 @@
 
             </h:form>
 
-            <h:form id="form">
+            <h:form id="formSaleTransactionLineItem">
 
-                <p:dialog id="dialogViewSaleTransactionLineItems" widgetVar="dialogViewSaleTransactionLineItems" header="View Sale Transaction Line Items" closable="true">
+                <p:dialog width="1000" modal="true" id="dialogSaleTransactionLineItem" widgetVar="saleTransactionLineItemDialog" header="View Sale Transaction Line Items" closable="true" closeOnEscape="true">
 
-                    <p:dataTable id="dataTableSaleTransactionLineItems" value="#{saleTransactionManagedBean.selectedSaleTransactionEntity.saleTransactionLineItemEntities}" var="saleTransactionLineItem" 
-                                 widgetVar="saleTransactionLineItemsDataTable" filteredValue="#{saleTransactionManagedBean.filteredSaleTransactionLineItems}"
-                                 rows="10" paginator="true" 
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,15,20"
+                    <p:dataTable id="dataTableSaleTransactionLineItem" 
+                                 value="#{customerDetailsManagedBean.saleTransactionLineItemEntities}" 
+                                 var="saleTransactionLineItem" widgetVar="saleTransactionLineItemsDataTable" 
+                                 filteredValue="#{customerDetailsManagedBean.filteredSaleTransactionLineItemEntities}"
                                  rowKey="#{saleTransactionLineItem.saleTransactionLineItemId}"
                                  >
 
@@ -169,16 +179,28 @@
                         </p:column>   
 
                         <p:column headerText="Unit Price" sortBy="#{saleTransactionLineItem.unitPrice}" filterBy="#{saleTransactionLineItem.unitPrice}" filterMatchMode="contains">
-                            <h:outputText value="#{saleTransactionLineItem.unitPrice}" />
+
+                            <h:outputText value="#{saleTransactionLineItem.unitPrice}" >
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Quantity" sortBy="#{saleTransactionLineItem.quantity}" filterBy="#{saleTransactionLineItem.quantity}" filterMatchMode="contains">
+                        <p:column headerText="Quantity" sortBy="#{saleTransactionLineItem.quantity}" filterBy="#{saleTransactionLineItem.quantity}" filterMatchMode="contains" >
                             <h:outputText value="#{saleTransactionLineItem.quantity}" />
                         </p:column>
 
-                        <p:column headerText="Sub Total" sortBy="#{saleTransactionLineItem.subTotal}" filterBy="#{saleTransactionLineItem.subTotal}" filterMatchMode="contains">
-                            <h:outputText value="#{saleTransactionLineItem.subTotal}" />
+                        <p:column headerText="Sub Total" sortBy="#{saleTransactionLineItem.subTotal}" filterBy="#{salaleTransactionLineItem.subTotaleTransactionLineItem.subTotal}" filterMatchMode="contains" style="text-align: center">
+                            <h:outputText value="#{saleTransactionLineItem.subTotal}" >
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
                         </p:column>
+
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" footerText="Total: " style="text-align:right"/>
+                                <p:column footerText="$#{customerDetailsManagedBean.currentSaleTransactionEntity.totalAmount}" />
+                            </p:row>
+                        </p:columnGroup>
 
                     </p:dataTable>
 
