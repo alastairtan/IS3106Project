@@ -23,7 +23,7 @@
                 
                 <f:facet name="header">
                     <div class="ui-g">
-                        <div class="ui-g-4">
+                        <div class="ui-g-4" style="padding: 0">
                             <p:inputText id="globalFilter" onkeyup="PF('rootReviewDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
                         </div>
                         <div class="ui-g-4">
@@ -65,7 +65,7 @@
                     </h:outputText>
                 </p:column>
             
-                <p:column headerText="View Details">
+                <p:column headerText="View Details" style="text-align:center">
                     <p:linkButton icon="fa fa-search" outcome="reviewChain.xhtml">
                         <f:param name="rootReviewId" value="#{rootReview.reviewId}"/>
                     </p:linkButton>

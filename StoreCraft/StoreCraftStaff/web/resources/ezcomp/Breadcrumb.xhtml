@@ -26,7 +26,8 @@
                                                                       cc.attrs.pageName == 'viewUpdateDiscountCode' ||
                                                                       cc.attrs.pageName == 'customerManagement'||
                                                                       cc.attrs.pageName == 'customerDetails' ||
-                                                                      cc.attrs.pageName == 'reviewManagement'}" />
+                                                                      cc.attrs.pageName == 'reviewManagement' ||
+                                                                      cc.attrs.pageName == 'reviewChain'    }" />
 
                 <p:menuitem value="Product Management" outcome="/systemAdministration/productManagement.xhtml" rendered="#{cc.attrs.pageName == 'productManagement' || cc.attrs.pageName == 'filterProductsByCategory'}" />
                 <p:menuitem value="Filter Products by Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" rendered="#{cc.attrs.pageName == 'filterProductsByCategory'}" />  
@@ -44,7 +45,7 @@
                 <p:menuitem value="Customer Details" outcome="/systemAdministration/customerDetails.xhtml" rendered="#{cc.attrs.pageName == 'customerDetails'}"/>
                 
                 <p:menuitem value="Review Management" outcome="/systemAdministration/reviewManagement.xhtml" rendered="#{cc.attrs.pageName == 'reviewManagement' || cc.attrs.pageName == 'reviewChain' }" />
-                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewChain.xhtml" rendered="#{cc.attrs.pageName == 'reviewChain' }" />
+                <p:menuitem value="Review Chain" outcome="/systemAdministration/reviewChain.xhtml" rendered="#{cc.attrs.pageName == 'reviewChain' }" />
 
                
                 <p:menuitem value="Game Features" rendered="#{cc.attrs.pageName == 'communityGoals' ||
