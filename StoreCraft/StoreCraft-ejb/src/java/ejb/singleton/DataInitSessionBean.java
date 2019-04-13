@@ -90,6 +90,9 @@ public class DataInitSessionBean {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER, "http://www.gstatic.com/tv/thumb/persons/1805/1805_v9_bb.jpg"));
 
             CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
+            CustomerEntity c1 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Peter", "Parker", "peter@gmail.com", "password", "America", "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop"));
+            CustomerEntity c2 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Bruce", "Banner", "bruce@gmail.com", "password", "America", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtRb2rkBsxg1q60ki00KULSIqAS2SXmKTnObZO7qWQA7AV5pSbsg"));
+
             
             List<Long> customerEntityIds = new ArrayList<>();
             customerEntityIds.add(c.getCustomerId());
@@ -167,7 +170,11 @@ public class DataInitSessionBean {
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
             
-            reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "THIS IS A REVIEW", 4, new Long(1) );
+            reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );
+            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "Asus laptop is very good", 4, new Long(1) );
+            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "What a scam", 5, new Long(1) );
+            reviewEntityControllerLocal.createNewReview(c2.getCustomerId(), "Is this good?", 4, new Long(1) );
+            
 
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());

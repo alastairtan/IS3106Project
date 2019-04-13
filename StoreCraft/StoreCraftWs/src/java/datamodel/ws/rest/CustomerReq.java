@@ -11,14 +11,14 @@ import entity.CustomerEntity;
  *
  * @author Win Phong
  */
-public class CustomerRegisterReq {
+public class CustomerReq {
     
     private CustomerEntity customerEntity;
 
-    public CustomerRegisterReq() {
+    public CustomerReq() {
     }
     
-    public CustomerRegisterReq(CustomerEntity customerEntity) {
+    public CustomerReq(CustomerEntity customerEntity) {
         this.customerEntity = customerEntity;
     }
 

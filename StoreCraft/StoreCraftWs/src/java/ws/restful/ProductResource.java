@@ -69,6 +69,7 @@ public class ProductResource {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
                     reviewEntity.setReplyReviewEntity(null);
+                    reviewEntity.setStaffEntity(null);
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
@@ -105,8 +106,11 @@ public class ProductResource {
             
             for(ReviewEntity review : productEntity.getReviewEntities()) {
                 review.setProductEntity(null);
-                review.setCustomerEntity(null);
                 review.setReplyReviewEntity(null);
+                review.setStaffEntity(null);
+                review.getCustomerEntity().getDiscountCodeEntities().clear();
+                review.getCustomerEntity().getSaleTransactionEntities().clear();
+                review.getCustomerEntity().getReviewEntities().clear();
             }
             
             for(TagEntity tag : productEntity.getTagEntities()) {
