@@ -6,9 +6,8 @@
 package ejb.stateless;
 
 import entity.CustomerEntity;
-import entity.ScavengerHuntEntity;
+import entity.ProductEntity;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -29,6 +28,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
     
+    @EJB
+    private ProductEntityControllerLocal productEntityControllerLocal;
+    
     
     @Schedule(month="*", info="resetPointOfTheMonth")
     public void resetPointOfTheMonth()
@@ -43,13 +45,13 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*******  Point of the month reset!  *******");
     }
     
-    @Schedule(dayOfWeek = "*", info="createNewScavengerHuntEveryday")
+    
+    @Schedule(dayOfWeek = "*", info="clearScavengerHuntProducts")
     public void createNewScavengerHuntEntity()
     {
-        entityManager.persist(new ScavengerHuntEntity(new Date(), 3));
-        entityManager.flush();
-        
-        System.out.println("******** Scavenger Hunt Created! *********");
+       
+                
     }
+    
 
 }

@@ -346,6 +346,7 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         
         if(constraintViolations.isEmpty())
         {
+            
             if(productEntity.getProductId()!= null)
             {
                 ProductEntity productEntityToUpdate = retrieveProductByProductId(productEntity.getProductId());
@@ -502,6 +503,12 @@ public class ProductEntityController implements ProductEntityControllerLocal {
             }
         }
         return Boolean.FALSE;
+    }
+    
+    @Override
+    public List<ProductEntity> retrieveAllScavengerHuntProducts(){
+        Query query = entityManager.createQuery("SELECT p FROM ProductEntity p WHERE p.isScavengerHuntPrize = TRUE");
+        return query.getResultList();
     }
     
     @Override

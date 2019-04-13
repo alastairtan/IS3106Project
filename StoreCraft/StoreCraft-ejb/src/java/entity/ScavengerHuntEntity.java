@@ -43,12 +43,9 @@ public class ScavengerHuntEntity implements Serializable {
     @Min(1)
     @NotNull
     private Integer numWinnersRemaining;
-    
-    @NotNull
-    private ProductEntity productEntity;
-    
+       
     //RELATIONSHIPS
-    
+        
     @OneToMany //unidirectional
     private List<CustomerEntity> customerEntities; 
 
@@ -129,12 +126,5 @@ public class ScavengerHuntEntity implements Serializable {
         this.customerEntities = customerEntities;
     }
 
-    public ProductEntity getProductEntity() {
-        return productEntity;
-    }
-
-    public void setProductEntity(ProductEntity productEntity) {
-        this.productEntity = productEntity;
-    }
     
 }
