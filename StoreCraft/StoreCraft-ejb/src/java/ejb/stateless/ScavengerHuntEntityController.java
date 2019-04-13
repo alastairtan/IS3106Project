@@ -61,6 +61,8 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         }
     }
     
+
+    @Override
     public List<ScavengerHuntEntity> retrieveAllScavengerHunts()
     {
         Query query = entityManager.createQuery("SELECT p FROM ScavengerHuntEntity p ORDER BY p.scavengerHuntDate ASC");

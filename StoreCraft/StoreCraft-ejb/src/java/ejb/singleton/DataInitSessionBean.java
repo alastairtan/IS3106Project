@@ -167,11 +167,6 @@ public class DataInitSessionBean {
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
             
-
-            //Create Scavenger Hunt
-            scavengerHuntEntityControllerLocal.createScavengerHuntEntity();
-            
-
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "THIS IS A REVIEW", 4, new Long(1) );
 
         } catch (InputDataValidationException ex) {

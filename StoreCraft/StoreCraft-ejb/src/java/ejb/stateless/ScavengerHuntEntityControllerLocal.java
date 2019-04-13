@@ -25,8 +25,8 @@ public interface ScavengerHuntEntityControllerLocal {
 
     public boolean hasCustomerWonToday(Long customerId) throws ScavengerHuntNotFoundException;
 
-    public List<ScavengerHuntEntity> retrieveAllScavengerHunts();
-
     public void createScavengerHuntEntity();
+
+    public List<ScavengerHuntEntity> retrieveAllScavengerHunts();
     
 }
