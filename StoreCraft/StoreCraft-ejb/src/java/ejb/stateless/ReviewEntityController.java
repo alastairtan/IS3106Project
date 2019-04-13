@@ -72,15 +72,12 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
     }
 
     @Override
-    public List<ReviewEntity> retrieveReviewsForProduct(Long productId) throws ReviewNotFoundException {
+    public List<ReviewEntity> retrieveReviewsForProduct(Long productId) {
         Query query = entityManager.createQuery("SELECT re FROM ReviewEntity re WHERE re.productEntity.productId = :inProductId");
         query.setParameter("inProductId", productId);
 
-        try {
             return query.getResultList();
-        } catch (NoResultException ex) {
-            throw new ReviewNotFoundException("Review does not exist or ID is incorrect!");
-        }
+
     }
 
     @Override

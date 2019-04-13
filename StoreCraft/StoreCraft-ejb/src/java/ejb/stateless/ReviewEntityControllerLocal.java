@@ -30,7 +30,7 @@ public interface ReviewEntityControllerLocal {
 
     public ReviewEntity createNewReview(Long customerId, String content, Integer productRating, Long productId) throws InputDataValidationException, CustomerNotFoundException, ProductNotFoundException;
 
-    public List<ReviewEntity> retrieveReviewsForProduct(Long productId) throws ReviewNotFoundException;
+    public List<ReviewEntity> retrieveReviewsForProduct(Long productId);
 
     public ReviewEntity replyReview(Long reviewIdToReply, ReviewEntity replyReviewEntity, Long staffId) throws InputDataValidationException, StaffNotFoundException, ReviewNotFoundException;
 
