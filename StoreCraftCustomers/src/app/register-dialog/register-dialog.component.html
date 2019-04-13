@@ -1,30 +1,56 @@
-<h1 mat-dialog-title>Register</h1>
+<div mat-dialog-title>
+  <h1>Register</h1>
+  <div class="alert alert-info" *ngIf="infoMessage">
+    {{infoMessage}}
+  </div>
+</div>
 <div class="alert alert-danger" *ngIf="errorMessage">
   {{errorMessage}}
 </div>
-<div class="dialog-content" mat-dialog-content>
-  <p>First Name</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="customer.firstName">
-  </mat-form-field>
-  <p>Last Name</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="customer.lastName">
-  </mat-form-field>
-  <p>Email Name</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="customer.email">
-  </mat-form-field>
-  <p>Password</p>
-  <mat-form-field>
-    <input type="password" matInput [(ngModel)]="customer.password">
-  </mat-form-field>
-  <p>Country</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="customer.country">
-  </mat-form-field>
-</div>
-<div class="actions" mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="registerCustomer()" cdkFocusInitial>Register</button>
-  <button mat-raised-button color="warn" (click)="exit()">Exit</button>
-</div>
+<form #registerForm="ngForm" (ngSubmit)="registerCustomer()">
+  <div class="dialog-content" mat-dialog-content>
+    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start">
+      <div fxFlex="0 1 40%" fxFlexOrder="2">
+        <img class="profPic" src="{{customer.profilePicUrl}}">
+      </div>
+      <div fxFlex="0 1 60%" fxFlexOrder="2">
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput [(ngModel)]="customer.firstName" name="firstName" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput [(ngModel)]="customer.lastName" name="lastName" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="customer.email" name="email" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="password" matInput [(ngModel)]="customer.password" name="password" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Country</mat-label>
+          <mat-select [(ngModel)]="customer.country" name="countryName" required>
+            <mat-option *ngFor="let country of countries" [value]="country.name.common">
+              {{country.name.common}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Profile Picture URL</mat-label>
+          <input matInput type="url" [(ngModel)]="customer.profilePicUrl" #profPicUrl="ngModel" name="profPicUrl"
+            maxlength="255" required>
+          <div *ngIf="!submitted && profPicUrl.invalid && (profPicUrl.dirty || profPicUrl.touched)">
+            <mat-error *ngIf="profPicUrl.errors?.required">Profile Picture URL is required</mat-error>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="actions" mat-dialog-actions>
+    <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Register</button>
+    <button mat-raised-button color="warn" (click)="exit()">Exit</button>
+  </div>
+</form>

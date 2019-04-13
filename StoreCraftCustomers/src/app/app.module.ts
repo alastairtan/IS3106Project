@@ -83,7 +83,7 @@ import { RegisterDialogComponent } from './register-dialog/register-dialog.compo
     MatExpansionModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatSliderModule
+    MatSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

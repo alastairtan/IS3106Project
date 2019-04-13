@@ -6,6 +6,8 @@ import { CustomerService } from '../customer.service';
 import { Customer } from '../customer';
 import { MembershipTierEnum } from '../MembershipTierEnum.enum';
 
+import { CountryService } from '../country.service';
+
 @Component({
   selector: 'app-register-dialog',
   templateUrl: './register-dialog.component.html',
@@ -17,16 +19,27 @@ export class RegisterDialogComponent implements OnInit {
   errorMessage: string;
   customer : Customer;
 
+  countries;
+
+  submitted: boolean;
+  
+
   constructor(
     public dialogRef: MatDialogRef<RegisterDialogComponent>,
     public customerService: CustomerService,
     public router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private countryService: CountryService
   ) { 
     this.customer = new Customer();
+    this.submitted = false;
   }
 
   ngOnInit() {
+    this.countryService.getCountries().subscribe(data => {
+      this.countries = data;
+      console.log(this.countries);
+    })
     
   }
 
@@ -36,8 +49,6 @@ export class RegisterDialogComponent implements OnInit {
 
   registerCustomer() {
 
-    this.customer.profilePicUrl = "https://www.superherodb.com/pictures2/portraits/10/050/133.jpg";
-
     console.log(this.customer.email);
     console.log(this.customer.firstName);
     console.log(this.customer.lastName);
@@ -45,8 +56,10 @@ export class RegisterDialogComponent implements OnInit {
     
     this.customerService.customerRegister(this.customer).subscribe(
       response=> {
-        this.infoMessage = "New customer " + response.customerEntity + " created successfully";
+        this.infoMessage = "Welcome, " + response.customerEntity.firstName + "!";
         this.errorMessage = null;
+        this.submitted = true;
+        this.customer = new Customer();
       },
       error => {
         this.infoMessage = null;
