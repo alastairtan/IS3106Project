@@ -41,11 +41,11 @@
                     </div>
                 </f:facet>
 
-                <p:column headerText="Scavenger Hunt ID" sortBy="#{scavengeHunt.scavengerHuntId}" filterBy="#{scavengeHunt.scavengerHuntId}" filterMatchMode="contains">
+                <p:column headerText="Scavenger Hunt ID" style="width: 10%" sortBy="#{scavengeHunt.scavengerHuntId}" filterBy="#{scavengeHunt.scavengerHuntId}" filterMatchMode="contains">
                     <h:outputText value="#{scavengeHunt.scavengerHuntId}" />
                 </p:column>
 
-                <p:column headerText="Winners (Customers)" style="text-align: center">
+                <p:column headerText="Winners (Customers)" style="text-align: center; width: 10%">
                     <p:commandButton update="formViewCustomers" oncomplete="PF('dialogViewCustomers').show();" icon="fa fa-search" title="View">
                         <f:setPropertyActionListener value="#{scavengeHunt}" target="#{scavengerHuntManagedBean.selectedScavengerHunt}" />
                     </p:commandButton>
@@ -55,7 +55,7 @@
                     <h:outputText value="#{scavengeHunt.rewardTypeEnum}" />
                 </p:column> 
 
-                <p:column headerText="Remaining Slots" sortBy="#{scavengeHunt.numWinnersRemaining}" filterBy="#{scavengeHunt.numWinnersRemaining}" filterMatchMode="contains">
+                <p:column headerText="Remaining Slots" style="width: 10%" sortBy="#{scavengeHunt.numWinnersRemaining}" filterBy="#{scavengeHunt.numWinnersRemaining}" filterMatchMode="contains">
                     <h:outputText value="#{scavengeHunt.numWinnersRemaining}" />
                 </p:column> 
 

@@ -77,6 +77,7 @@ public class ScavengerHuntManagedBean implements Serializable {
         try {
             scavengerHuntEntityControllerLocal.createScavengerHuntEntity();
             refresh();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Scavenger Hunt (ID: " + currentScavengerHunt.getScavengerHuntId() + ") Successfully Created ", null));
         } catch (ScavengerHuntAlreadyExistException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Only One Scavenger Hunt Allowed Per Day!", null));
         }
@@ -86,13 +87,13 @@ public class ScavengerHuntManagedBean implements Serializable {
         try {
             scavengerHuntEntityControllerLocal.removeScavengerHuntEntity(currentScavengerHunt.getScavengerHuntId());
             refresh();
-            System.err.println(this.currentScavengerHuntProducts.size());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Scavenger Hunt Successfully Deleted ", null));
         } catch (ScavengerHuntNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Deleting Scavenger Hunt: " + ex.getMessage(), null));
         }
     }
 
-    public void refresh() {
+    public void refresh(){
         try {
             this.currentScavengerHunt = scavengerHuntEntityControllerLocal.retrieveScavengerHuntEntityByDate(new Date());
             this.scavengers = scavengerHuntEntityControllerLocal.retrieveAllScavengerHunts();
@@ -105,6 +106,10 @@ public class ScavengerHuntManagedBean implements Serializable {
             }
             this.currentScavengerHuntProducts = productEntityControllerLocal.retrieveAllScavengerHuntProducts();
         }
+    }
+    
+    public void refreshWinners(ActionEvent event) {
+        refresh();
         FacesContext.getCurrentInstance().addMessage("refreshBtn", new FacesMessage(FacesMessage.SEVERITY_INFO, "Refreshed", null));
     }
     
@@ -131,9 +136,6 @@ public class ScavengerHuntManagedBean implements Serializable {
         cancelUpdating(null);
     }
     
-    public void refreshWinners (ActionEvent event){
-        refresh();
-    }
 
     public void closeViewCustomerDialog(CloseEvent event) {
         selectedScavengerHunt = new ScavengerHuntEntity();

@@ -11,13 +11,13 @@
         <ezcomp:Breadcrumb pageName="scavengerHunt" />
         <h:form id="formCurrentScavenge">
             <p:tabMenu activeIndex="#{param.i}">
-                    <p:menuitem value="Current Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" icon="fa fa-trophy">
-                        <f:param name="i" value="0" />
-                    </p:menuitem>
-                    <p:menuitem value="Scavenger Hunt History" outcome="/gameFeatures/scavengerHuntHistory.xhtml" icon="fa fa-history  ">
-                        <f:param name="i" value="1" />
-                    </p:menuitem>
-                </p:tabMenu>
+                <p:menuitem value="Current Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" icon="fa fa-trophy">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Scavenger Hunt History" outcome="/gameFeatures/scavengerHuntHistory.xhtml" icon="fa fa-history  ">
+                    <f:param name="i" value="1" />
+                </p:menuitem>
+            </p:tabMenu>
             <p:messages closable="true" globalOnly="true"/>
             <p:growl for="refreshBtn" life="400" />
             <p:panel >              
@@ -34,7 +34,15 @@
                         <p:commandButton value="Delete Current Scavenger Hunt" 
                                          update="formCurrentScavenge formCurrentScavenge:scavengerHuntProductsDataTable" 
                                          actionListener="#{scavengerHuntManagedBean.removeCurrentScavengerHunt}" 
-                                         icon="fa fa-trash" style="color:red"/>
+                                         icon="fa fa-trash" style="color:red">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete this scavenger hunt?" icon="fa fa-warning" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <div align="center">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                            </div>
+                        </p:confirmDialog> 
                     </div>
                 </f:facet>
 

@@ -8,13 +8,14 @@
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        
+
         <ez:Breadcrumb pageName="salesManagement"/>
-        
+
+        <br/>
         <div>
-            
+
             <h:form id="formSaleTransactions">
-                
+
                 <p:messages id="messagesSaleTransactions" redisplay="false" closable="true" />
 
                 <p:dataTable id="dataTableSaleTransactions" value="#{saleTransactionManagedBean.saleTransactionEntities}" var="saleTransactionEntity" 
@@ -50,20 +51,22 @@
                     </p:column>
 
                     <p:column headerText="Action" style="text-align: center">
-                        <p:commandButton update="formViewSaleTransactionLineItems" oncomplete="PF('dialogViewSaleTransactionLineItems').show()" icon="ui-icon-document" title="View">
+                        <p:commandButton update="formViewSaleTransactionLineItems" oncomplete="PF('dialogViewSaleTransactionLineItems').show()" icon="fa fa-search" title="View">
                             <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{saleTransactionManagedBean.selectedSaleTransactionEntity}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{saleTransactionManagedBean.deleteSaleTransaction}" update="formSaleTransactions:messagesSaleTransactions formSaleTransactions:dataTableSaleTransactions">
+                        <p:commandButton icon="fa fa-trash" actionListener="#{saleTransactionManagedBean.deleteSaleTransaction}" update="formSaleTransactions:messagesSaleTransactions formSaleTransactions:dataTableSaleTransactions">
                             <f:attribute name="saleTransactionToDelete" value="#{saleTransactionEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete this transaction)?" icon="ui-icon-alert" />
                         </p:commandButton>
-                        
+
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            <div align="center">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </div>
                         </p:confirmDialog>
                     </p:column>
-                    
+
                 </p:dataTable>
             </h:form>
 
@@ -72,12 +75,12 @@
                 <p:dialog id="dialogViewSaleTransactionLineItems" widgetVar="dialogViewSaleTransactionLineItems" header="View Sale Transaction Line Items" closable="true" closeOnEscape="true" width="1000" modal="true">
 
                     <p:dataTable id="dataTableSaleTransactionLineItems" value="#{saleTransactionManagedBean.selectedSaleTransactionEntity.saleTransactionLineItemEntities}" var="saleTransactionLineItem" 
-                             widgetVar="saleTransactionLineItemsDataTable" filteredValue="#{saleTransactionManagedBean.filteredSaleTransactionLineItems}"
-                             rows="10" paginator="true" 
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="10,15,20" 
-                             rowKey="#{saleTransactionLineItem.saleTransactionLineItemId}"
-                             >
+                                 widgetVar="saleTransactionLineItemsDataTable" filteredValue="#{saleTransactionManagedBean.filteredSaleTransactionLineItems}"
+                                 rows="10" paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" 
+                                 rowKey="#{saleTransactionLineItem.saleTransactionLineItemId}"
+                                 >
 
                         <p:column headerText="Sale Transaction ID" sortBy="#{saleTransactionLineItem.saleTransactionLineItemId}" filterBy="#{saleTransactionLineItem.saleTransactionLineItemId}" filterMatchMode="contains">
                             <h:outputText value="#{saleTransactionLineItem.saleTransactionLineItemId}" />
@@ -102,7 +105,7 @@
                         <p:column headerText="Sub Total" sortBy="#{saleTransactionLineItem.subTotal}" filterBy="#{saleTransactionLineItem.subTotal}" filterMatchMode="contains">
                             <h:outputText value="#{saleTransactionLineItem.subTotal}" />
                         </p:column>
-                        
+
                         <p:columnGroup type="footer" >
                             <p:row>
                                 <p:column colspan="5" footerText="Total: " style="text-align:right"/>
@@ -115,9 +118,9 @@
                 </p:dialog>
 
             </h:form>
-            
+
         </div>
-        
+
     </ui:define>
-    
+
 </ui:composition>
