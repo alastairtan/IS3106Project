@@ -1,27 +1,46 @@
-<div fxFlex="60%">
-  <img src="{{product.productImageUrl}}" />
+<div fxLayout="row" fxLayoutAlign="center none" style="margin-bottom: -300px">
+  <div fxFlex="60%">
+    <img src="{{product.productImageUrl}}" />
+  </div>
+
+  <div fxFlex="40%" style="margin-top:230px; padding-right: 100px">
+
+    <h1 style="margin-bottom: 30px">
+      <strong>{{product.name}}</strong>
+    </h1>
+
+    <h3>{{format()}}</h3>
+    <p style="color:	#A9A9A9"> {{product.description}} </p>
+    <mat-divider style="width: 600px;"></mat-divider>
+
+    <h5 style="margin-top: 15px;"> Product description : {{product.description}} </h5>
+
+    <div style="margin-top: 30px; text-align: end; padding-right: 20px">
+      <button style="display: inline-block" class="quantity" mat-raised-button (click)="add()">+</button>
+      <p style="display: inline-block; margin-left: 30px; margin-right: 30px; font-size:25px;">{{quantity}}</p>
+      <button style="display: inline-block" class="quantity" mat-raised-button (click)="minus()">-</button>
+    </div>
+
+    <div style="margin-top: 30px; text-align: end">
+      <button mat-raised-button color="warn" (click)="addToCart()">Add to Cart</button>
+    </div>
+  </div>
 </div>
 
-<div style="margin-top:230px; padding-right: 100px">
+<div fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="reviewHeader">
+    <h2 style="padding: 25px; background-color:rgb(63,81,181, 0.9); color: white"> Reviews </h2>
+  </div>
+  <div class="reviewContent" *ngIf="product.reviewEntities.length != 0">
+    <div style="margin-bottom: 30px" *ngFor="let review of product.reviewEntities">
+      <h3 class="reviewName">{{review.customerEntity.firstName}} {{review.customerEntity.lastName}}</h3>
 
-  <h1 style="margin-bottom: 30px">
-    <strong>{{product.name}}</strong>
-  </h1>
-
-  <h3>{{format()}}</h3>
-  <p style="color:	#A9A9A9"> {{product.description}} </p>
-  <mat-divider></mat-divider>
-
-  <h5 style="margin-top: 15px;"> Product descriptiodasdasdasdassadasdasdasdasdasasdasdassdasn : {{product.description}}
-  </h5>
-
-  <div style="margin-top: 30px; text-align: end; padding-right: 20px">
-    <button style="display: inline-block" class="quantity" mat-raised-button (click)="add()">+</button> 
-    <p style="display: inline-block">{{quantity}}</p>
-    <button style="display: inline-block" class="quantity" mat-raised-button (click)="minus()">-</button>
+      <p style="padding-left: 50px; font-size: 20px"> {{review.content}} </p>
+      <p style="font-style:italic; text-align: end; font-size:15px;"> {{review.reviewDate}} </p>
+    </div>
+  </div>
+  <div class="reviewContent" *ngIf="product.reviewEntities.length == 0">
+      <p style="padding-left: 50px; font-size: 20px"> No review for product yet </p>
   </div>
 
-  <div style="margin-top: 30px; text-align: end">
-    <button mat-raised-button color="warn" (click)="addToCart()">Add to Cart</button>
-  </div>
 </div>

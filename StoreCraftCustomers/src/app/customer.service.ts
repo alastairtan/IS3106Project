@@ -26,14 +26,24 @@ export class CustomerService {
       )
   }
 
-  customerRegister(customer : Customer): Observable<any> {
-    
-    let customerRegisterReq = {"customerEntity" : customer};
+  customerRegister(customer: Customer): Observable<any> {
 
-    return this.httpClient.put<any>(this.baseUrl , customerRegisterReq, httpOptions).pipe
-    (
-      catchError(this.handleError)
-    )
+    let customerReq = { "customerEntity": customer };
+
+    return this.httpClient.put<any>(this.baseUrl, customerReq, httpOptions).pipe
+      (
+        catchError(this.handleError)
+      )
+  }
+
+  updateCustomer(customer: Customer): Observable<any> {
+    customer.password = "";
+    let customerReq = { "customerEntity": customer };
+
+    return this.httpClient.put<any>(this.baseUrl + "/updateCustomer", customerReq, httpOptions).pipe
+      (
+        catchError(this.handleError)
+      )
   }
 
 
