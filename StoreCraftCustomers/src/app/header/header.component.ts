@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     public categoryService: CategoryService,
-    public sessionService:SessionService) { 
+    public sessionService:SessionService,
+    public router: Router) { 
 
       this.rootCategories = [];
  
@@ -61,6 +62,7 @@ export class HeaderComponent implements OnInit {
   logout(){
     this.sessionService.setIsLogin(false);
     this.sessionService.setCurrentCustomer(null);
+    this.router.navigateByUrl('/index');
   }
 
 }

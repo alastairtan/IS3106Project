@@ -1,4 +1,7 @@
 <h1 mat-dialog-title>Log In</h1>
+<div class="alert alert-danger" *ngIf="errorMessage">
+  {{errorMessage}}
+</div>
 <div class="dialog-content" mat-dialog-content>
   <p>Username</p>
   <mat-form-field>

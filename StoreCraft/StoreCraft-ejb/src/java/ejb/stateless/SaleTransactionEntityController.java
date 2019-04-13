@@ -45,6 +45,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     public SaleTransactionEntityController(){
     }
         
+    @Override
     public SaleTransactionEntity createNewSaleTransaction(Long customerId, SaleTransactionEntity newSaleTransactionEntity) throws CustomerNotFoundException, CreateNewSaleTransactionException{
         
         if(newSaleTransactionEntity != null)

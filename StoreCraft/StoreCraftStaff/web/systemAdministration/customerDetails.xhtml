@@ -114,12 +114,9 @@
                         <h:outputText value="#{discountCodeEntity.discountCodeTypeEnum}" />
                     </p:column>    
 
-                    <p:column headerText="Discount Amount" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
-                        <h:outputText rendered="#{discountCodeEntity.discountCodeTypeEnum == 'FLAT' }" value="#{discountCodeEntity.discountAmountOrRate}" />
-                    </p:column>
-
-                    <p:column rendered="#{discountCodeEntity.discountCodeTypeEnum == 'PERCENTAGE' }" headerText="Discount Rate" sortBy="#{discountCodeEntity.discountAmountOrRate}" filterBy="#{discountCodeEntity.discountAmountOrRate}" filterMatchMode="contains">
-                        <h:outputText  value="#{discountCodeEntity.discountAmountOrRate}" />
+                    <p:column headerText="Discount Amount/Rate" >
+                        <h:outputText value="#{discountCodeEntity.discountAmountOrRate}%" rendered="#{discountCodeEntity.discountCodeTypeEnum == 'PERCENTAGE'}"/> 
+                        <h:outputText value="$#{discountCodeEntity.discountAmountOrRate}" rendered="#{discountCodeEntity.discountCodeTypeEnum == 'FLAT'}" />
                     </p:column>                     
 
                     <p:column headerText="Start Date" sortBy="#{discountCodeEntity.startDate}" filterBy="#{discountCodeEntity.startDate}" filterMatchMode="contains">

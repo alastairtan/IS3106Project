@@ -82,12 +82,9 @@ export class LoginDialogComponent implements OnInit {
 
           this.router.navigate(this.activatedRoute.snapshot.url);
         }
-        else {
-          this.loginError = true;
-        }
       }, error => {
         this.loginError = true;
-        this.errorMessage = error
+        this.errorMessage = "Invalid username and password. Please try again!";
       })
   }
 
