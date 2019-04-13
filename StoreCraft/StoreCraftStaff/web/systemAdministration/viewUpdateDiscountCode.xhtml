@@ -4,9 +4,13 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="viewUpdateDiscountCode"/>
+        
         <h:form id="formMain">
             <p:panelGrid style="width: 100%; height: auto" >
 
@@ -23,7 +27,8 @@
                                                      style="color: red" icon="fa fa-times"/>
                                 </div>
                                 <div class="ui-g-4">
-                                    <h:outputText style="font-size:1.5vw" value="View Discount Code"/>
+                                    <h:outputText rendered="#{!viewUpdateDiscountCodeManagedBean.isUpdating}" style="font-size:1.5vw" value="View Discount Code"/>
+                                    <h:outputText rendered="#{viewUpdateDiscountCodeManagedBean.isUpdating}" style="font-size:1.5vw" value="Update Discount Code"/>
                                 </div>
                                 <div class="ui-g-4" style="text-align: right">
                                     <p:commandButton value="Save Changes" actionListener="#{viewUpdateDiscountCodeManagedBean.saveChanges}"

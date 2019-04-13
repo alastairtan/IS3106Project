@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <cc:attribute name="pageName" required="true" />
+    </cc:interface>
+
+    <cc:implementation>
+
+        <h:form id="formMain">
+
+            <p:breadCrumb homeDisplay="false">
+
+                <p:menuitem icon="fa fa-home" outcome="/dashboard.xhtml" style="text-decoration-line: none;" />            
+
+                <p:menuitem value="System Administration" rendered="#{cc.attrs.pageName == 'productManagement' ||
+                                                                      cc.attrs.pageName == 'filterProductsByCategory' ||
+                                                                      cc.attrs.pageName == 'staffManagement' ||                                                                        
+                                                                      cc.attrs.pageName == 'salesManagement' ||
+                                                                      cc.attrs.pageName == 'discountCodeManagement' ||
+                                                                      cc.attrs.pageName == 'createDiscountCode' ||
+                                                                      cc.attrs.pageName == 'viewUpdateDiscountCode' ||
+                                                                      cc.attrs.pageName == 'customerManagement'||
+                                                                      cc.attrs.pageName == 'customerDetails' ||
+                                                                      cc.attrs.pageName == 'reviewManagement'}" />
+
+                <p:menuitem value="Product Management" outcome="/systemAdministration/productManagement.xhtml" rendered="#{cc.attrs.pageName == 'productManagement' || cc.attrs.pageName == 'filterProductsByCategory'}" />
+                <p:menuitem value="Filter Products by Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" rendered="#{cc.attrs.pageName == 'filterProductsByCategory'}" />  
+                
+                <p:menuitem value="Staff Management" outcome="/systemAdministration/staffManagement.xhtml" rendered="#{cc.attrs.pageName == 'staffManagement'}" />                        
+                <p:menuitem value="Sales Management" outcome="/systemAdministration/salesManagement.xhtml" rendered="#{cc.attrs.pageName == 'salesManagement'}" />
+               
+
+                <p:menuitem value="Discount Code Management" outcome="/systemAdministration/discountCodeManagement.xhtml" rendered="#{cc.attrs.pageName == 'discountCodeManagement' || cc.attrs.pageName == 'createDiscountCode' || cc.attrs.pageName == 'viewUpdateDiscountCode'}" /> 
+                <p:menuitem value="Create Discount Code" outcome="/systemAdministration/createDiscountCode.xhtml" rendered="#{cc.attrs.pageName == 'createDiscountCode'}"/>
+                <p:menuitem value="View/Update Discount Code" outcome="/systemAdministration/viewUpdateDiscountCode.xhtml" rendered="#{cc.attrs.pageName == 'viewUpdateDiscountCode'}"/>
+                
+
+                <p:menuitem value="Customer Management" outcome="/systemAdministration/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement' || cc.attrs.pageName=='customerDetails'}" />
+                <p:menuitem value="Customer Details" outcome="/systemAdministration/customerDetails.xhtml" rendered="#{cc.attrs.pageName == 'customerDetails'}"/>
+                
+                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewManagement.xhtml" rendered="#{cc.attrs.pageName == 'reviewManagement' || cc.attrs.pageName == 'reviewChain' }" />
+                <p:menuitem value="Review Management" outcome="/systemAdministration/reviewChain.xhtml" rendered="#{cc.attrs.pageName == 'reviewChain' }" />
+
+               
+                <p:menuitem value="Game Features" rendered="#{cc.attrs.pageName == 'communityGoals' ||
+                                                                  cc.attrs.pageName == 'scavengerHunt'}"/>
+                
+                <p:menuitem value="Community Goals" outcome="/gameFeatures/communityGoals.xhtml" rendered="#{cc.attrs.pageName == 'communityGoals'}" />
+                <p:menuitem value="Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" rendered="#{cc.attrs.pageName == 'scavengerHunt'}" />
+                
+                
+            </p:breadCrumb>
+
+        </h:form>
+
+    </cc:implementation>
+</html>

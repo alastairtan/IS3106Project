@@ -38,6 +38,5 @@ public interface StaffEntityControllerLocal {
 
     public void updatePassword(StaffEntity staffEntity, String oldPasword, String newPassword) throws StaffNotFoundException, InvalidLoginCredentialException;
 
-    public List<StaffEntity> filterStaffsByStaffTypeEnum(List<String> staffTypes, String condition);
     
 }

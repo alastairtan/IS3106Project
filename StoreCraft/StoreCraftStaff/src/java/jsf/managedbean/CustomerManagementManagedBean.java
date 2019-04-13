@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.CloseEvent;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UpdateCustomerException;
@@ -64,6 +65,9 @@ public class CustomerManagementManagedBean implements Serializable {
         }
     }
     
+    public void closeViewDialog(CloseEvent event){
+        selectedCustomerEntity = new CustomerEntity();
+    }
     
     
 

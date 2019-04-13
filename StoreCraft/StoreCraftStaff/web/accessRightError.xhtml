@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <div class="ui-g" style="width: 100%; text-align: center; margin-top: 4vw">
+            <div class="ui-g-12">
+                <h1 style="color: red; font-size: 5vw">Access Denied :(</h1>
+            </div>
+            <br/>
+            <div class="ui-g-12">
+                <p:outputPanel rendered="#{!sessionScope.isLogin}">
+                    <h5 style="font-size: 2vw"> Oops! It seems like you are not logged in. </h5>
+                </p:outputPanel>
+                <p:outputPanel rendered="#{sessionScope.isLogin}">
+                    <h5 style="font-size: 2vw"> Oops! You do not have permission to access this page. Please contact the system administrator for assistance. </h5>
+                </p:outputPanel>
+            </div>          
+            <div class="ui-g-12">
+                <p:linkButton outcome="index.html" value="Proceed To Log In Page" style="font-size: 2vw" rendered="#{!sessionScope.isLogin}"/>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

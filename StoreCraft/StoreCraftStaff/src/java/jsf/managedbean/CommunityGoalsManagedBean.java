@@ -7,11 +7,14 @@ package jsf.managedbean;
 
 import ejb.stateless.CommunityGoalEntityControllerLocal;
 import entity.CommunityGoalEntity;
+import entity.StaffEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -37,13 +40,22 @@ public class CommunityGoalsManagedBean implements Serializable{
     @EJB
     private CommunityGoalEntityControllerLocal communityGoalEntityControllerLocal;
 
+    //For Initial Load
     private List<CommunityGoalEntity> communityGoals;
+    //****************
     
+    //For Search All Fields
     private List<CommunityGoalEntity> filteredCommunityGoals;
+    //****************
     
+    //For Creating
     private CommunityGoalEntity newCommunityGoal;
+    //************
     
+    //For Updating
+    private boolean isUpdating;
     private CommunityGoalEntity selectedCommunityGoal;
+    //***********
     
     
     private List<String> countries;
@@ -63,11 +75,25 @@ public class CommunityGoalsManagedBean implements Serializable{
     }
     
     @PostConstruct
-    private void postConstruct(){
+    public void PostConstruct(){
         communityGoals = communityGoalEntityControllerLocal.retrieveAllCommunityGoals();
     }
     
-    public void closeUpdateDialog(CloseEvent event){
+    public void updating(ActionEvent event){
+        setIsUpdating(true);
+    }
+    
+    public void cancelUpdating(ActionEvent event){
+        setIsUpdating(false);
+        try { //to reset fields in the dialog
+            selectedCommunityGoal = communityGoalEntityControllerLocal.retrieveCommunityGoalByCommunityGoalId(selectedCommunityGoal.getCommunityGoalId());
+        } catch (CommunityGoalNotFoundException ex) {
+            Logger.getLogger(FilterProductsByCategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex); //exception should not occur
+        }
+    }
+    
+    
+    public void closeViewDialog(CloseEvent event){
         selectedCommunityGoal = new CommunityGoalEntity();
         currentDate = new Date();
         afterStartDate = new Date();
@@ -106,6 +132,7 @@ public class CommunityGoalsManagedBean implements Serializable{
             System.out.println("community goal " + selectedCommunityGoal.getCountry());
             communityGoalEntityControllerLocal.updateCommunityGoal(selectedCommunityGoal, selectedCommunityGoal.getCommunityGoalId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal updated successfully", null));
+            cancelUpdating(null);
         } catch (InputDataValidationException | CommunityGoalNotFoundException ex) {
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating community goal: " + ex.getMessage(), null));
         }  
@@ -113,12 +140,12 @@ public class CommunityGoalsManagedBean implements Serializable{
     
     public void createCommunityGoal(ActionEvent event){
         
-        //StaffEntity staff = (StaffEntity)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
+        StaffEntity staff = (StaffEntity)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
         try {
             System.err.println("sfffeferferfff");
-            communityGoalEntityControllerLocal.createNewCommunityGoal(newCommunityGoal, 1L);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal successfully", null));
-            System.err.println("sffffererg55y6566");
+            communityGoalEntityControllerLocal.createNewCommunityGoal(newCommunityGoal, staff.getStaffId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal Successfully Created", null));
+            this.communityGoals = communityGoalEntityControllerLocal.retrieveAllCommunityGoals();
         } catch (InputDataValidationException | StaffNotFoundException | CreateNewCommunityGoalException ex) {
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating community goal: " + ex.getMessage(), null));
         }
@@ -128,13 +155,14 @@ public class CommunityGoalsManagedBean implements Serializable{
         try {
             communityGoalEntityControllerLocal.deleteCommunityGoal(selectedCommunityGoal.getCommunityGoalId());
             communityGoals.remove(selectedCommunityGoal);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal Successfully Deleted", null));
         } catch (CommunityGoalNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting community goal: " + ex.getMessage(), null));
         }
     }
     
-    public void doSomething(ActionEvent event){
-        System.out.println("why dialog is not showing?");
+    public void creating(ActionEvent event){    
+        this.newCommunityGoal = new CommunityGoalEntity();
     }
 
     public List<CommunityGoalEntity> getCommunityGoals() {
@@ -191,5 +219,13 @@ public class CommunityGoalsManagedBean implements Serializable{
 
     public void setFilteredCommunityGoals(List<CommunityGoalEntity> filteredCommunityGoals) {
         this.filteredCommunityGoals = filteredCommunityGoals;
+    }
+
+    public boolean isIsUpdating() {
+        return isUpdating;
+    }
+
+    public void setIsUpdating(boolean isUpdating) {
+        this.isUpdating = isUpdating;
     }
 }

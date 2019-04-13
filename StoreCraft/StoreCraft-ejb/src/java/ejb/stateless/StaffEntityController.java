@@ -6,11 +6,9 @@
 package ejb.stateless;
 
 import entity.StaffEntity;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -46,224 +44,144 @@ public class StaffEntityController implements StaffEntityControllerLocal {
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
-    public StaffEntityController()
-    {
+
+    public StaffEntityController() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
 
     @Override
-    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws InputDataValidationException, CreateNewStaffException
-    {        
-        Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(newStaffEntity);
-        
-        if(newStaffEntity.getStaffTypeEnum() == null) {
+    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws InputDataValidationException, CreateNewStaffException {
+        Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(newStaffEntity);
+
+        if (newStaffEntity.getStaffTypeEnum() == null) {
             throw new CreateNewStaffException("The staff created must have a staff type!");
         }
-        
-        if(constraintViolations.isEmpty())
-        {
+
+        if (constraintViolations.isEmpty()) {
             entityManager.persist(newStaffEntity);
             entityManager.flush();
 
             return newStaffEntity;
-        }
-        else
-        {
+        } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
+
     @Override
-    public List<StaffEntity> retrieveAllStaffs()
-    {
+    public List<StaffEntity> retrieveAllStaffs() {
         Query query = entityManager.createQuery("SELECT s FROM StaffEntity s");
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public StaffEntity retrieveStaffByStaffId(Long staffId) throws StaffNotFoundException
-    {
-        if(staffId == null)
-        {
+    public StaffEntity retrieveStaffByStaffId(Long staffId) throws StaffNotFoundException {
+        if (staffId == null) {
             throw new StaffNotFoundException("Staff ID not provided");
         }
-        
+
         StaffEntity staffEntity = entityManager.find(StaffEntity.class, staffId);
-        
-        if(staffEntity != null)
-        {
+
+        if (staffEntity != null) {
             return staffEntity;
-        }
-        else
-        {
+        } else {
             throw new StaffNotFoundException("Staff ID " + staffId + " does not exist!");
         }
     }
-    
+
     @Override
-    public StaffEntity retrieveStaffByUsername(String username) throws StaffNotFoundException
-    {
+    public StaffEntity retrieveStaffByUsername(String username) throws StaffNotFoundException {
         Query query = entityManager.createQuery("SELECT s FROM StaffEntity s WHERE s.username = :inUsername");
         query.setParameter("inUsername", username);
-        
-        try
-        {
-            return (StaffEntity)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
+
+        try {
+            return (StaffEntity) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
             throw new StaffNotFoundException("Staff Username " + username + " does not exist!");
         }
     }
-    
+
     @Override
-    public StaffEntity staffLogin(String username, String password) throws InvalidLoginCredentialException
-    {
-        try
-        {
+    public StaffEntity staffLogin(String username, String password) throws InvalidLoginCredentialException {
+        try {
             StaffEntity staffEntity = retrieveStaffByUsername(username);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + staffEntity.getSalt()));
-            
-            if(staffEntity.getPassword().equals(passwordHash))
-            {           
+
+            if (staffEntity.getPassword().equals(passwordHash)) {
                 return staffEntity;
-            }
-            else
-            {
+            } else {
                 throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
             }
-        }
-        catch(StaffNotFoundException ex)
-        {
+        } catch (StaffNotFoundException ex) {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
     }
-    
+
     @Override
-    public void deleteStaff(Long staffId) throws StaffNotFoundException, DeleteStaffException
-    {
+    public void deleteStaff(Long staffId) throws StaffNotFoundException, DeleteStaffException {
         StaffEntity staffEntityToRemove = retrieveStaffByStaffId(staffId);
         System.err.println("staffId" + staffId);
-        if(staffEntityToRemove.getCommunityGoalEntities().isEmpty())
-        {
+        if (staffEntityToRemove.getCommunityGoalEntities().isEmpty()) {
             System.err.println("inside staffEntityToRemove");
             entityManager.remove(staffEntityToRemove);
-        }
-        else
-        {
+        } else {
             throw new DeleteStaffException("Staff ID " + staffId + " is associated with existing community goal(s) and cannot be deleted!");
         }
     }
-    
+
     @Override
-    public void updateStaff(StaffEntity staffEntity) throws InputDataValidationException, StaffNotFoundException, UpdateStaffException
-    {        
-        Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(staffEntity);
-        
-        if(constraintViolations.isEmpty())
-        {        
-            if(staffEntity.getStaffId() != null)
-            {
+    public void updateStaff(StaffEntity staffEntity) throws InputDataValidationException, StaffNotFoundException, UpdateStaffException {
+        Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(staffEntity);
+
+        if (constraintViolations.isEmpty()) {
+            if (staffEntity.getStaffId() != null) {
                 StaffEntity staffEntityToUpdate = retrieveStaffByStaffId(staffEntity.getStaffId());
-                
-                if(staffEntityToUpdate.getStaffId().equals(staffEntity.getStaffId()))
-                {
+
+                if (staffEntityToUpdate.getStaffId().equals(staffEntity.getStaffId())) {
                     staffEntityToUpdate.setFirstName(staffEntity.getFirstName());
                     staffEntityToUpdate.setLastName(staffEntity.getLastName());
                     staffEntityToUpdate.setUsername(staffEntity.getUsername());
                     staffEntityToUpdate.setProfilePicUrl(staffEntity.getProfilePicUrl());
-                }
-                else
-                {
+                } else {
                     throw new UpdateStaffException("Username of staff record to be updated does not match the existing record");
                 }
-            }
-            else
-            {
+            } else {
                 throw new StaffNotFoundException("Staff ID not provided for staff to be updated");
             }
-        }
-        else
-        {
+        } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
+
     @Override
-    public void updatePassword(StaffEntity staffEntity, String oldPasword, String newPassword) throws StaffNotFoundException, InvalidLoginCredentialException
-    {   
-        if(staffEntity.getStaffId() != null)
-        {   
+    public void updatePassword(StaffEntity staffEntity, String oldPasword, String newPassword) throws StaffNotFoundException, InvalidLoginCredentialException {
+        if (staffEntity.getStaffId() != null) {
             // Persistent context
             StaffEntity staffEntityToUpdate = retrieveStaffByStaffId(staffEntity.getStaffId());
-            
+
             String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPasword + staffEntity.getSalt()));
-        
-            if(staffEntity.getPassword().equals(oldPasswordHash))
-            {   
+
+            if (staffEntity.getPassword().equals(oldPasswordHash)) {
                 staffEntityToUpdate.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
                 staffEntityToUpdate.setPassword(newPassword);
-            }
-            else
-            {
+            } else {
                 throw new InvalidLoginCredentialException("The old password is incorrect!");
             }
-        }
-        else
-        {
+        } else {
             throw new StaffNotFoundException("Staff ID not provided for staff to update password");
         }
     }
-    
-    @Override
-    public List<StaffEntity> filterStaffsByStaffTypeEnum(List<String> staffTypes, String condition) 
-    {
-        List<StaffEntity> staffEntities = new LinkedList<>();
-//        List<String> staffTypesString = new ArrayList<>();
-//        for(int i = 0; i < staffTypes.size(); i++) {
-//            staffTypesString.add(staffTypes.get(i).toString());
-//            System.out.println("staffTypesString" + staffTypesString.get(i));
-//        }
-        
-        System.out.println("in filterSTaffBySTaffType " + condition);
-        Query query = entityManager.createQuery("SELECT DISTINCT se FROM StaffEntity se WHERE se.staffTypeEnum IN :enumList ORDER BY se.staffId ASC");
-//        for (int i = 0; i < staffTypes.size(); i++) {
-//            query.setParameter("enumList", staffTypes.get(i).toString());
-//        }
 
-        query.setParameter("enumList",staffTypes);
-        System.out.println("post filterSTaffBySTaffType " + condition);
-        staffEntities = query.getResultList();
-        Collections.sort(staffEntities, new Comparator<StaffEntity>(){
-                public int compare(StaffEntity pe1, StaffEntity pe2) {
-                    return pe1.getStaffId().compareTo(pe2.getStaffId());
-                }
-            });
-        
-        for (StaffEntity s: staffEntities){
-            s.getCommunityGoalEntities();
-            s.getReviewEntities();
-        }
-                
 
-        return staffEntities;
-    }
-    
-    
-    
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StaffEntity>>constraintViolations)
-    {
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StaffEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
-            
-        for(ConstraintViolation constraintViolation:constraintViolations)
-        {
+
+        for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-        
+
         return msg;
     }
-    
+
 }
