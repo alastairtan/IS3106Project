@@ -8,6 +8,7 @@ package jsf.managedbean;
 import ejb.stateless.ReviewEntityControllerLocal;
 import entity.ReviewEntity;
 import entity.StaffEntity;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,9 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.persistence.NoResultException;
+import util.exception.DeleteReviewException;
 import util.exception.InputDataValidationException;
+import util.exception.ReviewNotFoundException;
 import util.exception.StaffNotFoundException;
 
 /**
@@ -31,56 +34,80 @@ import util.exception.StaffNotFoundException;
  */
 @Named(value = "reviewChainManagedBean")
 @ViewScoped
-public class reviewChainManagedBean implements Serializable{
+public class reviewChainManagedBean implements Serializable {
 
     @EJB(name = "ReviewEntityControllerLocal")
     private ReviewEntityControllerLocal reviewEntityControllerLocal;
 
-   
     private List<ReviewEntity> reviewChain;
-    
+
     private ReviewEntity rootReview;
-    
+
     private ReviewEntity selectedReview;
-    
+
+    private ReviewEntity reviewToDelete;
+
     private String reviewReply;
-    
+
     public reviewChainManagedBean() {
         reviewChain = new ArrayList<>();
     }
-    
+
     @PostConstruct
-    public void PostConstruct(){
+    public void PostConstruct() {
         Long rootReviewId = Long.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("rootReviewId"));
-        this.rootReview = reviewEntityControllerLocal.retrieveReviewByReviewId(rootReviewId);
-        this.reviewChain = reviewEntityControllerLocal.getReviewChain(rootReviewId);
-        System.out.println(reviewChain.size());
+        try {
+            this.rootReview = reviewEntityControllerLocal.retrieveReviewByReviewId(rootReviewId);
+            this.reviewChain = reviewEntityControllerLocal.getReviewChain(rootReviewId);
+        } catch (ReviewNotFoundException ex) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("reviewManagement.xhtml");
+            } catch (IOException ex1) {
+                Logger.getLogger(reviewChainManagedBean.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
     }
-    
-    
-    public void submitReply(ActionEvent event){
+
+    public void submitReply(ActionEvent event) {
         try {
             ReviewEntity reply = new ReviewEntity(reviewReply, new Date());
             StaffEntity s = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
             reviewEntityControllerLocal.replyReview(selectedReview.getReviewId(), reply, s.getStaffId());
             this.reviewChain = reviewEntityControllerLocal.getReviewChain(rootReview.getReviewId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reply Submitted", null));
-        } catch (InputDataValidationException | StaffNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: " + ex.getMessage(), null));
-        } 
-        
-    }
-    
-    
-    public void editReply(ActionEvent event){
-        try{
-            reviewEntityControllerLocal.updateReview(selectedReview.getReviewId(), selectedReview.getContent(), null);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reply Edited", null));
-        } catch (NoResultException ex){
+        } catch (InputDataValidationException | StaffNotFoundException | ReviewNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: " + ex.getMessage(), null));
         }
+
     }
-    
+
+    public void editReply(ActionEvent event) {
+        try {
+            reviewEntityControllerLocal.updateReview(selectedReview.getReviewId(), selectedReview.getContent(), null);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reply Edited", null));
+        } catch (ReviewNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured during edit: " + ex.getMessage(), null));
+        }
+    }
+
+    public void deleteReview(ActionEvent event) {
+        try {
+            Long reviewToDeleteId = (Long) event.getComponent().getAttributes().get("reviewToDeleteId");
+            reviewEntityControllerLocal.deleteReview(reviewToDeleteId);
+            try {
+                this.reviewChain = reviewEntityControllerLocal.getReviewChain(rootReview.getReviewId());
+            } catch (ReviewNotFoundException ex) {
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("reviewManagement.xhtml");
+                } catch (IOException ex1) {
+                    Logger.getLogger(reviewChainManagedBean.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delete Successful", null));
+        } catch (DeleteReviewException | NoResultException | ReviewNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured during deletion: " + ex.getMessage(), null));
+        }
+    }
 
     public List<ReviewEntity> getReviewChain() {
         return reviewChain;
@@ -113,5 +140,13 @@ public class reviewChainManagedBean implements Serializable{
     public void setReviewReply(String reviewReply) {
         this.reviewReply = reviewReply;
     }
-    
+
+    public ReviewEntity getReviewToDelete() {
+        return reviewToDelete;
+    }
+
+    public void setReviewToDelete(ReviewEntity reviewToDelete) {
+        this.reviewToDelete = reviewToDelete;
+    }
+
 }

@@ -13,73 +13,97 @@
 
         <h:form id="formMain">
 
-            <p:dataView value="#{reviewChainManagedBean.reviewChain}" var="review" rows="12" paginator="true" rowsPerPageTemplate="1, 6,12,16"
+            <p:dataView value="#{reviewChainManagedBean.reviewChain}" var="review" rows="12" paginator="true" listIcon="fa fa-bars" rowsPerPageTemplate="1, 6,12,16"
                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                 <f:facet name="header">
-                    Review Chain For Review ID: #{reviewChainManagedBean.rootReview.reviewId}
+                    <h:outputText style="font-size: 1.5vw; padding-left: 3.2vw" value="Review Chain For Review ID: #{reviewChainManagedBean.rootReview.reviewId}"/>
                 </f:facet>
+
                 <p:dataViewListItem >
                     <div class="ui-g">
-                        <div class="ui-g-2">
-                            <p:graphicImage style="width:100%; height: auto" rendered="#{review.productEntity.productImageUrl != null}" url="#{review.productEntity.productImageUrl}"/>
+                        <div class="ui-g-1" style="display: flex; align-content: center; justify-content: center; align-items: center">
+                            <p:graphicImage style="width:80%; height: auto" rendered="#{review.productEntity.productImageUrl != null}" url="#{review.productEntity.productImageUrl}"/>
+                            <p:graphicImage style="width:80%; height: auto" rendered="#{review.parentReviewEntity != null}" library="images" name="reply.svg"/>
                         </div>
 
-                        <div class="ui-g-9">
- 
-                                <p:panelGrid columns="2" columnClasses="ui-g-3, ui-g-9" rendered="#{review.customerEntity != null}" layout="grid" style="width:100%">
+                        <div class="ui-g-10">
 
-                                    <h:outputText value="Review Date:"/>
-                                    <h:outputText value="#{review.reviewDate}">
-                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-                                    </h:outputText>
+                            <p:panelGrid columns="2" columnClasses="ui-g-2, ui-g-10" rendered="#{review.customerEntity != null}" style="width:100%">
 
+                                <h:outputText style="font-weight: bold" value="Review Date:"/>
+                                <h:outputText value="#{review.reviewDate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                </h:outputText>
+                                
+                                <h:outputText style="font-weight: bold" value="Product ID: "/>
+                                <h:outputText value="#{review.productEntity.productId}"/>
 
-                                    <h:outputText value="Product Name: "/>
-                                    <h:outputText value="#{review.productEntity.name}"/>
+                                <h:outputText style="font-weight: bold" value="Product Name: "/>
+                                <h:outputText value="#{review.productEntity.name} (ID: #{review.productEntity.productId})"/>
 
-
-                                    <h:outputText value="Customer Name:"/>
-                                    <h:outputText value="#{review.customerEntity.firstName} #{review.customerEntity.lastName}"/>
-
-
-                                    <h:outputText value="Rating:"/>
-                                    <h:outputText value="#{review.productRating}"/>
-
-
-                                    <h:outputText value="Content: "/>
-                                    <h:outputText value="#{review.content}"/>
+                                <h:outputText style="font-weight: bold" value="Customer ID: "/>
+                                <h:outputText value="#{review.customerEntity.customerId}"/>
+                                
+                                <h:outputText style="font-weight: bold" value="Customer Name:"/>
+                                <h:outputText value="#{review.customerEntity.firstName} #{review.customerEntity.lastName}"/>
 
 
-                                </p:panelGrid>
-                                <p:panelGrid columns="2" columnClasses="ui-g-3, ui-g-9" rendered="#{review.staffEntity != null}" layout="grid" style="width:100%">
+                                <h:outputText style="font-weight: bold" value="Rating:"/>
+                                <p:rating value="#{review.productRating}" stars="5" readonly="true"/>
 
-                                    <h:outputText value="Reply Date:"/>
-                                    <h:outputText value="#{review.reviewDate}">
-                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-                                    </h:outputText>
 
-                                    <h:outputText value="Staff Name:"/>
-                                    <h:outputText value="#{review.staffEntity.firstName} #{review.staffEntity.lastName}"/>
 
-                                    <h:outputText value="Content: "/>
-                                    <h:outputText value="#{review.content}"/>
+                                <h:outputText style="font-weight: bold" value="Content: "/>
+                                <h:outputText value="#{review.content}"/>
 
-                                </p:panelGrid>
-   
+
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" columnClasses="ui-g-2, ui-g-10" rendered="#{review.staffEntity != null}"  style="width:100%">
+
+                                <h:outputText style="font-weight: bold" value="Reply Date:"/>
+                                <h:outputText value="#{review.reviewDate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                </h:outputText>
+
+                                <h:outputText style="font-weight: bold" value="Staff Name:"/>
+                                <h:outputText value="#{review.staffEntity.firstName} #{review.staffEntity.lastName}"/>
+
+                                <h:outputText style="font-weight: bold" value="Content: "/>
+                                <h:outputText value="#{review.content}"/>
+
+                            </p:panelGrid>
+
                         </div>
 
                         <div class="ui-g-1">
                             <p:commandButton rendered="#{review.customerEntity != null and review.replyReviewEntity == null}" value="Reply" 
-                                             update="formMain formReply" 
+                                             update="formMain formReply" style="height: 50%; width: 100%" icon="fa fa-reply"
                                              oncomplete="PF('dialogReplyReview').show()">
                                 <f:setPropertyActionListener value="#{review}" target="#{reviewChainManagedBean.selectedReview}"/>
                             </p:commandButton>
-                            <p:commandButton rendered="#{review.staffEntity != null and review.parentReviewEntity != null}" value="Edit Reply" 
-                                              update="formMain editReplyForm"
+                            <p:commandButton rendered="#{review.customerEntity != null and review.replyReviewEntity == null}" icon="fa fa-trash" 
+                                             update="formMain" style="color:red; height: 50%; width:100%" value="Delete" actionListener="#{reviewChainManagedBean.deleteReview}">
+                                <f:attribute name="reviewToDeleteId" value="#{review.reviewId}"/>
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="fa fa-warning"/>
+                            </p:commandButton>
+                            
+                            <p:commandButton rendered="#{review.staffEntity != null and review.parentReviewEntity != null}" icon="fa fa-pencil" 
+                                             update="formMain editReplyForm" style="height: 50%; width: 100%" value="Edit"
                                              oncomplete="PF('dialogEditReply').show()">
                                 <f:setPropertyActionListener value="#{review}" target="#{reviewChainManagedBean.selectedReview}"/>
                             </p:commandButton>
+                            <p:commandButton rendered="#{review.staffEntity != null and review.parentReviewEntity != null}" icon="fa fa-trash" 
+                                             update="formMain" style="color:red; height: 50%; width:100%" value="Delete" actionListener="#{reviewChainManagedBean.deleteReview}">
+                                <f:attribute name="reviewToDeleteId" value="#{review.reviewId}"/>
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="fa fa-warning"/>
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <div align="center">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                                </div>
+                            </p:confirmDialog> 
                         </div>
                     </div>
                     <hr/>
@@ -87,21 +111,41 @@
             </p:dataView>
             <p:growl globalOnly="true"/>
         </h:form>
-        
+
         <h:form id="formReply">
             <p:dialog id="dialogReplyReview" widgetVar="dialogReplyReview" position="center">
-                <h:outputText value="Replying to: Review ID #{reviewChainManagedBean.selectedReview.reviewId}"/><br/>
-                <p:inputTextarea value="#{reviewChainManagedBean.reviewReply}" autoResize="true" />
-                <p:commandButton value="Submit" actionListener="#{reviewChainManagedBean.submitReply}" update="formMain" oncomplete="PF('dialogReplyReview').hide()"/>
+                <div class="ui-g" style="text-align: center; width:100%">
+                    <div class="ui-g-12">
+                        <h:outputText value="Replying to: Review ID #{reviewChainManagedBean.selectedReview.reviewId}"/>
+                    </div>
+                    <div class="ui-g-12" style="width: 100%; text-align: center">
+                        <p:inputTextarea style="width:100%" value="#{reviewChainManagedBean.reviewReply}" autoResize="true" />
+                    </div>
+                    <div class="ui-g-12">
+                        <p:commandButton value="Submit" actionListener="#{reviewChainManagedBean.submitReply}" update="formMain" oncomplete="PF('dialogReplyReview').hide()"/>
+                    </div>
+                </div>
             </p:dialog>
-            
+
         </h:form>
-        
+
         <h:form id="editReplyForm">
-            <p:dialog id="dialogEditReply" widgetVar="dialogEditReply" position="center">
-                <h:outputText value="Editing: Review ID #{reviewChainManagedBean.selectedReview.reviewId}"/><br/>
-                <p:inputTextarea value="#{reviewChainManagedBean.selectedReview.content}" autoResize="true" />
-                <p:commandButton value="Save" actionListener="#{reviewChainManagedBean.editReply}" update="formMain" oncomplete="PF('dialogEditReply').hide()"/>
+            <p:dialog id="dialogEditReply" widgetVar="dialogEditReply" >
+                <f:facet name="header">
+                    <div class="ui-g" style="text-align: center; width:100%">
+                        <div class="ui-g-12">
+                            <h:outputText value="Editing: Review ID #{reviewChainManagedBean.selectedReview.reviewId}"/>
+                        </div>
+                    </div>
+                </f:facet>
+                <div class="ui-g" style="width: 100%; text-align: center">
+                    <div class="ui-g-12">
+                        <p:inputTextarea style="width: 100%" value="#{reviewChainManagedBean.selectedReview.content}" autoResize="true" />
+                    </div>
+                    <div class="ui-g-12">
+                        <p:commandButton value="Save" actionListener="#{reviewChainManagedBean.editReply}" update="formMain" oncomplete="PF('dialogEditReply').hide()"/>
+                    </div>
+                </div>
             </p:dialog>
         </h:form>
 
