@@ -23,6 +23,11 @@ export class ProductService {
 			.pipe(catchError(this.handleError))
 	}
 
+	getProductId(productId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/getProductById?productId=" + productId)
+			.pipe(catchError(this.handleError))
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 

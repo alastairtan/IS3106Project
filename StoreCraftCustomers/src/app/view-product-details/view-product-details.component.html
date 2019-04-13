@@ -1,3 +1,27 @@
-<p>
-  {{product}}
-</p>
+<div fxFlex="60%">
+  <img src="{{product.productImageUrl}}" />
+</div>
+
+<div style="margin-top:230px; padding-right: 100px">
+
+  <h1 style="margin-bottom: 30px">
+    <strong>{{product.name}}</strong>
+  </h1>
+
+  <h3>{{format()}}</h3>
+  <p style="color:	#A9A9A9"> {{product.description}} </p>
+  <mat-divider></mat-divider>
+
+  <h5 style="margin-top: 15px;"> Product descriptiodasdasdasdassadasdasdasdasdasasdasdassdasn : {{product.description}}
+  </h5>
+
+  <div style="margin-top: 30px; text-align: end; padding-right: 20px">
+    <button style="display: inline-block" class="quantity" mat-raised-button (click)="add()">+</button> 
+    <p style="display: inline-block">{{quantity}}</p>
+    <button style="display: inline-block" class="quantity" mat-raised-button (click)="minus()">-</button>
+  </div>
+
+  <div style="margin-top: 30px; text-align: end">
+    <button mat-raised-button color="warn" (click)="addToCart()">Add to Cart</button>
+  </div>
+</div>
