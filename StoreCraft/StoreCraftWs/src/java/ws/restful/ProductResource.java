@@ -6,6 +6,7 @@
 package ws.restful;
 
 import datamodel.ws.rest.ErrorRsp;
+import datamodel.ws.rest.ProductRsp;
 import datamodel.ws.rest.RetrieveProdByCategoryRsp;
 import ejb.stateless.ProductEntityControllerLocal;
 import entity.CategoryEntity;
@@ -29,6 +30,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.CategoryNotFoundException;
+import util.exception.ProductNotFoundException;
 
 /**
  * REST Web Service
@@ -65,7 +67,8 @@ public class ProductResource {
                                
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
-                    reviewEntity.getCustomerEntity().getReviewEntities().clear(); //unidirectional between product's review and customer
+                    reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
+                    reviewEntity.setReplyReviewEntity(null);
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
@@ -86,6 +89,47 @@ public class ProductResource {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("getProductById")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductById(@QueryParam("productId") String productId) {
+        
+        try {
+            
+            ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(new Long(productId));
+            
+            for(ReviewEntity review : productEntity.getReviewEntities()) {
+                review.setProductEntity(null);
+                review.setCustomerEntity(null);
+                review.setReplyReviewEntity(null);
+            }
+            
+            for(TagEntity tag : productEntity.getTagEntities()) {
+                tag.getProductEntities().clear();
+            }
+            
+            productEntity.setCategoryEntity(null);
+            
+            for(DiscountCodeEntity discoutCode : productEntity.getDiscountCodeEntities())
+            {
+                discoutCode.getProductEntities().clear();
+            }
+        
+            ProductRsp productRsp = new ProductRsp(productEntity);
+           
+            return Response.status(Response.Status.OK).entity(productRsp).build();
+
+        } catch (ProductNotFoundException | NumberFormatException ex) {
+
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
