@@ -29,13 +29,6 @@ import util.exception.CustomerNotFoundException;
 @ViewScoped
 public class CustomerDetailsManagedBean implements Serializable {
 
-    public List<SaleTransactionLineItemEntity> getFilteredSaleTransactionLineItemEntities() {
-        return filteredSaleTransactionLineItemEntities;
-    }
-
-    public void setFilteredSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities) {
-        this.filteredSaleTransactionLineItemEntities = filteredSaleTransactionLineItemEntities;
-    }
 
     @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
@@ -156,6 +149,13 @@ public class CustomerDetailsManagedBean implements Serializable {
         this.currentSaleTransactionEntity = currentSaleTransactionEntity;
     }
     
+    public List<SaleTransactionLineItemEntity> getFilteredSaleTransactionLineItemEntities() {
+        return filteredSaleTransactionLineItemEntities;
+    }
+
+    public void setFilteredSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities) {
+        this.filteredSaleTransactionLineItemEntities = filteredSaleTransactionLineItemEntities;
+    }
     
     
 }
