@@ -4,9 +4,11 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 template="./../template/defaultTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
+        <ezcomp:Breadcrumb pageName="scavengerHunt" />
         <h:form id="formCurrentScavenge">
             <p:dataTable id="dataTableCurrentScavenge" value="#{scavengerHuntManagedBean.currentScavengerHunt}" 
                          widgetVar="scavengeDataTable"
