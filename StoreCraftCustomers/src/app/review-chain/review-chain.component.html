@@ -1,0 +1,19 @@
+<mat-accordion multi="true">
+    <mat-expansion-panel *ngFor="let review of reviewChain" [disabled]="true">
+      <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
+        <mat-panel-title class="reviewTitle">
+          {{review.staffEntity?.firstName}} {{review.staffEntity?.lastName}}
+          {{review.customerEntity?.firstName}} {{review.customerEntity?.lastName}}
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-list role="list">
+            <mat-list-item role="listitem"><strong>{{review.reviewDate | date}}</strong></mat-list-item>
+            <mat-list-item role="listitem">{{review.content}}</mat-list-item>
+            <mat-list-item role="listitem">
+              <button mat-raised-button color="accent">Reply</button>
+            </mat-list-item>
+          </mat-list>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>
+  </mat-accordion>

@@ -44,7 +44,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveChanges(){
-    
     this.customerService.updateCustomer(this.customer).subscribe(
       response => {
         console.log(response);

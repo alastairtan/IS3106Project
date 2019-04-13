@@ -12,37 +12,38 @@ import { ProductService } from '../product.service';
 })
 export class ViewProductDetailsComponent implements OnInit {
 
-  private product : Product;
-  private quantity : number = 0;
-  private errorMessage : string;
+  private product: Product;
+  private quantity: number = 0;
+  private errorMessage: string;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private productService : ProductService) { }
+    private productService: ProductService) { }
 
   ngOnInit() {
     let productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
-    
+
     this.productService.getProductId(productId).subscribe(response =>
       this.product = response.productEntity
     ),
       (error: string) => {
-      this.errorMessage = error;
-    }
+        this.errorMessage = error;
+      }
   }
 
   format() {
-    return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(this.product.unitPrice));
+    if (this.product != null) {
+      return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(this.product.unitPrice));
+    }
   }
 
   add() {
-    if (this.quantity < 10 && this.quantity < this.product.quantityOnHand)
-    {
+    if (this.quantity < 10 && this.quantity < this.product.quantityOnHand) {
       this.quantity = this.quantity + 1;
     }
   }
 
   minus() {
-    if(this.quantity > 0) {
+    if (this.quantity > 0) {
       this.quantity = this.quantity - 1;
     }
   }

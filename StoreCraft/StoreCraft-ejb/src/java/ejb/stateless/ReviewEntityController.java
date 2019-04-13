@@ -224,6 +224,14 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
                 reviewChain.add(reviewReply);
                 rootReviewEntity = reviewReply;
             }
+            
+            for (ReviewEntity re : reviewChain){
+                if (re.getCustomerEntity() != null) re.getCustomerEntity().getReviewEntities().size();
+                re.getProductEntity();
+                re.getParentReviewEntity();
+                re.getReplyReviewEntity();
+                if (re.getStaffEntity() != null) re.getStaffEntity().getReviewEntities().size();
+            }
 
             return reviewChain;
         } catch (ReviewNotFoundException ex) {

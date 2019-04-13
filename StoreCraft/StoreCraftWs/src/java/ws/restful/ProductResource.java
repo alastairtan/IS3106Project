@@ -138,6 +138,7 @@ public class ProductResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
 
     private void clearParentToChildrenRelationship(CategoryEntity subCategory) { //so relationships are unidirectional
         if (subCategory.getParentCategoryEntity() != null) {

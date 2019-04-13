@@ -144,7 +144,7 @@ public class DataInitSessionBean {
 
             List<Long> tagIdsEmpty = new ArrayList<>();
 
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD001", "Asus 1", "Asus 1", 100, 10, new BigDecimal("10.00"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD001", "Asus 1", "This is a pretty damn good computer that you should buy. Just don't intall Angular on it cos it sucks", 100, 10, new BigDecimal("10.00"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsPopular);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD002", "Asus 2", "Asus 2", 100, 10, new BigDecimal("25.50"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsDiscount);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD003", "Asus 3", "Asus 3", 100, 10, new BigDecimal("15.00"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsPopularDiscount);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD004", "Dell 1", "Dell 1", 100, 10, new BigDecimal("20.00"), "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg"), dellCategory.getCategoryId(), tagIdsPopularNew);
