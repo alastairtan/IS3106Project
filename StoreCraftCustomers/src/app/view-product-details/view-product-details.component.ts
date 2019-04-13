@@ -14,14 +14,20 @@ export class ViewProductDetailsComponent implements OnInit {
 
   private product : Product;
   private quantity : number = 0;
+  private errorMessage : string;
 
   constructor(private activatedRoute: ActivatedRoute,
     private productService : ProductService) { }
 
   ngOnInit() {
     let productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
+    
     this.productService.getProductId(productId).subscribe(response =>
-      this.product = response.productEntity);
+      this.product = response.productEntity
+    ),
+      (error: string) => {
+      this.errorMessage = error;
+    }
   }
 
   format() {
@@ -29,7 +35,10 @@ export class ViewProductDetailsComponent implements OnInit {
   }
 
   add() {
-    this.quantity = this.quantity + 1;
+    if (this.quantity < 10 && this.quantity < this.product.quantityOnHand)
+    {
+      this.quantity = this.quantity + 1;
+    }
   }
 
   minus() {
@@ -40,5 +49,6 @@ export class ViewProductDetailsComponent implements OnInit {
 
   addToCart() {
     console.log("Adding to cart!");
+    console.log(this.product.reviewEntities)
   }
 }
