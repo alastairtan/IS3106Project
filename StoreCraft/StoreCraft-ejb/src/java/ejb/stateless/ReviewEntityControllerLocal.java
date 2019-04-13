@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.ProductNotFoundException;
+import util.exception.StaffNotFoundException;
 
 /**
  *
@@ -28,5 +29,13 @@ public interface ReviewEntityControllerLocal {
     public ReviewEntity createNewReview(Long customerId, String content, Integer productRating, Long productId) throws InputDataValidationException, CustomerNotFoundException, ProductNotFoundException;
 
     public List<ReviewEntity> retrieveReviewsForProduct(Long productId) throws NoResultException;
+
+    public ReviewEntity replyReview(Long reviewIdToReply, ReviewEntity replyReviewEntity, Long staffId) throws InputDataValidationException, StaffNotFoundException;
+
+    public List<ReviewEntity> retrieveAllRootReviewEntities();
+
+    public List<ReviewEntity> getOutstandingCustomerReviews();
+
+    public List<ReviewEntity> getReviewChain(Long rootReviewEntityId);
     
 }

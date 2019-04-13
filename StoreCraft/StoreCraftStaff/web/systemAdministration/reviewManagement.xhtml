@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="reviewManagement"/>
+       
+        <h:form id="formMain">
+            
+            <p:dataTable id="dataTableMain" value="#{reviewManagementManagedBean.allRootReviewEntities}" var="rootReview" 
+                         widgetVar="rootReviewDataTable" filteredValue="#{reviewManagementManagedBean.filteredRootReviewEntities}"
+                         rows="10" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20"
+                         rowKey="#{rootReview.reviewId}"
+                         >
+                
+                <f:facet name="header">
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <p:inputText id="globalFilter" onkeyup="PF('rootReviewDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                        </div>
+                        <div class="ui-g-4">
+                            Displaying All Root Reviews
+                        </div>
+                        <div class="ui-g-4">
+                            &nbsp;
+                        </div>
+                    </div>
+                </f:facet>
+                
+                <p:column headerText="Review ID" sortBy="#{rootReview.reviewId}" filterBy="#{rootReview.reviewId}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.reviewId}"/>
+                </p:column>
+                
+                <p:column headerText="Product ID" sortBy="#{rootReview.productEntity.productId}" filterBy="#{rootReview.productEntity.productId}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.productEntity.productId}"/>
+                </p:column>
+                
+                <p:column headerText="Product Name" sortBy="#{rootReview.productEntity.name}" filterBy="#{rootReview.productEntity.name}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.productEntity.name}"/>
+                </p:column>
+                
+                <p:column headerText="Customer ID" sortBy="#{rootReview.customerEntity.customerId}" filterBy="#{rootReview.customerEntity.customerId}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.customerEntity.customerId}"/>
+                </p:column>
+                
+                <p:column headerText="Customer Name" sortBy="#{rootReview.customerEntity.firstName}" filterBy="#{rootReview.customerEntity.firstName}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.customerEntity.firstName} #{rootReview.customerEntity.lastName}"/>
+                </p:column>
+                      
+                <p:column headerText="Rating (If Any)" sortBy="#{rootReview.productRating}" filterBy="#{rootReview.productRating}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.productRating}"/>
+                </p:column>
+                
+                <p:column headerText="Review Date" sortBy="#{rootReview.reviewDate}" filterBy="#{rootReview.reviewDate}" filterMatchMode="contains">
+                    <h:outputText value="#{rootReview.reviewDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
+                </p:column>
+            
+                <p:column headerText="View Details">
+                    <p:linkButton icon="fa fa-search" outcome="reviewChain.xhtml">
+                        <f:param name="rootReviewId" value="#{rootReview.reviewId}"/>
+                    </p:linkButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
@@ -37,8 +38,7 @@ public class ReviewEntity implements Serializable {
     
     private String content;
     
-    @Column(nullable = false)
-    @NotNull
+    @Column(nullable = true)
     @Positive
     @Min(1)
     @Max(5)
@@ -51,22 +51,22 @@ public class ReviewEntity implements Serializable {
     
     //RELATIONSHIPS
     
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
     private CustomerEntity customerEntity;
     
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
     private ProductEntity productEntity;
     
     @ManyToOne(optional = true)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private StaffEntity staffEntity;
     
-    @OneToMany(mappedBy = "parentReviewEntity")
-    private List<ReviewEntity> listOfReviews;
+    @OneToOne(mappedBy = "parentReviewEntity")
+    private ReviewEntity replyReviewEntity;
     
-    @ManyToOne
+    @OneToOne
     private ReviewEntity parentReviewEntity;
 
     public ReviewEntity() {
@@ -77,6 +77,12 @@ public class ReviewEntity implements Serializable {
         this.productRating = productRating;
         this.reviewDate = reviewDate;
     }
+
+    public ReviewEntity(String content, Date reviewDate) {
+        this.content = content;
+        this.reviewDate = reviewDate;
+    }
+    
     
     public Long getReviewId() {
         return reviewId;
@@ -171,13 +177,6 @@ public class ReviewEntity implements Serializable {
         this.staffEntity = staffEntity;
     }
 
-    public List<ReviewEntity> getListOfReviews() {
-        return listOfReviews;
-    }
-
-    public void setListOfReviews(List<ReviewEntity> listOfReviews) {
-        this.listOfReviews = listOfReviews;
-    }
 
     public ReviewEntity getParentReviewEntity() {
         return parentReviewEntity;
@@ -185,6 +184,14 @@ public class ReviewEntity implements Serializable {
 
     public void setParentReviewEntity(ReviewEntity parentReviewEntity) {
         this.parentReviewEntity = parentReviewEntity;
+    }
+
+    public ReviewEntity getReplyReviewEntity() {
+        return replyReviewEntity;
+    }
+
+    public void setReplyReviewEntity(ReviewEntity replyReviewEntity) {
+        this.replyReviewEntity = replyReviewEntity;
     }
     
 }
