@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <ezcomp:Breadcrumb pageName="scavengerHuntHistory" />
+        <h:form id="formMain">
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Current Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" icon="fa fa-trophy">
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Scavenger Hunt History" outcome="/gameFeatures/scavengerHuntHistory.xhtml" icon="fa fa-history  ">
+                    <f:param name="i" value="1" />
+                </p:menuitem>
+            </p:tabMenu>
+            <p:messages closable="true"/>
+
+            <p:dataTable id="dataTableMain" value="#{scavengerHuntManagedBean.scavengers}" var="scavengeHunt" 
+                         widgetVar="scavengeDataTable" filteredValue="#{scavengerHuntManagedBean.filteredScavengers}"
+                         rows="6" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20"
+                         rowKey="#{scavengeHunt.scavengerHuntId}"
+                         >
+                <f:facet name="header"> 
+                    <div class="ui-g">
+                        <div class="ui-g-4" style="padding: 0; text-align: left">
+                            <p:inputText id="globalFilter" onkeyup="PF('scavengeDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/>  
+                        </div>
+                        <div class="ui-g-4" style="text-align:center">
+                            <h:outputText value="Scavenger Hunt History" />
+                        </div>
+                        <div class="ui-g-4" >
+                            &nbsp;
+                        </div>
+                    </div>
+                </f:facet>
+
+                <p:column headerText="Scavenger Hunt ID" sortBy="#{scavengeHunt.scavengerHuntId}" filterBy="#{scavengeHunt.scavengerHuntId}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.scavengerHuntId}" />
+                </p:column>
+
+                <p:column headerText="Winners (Customers)" style="text-align: center">
+                    <p:commandButton update="formViewCustomers" oncomplete="PF('dialogViewCustomers').show();" icon="fa fa-search" title="View">
+                        <f:setPropertyActionListener value="#{scavengeHunt}" target="#{scavengerHuntManagedBean.selectedScavengerHunt}" />
+                    </p:commandButton>
+                </p:column> 
+
+                <p:column headerText="Reward Type" sortBy="#{scavengeHunt.rewardTypeEnum}" filterBy="#{scavengeHunt.rewardTypeEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.rewardTypeEnum}" />
+                </p:column> 
+
+                <p:column headerText="Remaining Slots" sortBy="#{scavengeHunt.numWinnersRemaining}" filterBy="#{scavengeHunt.numWinnersRemaining}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.numWinnersRemaining}" />
+                </p:column> 
+
+                <p:column headerText="Date" sortBy="#{scavengeHunt.scavengerHuntDate}" filterBy="#{scavengeHunt.scavengerHuntDate}" filterMatchMode="contains">
+                    <h:outputText value="#{scavengeHunt.scavengerHuntDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                    </h:outputText>
+                </p:column> 
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formViewCustomers">
+            <p:dialog id="dialogViewCustomers" widgetVar="dialogViewCustomers" closable="true"
+                      position="center" closeOnEscape="true" header="All Winners (Customers)">
+                <p:ajax event="close" listener="#{scavengerHuntManagedBean.closeViewCustomerDialog}"/>
+
+                <p:panelGrid style="width: 100%; height: auto" >
+
+                    <p:dataTable value="#{scavengerHuntManagedBean.selectedScavengerHunt.customerEntities}" var="customerEntity"
+                                 rows="5" paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20"
+                                 rowKey="#{customerEntity.customerId}"
+                                 >
+
+                        <f:facet name="header">
+                            Winners
+                        </f:facet>
+
+                        <p:column headerText="Customer ID" sortBy="#{customerEntity.customerId}" >
+                            <h:outputText value="#{customerEntity.customerId}" />
+                        </p:column>    
+
+                        <p:column headerText="First Name" sortBy="#{customerEntity.firstName}" >
+                            <h:outputText value="#{customerEntity.firstName}" />
+                        </p:column>   
+
+                        <p:column headerText="Last Name" sortBy="#{customerEntity.lastName}" >
+                            <h:outputText value="#{customerEntity.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Country" sortBy="#{customerEntity.country}" >
+                            <h:outputText value="#{customerEntity.country}" />
+                        </p:column>   
+
+                        <p:column headerText="Membership Tier" sortBy="#{customerEntity.membershipTierEnum}" >
+                            <h:outputText value="#{customerEntity.membershipTierEnum}" />
+                        </p:column>
+                    </p:dataTable>
+
+                </p:panelGrid>
+
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -76,7 +76,8 @@ public class SecurityFilter implements Filter {
                     || path.equals("/systemAdministration/viewProductDetails.xhtml")
                     || path.equals("/systemAdministration/viewUpdateDiscountCode.xhtml")
                     || path.equals("/gameFeatures/communityGoals.xhtml")
-                    || path.equals("/gameFeatures/scavengerHunt.xhtml")) {
+                    || path.equals("/gameFeatures/scavengerHunt.xhtml")
+                    || path.equals("/gameFeatures/scavengerHuntHistory.xhtml")) {
                 return true;
             } else {
                 return false;
@@ -96,7 +97,8 @@ public class SecurityFilter implements Filter {
                     || path.equals("/systemAdministration/viewProductDetails.xhtml")
                     || path.equals("/systemAdministration/viewUpdateDiscountCode.xhtml")
                     || path.equals("/gameFeatures/communityGoals.xhtml")
-                    || path.equals("/gameFeatures/scavengerHunt.xhtml")) {
+                    || path.equals("/gameFeatures/scavengerHunt.xhtml")
+                    || path.equals("/gameFeatures/scavengerHuntHistory.xhtml")) {
                 return true;
             } else {
                 return false;
