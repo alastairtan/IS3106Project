@@ -4,6 +4,8 @@ import { Customer } from '../customer';
 import { MembershipTierEnum } from '../MembershipTierEnum.enum';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { CommunityGoal } from '../community-goal';
+import { CommunityGoalService } from '../community-goal.service';
 
 @Component({
   selector: 'app-index',
@@ -14,11 +16,14 @@ export class IndexComponent implements OnInit {
 
   customer: Customer;
   products: Product[];
+  communityGoals: CommunityGoal[];
+  currentDate: Date = new Date();
 
 
   constructor(public sessionService: SessionService,
-              private productService: ProductService) {
-
+              private productService: ProductService,
+              private communityGoalService: CommunityGoalService) {
+    this.currentDate = new Date();
   }
 
   ngOnInit() {
@@ -35,7 +40,17 @@ export class IndexComponent implements OnInit {
 			error => {
 				console.log('********** IndexComponent.ts: ' + error);
 			}
-		);
+    );
+    
+    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(this.currentDate, "Singapore").subscribe(
+      response => {
+        this.communityGoals = response.communityGoalEntities;
+        console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
+      },
+      error => {
+        console.log('********** IndexComponent.ts: community ' + error);
+      }
+    );
   }
 
 }

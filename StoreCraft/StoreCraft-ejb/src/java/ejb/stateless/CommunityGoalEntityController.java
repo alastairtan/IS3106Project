@@ -7,6 +7,8 @@ package ejb.stateless;
 
 import entity.CommunityGoalEntity;
 import entity.StaffEntity;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -22,6 +24,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
+import util.exception.DateNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 
@@ -146,6 +149,25 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+    }
+    
+    @Override
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(Date currentDate, String country) throws DateNotFoundException {
+        
+        if(currentDate == null) {
+            throw new DateNotFoundException("No date entered!");
+        }
+        
+        List<CommunityGoalEntity> communityGoalEntitys= retrieveAllCommunityGoals();
+        List<CommunityGoalEntity> currentCommunityGoalEntitys = new LinkedList<>();
+        
+        for(CommunityGoalEntity cge : communityGoalEntitys) {
+            if(cge.getCountry().equals(country) && cge.getStartDate().before(currentDate) == true && cge.getEndDate().after(currentDate)==true) {
+                currentCommunityGoalEntitys.add(cge);
+            }
+        }
+        return currentCommunityGoalEntitys;
+        
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CommunityGoalEntity>>constraintViolations)

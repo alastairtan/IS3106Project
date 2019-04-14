@@ -101,7 +101,7 @@ public class ProductResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductsByCategory() {
+    public Response getRandomProductsForIndexPage() {
         try {
             List<ProductEntity> productEntities = productEntityControllerLocal.retrieveRandomProducts();
             for (ProductEntity productEntity : productEntities) {
