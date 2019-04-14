@@ -51,7 +51,7 @@ public class ReviewResource {
                     re.getCustomerEntity().setDiscountCodeEntities(null);
                     re.getCustomerEntity().setSaleTransactionEntities(null);
                 }
-                re.setParentReviewEntity(null);
+//                re.setParentReviewEntity(null);
                 re.setProductEntity(null);
                 re.setReplyReviewEntity(null);
                 if (re.getStaffEntity() != null) re.getStaffEntity().getReviewEntities().clear();

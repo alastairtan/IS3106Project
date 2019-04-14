@@ -60,16 +60,17 @@ public class ProductResource {
                 
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
 
-                List<TagEntity> tagEntities = productEntity.getTagEntities();
-                for (TagEntity tagEntity : tagEntities) {
-                    tagEntity.getProductEntities().clear(); //unidirectional between product and tags
-                }
-                               
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
                     reviewEntity.setReplyReviewEntity(null);
                     reviewEntity.setStaffEntity(null);
+                    reviewEntity.setParentReviewEntity(null);
+                }
+                
+                List<TagEntity> tagEntities = productEntity.getTagEntities();
+                for (TagEntity tagEntity : tagEntities) {
+                    tagEntity.getProductEntities().clear(); //unidirectional between product and tags
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
@@ -108,6 +109,7 @@ public class ProductResource {
                 review.setProductEntity(null);
                 review.setReplyReviewEntity(null);
                 review.setStaffEntity(null);
+                review.setParentReviewEntity(null);
                 review.getCustomerEntity().getDiscountCodeEntities().clear();
                 review.getCustomerEntity().getSaleTransactionEntities().clear();
                 review.getCustomerEntity().getReviewEntities().clear();

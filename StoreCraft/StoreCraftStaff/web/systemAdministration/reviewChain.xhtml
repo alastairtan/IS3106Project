@@ -122,7 +122,7 @@
                         <p:inputTextarea id="contentInput" style="width:100%" value="#{reviewChainManagedBean.reviewReply}" autoResize="true" required="true" requiredMessage="Content is required"/>
                     </div>
                     <div class="ui-g-12">
-                        <p:commandButton value="Submit" icon="fa fa-save" actionListener="#{reviewChainManagedBean.submitReply}" update="formMain formReply" oncomplete="PF('dialogReplyReview').show()"/>
+                        <p:commandButton value="Submit" icon="fa fa-save" actionListener="#{reviewChainManagedBean.submitReply}" update="formMain formReply" oncomplete="PF('dialogReplyReview').hide()"/>
                         <p:commandButton value="Close" icon="fa fa-times" style="color:red" oncomplete="PF('dialogReplyReview').hide()"/>
                     </div>
                 </div>
