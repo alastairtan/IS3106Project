@@ -26,13 +26,17 @@
           {{currentCustomer?.firstName}} {{currentCustomer?.lastName}}
         </mat-panel-title>
         <mat-panel-description>
-          <form #replyForm="ngForm" (ngSubmit)="reply()" class="custReplyForm">
+          <form #replyForm="ngForm" (ngSubmit)="replyForm.valid?reply():null" class="custReplyForm">
             <mat-form-field class="replyContentField">
               <textarea matInput name="replyTextArea" [(ngModel)]="replyContent" placeholder="Enter your reply"
-                required></textarea>
+                #replyTextContent="ngModel" required></textarea>
+              <mat-error *ngIf="replyTextContent.errors?.required">
+                Content is <strong>required</strong>
+              </mat-error>
             </mat-form-field>
             <button mat-raised-button type="submit" color="primary" class="submitReply">Submit Reply</button>&nbsp;
-            <button mat-raised-button type="reset" color="warn" class="submitReply" (click)="cancelReply()">Cancel</button>
+            <button mat-raised-button type="reset" color="warn" class="submitReply"
+              (click)="cancelReply()">Cancel</button>
           </form>
         </mat-panel-description>
       </mat-expansion-panel-header>

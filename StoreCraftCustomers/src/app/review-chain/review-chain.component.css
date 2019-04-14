@@ -27,6 +27,7 @@ mat-panel-title{
     width: 100%;
     color: black !important;
     margin-top: 2vw;
+    margin-bottom: 1vw;
 }
 
 .custReplyForm{

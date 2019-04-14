@@ -1,7 +1,7 @@
 import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -42,6 +42,7 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
+import { MatTableModule } from '@angular/material';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatGridListModule,
     MatToolbarModule,
@@ -87,7 +89,8 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     MatCheckboxModule,
     MatSelectModule,
     MatSliderModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],

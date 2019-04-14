@@ -105,26 +105,37 @@ public class CommunityGoalsManagedBean implements Serializable{
         afterStartDate = new Date();
     }
     //for update
-    public Date afterDate(SelectEvent event){
+    public void afterDate(SelectEvent event){
         
         afterStartDate = selectedCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
+        
+        c.setTime(afterStartDate);
 
-        c.add(Calendar.DATE, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
 
-        Date currentDatePlusOne = c.getTime();
-        return currentDatePlusOne;
+        c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+
+        afterStartDate = c.getTime();
+
     }
     //for create
-    public Date afterCreateDate(SelectEvent event){
+    public void afterCreateDate(SelectEvent event){
         afterStartDate = newCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
 
-        c.add(Calendar.DATE, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
-        Date currentDatePlusOne = c.getTime();
-        return currentDatePlusOne;
+        c.setTime(afterStartDate);
+       
+        c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+
+        afterStartDate = c.getTime();
+    }
+    
+    public Date yesterday(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_YEAR, -1);
+        
+        return c.getTime();
     }
     
     public void updateCommunityGoal(ActionEvent event){
@@ -142,7 +153,6 @@ public class CommunityGoalsManagedBean implements Serializable{
         
         StaffEntity staff = (StaffEntity)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
         try {
-            System.err.println("sfffeferferfff");
             communityGoalEntityControllerLocal.createNewCommunityGoal(newCommunityGoal, staff.getStaffId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal Successfully Created", null));
             this.communityGoals = communityGoalEntityControllerLocal.retrieveAllCommunityGoals();
