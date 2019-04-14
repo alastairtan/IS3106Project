@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {MatTableModule} from '@angular/material';
+import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-community-goals',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommunityGoalsComponent implements OnInit {
 
-  constructor() { }
+  public columnsToDisplay=["communityGoalId","communityGoalTitle","communityGoalDescription","communityGoalTargetPoints","communityGoalCurrentPoints",
+  "communityGoalStartDate","communityGoalEndDate"];
+
+  constructor(public sessionService) { }
 
   ngOnInit() {
   }
