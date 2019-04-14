@@ -110,15 +110,16 @@ public class CommunityGoalResource {
     {
         try {
             
-            List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveCurrentCommunityGoal(country);
+            List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveAllCommunityGoals();
             
             for(CommunityGoalEntity cge: communityGoalEntitys) {
                 cge.getStaffEntity().getCommunityGoalEntities().clear();
+                cge.setStaffEntity(null);
             }
             
 
             CommunityGoalRsp communityGoalRsp = new CommunityGoalRsp(communityGoalEntitys);
-            
+            System.err.println("smthththt");
             return Response.status(Response.Status.OK).entity(communityGoalRsp).build();
         }
         catch (Exception ex) {

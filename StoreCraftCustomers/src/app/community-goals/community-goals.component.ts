@@ -15,26 +15,29 @@ export class CommunityGoalsComponent implements OnInit {
   public columnsToDisplay=["communityGoalId","communityGoalTitle","communityGoalDescription","communityGoalTargetPoints","communityGoalCurrentPoints",
   "communityGoalStartDate","communityGoalEndDate"];
 
-  public dataSource = new MatTableDataSource();
+  public dataSource = new MatTableDataSource<CommunityGoal>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   country : String;
-  date : Date;
 
   constructor(public sessionService : SessionService,
               public communityGoalService : CommunityGoalService) { }
 
   ngOnInit() {
+      this.getCommunityGoals();
+    
+  }
 
-    let date = new Date();
+  public getCommunityGoals(){
     let country = this.sessionService.getCurrentCustomer().country;
     this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(country).subscribe(
       response =>{
-        this.dataSource.data = response as CommunityGoal[];
+        this.dataSource = new MatTableDataSource<CommunityGoal>(response.communityGoalEntities);
+        
       }
       ,error =>{
-        console.log('********** CommunityGoalComponent.ts: ' + error);
+        console.log('********** CommunityGoalComponent.ts: ', error);
       }
     )
   }
