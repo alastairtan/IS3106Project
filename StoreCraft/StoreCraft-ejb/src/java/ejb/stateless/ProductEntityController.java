@@ -161,6 +161,28 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         return productEntities;
     }
     
+    @Override
+    public List<ProductEntity> retrieveRandomProducts() {
+        List<ProductEntity> productEntitys = retrieveAllProducts();
+        List<ProductEntity> randomProducts = new ArrayList<>();
+        
+        int size = productEntitys.size();
+        int max = size/10;
+        
+        int randomChecker = 0;
+        
+        while(randomProducts.size() < 9) {
+            double randomDouble = Math.random();
+            randomDouble = randomDouble * size;
+            randomChecker = (int) randomDouble;
+            if(randomProducts.contains(productEntitys.get(randomChecker))) {
+                continue;
+            }
+            randomProducts.add(productEntitys.get(randomChecker));
+        }
+        return randomProducts;
+    }
+    
 
     @Override
     public List<ProductEntity> searchProductsByName(String searchString)

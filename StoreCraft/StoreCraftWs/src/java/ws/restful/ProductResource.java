@@ -96,6 +96,46 @@ public class ProductResource {
         }
     }
     
+
+    @Path("index")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRandomProductsForIndexPage() {
+        try {
+            List<ProductEntity> productEntities = productEntityControllerLocal.retrieveRandomProducts();
+            for (ProductEntity productEntity : productEntities) {
+                
+                clearParentToChildrenRelationship(productEntity.getCategoryEntity());
+
+                List<TagEntity> tagEntities = productEntity.getTagEntities();
+                for (TagEntity tagEntity : tagEntities) {
+                    tagEntity.getProductEntities().clear(); //unidirectional between product and tags
+                }
+                               
+                for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
+                    reviewEntity.setProductEntity(null); //unidirectional between product and review
+                    reviewEntity.getCustomerEntity().getReviewEntities().clear(); //unidirectional between product's review and customer
+                }
+
+                for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
+                    dce.getProductEntities().clear(); //undirectional between product and discount codes
+                    dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
+                }
+                
+            }
+        
+            RetrieveProdByCategoryRsp response = new RetrieveProdByCategoryRsp(productEntities);
+           
+            return Response.status(Response.Status.OK).entity(response).build();
+
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+        
+    }
+
     @Path("getProductById")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -140,7 +180,7 @@ public class ProductResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
 
     private void clearParentToChildrenRelationship(CategoryEntity subCategory) { //so relationships are unidirectional
         if (subCategory.getParentCategoryEntity() != null) {

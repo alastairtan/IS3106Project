@@ -9,6 +9,7 @@ import datamodel.ws.rest.CommunityGoalRsp;
 import datamodel.ws.rest.ErrorRsp;
 import ejb.stateless.CommunityGoalEntityControllerLocal;
 import entity.CommunityGoalEntity;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,6 +85,40 @@ public class CommunityGoalResource {
             communityGoalEntity.getStaffEntity().getCommunityGoalEntities().clear();
 
             CommunityGoalRsp communityGoalRsp = new CommunityGoalRsp(communityGoalEntity);
+            
+            return Response.status(Response.Status.OK).entity(communityGoalRsp).build();
+        }
+        catch (CommunityGoalNotFoundException ex) {
+            
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+        catch (Exception ex) {
+            
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("index")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCurrentCommunityGoalsByCountry(@QueryParam("currentDate") Date currentDate,
+                                                           @QueryParam("country") String country)
+                                                            
+    {
+        try {
+            
+            List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveCurrentCommunityGoal(currentDate, country);
+            
+            for(CommunityGoalEntity cge: communityGoalEntitys) {
+                cge.getStaffEntity().getCommunityGoalEntities().clear();
+            }
+            
+
+            CommunityGoalRsp communityGoalRsp = new CommunityGoalRsp(communityGoalEntitys);
             
             return Response.status(Response.Status.OK).entity(communityGoalRsp).build();
         }
