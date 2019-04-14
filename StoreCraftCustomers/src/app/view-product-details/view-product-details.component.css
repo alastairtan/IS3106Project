@@ -50,6 +50,10 @@ mat-panel-title {
     height: auto !important;
 }
 
+mat-list-item {
+    height: max-content !important;
+}
+
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
     flex-basis: inherit;
 }
@@ -122,3 +126,4 @@ mat-panel-title {
     width: 90%;
     align-self: baseline;
 }
+
