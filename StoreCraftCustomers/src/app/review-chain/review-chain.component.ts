@@ -4,6 +4,7 @@ import { ReviewService } from '../review.service';
 import { Customer } from '../customer';
 import { SessionService } from '../session.service';
 
+
 @Component({
   selector: 'app-review-chain',
   templateUrl: './review-chain.component.html',
@@ -27,7 +28,7 @@ export class ReviewChainComponent implements OnInit {
   constructor(
     private reviewService: ReviewService,
     private sessionService: SessionService
-  ) { 
+  ) {
     this.isReplying = false;
   }
 
@@ -35,7 +36,7 @@ export class ReviewChainComponent implements OnInit {
     this.getReviewChain();
   }
 
-  getReviewChain(){
+  getReviewChain() {
     this.reviewService.getReviewChain(this.rootReviewId).subscribe(response => {
       this.reviewChain = response.reviewEntities;
       this.currentCustomer = this.sessionService.getCurrentCustomer();
@@ -48,12 +49,12 @@ export class ReviewChainComponent implements OnInit {
     console.log(this.replyContent);
   }
 
-  cancelReply(){
+  cancelReply() {
     this.isReplying = false;
   }
 
-  reply(){
-    let customerReply : Review = new Review();
+  reply() {
+    let customerReply: Review = new Review();
     customerReply.content = this.replyContent;
     customerReply.reviewDate = new Date();
     let customerId = this.sessionService.getCurrentCustomer().customerId;
@@ -61,10 +62,10 @@ export class ReviewChainComponent implements OnInit {
       console.log(response.customerReplyId);
       this.isReplying = false;
       this.getReviewChain();
-    }, 
-    error => {
-      console.log(error);
-    })
+    },
+      error => {
+        console.log(error);
+      })
   }
 
 }
