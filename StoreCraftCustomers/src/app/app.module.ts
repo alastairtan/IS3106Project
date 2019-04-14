@@ -42,7 +42,7 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
-import { MatTableModule } from '@angular/material';
+import { MatTableModule, MatSortModule } from '@angular/material';
 
 
 @NgModule({
@@ -90,7 +90,8 @@ import { MatTableModule } from '@angular/material';
     MatSelectModule,
     MatSliderModule,
     MatChipsModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent],
