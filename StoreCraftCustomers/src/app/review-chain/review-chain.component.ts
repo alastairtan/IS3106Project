@@ -14,28 +14,57 @@ export class ReviewChainComponent implements OnInit {
   @Input()
   rootReviewId: number;
 
-  reviewChain: Review[]
+  reviewChain: Review[];
 
-  private customerId: number;
+  currentCustomer: Customer;
+
+  isReplying: boolean;
+
+  replyContent: string;
+
+  staffReplyToReplyTo: Review;
 
   constructor(
     private reviewService: ReviewService,
     private sessionService: SessionService
   ) { 
+    this.isReplying = false;
   }
 
   ngOnInit() {
-    this.reviewService.getReviewChain(this.rootReviewId).subscribe(response => {
-      this.reviewChain = response.reviewEntities;
-    })
-    // Need to set condition to only show the reply button if the logged in customer is the same
-    // one as the one who wrote the review in the first place. But the JSON does not contain enough information
-    // to check for that
-    this.customerId = this.sessionService.getCurrentCustomer().customerId;
+    this.getReviewChain();
   }
 
-  reply() {
-    this.reviewService
+  getReviewChain(){
+    this.reviewService.getReviewChain(this.rootReviewId).subscribe(response => {
+      this.reviewChain = response.reviewEntities;
+      this.currentCustomer = this.sessionService.getCurrentCustomer();
+    })
+  }
+
+  replying(staffReply: Review) {
+    this.isReplying = true;
+    this.staffReplyToReplyTo = staffReply;
+    console.log(this.replyContent);
+  }
+
+  cancelReply(){
+    this.isReplying = false;
+  }
+
+  reply(){
+    let customerReply : Review = new Review();
+    customerReply.content = this.replyContent;
+    customerReply.reviewDate = new Date();
+    let customerId = this.sessionService.getCurrentCustomer().customerId;
+    this.reviewService.replyToStaffReply(customerReply, this.staffReplyToReplyTo, customerId).subscribe(response => {
+      console.log(response.customerReplyId);
+      this.isReplying = false;
+      this.getReviewChain();
+    }, 
+    error => {
+      console.log(error);
+    })
   }
 
 }

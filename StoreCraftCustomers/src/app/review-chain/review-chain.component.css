@@ -22,3 +22,17 @@ mat-panel-title{
 .reviewTitle{
     align-self: center
 }
+
+.replyContentField{
+    width: 100%;
+    color: black !important;
+    margin-top: 2vw;
+}
+
+.custReplyForm{
+    width: 100%
+}
+
+.submitReply{
+    margin-bottom: 2vw;
+}
