@@ -61,6 +61,7 @@ public class CommunityGoalsManagedBean implements Serializable{
     private List<String> countries;
     private Date currentDate;
     private Date afterStartDate;
+    private Date updatingMinDate;
     
     public CommunityGoalsManagedBean() {
         countries= new ArrayList<>();
@@ -69,7 +70,7 @@ public class CommunityGoalsManagedBean implements Serializable{
         countries.add("India");
         countries.add("Malaysia");
         countries.add("Frozen Throne");
-        currentDate = new Date();
+        currentDate = getToday();
         afterStartDate = new Date();
         newCommunityGoal = new CommunityGoalEntity();
     }
@@ -80,10 +81,16 @@ public class CommunityGoalsManagedBean implements Serializable{
     }
     
     public void updating(ActionEvent event){
+        if (selectedCommunityGoal.getStartDate().after(currentDate)){
+            updatingMinDate = currentDate;
+        } else { updatingMinDate = selectedCommunityGoal.getStartDate();
+        }
+        afterDate(null);
         setIsUpdating(true);
     }
     
     public void cancelUpdating(ActionEvent event){
+        updatingMinDate = null;
         setIsUpdating(false);
         try { //to reset fields in the dialog
             selectedCommunityGoal = communityGoalEntityControllerLocal.retrieveCommunityGoalByCommunityGoalId(selectedCommunityGoal.getCommunityGoalId());
@@ -95,36 +102,50 @@ public class CommunityGoalsManagedBean implements Serializable{
     
     public void closeViewDialog(CloseEvent event){
         selectedCommunityGoal = new CommunityGoalEntity();
-        currentDate = new Date();
+        currentDate = getToday();
         afterStartDate = new Date();
+        setIsUpdating(false);
     }
     
     public void closeCreateDialog(CloseEvent event){
         newCommunityGoal = new CommunityGoalEntity();
-        currentDate = new Date();
+        currentDate = getToday();
         afterStartDate = new Date();
+        setIsUpdating(false);
     }
     //for update
-    public Date afterDate(SelectEvent event){
+    public void afterDate(SelectEvent event){
         
         afterStartDate = selectedCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
+        
+        c.setTime(afterStartDate);
 
-        c.add(Calendar.DATE, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
 
-        Date currentDatePlusOne = c.getTime();
-        return currentDatePlusOne;
+        c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+
+        afterStartDate = c.getTime();
+
     }
     //for create
-    public Date afterCreateDate(SelectEvent event){
+    public void afterCreateDate(SelectEvent event){
         afterStartDate = newCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
 
-        c.add(Calendar.DATE, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
-        Date currentDatePlusOne = c.getTime();
-        return currentDatePlusOne;
+        c.setTime(afterStartDate);
+       
+        c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+
+        afterStartDate = c.getTime();
+    }
+    
+    public Date getToday(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
     }
     
     public void updateCommunityGoal(ActionEvent event){
@@ -142,7 +163,6 @@ public class CommunityGoalsManagedBean implements Serializable{
         
         StaffEntity staff = (StaffEntity)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
         try {
-            System.err.println("sfffeferferfff");
             communityGoalEntityControllerLocal.createNewCommunityGoal(newCommunityGoal, staff.getStaffId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Community Goal Successfully Created", null));
             this.communityGoals = communityGoalEntityControllerLocal.retrieveAllCommunityGoals();
@@ -227,5 +247,13 @@ public class CommunityGoalsManagedBean implements Serializable{
 
     public void setIsUpdating(boolean isUpdating) {
         this.isUpdating = isUpdating;
+    }
+
+    public Date getUpdatingMinDate() {
+        return updatingMinDate;
+    }
+
+    public void setUpdatingMinDate(Date updatingMinDate) {
+        this.updatingMinDate = updatingMinDate;
     }
 }

@@ -1,7 +1,8 @@
 import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatTableModule, MatSortModule} from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,7 +20,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +45,7 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
+
 
 
 @NgModule({
@@ -69,6 +73,8 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatTableModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatGridListModule,
     MatToolbarModule,
@@ -87,7 +93,9 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     MatCheckboxModule,
     MatSelectModule,
     MatSliderModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent],

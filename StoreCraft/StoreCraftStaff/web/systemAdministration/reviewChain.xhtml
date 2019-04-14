@@ -30,16 +30,16 @@
 
                             <p:panelGrid columns="2" columnClasses="ui-g-3, ui-g-9" rendered="#{review.customerEntity != null}" style="width:100%">
 
-                                <h:outputText style="font-weight: bold" value="Review Date:"/>
+                                <h:outputText style="font-weight: bold" value="#{review.productEntity!=null?'Review Date':'Reply Date'}"/>
                                 <h:outputText value="#{review.reviewDate}">
                                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                                 </h:outputText>
 
-                                <h:outputText style="font-weight: bold" value="Product ID: "/>
-                                <h:outputText value="#{review.productEntity.productId}"/>
+                                <h:outputText rendered="#{review.productEntity != null}" style="font-weight: bold" value="Product ID: "/>
+                                <h:outputText rendered="#{review.productEntity != null}" value="#{review.productEntity.productId}"/>
 
-                                <h:outputText style="font-weight: bold" value="Product Name: "/>
-                                <h:outputText value="#{review.productEntity.name} (ID: #{review.productEntity.productId})"/>
+                                <h:outputText rendered="#{review.productEntity!= null }" style="font-weight: bold" value="Product Name: "/>
+                                <h:outputText rendered="#{review.productEntity != null}" value="#{review.productEntity.name}"/>
 
                                 <h:outputText style="font-weight: bold" value="Customer ID: "/>
                                 <h:outputText value="#{review.customerEntity.customerId}"/>
@@ -48,8 +48,8 @@
                                 <h:outputText value="#{review.customerEntity.firstName} #{review.customerEntity.lastName}"/>
 
 
-                                <h:outputText style="font-weight: bold" value="Rating:"/>
-                                <p:rating value="#{review.productRating}" stars="5" readonly="true"/>
+                                <h:outputText rendered="#{review.productRating != null}" style="font-weight: bold" value="Rating:"/>
+                                <p:rating rendered="#{review.productRating != null}" value="#{review.productRating}" stars="5" readonly="true"/>
 
 
 
@@ -58,12 +58,15 @@
 
 
                             </p:panelGrid>
-                            <p:panelGrid columns="2" columnClasses="ui-g-2, ui-g-10" rendered="#{review.staffEntity != null}"  style="width:100%">
+                            <p:panelGrid columns="2" columnClasses="ui-g-3, ui-g-9" rendered="#{review.staffEntity != null}"  style="width:100%">
 
                                 <h:outputText style="font-weight: bold" value="Reply Date:"/>
                                 <h:outputText value="#{review.reviewDate}">
                                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                                 </h:outputText>
+                                
+                                <h:outputText style="font-weight: bold" value="Staff ID"/>
+                                <h:outputText value="#{review.staffEntity.firstName} #{review.staffEntity.staffId}"/>
 
                                 <h:outputText style="font-weight: bold" value="Staff Name:"/>
                                 <h:outputText value="#{review.staffEntity.firstName} #{review.staffEntity.lastName}"/>

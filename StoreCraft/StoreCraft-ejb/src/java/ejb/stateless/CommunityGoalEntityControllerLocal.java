@@ -6,9 +6,11 @@
 package ejb.stateless;
 
 import entity.CommunityGoalEntity;
+import java.util.Date;
 import java.util.List;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
+import util.exception.DateNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 
@@ -27,5 +29,7 @@ public interface CommunityGoalEntityControllerLocal {
     public void deleteCommunityGoal(Long communityGoalId) throws CommunityGoalNotFoundException;
 
     public void updateCommunityGoal(CommunityGoalEntity newCommunityGoalEntity, Long communityGoalId) throws InputDataValidationException, CommunityGoalNotFoundException;
+
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country) throws DateNotFoundException;
     
 }

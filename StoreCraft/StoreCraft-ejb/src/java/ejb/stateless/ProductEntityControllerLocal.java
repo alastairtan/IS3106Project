@@ -46,6 +46,8 @@ public interface ProductEntityControllerLocal {
     
     public boolean hasCustomerPurchasedProduct(Long productId, Long customerId);
 
+    public List<ProductEntity> retrieveRandomProducts();
+
     public List<ProductEntity> retrieveAllScavengerHuntProducts();
 
 }

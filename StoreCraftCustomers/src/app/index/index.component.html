@@ -1,3 +1,28 @@
-<p>
-  index works!
-</p>
+<div>
+  <div fxFlex="12px">
+    <div fxFlex="20"></div>
+    <div fxFlex="60" fxLayoutAlign="center center">
+      <mat-select [(ngModel)]="selected">
+        <mat-option *ngFor="let cg of communityGoals" [value]="cg.currentPoints*100/cg.targetPoints">
+          {{cg.country}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div fxFlex="20"></div>
+    
+  </div>
+  <div fxFlex="20">
+      <mat-progress-bar mode="determinate" value="{{selected}}" ></mat-progress-bar>
+  </div> 
+
+  <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container">
+    <div>
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start">
+        <ng-container *ngFor="let product of products" class="card-item">
+          <app-product-card fxFlex="1 1 25%" [product]="product"></app-product-card>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+

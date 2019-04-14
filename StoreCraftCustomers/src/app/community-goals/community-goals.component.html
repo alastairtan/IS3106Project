@@ -1,3 +1,51 @@
-<p>
-  community-goals works!
-</p>
+
+<div fxLayout fxLayoutAlign="center center">
+    <mat-form-field fxFlex="40%">
+      <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+
+<table mat-table class="mat-elevation z8" [dataSource] ="dataSource" matSort >
+
+    <ng-container matColumnDef="communityGoalId">
+        <mat-header-cell *matHeaderCellDef> Community Goal Id </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.communityGoalId}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalTitle" >
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Goal Title </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.goalTitle}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalDescription">
+        <mat-header-cell *matHeaderCellDef> Community Goal Description </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.description}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalTargetPoints">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Target Points </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.targetPoints}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalCurrentPoints">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Current Points </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.currentPoints}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalStartDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.startDate | date }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="communityGoalEndDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> End Date </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.endDate | date }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+
+</table>
+
+<mat-paginator [pageSize]="2" [pageSizeOptions]="[2, 4, 6, 10, 20]">
+</mat-paginator>

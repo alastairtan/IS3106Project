@@ -107,16 +107,16 @@
                     <p:message for="communityTargetPoints"/>
 
                     <h:outputText style="font-weight: bold" value="Start Date: " />
-                    <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.currentDate}"
+                    <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.updatingMinDate}"
                                   required="true" requiredMessage="Start Date is required" disabled="#{!communityGoalsManagedBean.isUpdating}">
-                        <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterDate}" />
+                        <p:ajax event="dateSelect" update="communityEndDate" listener="#{communityGoalsManagedBean.afterDate}" />
+                        <p:ajax event="change" update="communityEndDate" listener="#{communityGoalsManagedBean.afterDate}" />
                     </p:datePicker>
                     <p:message for="communityStartDate"/>
 
                     <h:outputText style="font-weight: bold" value="End Date: " />
                     <p:datePicker  id="communityEndDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.endDate}" mindate="#{communityGoalsManagedBean.afterStartDate}"
                                    required="true" requiredMessage="End Date is required" disabled="#{!communityGoalsManagedBean.isUpdating}">
-                        <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterDate}" />
                     </p:datePicker>
                     <p:message for="communityEndDate"/>
 
@@ -141,7 +141,7 @@
                 <p:commandButton rendered="#{communityGoalsManagedBean.isUpdating}" value="Save Changes" actionListener="#{communityGoalsManagedBean.updateCommunityGoal}" 
                                  update="formMain:dataTableMain dialogViewCommunityGoal" oncomplete="PF('dialogViewCommunityGoal').show(); PF('dialogViewCommunityGoal').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
 
-                <p:commandButton rendered="#{communityGoalsManagedBean.isUpdating}" value="Cancel Update" actionListener="#{communityGoalsManagedBean.cancelUpdating}"
+                <p:commandButton rendered="#{communityGoalsManagedBean.isUpdating}" value="Cancel Update" actionListener="#{communityGoalsManagedBean.cancelUpdating}" process="@this" resetValues="true"
                                  update="dialogViewCommunityGoal formMain:dataTableMain" oncomplete="PF('dialogViewCommunityGoal').show(); PF('dialogViewCommunityGoal').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
 
                 <p:commandButton  rendered="#{!communityGoalsManagedBean.isUpdating}" value="Delete Community Goal" actionListener="#{communityGoalsManagedBean.deleteCommunityGoal}" 
@@ -189,14 +189,14 @@
                         <h:outputText style="font-weight: bold" value="Start Date: " />
                         <p:datePicker  id="newCommunityStartDate" value="#{communityGoalsManagedBean.newCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.currentDate}"
                                        required="true" requiredMessage="Start Date is required">
-                            <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterCreateDate}" />
+                            <p:ajax event="dateSelect" process="@this" update="@this newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
+                            <p:ajax event="change" process="@this" update="@this newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
                         </p:datePicker>
                         <p:message for="newCommunityStartDate"/>
 
                         <h:outputText style="font-weight: bold" value="End Date: " />
                         <p:datePicker  id="newCommunityEndDate" value="#{communityGoalsManagedBean.newCommunityGoal.endDate}" mindate="#{communityGoalsManagedBean.afterStartDate}"
                                        required="true" requiredMessage="End Date is required">
-                            <p:ajax event="dateSelect" listener="#{communityGoalsManagedBean.afterCreateDate}" />
                         </p:datePicker>
                         <p:message for="newCommunityEndDate"/>
 

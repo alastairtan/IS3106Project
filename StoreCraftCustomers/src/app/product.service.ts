@@ -98,5 +98,12 @@ export class ProductService {
 		return true;
 	}
 
+	getRandomProductsForIndexPage(): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/index").pipe
+		(
+			catchError(this.handleError)
+		);
+	}
+
 
 }

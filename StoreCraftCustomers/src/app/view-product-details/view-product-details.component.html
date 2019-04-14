@@ -50,7 +50,7 @@
           <div fxFlex="1 1 100%">
 
             <mat-toolbar color="primary" class="mat-elevation-z2">Reviews</mat-toolbar>
-            <mat-accordion multi="true">
+            <mat-accordion displayMode="flat">
               <mat-expansion-panel *ngFor="let review of product?.reviewEntities">
                 <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
                   <mat-panel-title class="reviewTitle">
@@ -58,7 +58,7 @@
                   </mat-panel-title>
                   <mat-panel-description>
                     <mat-list role="list">
-                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date}}</strong></mat-list-item>
+                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
                       <mat-list-item role="listitem">{{review.content}}</mat-list-item>
                     </mat-list>
                   </mat-panel-description>

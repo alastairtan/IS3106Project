@@ -70,6 +70,7 @@ public class CustomerResource {
             customerEntity.getSaleTransactionEntities().clear();
             customerEntity.getReviewEntities().clear();
             customerEntity.getDiscountCodeEntities().clear();
+ 
 
             
             CustLoginRsp response = new CustLoginRsp(customerEntity);
