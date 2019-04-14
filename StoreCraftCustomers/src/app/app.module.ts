@@ -19,7 +19,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
+
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,7 +45,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
 import { MatTableModule } from '@angular/material';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CustomerService } from './customer.service';
 
 @NgModule({
   declarations: [
@@ -90,9 +93,10 @@ import { MatTableModule } from '@angular/material';
     MatSelectModule,
     MatSliderModule,
     MatChipsModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
-  providers: [],
+  providers: [CustomerService],
   bootstrap: [AppComponent],
   entryComponents: [LoginDialogComponent, RegisterDialogComponent]
 })

@@ -30,6 +30,6 @@ public interface CommunityGoalEntityControllerLocal {
 
     public void updateCommunityGoal(CommunityGoalEntity newCommunityGoalEntity, Long communityGoalId) throws InputDataValidationException, CommunityGoalNotFoundException;
 
-    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(Date currentDate, String country) throws DateNotFoundException;
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country) throws DateNotFoundException;
     
 }

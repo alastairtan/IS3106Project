@@ -152,8 +152,8 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
     }
     
     @Override
-    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(Date currentDate, String country) throws DateNotFoundException {
-        
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country) throws DateNotFoundException {
+        Date currentDate = new Date();
         if(currentDate == null) {
             throw new DateNotFoundException("No date entered!");
         }

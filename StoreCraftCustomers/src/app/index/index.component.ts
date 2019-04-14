@@ -18,18 +18,23 @@ export class IndexComponent implements OnInit {
   products: Product[];
   communityGoals: CommunityGoal[];
   currentDate: Date = new Date();
+  country:string = "Singapore";
+  selected: number;
+  
 
 
   constructor(public sessionService: SessionService,
               private productService: ProductService,
               private communityGoalService: CommunityGoalService) {
     this.currentDate = new Date();
+    
   }
 
   ngOnInit() {
     if(this.sessionService.getIsLogin() == true) {
       console.log(this.sessionService.getCurrentCustomer());
       this.customer = this.sessionService.getCurrentCustomer();
+      this.country = this.sessionService.getCurrentCustomer().country;
     }
     
     this.productService.getRandomProductsForIndexPage().subscribe(
@@ -42,9 +47,12 @@ export class IndexComponent implements OnInit {
 			}
     );
     
-    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(this.currentDate, "Singapore").subscribe(
+    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(this.country).subscribe(
       response => {
         this.communityGoals = response.communityGoalEntities;
+        if(this.communityGoals.length != 0) {
+          this.selected = this.communityGoals[0].currentPoints*100/this.communityGoals[0].targetPoints;
+        }
         console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
       },
       error => {

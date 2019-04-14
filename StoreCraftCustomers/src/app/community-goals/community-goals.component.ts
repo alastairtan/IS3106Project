@@ -12,7 +12,7 @@ export class CommunityGoalsComponent implements OnInit {
   public columnsToDisplay=["communityGoalId","communityGoalTitle","communityGoalDescription","communityGoalTargetPoints","communityGoalCurrentPoints",
   "communityGoalStartDate","communityGoalEndDate"];
 
-  constructor(public sessionService) { }
+  constructor(public sessionService: SessionService) { }
 
   ngOnInit() {
   }

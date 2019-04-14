@@ -29,8 +29,8 @@ export class CommunityGoalService {
 		return throwError(errorMessage);
 	}
 
-  retrieveCurrentCommunityGoalsByCountry(currentDate: Date, country: string): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/index").pipe
+  retrieveCurrentCommunityGoalsByCountry(country: string): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/index?country=" +country).pipe
 		(
 			catchError(this.handleError)
 		);
