@@ -118,7 +118,6 @@ public class CommunityGoalEntity implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-        System.out.println(this.startDate);
     }
 
     public Date getEndDate() {
