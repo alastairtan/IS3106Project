@@ -107,7 +107,7 @@
                     <p:message for="communityTargetPoints"/>
 
                     <h:outputText style="font-weight: bold" value="Start Date: " />
-                    <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" 
+                    <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.updatingMinDate}"
                                   required="true" requiredMessage="Start Date is required" disabled="#{!communityGoalsManagedBean.isUpdating}">
                         <p:ajax event="dateSelect" update="communityEndDate" listener="#{communityGoalsManagedBean.afterDate}" />
                         <p:ajax event="change" update="communityEndDate" listener="#{communityGoalsManagedBean.afterDate}" />
@@ -187,10 +187,10 @@
                         <p:message for="newCommunityTargetPoints"/>
 
                         <h:outputText style="font-weight: bold" value="Start Date: " />
-                        <p:datePicker  id="newCommunityStartDate" value="#{communityGoalsManagedBean.newCommunityGoal.startDate}"
+                        <p:datePicker  id="newCommunityStartDate" value="#{communityGoalsManagedBean.newCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.currentDate}"
                                        required="true" requiredMessage="Start Date is required">
-                            <p:ajax event="dateSelect" process="@this" update="newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
-                            <p:ajax event="change" process="@this" update="newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
+                            <p:ajax event="dateSelect" process="@this" update="@this newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
+                            <p:ajax event="change" process="@this" update="@this newCommunityEndDate" listener="#{communityGoalsManagedBean.afterCreateDate}" />
                         </p:datePicker>
                         <p:message for="newCommunityStartDate"/>
 
