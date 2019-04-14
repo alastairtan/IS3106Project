@@ -42,6 +42,7 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
+import { MatTableModule } from '@angular/material';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     MatCheckboxModule,
     MatSelectModule,
     MatSliderModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -109,16 +109,20 @@ public class CommunityGoalsManagedBean implements Serializable{
         
         afterStartDate = selectedCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
+        
         c.setTime(afterStartDate);
+
 
         c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
 
         afterStartDate = c.getTime();
+
     }
     //for create
     public void afterCreateDate(SelectEvent event){
         afterStartDate = newCommunityGoal.getStartDate();
         Calendar c = Calendar.getInstance();
+
         c.setTime(afterStartDate);
        
         c.add(Calendar.DAY_OF_YEAR, 1); //same with c.add(Calendar.DAY_OF_MONTH, 1);
