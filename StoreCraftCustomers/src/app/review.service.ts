@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Review } from './review';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class ReviewService {
 			.pipe(catchError(this.handleError))
   }
   
+  replyToStaffReply(review : Review): Observable<any> {
+	//   return this.httpClient.put<any>(this.baseUrl + `/replyToStaffReply/${review.}` + )
+  }
   private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 

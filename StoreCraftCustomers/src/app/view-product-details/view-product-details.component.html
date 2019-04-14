@@ -25,9 +25,9 @@
                 <br />
                 <div class="quantityAdjust">
                   <span class="quantityWord">Quantity: </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="quantity" mat-raised-button (click)="add()">+</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="quantity" mat-raised-button disabled="{{quantity==0}}" (click)="minus()">-</button>&nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="quantityWord">{{quantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="quantity" mat-raised-button (click)="minus()">-</button>
+                  <button class="quantity" mat-raised-button disabled="{{quantity==10}}" (click)="add()">+</button>
                 </div>
                 <br />
               </mat-card-content>
