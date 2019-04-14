@@ -27,28 +27,28 @@
                 <mat-card-title><strong>TIER: </strong>{{customerMemTierString}}</mat-card-title>
                 <mat-card-subtitle style="margin-bottom: 0">{{tierMessage}}</mat-card-subtitle>
               </mat-card-header>
-
+              
               <mat-card-content class="content2">
-                <table mat-table class="table">
-                  <tr mat-row>
-                    <td mat-cell class="leftCell"><strong>Multiplier:</strong></td>
-                    <td mat-cell>{{customer.multiplier}}X</td>
+                <table class="table">
+                  <tr>
+                    <td class="leftCell"><strong>Multiplier:</strong></td>
+                    <td>{{customer.multiplier}}X</td>
                   </tr>
-                  <tr mat-row>
-                    <td mat-cell class="leftCell"><strong>Total Points:</strong></td>
-                    <td mat-cell>{{customer.totalPoints}}</td>
+                  <tr>
+                    <td class="leftCell"><strong>Total Points:</strong></td>
+                    <td>{{customer.totalPoints}}</td>
                   </tr>
-                  <tr mat-row>
-                    <td mat-cell class="leftCell"><strong>Remaining Points:</strong></td>
-                    <td mat-cell>{{customer.remainingPoints}}</td>
+                  <tr>
+                    <td class="leftCell"><strong>Remaining Points:</strong></td>
+                    <td>{{customer.remainingPoints}}</td>
                   </tr>
-                  <tr mat-row>
-                    <td mat-cell class="leftCell"><strong>Points for Current Month:</strong></td>
-                    <td mat-cell>{{customer.pointsForCurrentMonth}}</td>
+                  <tr>
+                    <td class="leftCell"><strong>Points for Current Month:</strong></td>
+                    <td>{{customer.pointsForCurrentMonth}}</td>
                   </tr>
                 </table>
               </mat-card-content>
-
+            
             </mat-card>
           </div>
 

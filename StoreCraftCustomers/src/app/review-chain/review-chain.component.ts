@@ -59,7 +59,7 @@ export class ReviewChainComponent implements OnInit {
     customerReply.reviewDate = new Date();
     let customerId = this.sessionService.getCurrentCustomer().customerId;
     this.reviewService.replyToStaffReply(customerReply, this.staffReplyToReplyTo, customerId).subscribe(response => {
-      console.log(response.customerReplyId);
+      //console.log(response.customerReplyId);
       this.isReplying = false;
       this.getReviewChain();
     },

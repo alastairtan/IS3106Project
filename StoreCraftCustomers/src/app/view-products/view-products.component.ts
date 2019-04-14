@@ -129,7 +129,7 @@ export class ViewProductsComponent implements OnInit {
         }
         this.filteredProducts = filtered;
         //console.log("CATEGORY");
-        console.log(this.filteredProducts)
+        //console.log(this.filteredProducts)
         resolve();
       })
 
@@ -174,7 +174,7 @@ export class ViewProductsComponent implements OnInit {
       return (product.unitPrice >= this.minPrice && product.unitPrice <= this.maxPrice)
     })
     //console.log("PRICE RANGE");
-    console.log(this.filteredProducts);
+    //console.log(this.filteredProducts);
   }
 
   handleTagChange() {

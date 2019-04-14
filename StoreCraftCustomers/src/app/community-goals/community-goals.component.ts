@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator} from '@angular/material';
 import { SessionService } from '../session.service';
@@ -28,7 +29,7 @@ export class CommunityGoalsComponent implements OnInit {
 
     let date = new Date();
     let country = this.sessionService.getCurrentCustomer().country;
-    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(date,country).subscribe(
+    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(country).subscribe(
       response =>{
         this.dataSource.data = response as CommunityGoal[];
       }

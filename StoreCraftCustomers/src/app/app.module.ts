@@ -2,6 +2,7 @@ import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatTableModule, MatSortModule} from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,7 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatChipsModule } from '@angular/material/chips';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 
@@ -44,9 +45,8 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
-import { MatTableModule, MatSortModule} from '@angular/material';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CustomerService } from './customer.service';
+
+
 
 @NgModule({
   declarations: [
@@ -73,6 +73,7 @@ import { CustomerService } from './customer.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatTableModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatGridListModule,
@@ -93,11 +94,10 @@ import { CustomerService } from './customer.service';
     MatSelectModule,
     MatSliderModule,
     MatChipsModule,
-    MatTableModule,
     MatProgressBarModule,
     MatSortModule
   ],
-  providers: [CustomerService],
+  providers: [],
   bootstrap: [AppComponent],
   entryComponents: [LoginDialogComponent, RegisterDialogComponent]
 })

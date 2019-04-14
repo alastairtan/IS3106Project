@@ -61,6 +61,7 @@ public class ReviewResource {
                 re.setReplyReviewEntity(null);
                 if (re.getStaffEntity() != null) {
                     re.getStaffEntity().getReviewEntities().clear();
+                    re.getStaffEntity().getCommunityGoalEntities().clear();
                 }
             }
             reviewChain.remove(0);

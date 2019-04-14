@@ -30,7 +30,7 @@ export class CommunityGoalService {
 	}
 
   retrieveCurrentCommunityGoalsByCountry(country: string): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/index?country=" +country).pipe
+		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentCommunityGoalsByCountry?country=" +country).pipe
 		(
 			catchError(this.handleError)
 		);
