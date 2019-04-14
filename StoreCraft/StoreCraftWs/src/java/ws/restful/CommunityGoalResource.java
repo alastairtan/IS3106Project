@@ -122,12 +122,6 @@ public class CommunityGoalResource {
             
             return Response.status(Response.Status.OK).entity(communityGoalRsp).build();
         }
-        catch (CommunityGoalNotFoundException ex) {
-            
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-        }
         catch (Exception ex) {
             
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
