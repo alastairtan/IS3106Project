@@ -8,10 +8,13 @@ mat-expansion-panel-header {
 
 mat-panel-description {
     flex-grow: 7 !important;
+    height: auto !important;
 }
 
 mat-panel-title{
     color: black !important;
+    flex-wrap: wrap !important;
+    height: auto !important;
 }
 
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
@@ -30,10 +33,16 @@ mat-panel-title{
     margin-bottom: 1vw;
 }
 
+
 .custReplyForm{
     width: 100%
 }
 
 .submitReply{
     margin-bottom: 2vw;
+}
+
+.editReplyBtn{
+    margin-top: 1vw;
+    width: 100%;
 }

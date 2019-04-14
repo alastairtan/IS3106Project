@@ -37,6 +37,19 @@ export class ReviewService {
 			catchError(this.handleError)
 		)
 	}
+	
+	updateReview(reviewId: number, newContent: string, newProductRating: number): Observable<any>{
+
+		let updateReviewReq = {
+			"reviewId": reviewId,
+			"newContent": newContent,
+			"newProductRating": newProductRating
+
+		}
+		return this.httpClient.put<any>(this.baseUrl + '/updateReview', updateReviewReq, httpOptions).pipe(
+			catchError(this.handleError)
+		)
+	}
 
 
 	private handleError(error: HttpErrorResponse) {

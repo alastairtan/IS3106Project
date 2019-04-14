@@ -4,6 +4,9 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.ReplyToStaffReplyReq;
 import datamodel.ws.rest.ReplyToStaffReplyRsp;
 import datamodel.ws.rest.ReviewChainRsp;
+import datamodel.ws.rest.ReviewReq;
+import datamodel.ws.rest.ReviewRsp;
+import datamodel.ws.rest.UpdateReviewReq;
 import ejb.stateless.ReviewEntityControllerLocal;
 import entity.ReviewEntity;
 import java.util.List;
@@ -16,7 +19,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -86,19 +88,50 @@ public class ReviewResource {
         if (req != null) {
             try {
                 ReviewEntity customerReply = reviewEntityControllerLocal.customerReplyToStaffReply(req.getStaffReplyId(), req.getCustomerReply(), req.getCustomerId());
-                
+
                 return Response.status(Status.OK).entity(new ReplyToStaffReplyRsp(customerReply.getReviewId())).build();
-                
+
             } catch (CustomerNotFoundException | InputDataValidationException | ReviewNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build(); 
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
 
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid register customer request");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+
+    }
+
+    @Path("updateReview")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateReview(UpdateReviewReq reviewReq) {
+        Long reviewId = reviewReq.getReviewId();
+        String reviewContent = reviewReq.getNewContent();
+        Integer productRating = reviewReq.getNewProductRating();
+
+        try {
+            ReviewEntity re = reviewEntityControllerLocal.updateReview(reviewId, reviewContent, productRating);
+            if (re.getCustomerEntity() != null) {
+                re.getCustomerEntity().getReviewEntities().clear();
+                re.getCustomerEntity().setDiscountCodeEntities(null);
+                re.getCustomerEntity().setSaleTransactionEntities(null);
+            }
+            re.setParentReviewEntity(null);
+            re.setProductEntity(null);
+            re.setReplyReviewEntity(null);
+            if (re.getStaffEntity() != null) {
+                re.getStaffEntity().getReviewEntities().clear();
+                re.getStaffEntity().getCommunityGoalEntities().clear();
+            }
+            return Response.status(Status.OK).entity(new ReviewRsp(re)).build();
+        } catch (ReviewNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
 
     }

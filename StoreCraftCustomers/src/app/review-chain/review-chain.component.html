@@ -5,11 +5,38 @@
       <mat-panel-title class="reviewTitle">
         {{review.staffEntity?.firstName}} {{review.staffEntity?.lastName}}
         {{review.customerEntity?.firstName}} {{review.customerEntity?.lastName}}
+        <br />
+        <button mat-raised-button color="accent" class="editReplyBtn"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && !isEditing"
+          (click)="editing(review)">Edit Review</button>
+        <button mat-raised-button color="primary" class="editReplyBtn saveBtn"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && isEditing"
+          form="updateForm" type="submit">Save</button>
+        <button mat-raised-button color="warn" class="editReplyBtn"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && isEditing"
+          (click)="cancelEdit(review)">Cancel Edit</button>
       </mat-panel-title>
       <mat-panel-description>
-        <mat-list role="list">
+        <mat-list role="list" style="width: 100%">
           <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
-          <mat-list-item role="listitem">{{review.content}}</mat-list-item>
+
+          <mat-list-item *ngIf="!(review.customerEntity != null && isEditing)" role="listitem">{{review.content}}
+          </mat-list-item>
+
+          <mat-list-item *ngIf="review.customerEntity != null && isEditing">
+
+            <form #updateForm="ngForm" (ngSubmit)="updateForm.valid?saveEdit():null" class="custReplyForm" id="updateForm">
+              <mat-form-field class="replyContentField">
+                <textarea matInput name="updateTextArea" [(ngModel)]="updatedReplyContent"
+                  #updateTextContent="ngModel" required></textarea>
+                <mat-error *ngIf="updateTextContent.errors?.required">
+                  Content is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </form>
+
+          </mat-list-item>
+
           <mat-list-item role="listitem">
             <button mat-raised-button color="accent" *ngIf="review.reviewDate == 
               reviewChain[reviewChain.length-1].reviewDate && review.staffEntity != null
@@ -17,6 +44,7 @@
               (click)="replying(review)">Reply</button>
           </mat-list-item>
         </mat-list>
+
       </mat-panel-description>
     </mat-expansion-panel-header>
 
