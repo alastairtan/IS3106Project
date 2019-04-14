@@ -2,15 +2,15 @@ import { Staff } from './staff';
 
 export class CommunityGoal {
     communityGoalId: number;
-    startDate: Date;
-    endDate: Date;
-    targetPoints: number;
     country: string;
-    goalTitle: string;
-    description: string;
     currentPoints: number;
+    description: string;
+    endDate: Date;
+    goalTitle: string;
+    startDate: Date;   
+    targetPoints: number;  
 
-    staffEntity: Staff;
+    staffEntity : Staff;
 
     constructor(startDate?: Date, endDate?: Date, targetPoints?: number,
         country?: string, goalTitle?: string, description?: string, currentPoints?: number) {
