@@ -41,21 +41,20 @@ mat-panel-description {
     flex-grow: 7 !important;
     height: auto !important;
     padding-bottom: 2vw;
+    flex-basis: auto !important;
 }
 
-mat-panel-title{
+mat-panel-title {
     color: black !important;
     flex-wrap: wrap !important;
     height: auto !important;
 }
 
-
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
     flex-basis: inherit;
 }
 
-
-.reviewTitle{
+.reviewTitle {
     align-self: center
 }
 
@@ -101,18 +100,25 @@ mat-panel-title{
     align-self: center;
 }
 
-.editReplyBtn{
+.editReplyBtn {
     margin-top: 0.5vw;
     width: 100%;
 }
 
-.custReplyForm{
+.custReplyForm {
     width: 100%
 }
 
-.replyContentField{
+.replyContentField {
     width: 100%;
     color: black !important;
     margin-top: 2vw;
     margin-bottom: 1vw;
+}
+
+.textBox {
+    display: inline-block;
+    word-break: break-all;
+    width: 90%;
+    align-self: baseline;
 }

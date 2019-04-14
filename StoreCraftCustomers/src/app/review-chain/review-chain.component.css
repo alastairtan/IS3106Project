@@ -10,6 +10,7 @@ mat-panel-description {
     flex-grow: 7 !important;
     height: auto !important;
     padding-bottom: 2vw;
+    flex-basis: auto !important;
 }
 
 mat-panel-title{

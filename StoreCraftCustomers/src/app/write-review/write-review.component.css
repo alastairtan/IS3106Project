@@ -1,0 +1,13 @@
+.reviewContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.mat-card-header{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}

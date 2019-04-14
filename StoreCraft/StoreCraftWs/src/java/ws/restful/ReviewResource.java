@@ -1,5 +1,6 @@
 package ws.restful;
 
+import datamodel.ws.rest.CreateReviewReq;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.ReplyToStaffReplyReq;
 import datamodel.ws.rest.ReplyToStaffReplyRsp;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -27,6 +29,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.ProductNotFoundException;
 import util.exception.ReviewNotFoundException;
 
 @Path("Review")
@@ -134,6 +137,37 @@ public class ReviewResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
 
+    }
+    
+    @Path("createReview")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createReview(CreateReviewReq createReviewReq){
+        Long customerId = createReviewReq.getCustomerId();
+        Long productId = createReviewReq.getProductId();
+        String newContent = createReviewReq.getNewContent();
+        Integer productRating = createReviewReq.getNewProductRating();
+        
+        try{
+            ReviewEntity re = reviewEntityControllerLocal.createNewReview(customerId, newContent, productRating, productId);
+            if (re.getCustomerEntity() != null) {
+                re.getCustomerEntity().getReviewEntities().clear();
+                re.getCustomerEntity().setDiscountCodeEntities(null);
+                re.getCustomerEntity().setSaleTransactionEntities(null);
+            }
+            re.setParentReviewEntity(null);
+            re.setProductEntity(null);
+            re.setReplyReviewEntity(null);
+            if (re.getStaffEntity() != null) {
+                re.getStaffEntity().getReviewEntities().clear();
+                re.getStaffEntity().getCommunityGoalEntities().clear();
+            }
+            return Response.status(Status.OK).entity(new ReviewRsp(re)).build();
+        } catch (CustomerNotFoundException | InputDataValidationException | ProductNotFoundException ex){
+             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
 
     private ReviewEntityControllerLocal lookupReviewEntityControllerLocal() {

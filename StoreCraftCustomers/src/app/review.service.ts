@@ -51,6 +51,20 @@ export class ReviewService {
 		)
 	}
 
+	createReview(customerId: number, newContent: string, newProductRating: number, productId: number): Observable<any>{
+
+		let createReviewReq = {
+			"customerId": customerId,
+			"newContent": newContent,
+			"newProductRating": newProductRating,
+			"productId": productId
+		}
+
+		return this.httpClient.post<any>(this.baseUrl + '/createReview', createReviewReq, httpOptions).pipe(
+			catchError(this.handleError)
+		)
+	}
+
 
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";

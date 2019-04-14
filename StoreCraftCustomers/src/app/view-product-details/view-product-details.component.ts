@@ -10,11 +10,7 @@ import { Customer } from '../customer';
 import { SessionService } from '../session.service';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import {
-  ClickEvent,
-  HoverRatingChangeEvent,
-  RatingChangeEvent
-} from 'angular-star-rating/angular-star-rating';
+import { ClickEvent } from 'angular-star-rating/angular-star-rating';
 
 @Component({
   selector: 'app-view-product-details',
@@ -37,12 +33,16 @@ export class ViewProductDetailsComponent implements OnInit {
   editReviewId: number;
   updatedProductRating: number;
 
+  //For new Review
+  isWriting: boolean;
+
   constructor(private activatedRoute: ActivatedRoute,
     private productService: ProductService,
     private localService: LocalService,
     private reviewService: ReviewService,
     private sessionService: SessionService) {
       this.isEditing= false;
+      this.isWriting= false;
      }
 
   ngOnInit() {
@@ -146,5 +146,13 @@ export class ViewProductDetailsComponent implements OnInit {
     this.updatedProductRating = $event.rating;
     console.log("UPDATED: " + this.updatedProductRating);
   };
+
+  writeReview(){
+    this.isWriting = true;
+  }
+
+  cancelWriteReview(){
+    this.isWriting = false;
+  }
 
 }

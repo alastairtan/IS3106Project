@@ -36,6 +36,7 @@ public class ReviewEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
     
+    @Column(columnDefinition = "VARCHAR(1337)")
     private String content;
     
     @Column(nullable = true)
