@@ -22,6 +22,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {TextFieldModule} from '@angular/cdk/text-field'; 
+import { StarRatingModule } from 'angular-star-rating';
 
 
 
@@ -95,7 +97,9 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     MatSliderModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatSortModule
+    MatSortModule,
+    TextFieldModule,
+    StarRatingModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

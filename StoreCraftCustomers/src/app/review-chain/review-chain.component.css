@@ -9,6 +9,7 @@ mat-expansion-panel-header {
 mat-panel-description {
     flex-grow: 7 !important;
     height: auto !important;
+    padding-bottom: 2vw;
 }
 
 mat-panel-title{
@@ -44,5 +45,10 @@ mat-panel-title{
 
 .editReplyBtn{
     margin-top: 1vw;
+    width: 100%;
+}
+
+.editReplyBtn2{
+    margin-top: 0.2vw;
     width: 100%;
 }

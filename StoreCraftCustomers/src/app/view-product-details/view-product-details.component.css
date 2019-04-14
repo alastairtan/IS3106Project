@@ -39,7 +39,16 @@ mat-expansion-panel-header {
 
 mat-panel-description {
     flex-grow: 7 !important;
+    height: auto !important;
+    padding-bottom: 2vw;
 }
+
+mat-panel-title{
+    color: black !important;
+    flex-wrap: wrap !important;
+    height: auto !important;
+}
+
 
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
     flex-basis: inherit;
@@ -90,4 +99,20 @@ mat-panel-description {
 .footerItem {
     display: inline-block;
     align-self: center;
+}
+
+.editReplyBtn{
+    margin-top: 0.5vw;
+    width: 100%;
+}
+
+.custReplyForm{
+    width: 100%
+}
+
+.replyContentField{
+    width: 100%;
+    color: black !important;
+    margin-top: 2vw;
+    margin-bottom: 1vw;
 }
