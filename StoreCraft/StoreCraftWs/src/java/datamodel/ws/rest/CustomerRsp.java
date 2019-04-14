@@ -11,14 +11,14 @@ import entity.CustomerEntity;
  *
  * @author Win Phong
  */
-public class CustomerRegisterRsp {
+public class CustomerRsp {
     
     private CustomerEntity customerEntity;
     
-    public CustomerRegisterRsp() {
+    public CustomerRsp() {
     }
     
-    public CustomerRegisterRsp(CustomerEntity customerEntity) {
+    public CustomerRsp(CustomerEntity customerEntity) {
         this.customerEntity = customerEntity;
     }
 

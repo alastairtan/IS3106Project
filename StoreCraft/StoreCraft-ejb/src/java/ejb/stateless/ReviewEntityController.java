@@ -182,8 +182,37 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
             }
-        } catch (StaffNotFoundException | ReviewNotFoundException ex) {
-            throw new StaffNotFoundException();
+        } catch (StaffNotFoundException ex) {
+            throw new StaffNotFoundException("Staff not found");
+        } catch (ReviewNotFoundException ex){
+            throw new ReviewNotFoundException("Review not found");
+        }
+    }
+    
+    @Override
+    public ReviewEntity customerReplyToStaffReply(Long staffReplyToReplyId, ReviewEntity customerReply, Long customerId) throws InputDataValidationException, CustomerNotFoundException, ReviewNotFoundException {
+        try {
+            ReviewEntity staffReplyToReply = retrieveReviewByReviewId(staffReplyToReplyId);
+            CustomerEntity customerReplying = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
+            customerReply.setParentReviewEntity(staffReplyToReply);
+            customerReply.setCustomerEntity(customerReplying);
+
+            Set<ConstraintViolation<ReviewEntity>> constraintViolations = validator.validate(customerReply);
+
+            if (constraintViolations.isEmpty()) {
+                staffReplyToReply.setReplyReviewEntity(customerReply);
+                customerReplying.getReviewEntities().add(customerReply);
+                entityManager.persist(customerReply);
+                entityManager.flush();
+
+                return customerReply;
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        } catch (CustomerNotFoundException ex ){
+            throw new CustomerNotFoundException("Customer not found");
+        } catch (ReviewNotFoundException ex) {
+            throw new ReviewNotFoundException("Review not found");
         }
     }
 
@@ -223,6 +252,14 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
                 ReviewEntity reviewReply = rootReviewEntity.getReplyReviewEntity();
                 reviewChain.add(reviewReply);
                 rootReviewEntity = reviewReply;
+            }
+            
+            for (ReviewEntity re : reviewChain){
+                if (re.getCustomerEntity() != null) re.getCustomerEntity().getReviewEntities().size();
+                re.getProductEntity();
+                re.getParentReviewEntity();
+                re.getReplyReviewEntity();
+                if (re.getStaffEntity() != null) re.getStaffEntity().getReviewEntities().size();
             }
 
             return reviewChain;

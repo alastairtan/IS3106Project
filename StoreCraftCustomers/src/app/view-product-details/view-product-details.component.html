@@ -1,3 +1,75 @@
-<p>
-  view-product-details works!
-</p>
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+  <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1">
+    <mat-card class="card">
+
+      <mat-card-content>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid" class="productDetailsContainer">
+          <div fxFlex="1 1 40%">
+            <img class="productImage mat-elevation-z3" src="{{product?.productImageUrl}}" />
+          </div>
+
+          <div fxFlex="1 1 60%">
+
+            <mat-card>
+
+              <mat-card-header class="header">
+                <mat-card-title class="headerText">{{product?.name}}</mat-card-title>
+                <mat-card-subtitle class="headerSubText">{{product?.description}}</mat-card-subtitle>
+              </mat-card-header>
+              <mat-divider></mat-divider>
+
+              <mat-card-content class="content">
+                <br />
+                <h3 class="price">{{format()}}</h3>
+                <br />
+                <div class="quantityAdjust">
+                  <span class="quantityWord">Quantity: </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="quantity" mat-raised-button disabled="{{quantity==0}}" (click)="minus()">-</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span class="quantityWord">{{quantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="quantity" mat-raised-button disabled="{{quantity==10}}" (click)="add()">+</button>
+                </div>
+                <br />
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="accent" (click)="addToCart()">Add to Cart</button>
+                <button *ngIf="product?.isScavengerHuntPrize" mat-raised-button color="warn">Claim Scavenger Hunt
+                  Prize</button>
+              </mat-card-actions>
+              <mat-divider></mat-divider>
+              <mat-card-footer class="footer">
+                <span class="footerItem"><strong>&nbsp;&nbsp;Tags: </strong></span>&nbsp;
+                <mat-chip-list class="footerItem">
+                  <mat-chip *ngFor="let tag of product?.tagEntities">{{tag.name}}</mat-chip>
+                </mat-chip-list>
+              </mat-card-footer>
+            </mat-card>
+
+          </div>
+
+          <div fxFlex="1 1 100%">
+
+            <mat-toolbar color="primary" class="mat-elevation-z2">Reviews</mat-toolbar>
+            <mat-accordion multi="true">
+              <mat-expansion-panel *ngFor="let review of product?.reviewEntities">
+                <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
+                  <mat-panel-title class="reviewTitle">
+                    {{review.customerEntity.firstName}} {{review.customerEntity.lastName}}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <mat-list role="list">
+                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
+                      <mat-list-item role="listitem">{{review.content}}</mat-list-item>
+                    </mat-list>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                  <app-review-chain [rootReviewId]="review.reviewId"></app-review-chain>
+                
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

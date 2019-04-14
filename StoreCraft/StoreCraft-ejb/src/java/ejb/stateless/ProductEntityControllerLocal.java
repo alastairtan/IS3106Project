@@ -48,4 +48,6 @@ public interface ProductEntityControllerLocal {
 
     public List<ProductEntity> retrieveRandomProducts();
 
+    public List<ProductEntity> retrieveAllScavengerHuntProducts();
+
 }

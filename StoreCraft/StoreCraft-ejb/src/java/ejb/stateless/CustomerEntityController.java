@@ -143,7 +143,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     {
         Set<ConstraintViolation<CustomerEntity>> constraintViolations = validator.validate(customerEntity);
         
-        if(constraintViolations.isEmpty())
+        if(constraintViolations.isEmpty() )
         {
             // Check if the customerEntity is valid (not covered by validator)
             if(customerEntity.getCustomerId() != null)
@@ -171,7 +171,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
         else
         {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
     

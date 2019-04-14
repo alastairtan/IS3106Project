@@ -6,6 +6,7 @@
 package ws.restful;
 
 import datamodel.ws.rest.ErrorRsp;
+import datamodel.ws.rest.ProductRsp;
 import datamodel.ws.rest.RetrieveProdByCategoryRsp;
 import ejb.stateless.ProductEntityControllerLocal;
 import entity.CategoryEntity;
@@ -29,6 +30,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.CategoryNotFoundException;
+import util.exception.ProductNotFoundException;
 
 /**
  * REST Web Service
@@ -58,14 +60,17 @@ public class ProductResource {
                 
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
 
+                for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
+                    reviewEntity.setProductEntity(null); //unidirectional between product and review
+                    reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
+                    reviewEntity.setReplyReviewEntity(null);
+                    reviewEntity.setStaffEntity(null);
+                    reviewEntity.setParentReviewEntity(null);
+                }
+                
                 List<TagEntity> tagEntities = productEntity.getTagEntities();
                 for (TagEntity tagEntity : tagEntities) {
                     tagEntity.getProductEntities().clear(); //unidirectional between product and tags
-                }
-                               
-                for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
-                    reviewEntity.setProductEntity(null); //unidirectional between product and review
-                    reviewEntity.getCustomerEntity().getReviewEntities().clear(); //unidirectional between product's review and customer
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
@@ -91,6 +96,7 @@ public class ProductResource {
         }
     }
     
+
     @Path("index")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -124,11 +130,57 @@ public class ProductResource {
             return Response.status(Response.Status.OK).entity(response).build();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+        
+    }
+
+    @Path("getProductById")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductById(@QueryParam("productId") String productId) {
+        
+        try {
+            
+            ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(new Long(productId));
+            
+            for(ReviewEntity review : productEntity.getReviewEntities()) {
+                review.setProductEntity(null);
+                review.setReplyReviewEntity(null);
+                review.setStaffEntity(null);
+                review.setParentReviewEntity(null);
+                review.getCustomerEntity().getDiscountCodeEntities().clear();
+                review.getCustomerEntity().getSaleTransactionEntities().clear();
+                review.getCustomerEntity().getReviewEntities().clear();
+            }
+            
+            for(TagEntity tag : productEntity.getTagEntities()) {
+                tag.getProductEntities().clear();
+            }
+            
+            productEntity.setCategoryEntity(null);
+            
+            for(DiscountCodeEntity discoutCode : productEntity.getDiscountCodeEntities())
+            {
+                discoutCode.getProductEntities().clear();
+            }
+        
+            ProductRsp productRsp = new ProductRsp(productEntity);
+           
+            return Response.status(Response.Status.OK).entity(productRsp).build();
+
+        } catch (ProductNotFoundException | NumberFormatException ex) {
+
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+
 
     private void clearParentToChildrenRelationship(CategoryEntity subCategory) { //so relationships are unidirectional
         if (subCategory.getParentCategoryEntity() != null) {

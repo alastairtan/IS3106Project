@@ -84,7 +84,7 @@ export class LoginDialogComponent implements OnInit {
         }
       }, error => {
         this.loginError = true;
-        this.errorMessage = "Invalid username and password. Please try again!";
+        this.errorMessage = "Invalid username and/or password. Please try again!";
       })
   }
 

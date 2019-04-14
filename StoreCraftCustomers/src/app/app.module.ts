@@ -19,6 +19,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +41,7 @@ import { CategoryBarComponent } from './category-bar/category-bar.component';
 import { CategoryMenuItemComponent } from './category-menu-item/category-menu-item.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
+import { ReviewChainComponent } from './review-chain/review-chain.component';
 
 
 @NgModule({
@@ -60,7 +62,8 @@ import { RegisterDialogComponent } from './register-dialog/register-dialog.compo
     CategoryBarComponent,
     CategoryMenuItemComponent,
     ProductCardComponent,
-    RegisterDialogComponent
+    RegisterDialogComponent,
+    ReviewChainComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,8 @@ import { RegisterDialogComponent } from './register-dialog/register-dialog.compo
     MatExpansionModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatSliderModule
+    MatSliderModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

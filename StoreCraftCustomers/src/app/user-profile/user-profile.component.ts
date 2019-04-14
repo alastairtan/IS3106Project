@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../session.service';
 import { Customer } from '../customer';
 import { MembershipTierEnum } from '../MembershipTierEnum.enum';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,13 +15,15 @@ export class UserProfileComponent implements OnInit {
   customerMemTierString:string;
 
   isUpdating: boolean;
+  infoMessage: string;
+  errorMessage: string;
 
   tierUrl: string;
   tierMessage: string;
 
   constructor(
-    public sessionService: SessionService
-  ) {
+    public sessionService: SessionService,
+    public customerService: CustomerService) {
     this.isUpdating = false;
    }
 
@@ -41,7 +44,18 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveChanges(){
-
+    this.customerService.updateCustomer(this.customer).subscribe(
+      response => {
+        console.log(response);
+        this.sessionService.setCurrentCustomer(this.customer);
+        this.infoMessage = "Succesfully updated!";
+        this.isUpdating = false;
+      },
+      error => {
+        console.log(error);
+        this.errorMessage = error;
+      }
+    );
   }
 
   setTierInfo(){

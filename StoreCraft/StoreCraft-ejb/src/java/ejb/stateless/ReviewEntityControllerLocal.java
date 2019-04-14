@@ -39,5 +39,7 @@ public interface ReviewEntityControllerLocal {
     public List<ReviewEntity> getOutstandingCustomerReviews();
 
     public List<ReviewEntity> getReviewChain(Long rootReviewEntityId) throws ReviewNotFoundException;
+
+    public ReviewEntity customerReplyToStaffReply(Long staffReplyToReplyId, ReviewEntity customerReply, Long customerId) throws InputDataValidationException, CustomerNotFoundException, ReviewNotFoundException;
     
 }

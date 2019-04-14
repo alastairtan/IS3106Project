@@ -9,6 +9,12 @@
       <br>
       <mat-divider></mat-divider>
 
+      <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+        {{errorMessage}}
+      </div>
+      <div class="alert alert-success" role="alert" *ngIf="infoMessage">
+        {{infoMessage}}
+      </div>
       <mat-card-content class="content">
 
         <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
@@ -50,31 +56,31 @@
 
             <mat-card>
 
-            <mat-form-field class="formField">
-              <input matInput placeholder="Email" [(ngModel)]="customer.email" readonly="{{!isUpdating}}">
-            </mat-form-field>
-            <br>
+              <mat-form-field class="formField">
+                <input matInput placeholder="Email" [(ngModel)]="customer.email" readonly="true">
+              </mat-form-field>
+              <br>
 
-            <mat-form-field class="formField">
-              <input matInput placeholder="Country" [(ngModel)]="customer.country" readonly="{{!isUpdating}}">
-            </mat-form-field>
-            <br>
+              <mat-form-field class="formField">
+                <input matInput placeholder="Country" [(ngModel)]="customer.country" readonly="{{!isUpdating}}">
+              </mat-form-field>
+              <br>
 
-            <mat-form-field class="formField">
-              <input matInput placeholder="Profile Picture URL" [(ngModel)]="customer.profilePicUrl"
-                readonly="{{!isUpdating}}">
-            </mat-form-field>
-            <br>
+              <mat-form-field class="formField">
+                <input matInput placeholder="Profile Picture URL" [(ngModel)]="customer.profilePicUrl"
+                  readonly="{{!isUpdating}}">
+              </mat-form-field>
+              <br>
 
-            <mat-form-field class="formField" *ngIf="isUpdating">
-              <input matInput placeholder="First Name" [(ngModel)]="customer.firstName" readonly="{{!isUpdating}}">
-            </mat-form-field>
-            <br>
+              <mat-form-field class="formField" *ngIf="isUpdating">
+                <input matInput placeholder="First Name" [(ngModel)]="customer.firstName" readonly="{{!isUpdating}}">
+              </mat-form-field>
+              <br>
 
-            <mat-form-field class="formField" *ngIf="isUpdating">
-              <input matInput placeholder="Last Name" [(ngModel)]="customer.lastName" readonly="{{!isUpdating}}">
-            </mat-form-field>
-            <br>
+              <mat-form-field class="formField" *ngIf="isUpdating">
+                <input matInput placeholder="Last Name" [(ngModel)]="customer.lastName" readonly="{{!isUpdating}}">
+              </mat-form-field>
+              <br>
 
             </mat-card>
           </div>

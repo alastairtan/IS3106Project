@@ -1,0 +1,38 @@
+mat-expansion-panel {
+    height: auto !important;
+}
+
+mat-expansion-panel-header {
+    height: auto !important;
+}
+
+mat-panel-description {
+    flex-grow: 7 !important;
+}
+
+mat-panel-title{
+    color: black !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
+    flex-basis: inherit;
+}
+
+
+.reviewTitle{
+    align-self: center
+}
+
+.replyContentField{
+    width: 100%;
+    color: black !important;
+    margin-top: 2vw;
+}
+
+.custReplyForm{
+    width: 100%
+}
+
+.submitReply{
+    margin-bottom: 2vw;
+}

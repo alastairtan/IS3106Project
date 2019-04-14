@@ -26,10 +26,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
-import datamodel.ws.rest.CustomerRegisterReq;
-import datamodel.ws.rest.CustomerRegisterRsp;
+import datamodel.ws.rest.CustomerReq;
+import datamodel.ws.rest.CustomerRsp;
 import datamodel.ws.rest.RetrieveAllCustomerRsp;
 import java.util.List;
+import util.exception.CustomerNotFoundException;
+import util.exception.UpdateCustomerException;
 
 /**
  * REST Web Service
@@ -88,19 +90,19 @@ public class CustomerResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response customerRegister(CustomerRegisterReq customerRegisterReq) {
+    public Response customerRegister(CustomerReq customerReq) {
                                 
-        if(customerRegisterReq != null) 
+        if(customerReq != null) 
         {
             try 
             {
-                CustomerEntity customerEntity = customerEntityControllerLocal.createNewCustomer(customerRegisterReq.getCustomerEntity());
+                CustomerEntity customerEntity = customerEntityControllerLocal.createNewCustomer(customerReq.getCustomerEntity());
                 
                 System.out.println(customerEntity.getCustomerId());
-                CustomerRegisterRsp customerRegisterRsp = new CustomerRegisterRsp(customerEntity);
-                System.out.println(customerRegisterReq.getCustomerEntity());
+                CustomerRsp customerRsp = new CustomerRsp(customerEntity);
+                System.out.println(customerReq.getCustomerEntity());
 
-                return Response.status(Response.Status.OK).entity(customerRegisterRsp).build();
+                return Response.status(Response.Status.OK).entity(customerRsp).build();
             } 
             catch (InputDataValidationException ex)
             {
@@ -118,6 +120,45 @@ public class CustomerResource {
         else
         {
             ErrorRsp errorRsp = new ErrorRsp("Invalid register customer request");
+                
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("updateCustomer")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(CustomerReq customerReq) {
+             System.out.println(customerReq.getCustomerEntity());                   
+        if(customerReq != null) 
+        {
+            try 
+            {
+                customerEntityControllerLocal.updateCustomerDetails(customerReq.getCustomerEntity());
+                
+                CustomerRsp customerRsp = new CustomerRsp(customerReq.getCustomerEntity());
+                
+                System.out.println(customerReq.getCustomerEntity());
+
+                return Response.status(Response.Status.OK).entity(customerRsp).build();
+            } 
+            catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp("Error updating customer: " + ex.getMessage());
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+            catch (Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
                 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }

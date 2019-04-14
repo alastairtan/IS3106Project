@@ -7,23 +7,28 @@ import { Product } from './product';
 import { Tag } from './tag';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 
 export class ProductService {
 
-  baseUrl: string = "/api/Product";
+	baseUrl: string = "/api/Product";
 
-  constructor(private httpClient: HttpClient) { 
+	constructor(private httpClient: HttpClient) {
 
-  }
+	}
 
-  getProductsByCategory(categoryId: number): Observable<any>{
-    return this.httpClient.get<any>(this.baseUrl + "/getProductsByCategory?categoryId=" + categoryId)
-    .pipe(catchError(this.handleError))
-  }
+	getProductsByCategory(categoryId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/getProductsByCategory?categoryId=" + categoryId)
+			.pipe(catchError(this.handleError))
+	}
 
-  private handleError(error: HttpErrorResponse) {
+	getProductId(productId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/getProductById?productId=" + productId)
+			.pipe(catchError(this.handleError))
+	}
+
+	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 
 		if (error.error instanceof ErrorEvent) {
@@ -38,13 +43,13 @@ export class ProductService {
 		return throwError(errorMessage);
 	}
 
-	filterProductsByTagsOR(products: Product[], filterTagIds: number[]): Product[]{
+	filterProductsByTagsOR(products: Product[], filterTagIds: number[]): Product[] {
 
 		let filteredList: Product[] = [];
 
-		for (let product of products){
+		for (let product of products) {
 			let productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
-			if (this.productTagIdsContainsOne(productTagIds, filterTagIds)){
+			if (this.productTagIdsContainsOne(productTagIds, filterTagIds)) {
 				filteredList.push(product);
 			}
 		}
@@ -52,41 +57,41 @@ export class ProductService {
 		return filteredList;
 	}
 
-	filterProductsByTagsAND(products: Product[], filterTagIds: number[]): Product[]{
+	filterProductsByTagsAND(products: Product[], filterTagIds: number[]): Product[] {
 
 		let filteredList: Product[] = [];
 
-		for (let product of products){
+		for (let product of products) {
 			let productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
-			if (this.productTagIdsContainsAll(productTagIds, filterTagIds)){
+			if (this.productTagIdsContainsAll(productTagIds, filterTagIds)) {
 				filteredList.push(product);
 			}
 		}
 
 		return filteredList;
 	}
-	
 
-	getTagIdsFromTagEntities(tags) : number[]{
+
+	getTagIdsFromTagEntities(tags): number[] {
 		let tagIds: number[] = [];
-		for (let tag of tags){
+		for (let tag of tags) {
 			tagIds.push(tag.tagId);
 		}
 		return tagIds;
 	}
 
-	productTagIdsContainsOne(productTagIds: number[], filterTagIds: number[]){
-		for (let filterTagId of filterTagIds){
-			if (productTagIds.includes(filterTagId)){
+	productTagIdsContainsOne(productTagIds: number[], filterTagIds: number[]) {
+		for (let filterTagId of filterTagIds) {
+			if (productTagIds.includes(filterTagId)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	productTagIdsContainsAll(productTagIds: number[], filterTagIds: number[]){
-		for(let filterTagId of filterTagIds){
-			if (!productTagIds.includes(filterTagId)){
+	productTagIdsContainsAll(productTagIds: number[], filterTagIds: number[]) {
+		for (let filterTagId of filterTagIds) {
+			if (!productTagIds.includes(filterTagId)) {
 				return false;
 			}
 		}

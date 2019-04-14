@@ -31,30 +31,31 @@
 
                 <p:menuitem value="Product Management" outcome="/systemAdministration/productManagement.xhtml" rendered="#{cc.attrs.pageName == 'productManagement' || cc.attrs.pageName == 'filterProductsByCategory'}" />
                 <p:menuitem value="Filter Products by Category" outcome="/systemAdministration/filterProductsByCategory.xhtml" rendered="#{cc.attrs.pageName == 'filterProductsByCategory'}" />  
-                
+
                 <p:menuitem value="Staff Management" outcome="/systemAdministration/staffManagement.xhtml" rendered="#{cc.attrs.pageName == 'staffManagement'}" />                        
                 <p:menuitem value="Sales Management" outcome="/systemAdministration/salesManagement.xhtml" rendered="#{cc.attrs.pageName == 'salesManagement'}" />
-               
+
 
                 <p:menuitem value="Discount Code Management" outcome="/systemAdministration/discountCodeManagement.xhtml" rendered="#{cc.attrs.pageName == 'discountCodeManagement' || cc.attrs.pageName == 'createDiscountCode' || cc.attrs.pageName == 'viewUpdateDiscountCode'}" /> 
                 <p:menuitem value="Create Discount Code" outcome="/systemAdministration/createDiscountCode.xhtml" rendered="#{cc.attrs.pageName == 'createDiscountCode'}"/>
                 <p:menuitem value="View/Update Discount Code" outcome="/systemAdministration/viewUpdateDiscountCode.xhtml" rendered="#{cc.attrs.pageName == 'viewUpdateDiscountCode'}"/>
-                
+
 
                 <p:menuitem value="Customer Management" outcome="/systemAdministration/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement' || cc.attrs.pageName=='customerDetails'}" />
                 <p:menuitem value="Customer Details" outcome="/systemAdministration/customerDetails.xhtml" rendered="#{cc.attrs.pageName == 'customerDetails'}"/>
-                
+
                 <p:menuitem value="Review Management" outcome="/systemAdministration/reviewManagement.xhtml" rendered="#{cc.attrs.pageName == 'reviewManagement' || cc.attrs.pageName == 'reviewChain' }" />
                 <p:menuitem value="Review Chain" outcome="/systemAdministration/reviewChain.xhtml" rendered="#{cc.attrs.pageName == 'reviewChain' }" />
 
-               
+
                 <p:menuitem value="Game Features" rendered="#{cc.attrs.pageName == 'communityGoals' ||
-                                                                  cc.attrs.pageName == 'scavengerHunt'}"/>
-                
+                                                              cc.attrs.pageName == 'scavengerHunt'||
+                                                              cc.attrs.pageName == 'scavengerHuntHistory'}"/>
+
                 <p:menuitem value="Community Goals" outcome="/gameFeatures/communityGoals.xhtml" rendered="#{cc.attrs.pageName == 'communityGoals'}" />
-                <p:menuitem value="Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" rendered="#{cc.attrs.pageName == 'scavengerHunt'}" />
-                
-                
+                <p:menuitem value="Scavenger Hunt" outcome="/gameFeatures/scavengerHunt.xhtml" rendered="#{cc.attrs.pageName == 'scavengerHunt' || cc.attrs.pageName == 'scavengerHuntHistory'}" />
+                <p:menuitem value="Scavenger Hunt History" outcome="/gameFeatures/scavengerHuntHistory.xhtml" rendered="#{cc.attrs.pageName == 'scavengerHuntHistory'}" />
+
             </p:breadCrumb>
 
         </h:form>

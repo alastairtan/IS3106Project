@@ -76,7 +76,7 @@
 
         <h:form id="formViewCommunityGoal">
             <p:dialog id="dialogViewCommunityGoal" widgetVar="dialogViewCommunityGoal" closable="true" modal="true" 
-                      position="center">
+                      position="center" closeOnEscape="true">
                 <p:ajax event="close" listener="#{communityGoalsManagedBean.closeViewDialog}" oncomplete="PF('dialogViewCommunityGoal').toggleMaximize()"/>
                 <f:facet name="header">
                     <h:outputText rendered="#{communityGoalsManagedBean.isUpdating}" style="color: red" value="Updating Community Goal"/> 
@@ -163,7 +163,7 @@
         </h:form>
         <h:form id="formCreateCommunityGoal">
             <p:dialog id="dialogCreateCommunityGoal" widgetVar="dialogCreateCommunityGoal" closable="true" modal="true"
-                      position="center" >
+                      position="center" closeOnEscape="true">
                 <p:ajax event="close" listener="#{communityGoalsManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateCommunityGoal').toggleMaximize()"/>
                 <f:facet name="header">
                     <h:outputText style="color: red; font-family: 'Segoe UI',Arial,sans-serif;" value="Creating Community Goal"/> 
