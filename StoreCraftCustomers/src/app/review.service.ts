@@ -5,23 +5,20 @@ import { catchError } from 'rxjs/operators';
 import { Review } from './review';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ReviewService {
 
-  baseUrl: string = "/api/Review";
+	baseUrl: string = "/api/Review";
 
-  constructor(private httpClient: HttpClient) { }
+	constructor(private httpClient: HttpClient) { }
 
-  getReviewChain(reviewId: number): Observable<any> {
+	getReviewChain(reviewId: number): Observable<any> {
 		return this.httpClient.get<any>(this.baseUrl + "/retrieveReviewChain?reviewId=" + reviewId)
 			.pipe(catchError(this.handleError))
-  }
-  
-  replyToStaffReply(review : Review): Observable<any> {
-	//   return this.httpClient.put<any>(this.baseUrl + `/replyToStaffReply/${review.}` + )
-  }
-  private handleError(error: HttpErrorResponse) {
+	}
+
+	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 
 		if (error.error instanceof ErrorEvent) {

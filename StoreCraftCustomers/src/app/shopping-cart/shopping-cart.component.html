@@ -1,3 +1,97 @@
-<p>
-  shopping-cart works!
-</p>
+<div *ngIf="cartItems != null" fxFlex="1 1 70%" style="margin-top:50px">
+
+  <div *ngFor="let cartItem of cartItems">
+    <div fxLayout="column" fxLayoutAlign="center start">
+      <div class="product">
+        <div fxLayout="row">
+          <div fxFlex="25" style="text-align: center">
+            <a [routerLink]="['/product', cartItem.productEntity.productId]">
+              <img src="{{cartItem.productEntity.productImageUrl}}" />
+            </a>
+          </div>
+          <div fxFlex="30" class="mid">
+            <h4> {{cartItem.productEntity.name}}</h4>
+            <h6> {{cartItem.productEntity.description}}</h6>
+            <hr>
+            <h5> {{format(cartItem.unitPrice)}} </h5>
+          </div>
+          <div fxFlex="25" class="mid" style="text-align: center">
+            <h5> Quantity : {{cartItem.quantity}}</h5>
+            <h6><br /></h6>
+            <br />
+            <h4> Total : {{format(cartItem.subTotal)}} </h4>
+          </div>
+          <div fxFlex style="text-align: center">
+            <button class="removeFromCart" mat-raised-button color="warn" (click)="removeFromCart(cartItem)">Remove from
+              cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 20px" fxFlex=100 *ngIf="cartItems == null">
+  <p> Your cart is empty </p>
+</div>
+
+<div fxFlex="1 1 30%">
+  <div class="summary">
+    <h1>
+      Order summary
+    </h1>
+    <hr>
+
+    <div class="grid-container">
+      <div class="firstbox">
+        <p>
+          Subtotal ({{totalQuantityForTheCart}} items)
+        </p>
+      </div>
+      <div style="text-align: right">
+        <p>{{format(totalAmountForTheCart)}}</p>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="firstbox">
+        <p>
+          Shipping fee
+        </p>
+      </div>
+      <div style="text-align: right">
+        <p>{{format(10)}}</p>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="firstbox">
+        <p>
+          Promotion
+        </p>
+      </div>
+      <div style="text-align: right">
+        <p>{{format(-10)}}</p>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="firstbox">
+        <input matInput [(ngModel)]="promotionalCode" name="promotionalCode" placeholder="Enter Promo Code">
+      </div>
+      <div style="text-align: right">
+        <button color="warn" mat-raised-button> APPLY </button>
+      </div>
+    </div>
+
+    <div class="grid-container" style="margin-top: 30px">
+      <div class="firstbox" style="text-align: right; margin-top: 7px" >
+        <p>Total: </p> 
+      </div>
+      <div style="text-align: right">
+        <p style="font-size: 23px;">{{format(totalAmountForTheCart)}}</p>
+      </div>
+    </div>
+    <button class="checkout" color="warn" mat-raised-button (click)="checkout(cartItems)"> Checkout </button>
+  </div>
+</div>
