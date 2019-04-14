@@ -59,7 +59,7 @@ public class ProductResource {
             for (ProductEntity productEntity : productEntities) {
                 
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
-
+   
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
