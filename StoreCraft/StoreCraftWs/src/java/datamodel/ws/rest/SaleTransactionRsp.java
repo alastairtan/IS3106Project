@@ -5,16 +5,9 @@
  */
 package datamodel.ws.rest;
 
-import ejb.stateless.CustomerEntityControllerLocal;
 import entity.CustomerEntity;
 import entity.SaleTransactionEntity;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  *
@@ -23,10 +16,9 @@ import javax.naming.NamingException;
 public class SaleTransactionRsp {
     
     private SaleTransactionEntity saleTransactionEntity;
-    private List<SaleTransactionEntity> saleTransactionEntities;
-    private CustomerEntity customerEntity;
+//    private List<SaleTransactionEntity> saleTransactionEntities;
     
-    public SaleTransactionRsp() throws Exception {
+    public SaleTransactionRsp() {
     }
     
     public SaleTransactionRsp(SaleTransactionEntity saleTransactionEntity)
@@ -34,19 +26,19 @@ public class SaleTransactionRsp {
         this.saleTransactionEntity = saleTransactionEntity;
     }
     
-    public SaleTransactionRsp(List<SaleTransactionEntity> saleTransactionEntities)
-    {
-        this.saleTransactionEntities = saleTransactionEntities;
-
-    }
-
-    public List<SaleTransactionEntity> getSaleTransactionEntities() {
-        return saleTransactionEntities;
-    }
-
-    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
-        this.saleTransactionEntities = saleTransactionEntities;
-    }
+//    public SaleTransactionRsp(List<SaleTransactionEntity> saleTransactionEntities)
+//    {
+//        this.saleTransactionEntities = saleTransactionEntities;
+//
+//    }
+//
+//    public List<SaleTransactionEntity> getSaleTransactionEntities() {
+//        return saleTransactionEntities;
+//    }
+//
+//    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
+//        this.saleTransactionEntities = saleTransactionEntities;
+//    }
 
     public SaleTransactionEntity getSaleTransactionEntity() {
         return saleTransactionEntity;
@@ -54,13 +46,5 @@ public class SaleTransactionRsp {
 
     public void setSaleTransactionEntity(SaleTransactionEntity saleTransactionEntity) {
         this.saleTransactionEntity = saleTransactionEntity;
-    }
-
-    public CustomerEntity getCustomerEntity() {
-        return customerEntity;
-    }
-
-    public void setCustomerEntity(CustomerEntity customerEntity) {
-        this.customerEntity = customerEntity;
     }
 }

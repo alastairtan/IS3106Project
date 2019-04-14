@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '../product';
-import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../data.service';
 import { ProductService } from '../product.service';
+import { LocalService } from '../local.service';
+import { CartItem } from '../cartItem';
 
 @Component({
   selector: 'app-view-product-details',
@@ -17,7 +18,8 @@ export class ViewProductDetailsComponent implements OnInit {
   private errorMessage: string;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private productService: ProductService) { }
+    private productService: ProductService,
+    private localService: LocalService) { }
 
   ngOnInit() {
     let productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
@@ -50,6 +52,35 @@ export class ViewProductDetailsComponent implements OnInit {
 
   addToCart() {
     console.log("Adding to cart!");
-    console.log(this.product.reviewEntities)
+
+    let newCartItem = new CartItem(0, this.product, this.quantity, this.product.unitPrice, (this.product.unitPrice * this.quantity));
+
+    let cartItems = this.localService.getCart();
+  
+    if (cartItems != null) {
+      let existingCartItem = cartItems.find((val) => val.productEntity.productId == this.product.productId);
+
+      if ( existingCartItem != null ) 
+      {
+        let index = cartItems.indexOf(existingCartItem);
+        
+        cartItems[index].quantity += newCartItem.quantity;
+      }
+      else {
+        cartItems.push(newCartItem);
+      }
+    } 
+    else 
+    {
+      cartItems = [];
+      cartItems.push(newCartItem);
+    }
+
+    if ( newCartItem.quantity != 0 ) 
+    {
+      this.localService.setCart(cartItems);
+    }
+
+    console.log(cartItems);
   }
 }
