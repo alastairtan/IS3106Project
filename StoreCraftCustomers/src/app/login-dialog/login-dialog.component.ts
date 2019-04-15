@@ -46,33 +46,33 @@ export class LoginDialogComponent implements OnInit {
       response => {
         let customer: Customer = response.customerEntity;
 
-        if (response.customerEntity.membershipTierEnum == 'BRONZE') {
-          customer.membershipTierEnum = MembershipTierEnum.BRONZE;
-        }
-        if (response.customerEntity.membershipTierEnum == 'SILVER') {
-          customer.membershipTierEnum = MembershipTierEnum.SILVER;
-        }
-        if (response.customerEntity.membershipTierEnum == 'GOLD') {
-          customer.membershipTierEnum = MembershipTierEnum.GOLD;
-        }
-        if (response.customerEntity.membershipTierEnum == 'PLATINUM') {
-          customer.membershipTierEnum = MembershipTierEnum.PLATINUM;
-        }
-        if (response.customerEntity.membershipTierEnum == 'DIAMOND') {
-          customer.membershipTierEnum = MembershipTierEnum.DIAMOND;
-        }
-        if (response.customerEntity.membershipTierEnum == 'MASTER') {
-          customer.membershipTierEnum = MembershipTierEnum.MASTER;
-        }
-        if (response.customerEntity.membershipTierEnum == 'GRANDMASTER') {
-          customer.membershipTierEnum = MembershipTierEnum.GRANDMASTER;
-        }
+        // if (response.customerEntity.membershipTierEnum == 'BRONZE') {
+        //   customer.membershipTierEnum = MembershipTierEnum.BRONZE;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'SILVER') {
+        //   customer.membershipTierEnum = MembershipTierEnum.SILVER;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'GOLD') {
+        //   customer.membershipTierEnum = MembershipTierEnum.GOLD;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'PLATINUM') {
+        //   customer.membershipTierEnum = MembershipTierEnum.PLATINUM;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'DIAMOND') {
+        //   customer.membershipTierEnum = MembershipTierEnum.DIAMOND;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'MASTER') {
+        //   customer.membershipTierEnum = MembershipTierEnum.MASTER;
+        // }
+        // if (response.customerEntity.membershipTierEnum == 'GRANDMASTER') {
+        //   customer.membershipTierEnum = MembershipTierEnum.GRANDMASTER;
+        // }
 
         if (customer != null) {
           this.sessionService.setIsLogin(true);
           this.sessionService.setCurrentCustomer(customer);
 
-          console.log("Customer " + JSON.parse(sessionStorage.currentCustomer).firstName);
+          console.log(this.sessionService.getCurrentCustomer());
 
           this.loginError = false;
 

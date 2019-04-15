@@ -5,9 +5,7 @@
  */
 package datamodel.ws.rest;
 
-import entity.CustomerEntity;
 import entity.SaleTransactionEntity;
-import java.util.List;
 
 /**
  *
