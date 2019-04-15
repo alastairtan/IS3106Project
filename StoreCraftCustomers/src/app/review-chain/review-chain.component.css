@@ -8,10 +8,19 @@ mat-expansion-panel-header {
 
 mat-panel-description {
     flex-grow: 7 !important;
+    height: auto !important;
+    padding-bottom: 2vw;
+    flex-basis: auto !important;
 }
 
 mat-panel-title{
     color: black !important;
+    flex-wrap: wrap !important;
+    height: auto !important;
+}
+
+mat-list-item {
+    height: max-content !important;
 }
 
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
@@ -30,10 +39,21 @@ mat-panel-title{
     margin-bottom: 1vw;
 }
 
+
 .custReplyForm{
     width: 100%
 }
 
 .submitReply{
     margin-bottom: 2vw;
+}
+
+.editReplyBtn{
+    margin-top: 1vw;
+    width: 100%;
+}
+
+.editReplyBtn2{
+    margin-top: 0.2vw;
+    width: 100%;
 }

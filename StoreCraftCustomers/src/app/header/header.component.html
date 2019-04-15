@@ -37,7 +37,7 @@
         </form>
 
         <div class="shopping-cart-section">
-            <button id="shoppingCartBtn" mat-button [matMenuTriggerFor]="shoppingCartMenu">
+            <button id="shoppingCartBtn" mat-button [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]" >
                 <mat-icon>shopping_cart</mat-icon>&nbsp;Shopping Cart
             </button>
         </div>

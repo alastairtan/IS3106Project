@@ -25,9 +25,11 @@
                 <br />
                 <div class="quantityAdjust">
                   <span class="quantityWord">Quantity: </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="quantity" mat-raised-button disabled="{{quantity==0}}" (click)="minus()">-</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="quantity" mat-raised-button disabled="{{quantity==0}}"
+                    (click)="minus()">-</button>&nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="quantityWord">{{quantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="quantity" mat-raised-button disabled="{{quantity==10}}" (click)="add()">+</button>
+                  <button class="quantity" mat-raised-button
+                    disabled="{{quantity==10 || quantity >= product?.quantityOnHand}}" (click)="add()">+</button>
                 </div>
                 <br />
               </mat-card-content>
@@ -49,22 +51,74 @@
 
           <div fxFlex="1 1 100%">
 
-            <mat-toolbar color="primary" class="mat-elevation-z2">Reviews</mat-toolbar>
+            <mat-toolbar color="primary" class="mat-elevation-z2">
+              <span>Reviews</span>
+              <span style="flex: 1 1 auto"></span>
+              <button *ngIf="currentCustomer != null" mat-raised-button (click)="writeReview()" >
+                Write a Review
+              </button>  
+            </mat-toolbar>
+            <app-write-review [show]="isWriting" [productId]="product?.productId" (submitted)="refresh()" (closed)="cancelWriteReview()"></app-write-review>
             <mat-accordion displayMode="flat">
-              <mat-expansion-panel *ngFor="let review of product?.reviewEntities">
+              <mat-expansion-panel *ngFor="let review of product?.reviewEntities.slice().reverse()" [disabled]="review.customerEntity != null && isEditing">
                 <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
+
                   <mat-panel-title class="reviewTitle">
+
                     {{review.customerEntity.firstName}} {{review.customerEntity.lastName}}
+
+                    <button mat-raised-button color="accent" class="editReplyBtn"
+                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
+                      (click)="editing(review);$event.stopPropagation()">Edit Review</button>
+
+                    <button mat-raised-button color="primary" class="editReplyBtn"
+                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                      (click)="$event.stopPropagation()" form="updateForm" type="submit">Save</button>
+
+                    <button mat-raised-button color="warn" class="editReplyBtn"
+                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                      (click)="cancelEdit(review);$event.stopPropagation()">Cancel Edit</button>
+                      
                   </mat-panel-title>
+
                   <mat-panel-description>
-                    <mat-list role="list">
-                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
-                      <mat-list-item role="listitem">{{review.content}}</mat-list-item>
+                    <mat-list role="list" style="width: 100%">
+                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong>
+                      </mat-list-item>
+
+                      <mat-list-item role="listitem">
+                        <star-rating [starType]="'svg'"
+                          [rating]="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)?review.productRating:updatedProductRating"
+                          [readOnly]="!(review.customerEntity != null && isEditing)" 
+                          (starClickChange)="onClick($event)"
+                          labelText="Rating:">
+                        </star-rating>
+                      </mat-list-item>
+
+                      <mat-list-item *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)" role="listitem">
+                        <div class="textBox">{{review.content}}</div>
+                      </mat-list-item>
+                      <mat-list-item *ngIf="review.customerEntity != null && isEditing && review.reviewId == editReviewId" role="listitem">
+
+                        <form #updateForm="ngForm" (ngSubmit)="updateForm.valid?saveEdit():null" class="custReplyForm"
+                          id="updateForm">
+                          <mat-form-field class="replyContentField">
+                            <textarea matInput name="updateTextArea" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                              cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" [(ngModel)]="updatedReviewContent"
+                              (click)="$event.stopPropagation()" #updateTextContent="ngModel" required></textarea>
+                            <mat-error *ngIf="updateTextContent.errors?.required">
+                              Content is <strong>required</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </form>
+
+                      </mat-list-item>
+
                     </mat-list>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
-                  <app-review-chain [rootReviewId]="review.reviewId"></app-review-chain>
-                
+                <app-review-chain [rootReviewId]="review.reviewId"></app-review-chain>
+
               </mat-expansion-panel>
             </mat-accordion>
           </div>

@@ -102,7 +102,7 @@ public class CommunityGoalResource {
         }
     }
     
-    @Path("index")
+    @Path("retrieveCurrentCommunityGoalsByCountry")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveCurrentCommunityGoalsByCountry(@QueryParam("country") String country)
