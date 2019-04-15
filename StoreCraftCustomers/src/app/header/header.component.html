@@ -50,7 +50,7 @@
                             </a>
                         </td>
                     </tr>
-                    <tr *ngFor="let cartItem of localService.getCart()">
+                    <tr *ngFor="let cartItem of localService.getCart()" class="cartItems">
                         <td>
                             {{cartItem.productEntity.name}} ({{cartItem.quantity}})
                         </td>
