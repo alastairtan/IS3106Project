@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center strectch" style="margin-top: 20px">
+<div fxLayout="row" fxLayoutAlign="center stretch" style="margin-top: 20px">
   <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="addToCartMessage && !addToCartMessageClose">
     {{addToCartMessage}}
   </div>
@@ -39,7 +39,8 @@
                 <br />
               </mat-card-content>
               <mat-card-actions>
-                <button mat-raised-button color="accent" (click)="addToCart()">Add to Cart</button>
+                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()">Add to Cart</button>
+                <button *ngIf="currentCustomer==null" mat-raised-button color="primary" (click)="openDialog()">Login To Purchase</button>
                 <button *ngIf="product?.isScavengerHuntPrize" mat-raised-button color="warn">Claim Scavenger Hunt
                   Prize</button>
               </mat-card-actions>
