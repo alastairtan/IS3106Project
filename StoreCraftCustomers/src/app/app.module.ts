@@ -49,6 +49,7 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
 import { WriteReviewComponent } from './write-review/write-review.component';
+import { DiscountCodeTableComponent } from './discount-code-table/discount-code-table.component';
 
 
 
@@ -72,7 +73,8 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     ProductCardComponent,
     RegisterDialogComponent,
     ReviewChainComponent,
-    WriteReviewComponent
+    WriteReviewComponent,
+    DiscountCodeTableComponent
   ],
   imports: [
     BrowserModule,

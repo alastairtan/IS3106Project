@@ -27,7 +27,7 @@
                 <mat-card-title><strong>TIER: </strong>{{customer.membershipTierEnum}}</mat-card-title>
                 <mat-card-subtitle style="margin-bottom: 0">{{customer.tierMessage}}</mat-card-subtitle>
               </mat-card-header>
-              
+
               <mat-card-content class="content2">
                 <table class="table">
                   <tr>
@@ -48,7 +48,7 @@
                   </tr>
                 </table>
               </mat-card-content>
-            
+
             </mat-card>
           </div>
 
@@ -85,16 +85,19 @@
             </mat-card>
           </div>
 
-          <div fxFlex="1 1 45%" fxFlexOrder="3">
+          <div fxFlex="1 1 100%" fxFlexOrder="3">
 
           </div>
 
-          <div fxFlex="1 1 55%" fxFlexOrder="4">
+          <div fxFlex="1 1 100%" fxFlexOrder="4">
+
+
+            <app-discount-code-table [customerId]="customer.customerId"></app-discount-code-table>
 
           </div>
 
           <div fxFlex="1 1 100%" fxFlexOrder="5">
-            
+
           </div>
 
         </div>
