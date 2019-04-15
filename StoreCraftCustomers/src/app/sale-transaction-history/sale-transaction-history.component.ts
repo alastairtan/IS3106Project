@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SaleTransactionService } from '../sale-transaction.service';
+import { SaleTransaction } from '../saleTransaction';
 
 @Component({
   selector: 'app-sale-transaction-history',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SaleTransactionHistoryComponent implements OnInit {
 
-  constructor() { }
+  private saleTransactions: SaleTransaction[];
+
+  constructor(private saleTransactionService: SaleTransactionService,
+  ) { }
 
   ngOnInit() {
+    this.saleTransactionService.retrieveAllTransactions().subscribe(response => {
+      this.saleTransactions = response;
+    }
+    )
   }
-
 }

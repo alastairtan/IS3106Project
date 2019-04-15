@@ -17,7 +17,9 @@ export class SaleTransactionService {
 
   baseUrl: string = "/api/SaleTransaction"
 
-  constructor(public httpClient: HttpClient, public sessionService: SessionService) { }
+  constructor(public httpClient: HttpClient, 
+    public sessionService: SessionService) { }
+
 
   createSaleTransaction(cartItems: CartItem[]): Observable<any> {
 
@@ -30,8 +32,6 @@ export class SaleTransactionService {
       cartItem.serialNumber = num;
       num += 1;
      })
-
-     console.log(cartItems);
 
     let saleTransaction: SaleTransaction;
     saleTransaction = new SaleTransaction(cartItems.length, totalQuantityForTheCart, totalAmountForTheCart,
@@ -46,6 +46,15 @@ export class SaleTransactionService {
         catchError(this.handleError)
       )
   }
+
+
+  retrieveAllTransactions() : Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl).pipe
+    (
+      catchError(this.handleError)
+    );
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string = "";
