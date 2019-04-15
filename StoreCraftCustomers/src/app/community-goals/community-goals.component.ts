@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator} from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogRef} from '@angular/material';
 import { SessionService } from '../session.service';
 import { CommunityGoalService } from '../community-goal.service';
 import {CommunityGoal} from '../community-goal'
@@ -22,7 +22,8 @@ export class CommunityGoalsComponent implements OnInit {
   country : String;
 
   constructor(public sessionService : SessionService,
-              public communityGoalService : CommunityGoalService) { }
+              public communityGoalService : CommunityGoalService,
+              public dialog : MatDialog) { }
 
   ngOnInit() {
       this.getCommunityGoals();
@@ -50,6 +51,31 @@ export class CommunityGoalsComponent implements OnInit {
 
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
+  openDialog(communitygoal :CommunityGoal){
+    const dialogRef = this.dialog.open(CommunityGoalsDialog, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+}
+
+@Component({
+  selector: 'communityGoalsDialog',
+  templateUrl: 'communityGoalsDialog.html',
+})
+export class CommunityGoalsDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<CommunityGoalsDialog>){}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
