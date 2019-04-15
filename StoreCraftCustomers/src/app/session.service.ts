@@ -23,7 +23,11 @@ export class SessionService {
 
 
   getCurrentCustomer(): Customer {
-    return JSON.parse(sessionStorage.currentCustomer);
+    if (sessionStorage.currentCustomer != null) {
+      return JSON.parse(sessionStorage.currentCustomer);
+    } else {
+      return null;
+    }
   }
 
 
@@ -31,11 +35,11 @@ export class SessionService {
     sessionStorage.currentCustomer = JSON.stringify(currentCustomer);
   }
 
-  setSelectedCategory(categoryId: number): void{
+  setSelectedCategory(categoryId: number): void {
     sessionStorage.selectedCategory = categoryId;
   }
 
-  getSelectedCategory(): number{
+  getSelectedCategory(): number {
     return sessionStorage.selectedCategory;
   }
 
