@@ -1,79 +1,35 @@
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1">
-    <mat-card class="card">
+<table mat-table [dataSource]="saleTransactions" multiTemplateDataRows class="mat-elevation-z8">
+  
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+    <td mat-cell *matCellDef="let saleTransaction"> {{saleTransaction[column]}} </td>
+  </ng-container>
 
-      <mat-card-content>
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="saleTransactionLineItems">
+    <!-- Might need ngFor -->
+    <td mat-cell *matCellDef="let saleTransaction" [attr.colspan]="columnsToDisplay.length">
+      <div class="example-element-detail"
+        [@detailExpand]="saleTransaction == expandedSaleTransaction ? 'expanded' : 'collapsed'">
+        <div *ngFor="let lineItem of saleTransaction.saleTransactionLineItems">
 
-        <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid" class="productDetailsContainer">
-          <div fxFlex="1 1 40%">
-            <img class="productImage mat-elevation-z3" src="{{product?.productImageUrl}}" />
-          </div>
-
-          <div fxFlex="1 1 100%">
-
-            <mat-toolbar color="primary" class="mat-elevation-z2">
-              <span>My Order</span>
-              <span style="flex: 1 1 auto"></span>
-              <button *ngIf="currentCustomer != null" mat-raised-button>
-                Write a Review
-              </button>
-            </mat-toolbar>
-            <mat-accordion displayMode="flat">
-              <mat-expansion-panel *ngFor="let saleTransaction of saleTransactions"
-                [disabled]="review.customerEntity != null && isEditing">
-                <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
-
-                  <mat-panel-title class="saleTransactions">
-                    
-                    Order {{saleTransaction.saleTransactionId}}
-
-                  </mat-panel-title>
-
-                  <mat-panel-description>
-                    <mat-list role="list" style="width: 100%">
-                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong>
-                      </mat-list-item>
-
-                      <mat-list-item role="listitem">
-                        <star-rating [starType]="'svg'"
-                          [rating]="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)?review.productRating:updatedProductRating"
-                          [readOnly]="!(review.customerEntity != null && isEditing)" (starClickChange)="onClick($event)"
-                          labelText="Rating:">
-                        </star-rating>
-                      </mat-list-item>
-
-                      <mat-list-item
-                        *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)"
-                        role="listitem">
-                        <div class="textBox">{{review.content}}</div>
-                      </mat-list-item>
-                      <mat-list-item
-                        *ngIf="review.customerEntity != null && isEditing && review.reviewId == editReviewId"
-                        role="listitem">
-
-                        <form #updateForm="ngForm" (ngSubmit)="updateForm.valid?saveEdit():null" class="custReplyForm"
-                          id="updateForm">
-                          <mat-form-field class="replyContentField">
-                            <textarea matInput name="updateTextArea" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                              cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" [(ngModel)]="updatedReviewContent"
-                              (click)="$event.stopPropagation()" #updateTextContent="ngModel" required></textarea>
-                            <mat-error *ngIf="updateTextContent.errors?.required">
-                              Content is <strong>required</strong>
-                            </mat-error>
-                          </mat-form-field>
-                        </form>
-
-                      </mat-list-item>
-
-                    </mat-list>
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-
-              </mat-expansion-panel>
-            </mat-accordion>
-          </div>
         </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
+        <div class="example-element-description">
+          {{saleTransaction.saleTransactionId}}
+          <!-- Nest a static table inside here  -->
+        </div>
+        <div class="example-element-description">
+          {{saleTransaction.totalQuantity}}
+        </div>
+      </div>
+    </td>
+    <!--  -->
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let saleTransaction; columns: columnsToDisplay;" class="example-element-row"
+    [class.example-expanded-row]="expandedSaleTransaction === saleTransaction"
+    (click)="expandedSaleTransaction = expandedSaleTransaction === saleTransaction ? null : saleTransaction">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['saleTransactionLineItems']" class="example-detail-row"></tr>
+</table>
