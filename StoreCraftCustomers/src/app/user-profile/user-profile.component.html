@@ -106,18 +106,17 @@
 
 
           <div fxFlex="1 1 50%" fxFlexOrder="3">
-
+              <app-sale-transaction-history [customerId]="customer.customerId"></app-sale-transaction-history>
           </div>
 
           <div fxFlex="1 1 50%" fxFlexOrder="4">
-
 
             <app-discount-code-table [customerId]="customer.customerId"></app-discount-code-table>
 
           </div>
 
           <div fxFlex="1 1 80%" fxFlexOrder="5">
-            <app-sale-transaction-history [customerId]="customer.customerId"></app-sale-transaction-history>
+           
           </div>
 
 
