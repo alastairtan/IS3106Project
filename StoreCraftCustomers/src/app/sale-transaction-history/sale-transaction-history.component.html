@@ -39,27 +39,25 @@
                     <ng-container matColumnDef="productImage">
                       <th mat-header-cell *matHeaderCellDef> Product </th>
                       <td mat-cell *matCellDef="let lineItem"> 
-                          <img src={{lineItem.productEntity.productImageUrl}}/>
+                          <img src={{lineItem.productEntity.productImageUrl}} />
                       </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="productName">
+                    <ng-container matColumnDef="productName" >
                       <th mat-header-cell *matHeaderCellDef> Name </th>
                       <td mat-cell *matCellDef="let lineItem"> {{lineItem.productEntity.name}} </td>
                     </ng-container>
                   
-                    <!-- Name Column -->
                     <ng-container matColumnDef="quantity">
                       <th mat-header-cell *matHeaderCellDef> Quantity </th>
                       <td mat-cell *matCellDef="let lineItem"> {{lineItem.quantity}} </td>
                     </ng-container>
                   
-                    <!-- Weight Column -->
                     <ng-container matColumnDef="sub-total">
                       <th mat-header-cell *matHeaderCellDef> Sub-total </th>
                       <td mat-cell *matCellDef="let lineItem"> {{format(lineItem.subTotal)}} </td>
                     </ng-container>
-                  
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>

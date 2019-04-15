@@ -40,6 +40,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-description {
   padding: 16px;
+  width: 100%;
 }
 
 .example-element-description-attribution {
@@ -47,5 +48,16 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 img {
-  width: 300px;
+  width: 10vw;
+  height: auto;
 }
+
+th.mat-header-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+
+
+
