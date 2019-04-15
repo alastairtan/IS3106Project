@@ -99,7 +99,6 @@ public class ProductResource {
 
     @Path("index")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRandomProductsForIndexPage() {
         try {
@@ -115,7 +114,10 @@ public class ProductResource {
                                
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
-                    reviewEntity.getCustomerEntity().getReviewEntities().clear(); //unidirectional between product's review and customer
+                    reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
+                    reviewEntity.setReplyReviewEntity(null);
+                    reviewEntity.setStaffEntity(null);
+                    reviewEntity.setParentReviewEntity(null);
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {

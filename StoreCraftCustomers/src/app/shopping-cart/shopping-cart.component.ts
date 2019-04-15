@@ -15,6 +15,11 @@ export class ShoppingCartComponent implements OnInit {
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
   private promotionalCode: string;
+  private infoMessage : string;
+  private errorMessage : string;
+  private removeMessage : string;
+  private removeMessageClose : boolean;
+  private infoMessageClose : boolean;
 
   constructor(private localService: LocalService, private saleTransactionService: SaleTransactionService) { }
 
@@ -30,6 +35,13 @@ export class ShoppingCartComponent implements OnInit {
   removeFromCart(cartItem: CartItem) {
     this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
     this.localService.setCart(this.cartItems);
+    this.removeMessage = `Product ${cartItem.productEntity.name} has been removed from cart`;
+    this.removeMessageClose = false;
+    this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+    this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+    this.cartItems = this.localService.getCart();
+
+    setTimeout(() => this.removeMessageClose = true, 3000);
   }
 
   format(currency: number) {
@@ -40,12 +52,19 @@ export class ShoppingCartComponent implements OnInit {
 
     this.saleTransactionService.createSaleTransaction(cartItems).subscribe(response => {
       console.log("What is the response" + response);
+      this.infoMessage = response;
     }
     ), (error: string) => {
       console.log("Error 500?? " + error);
+      this.errorMessage = error;
     }
 
+    this.removeMessageClose = true;
+    this.infoMessageClose = false;
+    this.infoMessage = "Cart successfully checked out!";
     this.localService.clearCart();
     this.cartItems = this.localService.getCart();
+
+    setTimeout(() => this.infoMessageClose = true, 3000);
   }
 }

@@ -1,4 +1,20 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" style="margin-top:50px">
+  
+    <div class="alert alert-danger" style="text-align: center" role="alert" *ngIf="errorMessage">
+        {{errorMessage}}
+      </div>
+      <div class="alert alert-primary" style="text-align: center" role="alert" *ngIf="removeMessage && !removeMessageClose ">
+        {{removeMessage}}
+      </div>
+      <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="infoMessage && !infoMessageClose">
+        {{infoMessage}}
+      </div>
+</div>
+
+    <div fxLayout="row">
+
 <div *ngIf="cartItems != null" fxFlex="1 1 70%" style="margin-top:50px">
+
 
   <div *ngFor="let cartItem of cartItems">
     <div fxLayout="column" fxLayoutAlign="center start">
@@ -35,7 +51,7 @@
   <p> Your cart is empty </p>
 </div>
 
-<div fxFlex="1 1 30%">
+<div fxFlex="1 1 30%" *ngIf="cartItems != null">
   <div class="summary">
     <h1>
       Order summary
@@ -44,7 +60,10 @@
 
     <div class="grid-container">
       <div class="firstbox">
-        <p>
+        <p *ngIf="totalQuantityForTheCart == 1">
+          Subtotal ({{totalQuantityForTheCart}} item)
+        </p>
+        <p *ngIf="totalQuantityForTheCart > 1">
           Subtotal ({{totalQuantityForTheCart}} items)
         </p>
       </div>
@@ -80,7 +99,7 @@
         <input matInput [(ngModel)]="promotionalCode" name="promotionalCode" placeholder="Enter Promo Code">
       </div>
       <div style="text-align: right">
-        <button color="warn" mat-raised-button> APPLY </button>
+        <button color="primary" mat-raised-button> APPLY </button>
       </div>
     </div>
 
@@ -92,6 +111,7 @@
         <p style="font-size: 23px;">{{format(totalAmountForTheCart)}}</p>
       </div>
     </div>
-    <button class="checkout" color="warn" mat-raised-button (click)="checkout(cartItems)"> Checkout </button>
+    <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="warn" mat-raised-button (click)="checkout(cartItems)"> Checkout </button>
   </div>
+</div>
 </div>

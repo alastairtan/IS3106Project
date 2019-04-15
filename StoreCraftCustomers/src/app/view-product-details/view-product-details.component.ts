@@ -32,6 +32,8 @@ export class ViewProductDetailsComponent implements OnInit {
   isEditing: boolean;
   editReviewId: number;
   updatedProductRating: number;
+  addToCartMessage: string;
+  addToCartMessageClose: boolean;
 
   //For new Review
   isWriting: boolean;
@@ -111,8 +113,10 @@ export class ViewProductDetailsComponent implements OnInit {
 
     if (newCartItem.quantity != 0) {
       this.localService.setCart(cartItems);
+      this.addToCartMessageClose = false;
+      this.addToCartMessage = "Product succesfully added to cart!"
+      setTimeout(() => this.addToCartMessageClose = true, 3000);
     }
-
     console.log(cartItems);
   }
 
