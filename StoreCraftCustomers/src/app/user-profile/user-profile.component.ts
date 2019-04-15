@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../session.service';
 import { Customer } from '../customer';
 import { MembershipTierEnum } from '../MembershipTierEnum.enum';
@@ -9,7 +9,7 @@ import { CustomerService } from '../customer.service';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit, OnChanges {
+export class UserProfileComponent implements OnInit {
 
   customer: Customer;
   customerMemTierString:string;
