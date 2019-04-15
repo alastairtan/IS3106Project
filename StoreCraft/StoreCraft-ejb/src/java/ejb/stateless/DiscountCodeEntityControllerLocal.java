@@ -34,5 +34,7 @@ public interface DiscountCodeEntityControllerLocal {
     public DiscountCodeEntity createNewDiscountCode(DiscountCodeEntity newDiscountCodeEntity, List<Long> customerEntityIds, List<Long> productEntityIds) throws CreateNewDiscountCodeException, InputDataValidationException;
 
     public DiscountCodeEntity updateDiscountCode(DiscountCodeEntity discountCodeEntity, List<Long> customerEntityIds, List<Long> productEntityIds) throws DiscountCodeNotFoundException, InvalidDiscountCodeException, InputDataValidationException, CustomerNotFoundException, ProductNotFoundException;
+
+    public List<DiscountCodeEntity> retrieveDiscountCodesForCustomer(Long customerId) throws CustomerNotFoundException;
     
 }

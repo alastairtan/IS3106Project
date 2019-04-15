@@ -1,12 +1,12 @@
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div class="messages" flFlex="1 1 100%">
-    <div class="alert alert-primary" role="alert" *ngIf="cartItems == null && infoMessage == null">
+  <div flFlex="1 1 100%">
+    <div class="alert alert-primary messages" role="alert" *ngIf="cartItems == null && infoMessage == null">
       Your Cart is Empty! <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-    <div class="alert alert-primary" role="alert" *ngIf="removeMessage && !removeMessageClose">{{removeMessage}}</div>
-    <div class="alert alert-success" role="alert" *ngIf="infoMessage && !infoMessageClose">
+    <div class="alert alert-danger messages" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="alert alert-primary messages" role="alert" *ngIf="removeMessage && !removeMessageClose">{{removeMessage}}</div>
+    <div class="alert alert-success messages" role="alert" *ngIf="infoMessage && !infoMessageClose">
       {{infoMessage}} <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Continue Shopping</button>
     </div>
