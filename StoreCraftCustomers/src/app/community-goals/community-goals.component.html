@@ -7,36 +7,36 @@
 <table mat-table class="mat-elevation z8" [dataSource] ="dataSource" matSort >
 
     <ng-container matColumnDef="communityGoalId">
-        <mat-header-cell *matHeaderCellDef> Community Goal Id </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Community Goal Id </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.communityGoalId}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalTitle" >
+    <ng-container matColumnDef="goalTitle" >
         <mat-header-cell *matHeaderCellDef mat-sort-header> Goal Title </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.goalTitle}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalDescription">
+    <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef> Community Goal Description </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.description}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalTargetPoints">
+    <ng-container matColumnDef="targetPoints">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Target Points </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.targetPoints}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalCurrentPoints">
+    <ng-container matColumnDef="currentPoints">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Current Points </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.currentPoints}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalStartDate">
+    <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.startDate | date }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="communityGoalEndDate">
+    <ng-container matColumnDef="endDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header> End Date </mat-header-cell>
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.endDate | date }} </mat-cell>
     </ng-container>

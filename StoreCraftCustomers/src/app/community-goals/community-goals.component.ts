@@ -11,8 +11,8 @@ import {CommunityGoal} from '../community-goal'
 })
 export class CommunityGoalsComponent implements OnInit {
 
-  public columnsToDisplay=["communityGoalId","communityGoalTitle","communityGoalDescription","communityGoalTargetPoints","communityGoalCurrentPoints",
-  "communityGoalStartDate","communityGoalEndDate"];
+  public columnsToDisplay=['communityGoalId','goalTitle','description','targetPoints','currentPoints',
+  'startDate','endDate'];
 
   public dataSource = new MatTableDataSource<CommunityGoal>();
   @ViewChild(MatSort) sort: MatSort;
@@ -25,7 +25,6 @@ export class CommunityGoalsComponent implements OnInit {
 
   ngOnInit() {
       this.getCommunityGoals();
-    
   }
 
   public getCommunityGoals(){
@@ -33,7 +32,9 @@ export class CommunityGoalsComponent implements OnInit {
     this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(country).subscribe(
       response =>{
         this.dataSource = new MatTableDataSource<CommunityGoal>(response.communityGoalEntities);
-        
+        setTimeout(() => {
+          this.dataSource.sort = this.sort;
+        });
       }
       ,error =>{
         console.log('********** CommunityGoalComponent.ts: ', error);
@@ -41,8 +42,8 @@ export class CommunityGoalsComponent implements OnInit {
     )
   }
 
-  ngAfterViewInit(){
-    this.dataSource.sort = this.sort;
+  ngAfterViewInit() : void{
+    
     this.dataSource.paginator = this.paginator;
   }
 
