@@ -1,0 +1,28 @@
+mat-table {
+    display: table;
+    width: 100%;
+}
+
+th.mat-header-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+td.mat-cell {
+    vertical-align: middle;
+}
+
+.header {
+    font-size: 2vw;
+    vertical-align: middle;
+    color: black;
+}
+
+tr.hidden-row {
+    height: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
