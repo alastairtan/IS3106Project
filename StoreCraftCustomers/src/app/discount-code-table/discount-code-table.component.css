@@ -57,3 +57,9 @@ td.mat-cell {
     padding: 0.5vw;
     width: 100%;
 }
+
+.expandedContainer{
+    background-color: whitesmoke;
+    padding-left: 0.5vw !important;
+    padding-right: 0.5vw !important;
+}
