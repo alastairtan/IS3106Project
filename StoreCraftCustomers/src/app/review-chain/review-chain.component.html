@@ -26,7 +26,8 @@
         <mat-list role="list" style="width: 100%">
           <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
 
-          <mat-list-item *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)" role="listitem">{{review.content}}
+          <mat-list-item *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)"
+            role="listitem" class="reviewContent">{{review.content}}
           </mat-list-item>
 
           <mat-list-item *ngIf="review.customerEntity != null && isEditing && review.reviewId == editReviewId">
@@ -54,7 +55,7 @@
         <mat-panel-title class="reviewTitle">
           {{currentCustomer?.firstName}} {{currentCustomer?.lastName}}
           <button mat-raised-button type="submit" *ngIf="isReplying && review.reviewId == staffReplyToReplyTo.reviewId"
-            color="primary" class="editReplyBtn2" form="custReplyForm" type="submit" >Submit Reply</button>&nbsp;
+            color="primary" class="editReplyBtn2" form="custReplyForm" type="submit">Submit Reply</button>&nbsp;
           <button mat-raised-button type="reset" *ngIf="isReplying && review.reviewId == staffReplyToReplyTo.reviewId"
             color="warn" class="editReplyBtn2" (click)="cancelReply()">Cancel</button>
         </mat-panel-title>
