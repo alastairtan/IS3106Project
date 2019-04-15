@@ -26,3 +26,17 @@ tr.hidden-row {
     overflow: hidden;
     display: flex;
 }
+
+tr.dcRow:not(.expandedDcRow):hover {
+    background: #f5f5f5;
+}
+
+.prodImage{
+    width: 10vw;
+    height: auto;
+}
+
+.imageCol{
+    width: 30%;
+    padding-left: 0 !important;
+}
