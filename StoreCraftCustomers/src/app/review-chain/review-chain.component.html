@@ -7,18 +7,18 @@
         {{review.customerEntity?.firstName}} {{review.customerEntity?.lastName}}
         <br />
         <button mat-raised-button color="accent" class="editReplyBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && !(isEditing && review.reviewId == editReviewId)"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
           (click)="editing(review)">Edit Reply</button>
         <button mat-raised-button color="primary" class="editReplyBtn saveBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && isEditing && review.reviewId == editReviewId"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
           form="updateForm" type="submit">Save</button>
         <button mat-raised-button color="warn" class="editReplyBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer.customerId && isEditing && review.reviewId == editReviewId"
+          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
           (click)="cancelEdit(review)">Cancel Edit</button>
 
         <button mat-raised-button color="accent" *ngIf="review.reviewDate == 
               reviewChain[reviewChain.length-1].reviewDate && review.staffEntity != null
-              && review.parentReviewEntity.customerEntity.customerId == currentCustomer.customerId"
+              && review.parentReviewEntity.customerEntity.customerId == currentCustomer?.customerId"
           (click)="replying(review)" class="editReplyBtn">Reply</button>
 
       </mat-panel-title>
