@@ -19,7 +19,7 @@
                 Welcome, {{sessionService.getCurrentCustomer().firstName 
                         + " " + sessionService.getCurrentCustomer().lastName }}
             </button>
-            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer().customerId]">
+            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer()?.customerId]">
                 <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
             </button>
             <button mat-button (click)="logout()">Logout</button>
