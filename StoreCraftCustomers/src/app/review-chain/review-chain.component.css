@@ -19,9 +19,11 @@ mat-panel-title{
     height: auto !important;
 }
 
+
 mat-list-item {
     height: max-content !important;
 }
+
 
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
     flex-basis: inherit;
@@ -56,4 +58,8 @@ mat-list-item {
 .editReplyBtn2{
     margin-top: 0.2vw;
     width: 100%;
+}
+
+.reviewContent{
+    padding-top: 1vw;   
 }
