@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'viewProductsByCategory/:categoryId', component: ViewProductsComponent },
   { path: 'product/:productId', component: ViewProductDetailsComponent},
   { path: 'cart/:userId', component: ShoppingCartComponent},
-  { path: 'communitygoals', component: CommunityGoalsComponent}
+  { path: 'communitygoals', component: CommunityGoalsComponent},
 ];
 
 @NgModule({

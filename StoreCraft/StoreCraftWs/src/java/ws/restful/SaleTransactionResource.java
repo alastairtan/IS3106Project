@@ -48,36 +48,39 @@ public class SaleTransactionResource {
     public SaleTransactionResource() {
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response retrieveAllSaleTransaction() 
-//    {
-//        try {
-//            
-//            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityController.retrieveAllSaleTransactions();
-//
-//            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
-//            {
-//                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
-//                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
-//                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
-//                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
-//                {
-//                    saleTransactionLineItemEntity.setProductEntity(null);
-//                }
-//            }
-//
-//            SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
-//
-//            return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-//        }
-//        catch(Exception ex)
-//        {
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-//        }
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllSaleTransaction() 
+    {
+        try {
+            
+            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
+
+            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
+            {
+                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
+                {
+                    saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().getReviewEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().getTagEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().setCategoryEntity(null);
+                }
+            }
+
+            SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
+
+            return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 //    
 //    @Path("retrieveSaleTransactionById")
 //    @GET
