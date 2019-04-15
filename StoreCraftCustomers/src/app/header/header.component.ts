@@ -6,6 +6,7 @@ import { Category } from '../category';
 import { SessionService } from '../session.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
+import { LocalService } from '../local.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class HeaderComponent implements OnInit {
   constructor(public dialog: MatDialog,
     public categoryService: CategoryService,
     public sessionService:SessionService,
-    public router: Router) { 
+    public router: Router,
+    public localService: LocalService) { 
 
       this.rootCategories = [];
  
@@ -67,6 +69,10 @@ export class HeaderComponent implements OnInit {
 
   searchForProduct() {
     
+  }
+
+  format(currency: number) {
+    return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(currency));
   }
 
 }

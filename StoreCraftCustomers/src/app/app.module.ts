@@ -1,8 +1,8 @@
 import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MatTableModule, MatSortModule} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule, MatSortModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,8 +22,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {TextFieldModule} from '@angular/cdk/text-field'; 
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 
@@ -101,7 +102,8 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     MatProgressBarModule,
     MatSortModule,
     TextFieldModule,
-    StarRatingModule.forRoot()
+    StarRatingModule.forRoot(),
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent],

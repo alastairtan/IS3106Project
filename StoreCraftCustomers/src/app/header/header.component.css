@@ -73,4 +73,11 @@ button:hover{
     justify-content: center;
 }
 
+td{
+    vertical-align: middle;
+}
+
+.rightCell{
+    text-align: right;
+}
 
