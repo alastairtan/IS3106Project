@@ -14,6 +14,8 @@ export class Customer {
     pointsForCurrentMonth: number;
     multiplier: number;
     profilePicUrl: string;
+    tierUrl: string;
+    tierMessage: string;
 
     constructor(customerId?: number, firstName?: string, lastName?: string, email?: string, password?: string,
         membershipTierEnum?: MembershipTierEnum, country?: string,
