@@ -18,7 +18,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class SaleTransactionHistoryComponent implements OnInit {
 
   private saleTransactions: SaleTransaction[];
-  private columnsToDisplay = ['saleTransactionId', 'totalLineItem', 'Total Quantity', 'totalAmount'];
+  private columnsToDisplay = ['saleTransactionId', 'totalLineItem', 'totalQuantity', 'totalAmount'];
+  private displayedColumns = ['productImage', 'productName', 'quantity', 'sub-total'];
   private expandedSaleTransaction; 
 
   constructor(private saleTransactionService: SaleTransactionService,
@@ -29,5 +30,9 @@ export class SaleTransactionHistoryComponent implements OnInit {
       this.saleTransactions = response.saleTransactionEntities;
     }
     )
+  }
+
+  format(amount) {
+      return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(amount));
   }
 }
