@@ -4,6 +4,7 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogRef} fro
 import { SessionService } from '../session.service';
 import { CommunityGoalService } from '../community-goal.service';
 import {CommunityGoal} from '../community-goal'
+import { CountryService } from '../country.service';
 
 @Component({
   selector: 'app-community-goals',
@@ -13,25 +14,33 @@ import {CommunityGoal} from '../community-goal'
 export class CommunityGoalsComponent implements OnInit {
 
   public columnsToDisplay=['communityGoalId','goalTitle','description','targetPoints','currentPoints',
-  'startDate','endDate'];
+  'startDate','endDate','rewardPercentage','completed'];
 
   public dataSource = new MatTableDataSource<CommunityGoal>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   country : String;
+  countries;
 
   constructor(public sessionService : SessionService,
               public communityGoalService : CommunityGoalService,
+              public countryService : CountryService,
               public dialog : MatDialog) { }
 
   ngOnInit() {
       this.getCommunityGoals();
+      this.countryService.getCountries().subscribe(
+        response =>{
+          this.countries = response;
+        }, error =>{
+          console.log('********** Getting countries in communitygoal: ', error);
+        }
+      )
   }
 
   public getCommunityGoals(){
-    let country = this.sessionService.getCurrentCustomer().country;
-    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(country).subscribe(
+    this.communityGoalService.retrieveAllCommunityGoals().subscribe(
       response =>{
         this.dataSource = new MatTableDataSource<CommunityGoal>(response.communityGoalEntities);
         setTimeout(() => {
@@ -49,33 +58,10 @@ export class CommunityGoalsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  public doFilter = (value: string) => {
+  public doFilter (value: string) {
+    console.log("whats in here : " + value);
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
-  openDialog(communitygoal :CommunityGoal){
-    const dialogRef = this.dialog.open(CommunityGoalsDialog, {
-      width: '250px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
 }
 
-@Component({
-  selector: 'communityGoalsDialog',
-  templateUrl: 'communityGoalsDialog.html',
-})
-export class CommunityGoalsDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<CommunityGoalsDialog>){}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}

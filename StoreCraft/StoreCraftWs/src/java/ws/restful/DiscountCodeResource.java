@@ -58,6 +58,9 @@ public class DiscountCodeResource {
                 if (dce.getCustomerEntities() != null) {
                     dce.getCustomerEntities().clear();
                 }
+                if (dce.getSaleTransactionEntities() != null){
+                    dce.getSaleTransactionEntities().clear();
+                }
                 System.out.println("** DC 1 **");
                 if (dce.getProductEntities() != null) {
                     for (ProductEntity p : dce.getProductEntities()) {

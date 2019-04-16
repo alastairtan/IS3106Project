@@ -40,8 +40,9 @@ public class SaleTransactionResource {
 
     @Context
     private UriInfo context;
-    
+
     SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal = lookupSaleTransactionEntityControllerLocal();
+
     /**
      * Creates a new instance of SaleTransactionResource
      */
@@ -50,19 +51,22 @@ public class SaleTransactionResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllSaleTransaction() 
-    {
+    public Response retrieveAllSaleTransaction() {
+        System.out.println("HELLO!!!!!!!!!!!!!!!!");
         try {
-            
-            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
 
-            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
-            {
+            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
+            for (SaleTransactionEntity saleTransactionEntity : saleTransactionEntities) {
                 saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
-                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
-                {
+                if (saleTransactionEntity.getDiscountCodeEntity() != null) {
+                    saleTransactionEntity.getDiscountCodeEntity().getSaleTransactionEntities().clear();
+                    saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+                    saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
+                }
+                System.out.println("HELLO!!!!!!!!!!!!!!!!");
+                for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) {
                     saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
                     saleTransactionLineItemEntity.getProductEntity().getReviewEntities().clear();
                     saleTransactionLineItemEntity.getProductEntity().getTagEntities().clear();
@@ -73,11 +77,9 @@ public class SaleTransactionResource {
             SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
 
             return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
@@ -118,60 +120,51 @@ public class SaleTransactionResource {
 //        }
 //    }
 
-
     @Path("createSaleTransaction")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSaleTransaction(SaleTransactionReq saleTransactionReq) {
-        
-        
-        if (saleTransactionReq != null) 
-        {
-            try
-            {   
+
+        if (saleTransactionReq != null) {
+            try {
                 Long customerId = saleTransactionReq.getSaleTransactionEntity().getCustomerEntity().getCustomerId();
                 System.out.println("Customer ID" + customerId);
-                
+
                 SaleTransactionEntity saleTransactionEntity = saleTransactionEntityControllerLocal.createNewSaleTransaction(
                         customerId, saleTransactionReq.getSaleTransactionEntity());
-                
+
                 saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
                 saleTransactionEntity.getCustomerEntity().setSalt(null);
                 saleTransactionEntity.getCustomerEntity().setPassword(null);
+                saleTransactionEntity.getDiscountCodeEntity().getSaleTransactionEntities().clear();
+                saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+                saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
 
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
-                
+
                 System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
                 System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
-                
+
                 return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-            }
-            catch (CreateNewSaleTransactionException ex) 
-            {
+            } catch (CreateNewSaleTransactionException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("An error occured when creating the sale transaction!");
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            }
-            catch (CustomerNotFoundException ex)
-            {
+            } catch (CustomerNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
                 return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create sale transaction request");
-                            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }

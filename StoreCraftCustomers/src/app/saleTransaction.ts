@@ -1,5 +1,6 @@
 import { Customer } from './customer';
 import { CartItem } from './cartItem';
+import { DiscountCode} from './discount-code';
 
 
 export class SaleTransaction {
@@ -11,6 +12,8 @@ export class SaleTransaction {
     voidRefund : boolean;
     customerEntity : Customer;
     saleTransactionLineItemEntities : CartItem[];
+    discountCodeEntity: DiscountCode;
+    pointsToUse: number;
 
 
     constructor( totalLineItem? : number,
@@ -19,7 +22,9 @@ export class SaleTransaction {
         transactionDateTime? : Date,
         voidRefund? : boolean,
         customerEntity? : Customer,
-        saleTransactionLineItemEntities? : CartItem[] ) {
+        saleTransactionLineItemEntities? : CartItem[],
+        discountCodeEntity? :DiscountCode,
+        pointsToUse? :number) {
 
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
@@ -28,5 +33,7 @@ export class SaleTransaction {
         this.voidRefund = voidRefund;
         this.customerEntity = customerEntity;
         this.saleTransactionLineItemEntities = saleTransactionLineItemEntities;
+        this.discountCodeEntity = discountCodeEntity;
+        this.pointsToUse = pointsToUse;
     }
 }

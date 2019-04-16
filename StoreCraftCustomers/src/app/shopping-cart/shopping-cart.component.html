@@ -5,7 +5,8 @@
       <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
     </div>
     <div class="alert alert-danger messages" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-    <div class="alert alert-primary messages" role="alert" *ngIf="removeMessage && !removeMessageClose">{{removeMessage}}</div>
+    <div class="alert alert-primary messages" role="alert" *ngIf="removeMessage && !removeMessageClose">
+      {{removeMessage}}</div>
     <div class="alert alert-success messages" role="alert" *ngIf="infoMessage && !infoMessageClose">
       {{infoMessage}} <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Continue Shopping</button>
@@ -44,9 +45,11 @@
 
                   <div fxFlex="1 1 30%">
                     Quantity :
-                    <button class="quantity" mat-button disabled="{{cartItem.quantity==1}}" (click)="minus(cartItem)">-</button>
+                    <button class="quantity" mat-button disabled="{{cartItem.quantity==1}}"
+                      (click)="minus(cartItem)">-</button>
                     {{cartItem.quantity}}
-                    <button class="quantity" mat-button disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
+                    <button class="quantity" mat-button
+                      disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
                       (click)="add(cartItem)">+</button>
 
                     <br /><br />
@@ -87,35 +90,33 @@
                     </td>
                     <td>{{format(totalAmountForTheCart)}}</td>
                   <tr>
-                    <td>
-                      Shipping Fee
-                    </td>
-                    <td>
-                      {{format(2)}}
-                    </td>
-                  </tr>
-                  <tr>
                     <td class="leftCell">
                       <mat-form-field>
-                          <mat-label>Select Promo Code</mat-label>
-                          <mat-select [(ngModel)]="promoCode" name="promoCode">
-                            <mat-option *ngFor="let dc of customerDiscountCodes" 
-                            [value]="dc">
-                              {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                        <mat-label>Select Promo Code</mat-label>
+                        <mat-select name="promoCode" [(ngModel)]="currentSelectedDiscountCode">
+                          <mat-option *ngFor="let dc of customerDiscountCodes" [value]="dc">
+                            {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
                     </td>
                     <td style="vertical-align: center">
-                      <button color="primary" mat-raised-button> Apply </button>
+                      <button color="primary" mat-raised-button (click)="applyDiscountCode()"> Apply </button>
                     </td>
                   </tr>
                   <tr>
                     <td class="leftCell">
-                      Total:
+                      <strong>Total:</strong>
                     </td>
                     <td>
-                      {{format(totalAmountForTheCart+2)}}
+                      <span *ngIf="!applyingDiscountForCart">
+                        {{format(totalAmountForTheCart)}}
+                      </span>
+                      <span *ngIf="applyingDiscountForCart">
+                        <span style="color: #f57224; font-size: 2vw">
+                          {{format(totalAmountForTheCart - flatDiscountAmountForCart)}} </span><br />
+                        <s>{{format(totalAmountForTheCart)}}</s>
+                      </span>
                     </td>
                   </tr>
                 </table>

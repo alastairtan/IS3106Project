@@ -10,7 +10,6 @@ import entity.DiscountCodeEntity;
 import entity.ProductEntity;
 import entity.ScavengerHuntEntity;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -41,6 +40,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.ScavengerHuntAlreadyExistException;
 import util.exception.ScavengerHuntNotFoundException;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -165,18 +165,8 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
             if (scavengerHuntEntity.getRewardTypeEnum() != RewardTypeEnum.POINTS) {
                 
                 Random rand = new Random();
-                String characters = "ABCDEFGHIJKLMNOPQRSTWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                String discountCode = "";
-                int discountCodeLength = 6;
+                String discountCode = CryptographicHelper.getInstance().generateRandomString(6);
                 BigDecimal discountAmount;
-                char[] text = new char[discountCodeLength];
-                
-                // Generate discount code of length 6
-                for(int i = 0; i < discountCodeLength; i++)
-                {
-                    text[i] = characters.charAt(rand.nextInt(characters.length()));
-                    discountCode += text[i];
-                }
                 
                 // ---------- Code to convert date to localTime for adding --------------- //
                 
@@ -192,7 +182,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
                 
                 // ------------------------------------------------------------------------ //
                 
-                localDateTime = localDateTime.plusDays(20); // plus 20 days
+                localDateTime = localDateTime.plusMonths(1); // plus 20 days
                 // convert LocalDateTime back to date
                 Date endDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 
@@ -200,6 +190,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
                 DiscountCodeEntity discountCodeEntity;
                 List<Long> customerIds = new ArrayList<>();
                 List<Long> productIds = new ArrayList<>();
+                Set<ConstraintViolation<DiscountCodeEntity>>constraintViolations;
                 
                 customerIds.add(customerId);                
                     
@@ -208,26 +199,43 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
                     case DISCOUNT_CODE_FLAT:
                         
                         // 10 - 20 dollars flat rate discount
-                        do {
-                            discountAmount = new BigDecimal(rand.nextInt(20));
-                        } while (discountAmount.compareTo(new BigDecimal(10)) != -1);
+                        discountAmount = new BigDecimal(rand.ints(10, 20+1).limit(1).findFirst().getAsInt());
+                        System.out.println("Discount amount flat: " + discountAmount);
                         
                         discountCodeEntity = new DiscountCodeEntity(currentDate, endDate, 1, discountCode, DiscountCodeTypeEnum.FLAT, discountAmount);
-                        discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
                         
+                        constraintViolations = validator.validate(discountCodeEntity);
+                        
+                        if ( constraintViolations.isEmpty() ) {
+                            discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
+                        }
+                        else 
+                        {
+                            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageDC(constraintViolations));
+                        }
 
                         break;
                         
                     case DISCOUNT_CODE_PERCENTAGE:
                         
                         // 5 - 10% percentage discount
-                        do {
-                            discountAmount = new BigDecimal(rand.nextInt(10));
-                        } while (discountAmount.compareTo(new BigDecimal(5)) != -1);
+                        discountAmount = new BigDecimal(rand.ints(5, 10+1).limit(1).findFirst().getAsInt());
+                        
+                        System.out.println("Discount amount percentage: " + discountAmount);
 
                         discountCodeEntity = new DiscountCodeEntity(currentDate, endDate, 1, discountCode, DiscountCodeTypeEnum.PERCENTAGE, discountAmount);
+                        
+                        constraintViolations = validator.validate(discountCodeEntity);
+                        
+                        if ( constraintViolations.isEmpty() ) {
+                        
                         discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
                         
+                        } 
+                        else 
+                        {
+                            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageDC(constraintViolations));
+                        }
                         break;   
                 }
             } 
@@ -327,11 +335,21 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         if(constraintViolations.isEmpty()){
             return s;
         } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageSH(constraintViolations));
         }
     }
 
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ScavengerHuntEntity>> constraintViolations) {
+    private String prepareInputDataValidationErrorsMessageSH(Set<ConstraintViolation<ScavengerHuntEntity>> constraintViolations) {
+        String msg = "Input data validation error!:";
+
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+
+        return msg;
+    }
+    
+    private String prepareInputDataValidationErrorsMessageDC(Set<ConstraintViolation<DiscountCodeEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
         for (ConstraintViolation constraintViolation : constraintViolations) {

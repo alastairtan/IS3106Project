@@ -44,8 +44,8 @@
                   Cart</button>
                 <button *ngIf="currentCustomer==null" mat-raised-button color="primary" (click)="openDialog()">Login To
                   Purchase</button>
-                <button *ngIf="product?.isScavengerHuntPrize" mat-raised-button color="warn">Claim Scavenger Hunt
-                  Prize</button>
+                <button *ngIf="product?.isScavengerHuntPrize && !hasCustomerWonToday" 
+                mat-raised-button color="warn" (click)="claimScavengerHuntPrize()">Claim Scavenger Hunt Prize</button>
               </mat-card-actions>
               <mat-divider></mat-divider>
               <mat-card-footer class="footer">

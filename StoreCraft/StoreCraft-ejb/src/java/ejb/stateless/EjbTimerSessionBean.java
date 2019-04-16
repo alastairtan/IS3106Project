@@ -46,11 +46,10 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
     
     
-    @Schedule(dayOfWeek = "*", info="clearScavengerHuntProducts")
-    public void createNewScavengerHuntEntity()
+    @Schedule(dayOfWeek = "*", info="foo")
+    public void foo()
     {
-       
-                
+        
     }
     
 
