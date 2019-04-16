@@ -46,6 +46,9 @@
                 <p:column headerText="Target Points" sortBy="#{communityGoal.targetPoints}" filterBy="#{communityGoal.targetPoints}" filterMatchMode="contains">
                     <h:outputText value="#{communityGoal.targetPoints}" />
                 </p:column>
+                <p:column headerText="Reward Percentage" sortBy="#{communityGoal.rewardPercentage}" filterBy="#{communityGoal.rewardPercentage}" filterMatchMode="contains">
+                    <h:outputText value="#{communityGoal.rewardPercentage}" />
+                </p:column>
                 <p:column headerText="Start Date" sortBy="#{communityGoal.startDate}" filterBy="#{communityGoal.startDate}" filterMatchMode="contains">
                     <h:outputText value="#{communityGoal.startDate}">
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
@@ -56,6 +59,10 @@
                     <h:outputText value="#{communityGoal.endDate}" >
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                     </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Completed" sortBy="#{communityGoal.completed}" filterBy="#{communityGoal.completed}" filterMatchMode="contains">
+                    <h:outputText value="#{communityGoal.completed}" />
                 </p:column>
 
 
@@ -105,6 +112,12 @@
                                  value="#{communityGoalsManagedBean.selectedCommunityGoal.targetPoints}"  readonly="#{!communityGoalsManagedBean.isUpdating}"
                                  required="true" requiredMessage="Target Points is required"/>
                     <p:message for="communityTargetPoints"/>
+                    
+                    <h:outputText style="font-weight: bold" value="Reward Percentage(Min : 0.01, Max : 40.00): " />
+                    <p:inputText id="communityReward" style="width: 80%; font-weight: normal" 
+                                 value="#{communityGoalsManagedBean.selectedCommunityGoal.rewardPercentage}"  readonly="#{!communityGoalsManagedBean.isUpdating}"
+                                 required="true" requiredMessage="Reward Percentage is required"/>
+                    <p:message for="communityReward"/>
 
                     <h:outputText style="font-weight: bold" value="Start Date: " />
                     <p:datePicker id="communityStartDate" value="#{communityGoalsManagedBean.selectedCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.updatingMinDate}"
@@ -185,6 +198,12 @@
                         <p:inputText id="newCommunityTargetPoints" style="width: 80%; font-weight: normal" 
                                      value="#{communityGoalsManagedBean.newCommunityGoal.targetPoints}" required="true" requiredMessage="Target Points is required"/>
                         <p:message for="newCommunityTargetPoints"/>
+                        
+                        <h:outputText style="font-weight: bold" value="Reward Percentage(Min : 0.01, Max : 40.00): " />
+                        <p:inputText id="newCommunityReward" style="width: 80%; font-weight: normal" 
+                                 value="#{communityGoalsManagedBean.newCommunityGoal.rewardPercentage}"
+                                 required="true" requiredMessage="Reward Percentage is required"/>
+                        <p:message for="newCommunityReward"/>
 
                         <h:outputText style="font-weight: bold" value="Start Date: " />
                         <p:datePicker  id="newCommunityStartDate" value="#{communityGoalsManagedBean.newCommunityGoal.startDate}" mindate="#{communityGoalsManagedBean.currentDate}"

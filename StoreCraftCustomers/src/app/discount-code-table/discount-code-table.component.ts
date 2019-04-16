@@ -50,10 +50,6 @@ export class DiscountCodeTableComponent implements OnInit {
         console.log(discountCode.endDate)
         let endDate: Date = new Date(discountCode.endDate);
         endDate = new Date(endDate.toLocaleDateString());
-        console.log(endDate);
-        console.log(now);
-        console.log(endDate > now);
-        console.log(endDate.getTime() > now.getTime());
         if (endDate > now) {
           this.discountCodes.push(discountCode)
         }

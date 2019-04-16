@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.CommunityGoalEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import util.exception.CommunityGoalNotFoundException;
@@ -30,6 +31,8 @@ public interface CommunityGoalEntityControllerLocal {
 
     public void updateCommunityGoal(CommunityGoalEntity newCommunityGoalEntity, Long communityGoalId) throws InputDataValidationException, CommunityGoalNotFoundException;
 
-    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country) throws DateNotFoundException;
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country);
+
+    public void addPointsToCommunityGoal(String country, BigDecimal points);
     
 }

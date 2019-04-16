@@ -6,11 +6,18 @@
 package ejb.stateless;
 
 import entity.CommunityGoalEntity;
+import entity.CustomerEntity;
+import entity.DiscountCodeEntity;
 import entity.StaffEntity;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -22,8 +29,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.DiscountCodeTypeEnum;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
+import util.exception.CreateNewDiscountCodeException;
 import util.exception.DateNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
@@ -35,6 +44,12 @@ import util.exception.StaffNotFoundException;
 @Stateless
 @Local (CommunityGoalEntityControllerLocal.class)
 public class CommunityGoalEntityController implements CommunityGoalEntityControllerLocal {
+
+    @EJB(name = "DiscountCodeEntityControllerLocal")
+    private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
+
+    @EJB
+    private CustomerEntityControllerLocal customerEntityControllerLocal;
 
     @EJB
     private StaffEntityControllerLocal staffEntityControllerLocal;
@@ -54,23 +69,20 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
     @Override
     public CommunityGoalEntity createNewCommunityGoal(CommunityGoalEntity communityGoalEntity,Long staffId) throws InputDataValidationException, StaffNotFoundException, CreateNewCommunityGoalException
     {        
-        System.err.println("staff id" + staffId);
+
         Set<ConstraintViolation<CommunityGoalEntity>>constraintViolations = validator.validate(communityGoalEntity);
-        System.err.println("sff123456789ff");
+
         if(constraintViolations.isEmpty())
         {
             try{
-                System.err.println("sffff");
+
             StaffEntity staffEntity = staffEntityControllerLocal.retrieveStaffByStaffId(staffId);
-            System.err.println("sdddd");
-            communityGoalEntity.setStaffEntity(staffEntity);
-            System.err.println("sdfeff");
+
+
             staffEntity.getCommunityGoalEntities().add(communityGoalEntity);
-            System.err.println("sagagaga");
+
             entityManager.persist(communityGoalEntity);
-            System.err.println("sagagaga");
             entityManager.flush();
-            System.err.println("sagagaga");
             return communityGoalEntity;
             } catch(PersistenceException ex)
             {                
@@ -152,7 +164,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
     }
     
     @Override
-    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country) throws DateNotFoundException {
+    public List<CommunityGoalEntity> retrieveCurrentCommunityGoal(String country){
         Date currentDate = new Date();
         
         List<CommunityGoalEntity> communityGoalEntitys= retrieveAllCommunityGoals();
@@ -165,6 +177,50 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         }
         return currentCommunityGoalEntitys;
         
+    }
+    
+    @Override
+    public void addPointsToCommunityGoal(String country, BigDecimal points){
+        
+        List<CommunityGoalEntity> communityGoals = retrieveCurrentCommunityGoal(country);
+        
+        //Retreive Customers by Country
+        Query query = entityManager.createQuery("SELECT c FROM CustomerEntity c WHERE c.country = :inCountry");
+        query.setParameter("inCountry", country);
+        List<CustomerEntity> customers = query.getResultList();
+        
+        if(!communityGoals.isEmpty()){
+            
+            //Set 3 months expiry limit for discount code
+            Date startDate = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(startDate);
+            c.add(Calendar.MONTH, 3);
+            Date endDate = c.getTime();
+            
+            //Give Discount Code
+            for(CommunityGoalEntity cge : communityGoals){
+                BigDecimal addingPoints = cge.getCurrentPoints().add(points);
+                if(addingPoints.compareTo(cge.getTargetPoints()) >= 1 && !cge.isCompleted()){
+                    cge.setCompleted(true);
+                    DiscountCodeEntity dce = new DiscountCodeEntity(startDate, endDate,1, "cg" + cge.getCommunityGoalId(), DiscountCodeTypeEnum.PERCENTAGE, cge.getRewardPercentage());
+                    List<Long> customerEntityIds = new ArrayList<>();
+                    List<Long> productEntityIds = new ArrayList<>();
+                    
+                    for(CustomerEntity ce : customers){
+                        customerEntityIds.add(ce.getCustomerId());
+                    }
+                    try {
+                        discountCodeEntityControllerLocal.createNewDiscountCode(dce, customerEntityIds, productEntityIds);
+                    } catch (CreateNewDiscountCodeException |InputDataValidationException ex) {
+                        System.err.println(ex.getMessage());
+                    }
+                      
+                }else {
+                    cge.setCurrentPoints(addingPoints);
+                }
+            }
+        }
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CommunityGoalEntity>>constraintViolations)

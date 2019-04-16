@@ -104,4 +104,6 @@ td{
     text-align: center;
     width: 90%;
     align-self: center;
+    margin-left:auto;
+    margin-right:auto;
 }

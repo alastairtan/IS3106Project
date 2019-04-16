@@ -10,30 +10,33 @@ import datamodel.ws.rest.ScavengerHuntRsp;
 import ejb.stateless.ScavengerHuntEntityControllerLocal;
 import entity.CustomerEntity;
 import entity.ScavengerHuntEntity;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import util.exception.CreateNewDiscountCodeException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import util.exception.ScavengerHuntNotFoundException;
 
 /**
  * REST Web Service
  *
  * @author Win Phong
- */
+
+ * @author Alastair **/
+
 @Path("ScavengerHunt")
 public class ScavengerHuntResource {
 
@@ -131,6 +134,30 @@ public class ScavengerHuntResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
+
+    @Path("retrieveScavengerHuntForTheDay")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveScavengerHuntForTheDay() {
+        Date date = new Date();
+        try {
+            ScavengerHuntEntity scavengerHuntEntity = scavengerHuntEntityControllerLocal.retrieveScavengerHuntEntityByDate(date);
+            
+            for(CustomerEntity ce: scavengerHuntEntity.getCustomerEntities()) {
+                ce.getDiscountCodeEntities().clear();
+                ce.getReviewEntities().clear();
+                ce.getSaleTransactionEntities().clear();     
+            }
+            ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(scavengerHuntEntity);
+            return Response.status(Response.Status.OK).entity(scavengerHuntRsp).build();
+        } catch (Exception ex) {
+            
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
 
     private ScavengerHuntEntityControllerLocal lookupScavengerHuntEntityControllerLocal() {
         try {

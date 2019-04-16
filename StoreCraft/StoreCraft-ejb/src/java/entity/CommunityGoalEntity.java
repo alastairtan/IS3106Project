@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -61,6 +62,13 @@ public class CommunityGoalEntity implements Serializable {
     
     @NotNull
     private BigDecimal currentPoints = new BigDecimal(0);
+    
+    @NotNull
+    @DecimalMin("0.01")
+    @DecimalMax("20.00")
+    private BigDecimal rewardPercentage;
+    
+    private boolean completed;
     
     //RELATIONSHIPS
 
@@ -174,6 +182,22 @@ public class CommunityGoalEntity implements Serializable {
 
     public void setCurrentPoints(BigDecimal currentPoints) {
         this.currentPoints = currentPoints;
+    }
+
+    public BigDecimal getRewardPercentage() {
+        return rewardPercentage;
+    }
+
+    public void setRewardPercentage(BigDecimal rewardPercentage) {
+        this.rewardPercentage = rewardPercentage;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
     
 }

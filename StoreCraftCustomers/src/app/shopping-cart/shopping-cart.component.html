@@ -1,5 +1,5 @@
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div flFlex="1 1 100%">
+  <div fxFlex="1 1 100%">
     <div class="alert alert-primary messages" role="alert" *ngIf="cartItems == null && infoMessage == null">
       Your Cart is Empty! <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
@@ -97,9 +97,14 @@
                   <tr>
                     <td class="leftCell">
                       <mat-form-field>
-                        <input matInput [(ngModel)]="promotionalCode" name="promotionalCode"
-                          placeholder="Enter Promo Code">
-                      </mat-form-field>
+                          <mat-label>Select Promo Code</mat-label>
+                          <mat-select [(ngModel)]="promoCode" name="promoCode">
+                            <mat-option *ngFor="let dc of customerDiscountCodes" 
+                            [value]="dc">
+                              {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                     </td>
                     <td style="vertical-align: center">
                       <button color="primary" mat-raised-button> Apply </button>
@@ -114,7 +119,7 @@
                     </td>
                   </tr>
                 </table>
-                <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="warn" mat-raised-button
+                <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="accent" mat-raised-button
                   (click)="checkout(cartItems)"> Checkout </button>
               </mat-card-content>
 
