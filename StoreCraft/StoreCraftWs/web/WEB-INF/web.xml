@@ -89,4 +89,10 @@
         <local>ejb.stateless.ReviewEntityControllerLocal</local>
         <ejb-link>StoreCraft-ejb.jar#ReviewEntityController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>DiscountCodeEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.DiscountCodeEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#DiscountCodeEntityController</ejb-link>
+    </ejb-local-ref>
 </web-app>

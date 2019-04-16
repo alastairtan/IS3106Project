@@ -73,4 +73,16 @@ button:hover{
     justify-content: center;
 }
 
+td{
+    vertical-align: middle;
+}
+
+.rightCell{
+    text-align: right;
+}
+
+.cartItems{
+    color: rgb(68, 68, 68);
+    font-size: 1vw;
+}
 

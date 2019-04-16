@@ -79,6 +79,9 @@ export class ReviewChainComponent implements OnInit {
 
 
   reply() {
+    console.log("HELLO");
+    console.log(this.staffReplyToReplyTo.reviewId);
+    console.log(this.currentCustomer);
     let customerReply: Review = new Review();
     customerReply.content = this.replyContent;
     customerReply.reviewDate = new Date();
@@ -101,6 +104,10 @@ export class ReviewChainComponent implements OnInit {
     }, error => {
       console.log(error)
     })
+  }
+
+  test(){
+    console.log(this.staffReplyToReplyTo.reviewId);
   }
 
 }

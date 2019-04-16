@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.ProductEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -63,13 +64,15 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 {
                     productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
 
-                    ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(saleTransactionLineItemEntity.getProductEntity().getProductId());
-                    saleTransactionLineItemEntity.setProductEntity(productEntity);
+//                    ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(saleTransactionLineItemEntity.getProductEntity().getProductId());
+//                    saleTransactionLineItemEntity.setProductEntity(productEntity);
 
                     entityManager.persist(saleTransactionLineItemEntity);
                 }
 
                 entityManager.flush();
+                
+                customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
 
                 return newSaleTransactionEntity;
             }

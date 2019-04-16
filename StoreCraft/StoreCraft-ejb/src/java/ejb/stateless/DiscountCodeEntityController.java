@@ -8,6 +8,7 @@ package ejb.stateless;
 import entity.CustomerEntity;
 import entity.DiscountCodeEntity;
 import entity.ProductEntity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -62,14 +63,14 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
                 if (!customerEntityIds.isEmpty()) {
                     for (Long customerId : customerEntityIds) {
                         CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
-                        newDiscountCodeEntity.addCustomer(customerEntity);
+                        newDiscountCodeEntity.addCustomer(customerEntity); //2 way
                     }
                 }
 
                 if (!productEntityIds.isEmpty()) {
                     for (Long productId : productEntityIds) {
                         ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(productId);
-                        newDiscountCodeEntity.addProduct(productEntity);
+                        newDiscountCodeEntity.addProduct(productEntity); //2 way
                     }
                 }
 
@@ -190,6 +191,20 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
 
             return discountCodeEntity;
         }
+    }
+    
+    public List<DiscountCodeEntity> retrieveDiscountCodesForCustomer(Long customerId) throws CustomerNotFoundException{
+        
+        CustomerEntity customer = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
+        
+        List<DiscountCodeEntity> eligibleDiscountCodes = new ArrayList<>();
+        
+        eligibleDiscountCodes.addAll(customer.getDiscountCodeEntities());
+        
+        Query query = em.createQuery("SELECT dc FROM DiscountCodeEntity dc WHERE SIZE(dc.customerEntities) = 0");
+        eligibleDiscountCodes.addAll(query.getResultList());
+        
+        return eligibleDiscountCodes;
     }
 
     @Override

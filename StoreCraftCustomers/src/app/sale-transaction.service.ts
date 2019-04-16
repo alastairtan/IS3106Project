@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CartItem } from './cartItem';
@@ -17,7 +17,9 @@ export class SaleTransactionService {
 
   baseUrl: string = "/api/SaleTransaction"
 
-  constructor(private httpClient: HttpClient, private sessionService: SessionService) { }
+  constructor(public httpClient: HttpClient, 
+    public sessionService: SessionService) { }
+
 
   createSaleTransaction(cartItems: CartItem[]): Observable<any> {
 
@@ -31,13 +33,11 @@ export class SaleTransactionService {
       num += 1;
      })
 
-     console.log(cartItems);
-
     let saleTransaction: SaleTransaction;
     saleTransaction = new SaleTransaction(cartItems.length, totalQuantityForTheCart, totalAmountForTheCart,
       new Date(), false, this.sessionService.getCurrentCustomer(), cartItems);
     
-      console.log(JSON.stringify(saleTransaction));
+      console.log(saleTransaction);
 
       let saleTransactionReq = {"saleTransactionEntity" : saleTransaction};
 
@@ -46,6 +46,15 @@ export class SaleTransactionService {
         catchError(this.handleError)
       )
   }
+
+
+  retrieveAllTransactions() : Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl).pipe
+    (
+      catchError(this.handleError)
+    );
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string = "";

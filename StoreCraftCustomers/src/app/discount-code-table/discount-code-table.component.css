@@ -1,0 +1,65 @@
+table {
+    width: 100%;
+}
+
+tr.hidden-row {
+    height: 0;
+}
+
+tr.dcRow:not(.expandedDcRow):hover {
+    background: #f5f5f5;
+}
+
+tr.dcRow:not(.expandedDcRow):active {
+    background: #efefef;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.prodImage {
+    width: 10vw;
+    height: auto;
+    cursor: pointer;
+}
+
+th.mat-header-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+td.mat-cell {
+    vertical-align: middle;
+}
+
+.header {
+    font-size: 2vw;
+    vertical-align: middle;
+    color: black;
+}
+
+.imageCol {
+    width: 30%;
+    padding-left: 0 !important;
+}
+
+.prodName {
+    cursor: pointer;
+}
+
+.expandable {
+    cursor: pointer;
+}
+
+.details {
+    padding: 0.5vw;
+    width: 100%;
+}
+
+.expandedContainer{
+    background-color: whitesmoke;
+    padding-left: 0.5vw !important;
+    padding-right: 0.5vw !important;
+}

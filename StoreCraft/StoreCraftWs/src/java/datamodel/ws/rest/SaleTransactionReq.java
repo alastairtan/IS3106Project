@@ -22,8 +22,6 @@ public class SaleTransactionReq {
         this.saleTransactionEntity = saleTransactionEntity;
     }
     
-    
-
     public SaleTransactionEntity getSaleTransactionEntity() {
         return saleTransactionEntity;
     }

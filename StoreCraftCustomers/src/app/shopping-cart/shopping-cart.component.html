@@ -1,55 +1,178 @@
-<div fxLayout="row" fxLayoutAlign="center stretch" style="margin-top:50px">
-  
-    <div class="alert alert-danger" style="text-align: center" role="alert" *ngIf="errorMessage">
-        {{errorMessage}}
-      </div>
-      <div class="alert alert-primary" style="text-align: center" role="alert" *ngIf="removeMessage && !removeMessageClose ">
-        {{removeMessage}}
-      </div>
-      <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="infoMessage && !infoMessageClose">
-        {{infoMessage}}
-      </div>
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+  <div fxFlex="1 1 100%">
+    <div class="alert alert-primary messages" role="alert" *ngIf="cartItems == null && infoMessage == null">
+      Your Cart is Empty! <br /><br />
+      <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
+    </div>
+    <div class="alert alert-danger messages" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="alert alert-primary messages" role="alert" *ngIf="removeMessage && !removeMessageClose">{{removeMessage}}</div>
+    <div class="alert alert-success messages" role="alert" *ngIf="infoMessage && !infoMessageClose">
+      {{infoMessage}} <br /><br />
+      <button color="accent" mat-flat-button routerLink="/index">Continue Shopping</button>
+    </div>
+  </div>
+  <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1" *ngIf="cartItems != null">
+    <mat-card class="card">
+
+      <mat-card-content>
+        <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid">
+          <div fxFlex="1 1 65%">
+            <mat-card *ngFor="let cartItem of cartItems" style="margin-bottom: 1vw">
+              <mat-card-header>
+                <mat-card-title>
+                  <span [routerLink]="['/product', cartItem.productEntity.productId]" style="cursor:pointer">
+                    {{cartItem.productEntity.name}}
+                  </span>
+                </mat-card-title>
+              </mat-card-header>
+              <mat-divider></mat-divider>
+              <mat-card-content style="padding-top: 1vw">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+                  <div fxFlex="1 1 20%">
+                    <a [routerLink]="['/product', cartItem.productEntity.productId]">
+                      <img class="avatar" src="{{cartItem.productEntity.productImageUrl}}">
+                    </a>
+                  </div>
+
+                  <div fxFlex="1 1 35%">
+                    {{cartItem.productEntity.description}}
+                  </div>
+
+                  <div fxFlex="1 1 15%" class="priceCol">
+                    {{format(cartItem.unitPrice)}}
+                  </div>
+
+                  <div fxFlex="1 1 30%">
+                    Quantity :
+                    <button class="quantity" mat-button disabled="{{cartItem.quantity==1}}" (click)="minus(cartItem)">-</button>
+                    {{cartItem.quantity}}
+                    <button class="quantity" mat-button disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
+                      (click)="add(cartItem)">+</button>
+
+                    <br /><br />
+                    Total : {{format(cartItem.subTotal)}}
+
+                    <br /><br />
+                    <button mat-raised-button color="warn" (click)="removeFromCart(cartItem)">
+                      Remove from cart
+                    </button>
+                  </div>
+
+                </div>
+
+              </mat-card-content>
+
+            </mat-card>
+          </div>
+
+          <div fxFlex="1 1 35%">
+            <mat-card>
+              <mat-card-header class="orderSummaryHeader">
+                <mat-card-title>
+                  Order summary
+                </mat-card-title>
+              </mat-card-header>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <table class="table">
+                  <tr>
+                    <td class="leftCell"><strong>
+                        <span *ngIf="totalQuantityForTheCart == 1">
+                          Subtotal ({{totalQuantityForTheCart}} item)
+                        </span>
+                        <span *ngIf="totalQuantityForTheCart > 1">
+                          Subtotal ({{totalQuantityForTheCart}} items)
+                        </span>
+                      </strong>
+                    </td>
+                    <td>{{format(totalAmountForTheCart)}}</td>
+                  <tr>
+                    <td>
+                      Shipping Fee
+                    </td>
+                    <td>
+                      {{format(2)}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="leftCell">
+                      <mat-form-field>
+                          <mat-label>Select Promo Code</mat-label>
+                          <mat-select [(ngModel)]="promoCode" name="promoCode">
+                            <mat-option *ngFor="let dc of customerDiscountCodes" 
+                            [value]="dc">
+                              {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td style="vertical-align: center">
+                      <button color="primary" mat-raised-button> Apply </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="leftCell">
+                      Total:
+                    </td>
+                    <td>
+                      {{format(totalAmountForTheCart+2)}}
+                    </td>
+                  </tr>
+                </table>
+                <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="accent" mat-raised-button
+                  (click)="checkout(cartItems)"> Checkout </button>
+              </mat-card-content>
+
+            </mat-card>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
-    <div fxLayout="row">
-
-<div *ngIf="cartItems != null" fxFlex="1 1 70%" style="margin-top:50px">
 
 
-  <div *ngFor="let cartItem of cartItems">
-    <div fxLayout="column" fxLayoutAlign="center start">
-      <div class="product">
-        <div fxLayout="row">
-          <div fxFlex="25" style="text-align: center">
-            <a [routerLink]="['/product', cartItem.productEntity.productId]">
-              <img src="{{cartItem.productEntity.productImageUrl}}" />
-            </a>
-          </div>
-          <div fxFlex="30" class="mid">
-            <h4> {{cartItem.productEntity.name}}</h4>
-            <h6> {{cartItem.productEntity.description}}</h6>
-            <hr>
-            <h5> {{format(cartItem.unitPrice)}} </h5>
-          </div>
-          <div fxFlex="25" class="mid" style="text-align: center">
-            <h5> Quantity : {{cartItem.quantity}}</h5>
-            <h6><br /></h6>
-            <br />
-            <h4> Total : {{format(cartItem.subTotal)}} </h4>
-          </div>
-          <div fxFlex style="text-align: center">
-            <button class="removeFromCart" mat-raised-button color="warn" (click)="removeFromCart(cartItem)">Remove from
-              cart</button>
+
+
+<!--
+<div fxLayout="row">
+
+  <div *ngIf="cartItems != null" fxFlex="1 1 70%" style="margin-top:50px">
+
+
+    <div *ngFor="let cartItem of cartItems">
+      <div fxLayout="column" fxLayoutAlign="center start">
+        <div class="product">
+          <div fxLayout="row">
+            <div fxFlex="25" style="text-align: center">
+              <a [routerLink]="['/product', cartItem.productEntity.productId]">
+                <img src="{{cartItem.productEntity.productImageUrl}}" />
+              </a>
+            </div>
+            <div fxFlex="30" class="mid">
+              <h4> {{cartItem.productEntity.name}}</h4>
+              <h6> {{cartItem.productEntity.description}}</h6>
+              <hr>
+              <h5> {{format(cartItem.unitPrice)}} </h5>
+            </div>
+            <div fxFlex="25" class="mid" style="text-align: center">
+              <h5> Quantity : {{cartItem.quantity}}</h5>
+              <h6><br /></h6>
+              <br />
+              <h4> Total : {{format(cartItem.subTotal)}} </h4>
+            </div>
+            <div fxFlex style="text-align: center">
+              <button class="removeFromCart" mat-raised-button color="warn" (click)="removeFromCart(cartItem)">Remove
+                from
+                cart</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div style="text-align: center; margin-top: 20px" fxFlex=100 *ngIf="cartItems == null">
-  <p> Your cart is empty </p>
-</div>
 
 <div fxFlex="1 1 30%" *ngIf="cartItems != null">
   <div class="summary">
@@ -104,14 +227,16 @@
     </div>
 
     <div class="grid-container" style="margin-top: 30px">
-      <div class="firstbox" style="text-align: right; margin-top: 7px" >
-        <p>Total: </p> 
+      <div class="firstbox" style="text-align: right; margin-top: 7px">
+        <p>Total: </p>
       </div>
       <div style="text-align: right">
         <p style="font-size: 23px;">{{format(totalAmountForTheCart)}}</p>
       </div>
     </div>
-    <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="warn" mat-raised-button (click)="checkout(cartItems)"> Checkout </button>
+    <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="warn" mat-raised-button
+      (click)="checkout(cartItems)"> Checkout </button>
   </div>
+
 </div>
-</div>
+-->

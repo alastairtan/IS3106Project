@@ -54,4 +54,20 @@ export class LocalService {
     this.key = this.sessionService.getCurrentCustomer().customerId.toString();
     localStorage.removeItem(this.key);
   }
+
+  getNumCartItems(){
+    let cart = this.getCart();
+    if (cart != null){
+      return cart.length;
+    } else {
+      return 0;
+    }
+  }
+
+  getSubTotal(){
+    let cartItems: CartItem[] = this.getCart();
+    if (cartItems != null && cartItems.length > 0){
+      return cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+    }
+  }
 }

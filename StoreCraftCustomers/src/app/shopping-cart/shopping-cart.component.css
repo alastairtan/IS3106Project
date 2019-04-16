@@ -65,11 +65,45 @@ h6 {
 
 .checkout {
     width: 100%;
-    height: 60px;
-    font-size: 30px;
-    border-radius: 10px;
 }
 
 p {
     font-size: 17px;
+}
+
+.avatar{
+    width: 100%;
+    height: auto;
+}
+
+.card{
+    margin-top: 1vw;
+    background-color: whitesmoke;
+}
+
+.priceCol{
+    text-align: center;
+    color: #f44336;
+    font-weight: bold;
+}
+
+.orderSummaryHeader{
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+}
+
+td{
+    vertical-align: middle !important;
+}
+
+.messages{
+    margin-top: 3vw;
+    text-align: center;
+    width: 90%;
+    align-self: center;
+    margin-left:auto;
+    margin-right:auto;
 }

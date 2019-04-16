@@ -5,7 +5,6 @@
  */
 package datamodel.ws.rest;
 
-import entity.CustomerEntity;
 import entity.SaleTransactionEntity;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class SaleTransactionRsp {
     
     private SaleTransactionEntity saleTransactionEntity;
-//    private List<SaleTransactionEntity> saleTransactionEntities;
+    private List<SaleTransactionEntity> saleTransactionEntities;
     
     public SaleTransactionRsp() {
     }
@@ -26,19 +25,19 @@ public class SaleTransactionRsp {
         this.saleTransactionEntity = saleTransactionEntity;
     }
     
-//    public SaleTransactionRsp(List<SaleTransactionEntity> saleTransactionEntities)
-//    {
-//        this.saleTransactionEntities = saleTransactionEntities;
-//
-//    }
-//
-//    public List<SaleTransactionEntity> getSaleTransactionEntities() {
-//        return saleTransactionEntities;
-//    }
-//
-//    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
-//        this.saleTransactionEntities = saleTransactionEntities;
-//    }
+    public SaleTransactionRsp(List<SaleTransactionEntity> saleTransactionEntities)
+    {
+        this.saleTransactionEntities = saleTransactionEntities;
+
+    }
+
+    public List<SaleTransactionEntity> getSaleTransactionEntities() {
+        return saleTransactionEntities;
+    }
+
+    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
+        this.saleTransactionEntities = saleTransactionEntities;
+    }
 
     public SaleTransactionEntity getSaleTransactionEntity() {
         return saleTransactionEntity;

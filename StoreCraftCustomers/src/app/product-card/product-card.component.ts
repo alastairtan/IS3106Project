@@ -27,4 +27,8 @@ export class ProductCardComponent implements OnInit {
     this.router.navigate(['/product', this.product.productId]);
   }
 
+  format(currency: number) {
+    return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(currency));
+  }
+
 }

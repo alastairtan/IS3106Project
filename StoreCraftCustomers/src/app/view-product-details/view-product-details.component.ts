@@ -1,5 +1,6 @@
 import { Component, OnInit, Input , ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
 import { Review } from '../review';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -9,7 +10,7 @@ import { ReviewService } from '../review.service';
 import { Customer } from '../customer';
 import { SessionService } from '../session.service';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { ClickEvent } from 'angular-star-rating/angular-star-rating';
 
 @Component({
@@ -42,7 +43,8 @@ export class ViewProductDetailsComponent implements OnInit {
     private productService: ProductService,
     private localService: LocalService,
     private reviewService: ReviewService,
-    private sessionService: SessionService) {
+    private sessionService: SessionService,
+    private loginDialog: MatDialog) {
       this.isEditing= false;
       this.isWriting= false;
      }
@@ -157,6 +159,16 @@ export class ViewProductDetailsComponent implements OnInit {
 
   cancelWriteReview(){
     this.isWriting = false;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.loginDialog.open(LoginDialogComponent, {
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.currentCustomer = this.sessionService.getCurrentCustomer();
+    });
   }
 
 }

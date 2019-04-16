@@ -71,8 +71,7 @@ public class CustomerResource {
             customerEntity.getReviewEntities().clear();
             customerEntity.getDiscountCodeEntities().clear();
  
-
-            
+            System.out.println(customerEntity.getMembershipTierEnum());
             CustLoginRsp response = new CustLoginRsp(customerEntity);
             
             return Response.status(Status.OK).entity(response).build();

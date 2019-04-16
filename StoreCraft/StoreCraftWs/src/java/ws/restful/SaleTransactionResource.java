@@ -41,47 +41,46 @@ public class SaleTransactionResource {
     @Context
     private UriInfo context;
     
-    SaleTransactionEntityControllerLocal saleTransactionEntityController = lookupSaleTransactionEntityControllerLocal();
+    SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal = lookupSaleTransactionEntityControllerLocal();
     /**
      * Creates a new instance of SaleTransactionResource
      */
     public SaleTransactionResource() {
     }
 
-    /**
-     * Retrieves representation of an instance of ws.restful.SaleTransactionResource
-     * @return an instance of java.lang.String
-     */
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response retrieveAllSaleTransaction() 
-//    {
-//        try {
-//            
-//            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityController.retrieveAllSaleTransactions();
-//
-//            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
-//            {
-//                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
-//                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
-//                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
-//                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
-//                {
-//                    saleTransactionLineItemEntity.setProductEntity(null);
-//                }
-//            }
-//
-//            SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
-//
-//            return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-//        }
-//        catch(Exception ex)
-//        {
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-//        }
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllSaleTransaction() 
+    {
+        try {
+            
+            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
+
+            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
+            {
+                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+                for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
+                {
+                    saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().getReviewEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().getTagEntities().clear();
+                    saleTransactionLineItemEntity.getProductEntity().setCategoryEntity(null);
+                }
+            }
+
+            SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
+
+            return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 //    
 //    @Path("retrieveSaleTransactionById")
 //    @GET
@@ -132,16 +131,23 @@ public class SaleTransactionResource {
             try
             {   
                 Long customerId = saleTransactionReq.getSaleTransactionEntity().getCustomerEntity().getCustomerId();
+                System.out.println("Customer ID" + customerId);
                 
-                SaleTransactionEntity saleTransactionEntity = saleTransactionEntityController.createNewSaleTransaction(
+                SaleTransactionEntity saleTransactionEntity = saleTransactionEntityControllerLocal.createNewSaleTransaction(
                         customerId, saleTransactionReq.getSaleTransactionEntity());
                 
+                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+                saleTransactionEntity.getCustomerEntity().setSalt(null);
+                saleTransactionEntity.getCustomerEntity().setPassword(null);
+
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
-
-                Response resp = Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-                System.out.println(resp);
-
-                return resp;
+                
+                System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
+                System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
+                
+                return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
             }
             catch (CreateNewSaleTransactionException ex) 
             {
@@ -166,9 +172,7 @@ public class SaleTransactionResource {
         {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create sale transaction request");
                             
-            Response rsp = Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            System.out.println(rsp);
-            return rsp;
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
 
