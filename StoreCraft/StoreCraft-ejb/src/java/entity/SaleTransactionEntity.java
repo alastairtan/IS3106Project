@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
@@ -35,46 +36,53 @@ public class SaleTransactionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long saleTransactionId;
-    
+
     @Column(nullable = false)
     @NotNull
     @Min(1)
     private Integer totalLineItem;
-    
+
     @Column(nullable = false)
     @NotNull
     @Min(1)
     private Integer totalQuantity;
-    
+
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull
     @DecimalMin("0.00")
-    private BigDecimal totalAmount;  
-    
+    private BigDecimal totalAmount;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    private Date transactionDateTime;  
-    
+    private Date transactionDateTime;
+
     @Column(nullable = false)
     @NotNull
     private Boolean voidRefund;
-    
+
+    @Column(nullable = true)
+    private Integer pointsToUse;
     //RELATIONSHIPS 
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private CustomerEntity customerEntity;
-    
+
     @OneToMany
-    private List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities; 
-    
+    private List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities;
+
+    @OneToOne
+    private DiscountCodeEntity discountCodeEntity;
+
     public SaleTransactionEntity() {
-        voidRefund = false; 
+        voidRefund = false;
         saleTransactionLineItemEntities = new ArrayList<>();
     }
 
-    public SaleTransactionEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, Boolean voidRefund, CustomerEntity customerEntity, List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities) {
+    public SaleTransactionEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, 
+            Date transactionDateTime, Boolean voidRefund, CustomerEntity customerEntity, 
+            List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities, Integer pointsToUse, DiscountCodeEntity discountCodeEntity) {
         this();
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
@@ -83,9 +91,10 @@ public class SaleTransactionEntity implements Serializable {
         this.voidRefund = voidRefund;
         this.customerEntity = customerEntity;
         this.saleTransactionLineItemEntities = saleTransactionLineItemEntities;
+        this.pointsToUse = pointsToUse;
+        this.discountCodeEntity = discountCodeEntity;
     }
 
-    
     public Long getSaleTransactionId() {
         return saleTransactionId;
     }
@@ -174,5 +183,21 @@ public class SaleTransactionEntity implements Serializable {
     public void setSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities) {
         this.saleTransactionLineItemEntities = saleTransactionLineItemEntities;
     }
-    
+
+    public Integer getPointsToUse() {
+        return pointsToUse;
+    }
+
+    public void setPointsToUse(Integer pointsToUse) {
+        this.pointsToUse = pointsToUse;
+    }
+
+    public DiscountCodeEntity getDiscountCodeEntity() {
+        return discountCodeEntity;
+    }
+
+    public void setDiscountCodeEntity(DiscountCodeEntity discountCodeEntity) {
+        this.discountCodeEntity = discountCodeEntity;
+    }
+
 }
