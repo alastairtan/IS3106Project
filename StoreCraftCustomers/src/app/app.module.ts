@@ -25,7 +25,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
 import { MatBadgeModule } from '@angular/material/badge';
-
+import { NgAisModule } from 'angular-instantsearch';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -112,7 +112,8 @@ import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-ind
     MatSortModule,
     TextFieldModule,
     StarRatingModule.forRoot(),
-    MatBadgeModule
+    MatBadgeModule,
+    NgAisModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

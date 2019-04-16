@@ -87,8 +87,9 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         //if remaining points not enough
                         throw new NotEnoughPointsException("You do not have enough points!");
                     }
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
                     customerEntity.setRemainingPoints(customerEntity.getRemainingPoints().subtract(BigDecimal.valueOf((double) newSaleTransactionEntity.getPointsToUse())));
-
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
                 }
 
                 //Discount by Discount Code

@@ -16,8 +16,8 @@
         </div>
         <div *ngIf="sessionService.getIsLogin() == true">
             <button mat-button disabled style="color:white; padding: 0">
-                Welcome, {{sessionService.getCurrentCustomer().firstName 
-                        + " " + sessionService.getCurrentCustomer().lastName }}
+                Welcome, {{sessionService.getCurrentCustomer()?.firstName 
+                        + " " + sessionService.getCurrentCustomer()?.lastName }}
             </button>
             <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer()?.customerId]">
                 <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
@@ -30,11 +30,29 @@
         <a class="sclogo" routerLink="/index">
             <img style="height: 100%; width: auto" src="assets/images/scwhite.png" />
         </a>
-
+        <!--
+        <ais-instantsearch [config]="{
+    apiKey: 'c8154cb9be7f12cf578f5a7bfdd937b3',
+    appId: '0B4ODLCUAM',
+    indexName: 'StoreCraft',
+    routing: true
+  }">
+            <ais-search-box></ais-search-box>
+            <ais-hits>
+                <ng-template let-hits="hits">
+                    <div *ngFor="let hit of hits">
+                        {{hit.name}} <ais-highlight attribute="name" [hit]="hit">
+                        </ais-highlight>
+                    </div>
+                </ng-template>
+            </ais-hits>
+        </ais-instantsearch>
+    -->
+        <!--
         <form class="search-form">
             <input class="search-box" type="search" placeholder="Search" />
             <mat-icon inline color="primary" style="width: auto">search</mat-icon>
-        </form>
+        </form>-->
 
         <div class="shopping-cart-section">
             <mat-menu #cartMenu="matMenu">

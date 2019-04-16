@@ -87,15 +87,15 @@
                     </tr>
                     <tr>
                       <td class="leftCell"><strong>Total Points:</strong></td>
-                      <td>{{customer.totalPoints}}</td>
+                      <td>{{customer.totalPoints | number:'1.0-1'}}</td>
                     </tr>
                     <tr>
                       <td class="leftCell"><strong>Remaining Points:</strong></td>
-                      <td>{{customer.remainingPoints}}</td>
+                      <td>{{customer.remainingPoints | number:'1.0-1'}}</td>
                     </tr>
                     <tr>
                       <td class="leftCell"><strong>Points for Current Month:</strong></td>
-                      <td>{{customer.pointsForCurrentMonth}}</td>
+                      <td>{{customer.pointsForCurrentMonth | number:'1.0-1'}}</td>
                     </tr>
                   </table>
                 </mat-card-content>

@@ -23,7 +23,7 @@ export class ShoppingCartComponent implements OnInit {
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
   private customerDiscountCodes: DiscountCode[];
-  private currentCustomer: Customer;
+ 
 
   //Checkout//
   private currentSelectedDiscountCode: DiscountCode;
@@ -48,6 +48,10 @@ export class ShoppingCartComponent implements OnInit {
   applyingDiscountForItems: boolean;
   totalAmountDiscounted: number;
 
+  //For points slider
+  currentCustomer: Customer; //initial load as well
+
+
 
   constructor(private localService: LocalService,
     private saleTransactionService: SaleTransactionService,
@@ -55,6 +59,7 @@ export class ShoppingCartComponent implements OnInit {
     private customerService: CustomerService,
     private discountCodeService: DiscountCodeService) {
     this.applyingDiscountForCart = false;
+    this.pointsToUse = 0;
   }
 
   ngOnInit() {
@@ -78,6 +83,21 @@ export class ShoppingCartComponent implements OnInit {
   loadCustomerData() {
     this.retrieveDiscountCodesForCustomer(this.sessionService.getCurrentCustomer().customerId)
     this.currentCustomer = this.sessionService.getCurrentCustomer();
+  }
+
+  getMaxPointsAllowed() : number {
+    let remainingPoints : number = this.currentCustomer.remainingPoints;
+    if (!this.applyingDiscountForCart && !this.applyingDiscountForItems){
+      return remainingPoints < Math.floor(this.totalAmountForTheCart*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountForTheCart*0.5/0.05);
+    } else if (this.applyingDiscountForCart){
+      if (this.flatDiscountAmountForCart != null){
+        return remainingPoints < Math.floor((this.totalAmountForTheCart-this.flatDiscountAmountForCart)*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart-this.flatDiscountAmountForCart)*0.5/0.05);
+      } else if (this.rateDiscountAmountForCart != null){
+        return remainingPoints < Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart*(this.rateDiscountAmountForCart/100))*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart*(this.rateDiscountAmountForCart/100))*0.5/0.05);
+      } 
+    } else if (this.applyingDiscountForItems){
+      return remainingPoints < Math.floor(this.totalAmountDiscounted*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountDiscounted*0.5/0.05);
+    }
   }
 
   removeFromCart(cartItem: CartItem) {

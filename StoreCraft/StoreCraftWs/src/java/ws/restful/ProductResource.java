@@ -57,9 +57,9 @@ public class ProductResource {
         try {
             List<ProductEntity> productEntities = productEntityControllerLocal.filterProductsByCategory((Long.parseLong(categoryId)));
             for (ProductEntity productEntity : productEntities) {
-                
+
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
-   
+
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
@@ -67,7 +67,7 @@ public class ProductResource {
                     reviewEntity.setStaffEntity(null);
                     reviewEntity.setParentReviewEntity(null);
                 }
-                
+
                 List<TagEntity> tagEntities = productEntity.getTagEntities();
                 for (TagEntity tagEntity : tagEntities) {
                     tagEntity.getProductEntities().clear(); //unidirectional between product and tags
@@ -78,11 +78,11 @@ public class ProductResource {
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
                     dce.getSaleTransactionEntities().clear();
                 }
-                
+
             }
-        
+
             RetrieveProdByCategoryRsp response = new RetrieveProdByCategoryRsp(productEntities);
-           
+
             return Response.status(Response.Status.OK).entity(response).build();
 
         } catch (CategoryNotFoundException ex) {
@@ -96,7 +96,6 @@ public class ProductResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
 
     @Path("index")
     @GET
@@ -105,16 +104,15 @@ public class ProductResource {
         try {
             List<ProductEntity> productEntities = productEntityControllerLocal.retrieveRandomProducts();
             for (ProductEntity productEntity : productEntities) {
-                
-                
+
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
-                
+
                 List<TagEntity> tagEntities = productEntity.getTagEntities();
                 for (TagEntity tagEntity : tagEntities) {
                     tagEntity.getProductEntities().clear(); //unidirectional between product and tags
-                    
+
                 }
-                               
+
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.setCustomerEntity(null); //unidirectional between product's review and customer
@@ -130,30 +128,30 @@ public class ProductResource {
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
                     dce.getSaleTransactionEntities().clear();
                 }
-                
+
             }
-        
+
             RetrieveProdByCategoryRsp response = new RetrieveProdByCategoryRsp(productEntities);
-           
+
             return Response.status(Response.Status.OK).entity(response).build();
 
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
-        
+
     }
 
     @Path("getProductById")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@QueryParam("productId") String productId) {
-        
+
         try {
-            
+
             ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(new Long(productId));
-            
-            for(ReviewEntity review : productEntity.getReviewEntities()) {
+
+            for (ReviewEntity review : productEntity.getReviewEntities()) {
                 review.setProductEntity(null);
                 review.setReplyReviewEntity(null);
                 review.setStaffEntity(null);
@@ -162,22 +160,21 @@ public class ProductResource {
                 review.getCustomerEntity().getSaleTransactionEntities().clear();
                 review.getCustomerEntity().getReviewEntities().clear();
             }
-            
-            for(TagEntity tag : productEntity.getTagEntities()) {
+
+            for (TagEntity tag : productEntity.getTagEntities()) {
                 tag.getProductEntities().clear();
             }
-            
+
             productEntity.setCategoryEntity(null);
-            
-            for(DiscountCodeEntity discountCode : productEntity.getDiscountCodeEntities())
-            {
+
+            for (DiscountCodeEntity discountCode : productEntity.getDiscountCodeEntities()) {
                 discountCode.getProductEntities().clear();
                 discountCode.getSaleTransactionEntities().clear();
                 discountCode.getCustomerEntities().clear();
             }
-        
+
             ProductRsp productRsp = new ProductRsp(productEntity);
-           
+
             return Response.status(Response.Status.OK).entity(productRsp).build();
 
         } catch (ProductNotFoundException | NumberFormatException ex) {
@@ -191,15 +188,55 @@ public class ProductResource {
         }
     }
 
+    @Path("retrieveAllProducts")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllProducts() {
+        try {
+            List<ProductEntity> allProducts = productEntityControllerLocal.retrieveAllProducts();
+
+            for (ProductEntity productEntity : allProducts) {
+                for (ReviewEntity review : productEntity.getReviewEntities()) {
+                    review.setProductEntity(null);
+                    review.setReplyReviewEntity(null);
+                    review.setStaffEntity(null);
+                    review.setParentReviewEntity(null);
+                    review.getCustomerEntity().getDiscountCodeEntities().clear();
+                    review.getCustomerEntity().getSaleTransactionEntities().clear();
+                    review.getCustomerEntity().getReviewEntities().clear();
+                }
+
+                for (TagEntity tag : productEntity.getTagEntities()) {
+                    tag.getProductEntities().clear();
+                }
+
+                productEntity.setCategoryEntity(null);
+
+                for (DiscountCodeEntity discountCode : productEntity.getDiscountCodeEntities()) {
+                    discountCode.getProductEntities().clear();
+                    discountCode.getSaleTransactionEntities().clear();
+                    discountCode.getCustomerEntities().clear();
+                }
+            }
+
+            RetrieveProdByCategoryRsp allProductsRsp = new RetrieveProdByCategoryRsp(allProducts);
+
+            return Response.status(Response.Status.OK).entity(allProductsRsp).build();
+
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
     private void clearParentToChildrenRelationship(CategoryEntity subCategory) { //so relationships are unidirectional
         if (subCategory.getParentCategoryEntity() != null) {
-            
+
             System.out.println("STEP 1");
             subCategory.getParentCategoryEntity().getSubCategoryEntities().clear();
             subCategory.setProductEntities(new ArrayList<>());
-            
-            System.out.println(subCategory.getName() + " " +subCategory.getSubCategoryEntities().size());
+
+            System.out.println(subCategory.getName() + " " + subCategory.getSubCategoryEntities().size());
             clearParentToChildrenRelationship(subCategory.getParentCategoryEntity());
         } else {
             subCategory.getSubCategoryEntities().clear();
