@@ -32,7 +32,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private ProductEntityControllerLocal productEntityControllerLocal;
     
     
-    @Schedule(month="*", info="resetPointOfTheMonth")
+    @Schedule(month="*", dayOfMonth = "1", info="resetPointOfTheMonth")
     public void resetPointOfTheMonth()
     {
         List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveAllCustomer();

@@ -78,16 +78,15 @@ public class ScavengerHuntResource {
         {
             try 
             {
-                ScavengerHuntEntity scavengerHuntEntity = scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerId);
+                CustomerEntity customerEntity = scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerId);
                 
-                for(CustomerEntity customerEntity : scavengerHuntEntity.getCustomerEntities())
-                {
-                    customerEntity.setDiscountCodeEntities(null);
-                    customerEntity.setReviewEntities(null);
-                    customerEntity.setSaleTransactionEntities(null);
-                }
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getReviewEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.setPassword(null);
+                customerEntity.setSalt(null);
                     
-                ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(scavengerHuntEntity);
+                ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(customerEntity);
 
                 return Response.status(Response.Status.OK).entity(scavengerHuntRsp).build();
             } 
@@ -138,13 +137,20 @@ public class ScavengerHuntResource {
             ScavengerHuntEntity scavengerHuntEntity = scavengerHuntEntityControllerLocal.retrieveScavengerHuntEntityByDate(date);
             
             for(CustomerEntity ce: scavengerHuntEntity.getCustomerEntities()) {
-                ce.setDiscountCodeEntities(null);
-                ce.setReviewEntities(null);
-                ce.setSaleTransactionEntities(null);     
+                ce.getDiscountCodeEntities().clear();
+                ce.getReviewEntities().clear();
+                ce.getSaleTransactionEntities().clear();     
             }
             ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(scavengerHuntEntity);
             return Response.status(Response.Status.OK).entity(scavengerHuntRsp).build();
-        } catch (Exception ex) {
+        }
+        catch (ScavengerHuntNotFoundException ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+        catch (Exception ex) {
             
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             

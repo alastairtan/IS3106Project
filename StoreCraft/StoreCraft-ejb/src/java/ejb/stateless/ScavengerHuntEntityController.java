@@ -153,18 +153,18 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         Triggered by productEntityController method
      */
     @Override
-    public ScavengerHuntEntity updateWinnerForScavengerHunt(Long customerId) throws ScavengerHuntNotFoundException, CustomerNotFoundException,
+    public CustomerEntity updateWinnerForScavengerHunt(Long customerId) throws ScavengerHuntNotFoundException, CustomerNotFoundException,
                                                             CreateNewDiscountCodeException, InputDataValidationException {
         if (customerId != null) {
             // retrieve by today's date
             ScavengerHuntEntity scavengerHuntEntity = retrieveScavengerHuntEntityByDate(new Date());
             
             CustomerEntity customerEntityFromDb = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
-          
+            
+            Random rand = new Random();
             // Giving the reward to winner
             if (scavengerHuntEntity.getRewardTypeEnum() != RewardTypeEnum.POINTS) {
                 
-                Random rand = new Random();
                 String discountCode = CryptographicHelper.getInstance().generateRandomString(6);
                 BigDecimal discountAmount;
                 
@@ -241,12 +241,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
             } 
             else
             {
-                BigDecimal rewardPoint;
-
-                do {
-                    rewardPoint = new BigDecimal(Math.random() * 100);
-                } while (rewardPoint.compareTo(new BigDecimal(50)) != -1 && rewardPoint.compareTo(new BigDecimal(20)) != 1);
-                    
+                BigDecimal rewardPoint = new BigDecimal(rand.ints(50, 100+1).limit(1).findFirst().getAsInt());
 
                 customerEntityFromDb.setPointsForCurrentMonth(customerEntityFromDb.getPointsForCurrentMonth().add(rewardPoint));
                 customerEntityFromDb.setRemainingPoints(customerEntityFromDb.getRemainingPoints().add(rewardPoint));
@@ -269,7 +264,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
                 }
             }
             
-            return scavengerHuntEntity;
+            return customerEntityFromDb;
             
         } else {
             throw new CustomerNotFoundException("Customer with ID: " + customerId + " doesn't exist!");

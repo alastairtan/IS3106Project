@@ -13,6 +13,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { ClickEvent } from 'angular-star-rating/angular-star-rating';
 import { ScavengerHuntService } from '../scavenger-hunt.service';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-view-product-details',
@@ -41,7 +42,8 @@ export class ViewProductDetailsComponent implements OnInit {
   isWriting: boolean;
 
   //For scavenger hunt
-  hasCustomerWonToday : boolean;
+  canCustomerWin : boolean;
+  prizeClaimMessage : string;
 
   constructor(private activatedRoute: ActivatedRoute,
     private productService: ProductService,
@@ -49,6 +51,7 @@ export class ViewProductDetailsComponent implements OnInit {
     private reviewService: ReviewService,
     private sessionService: SessionService,
     private scavengerHuntService : ScavengerHuntService,
+    private customerService : CustomerService,
     private loginDialog: MatDialog) {
       this.isEditing= false;
       this.isWriting= false;
@@ -66,7 +69,7 @@ export class ViewProductDetailsComponent implements OnInit {
       this.currentCustomer = this.sessionService.getCurrentCustomer();
       this.scavengerHuntService.checkIfCustomerHasWonToday(
         this.currentCustomer.customerId).subscribe(response => {
-          this.hasCustomerWonToday = response.hasCustomerWonToday;
+          this.canCustomerWin = !response.hasCustomerWonToday;
         });
     }, error => {
       this.errorMessage = error;
@@ -177,7 +180,20 @@ export class ViewProductDetailsComponent implements OnInit {
     this.scavengerHuntService.claimScavengerHuntPrize(this.currentCustomer.customerId).subscribe(
       response => {
         // Prize updated in database
+        let customerEntity = response.customerEntity;
+        console.log("String " + JSON.stringify(customerEntity));
+        console.log("Membership : " + customerEntity.membershipTierEnum);
+
+        let tierInfo = this.customerService.setTierInfo(customerEntity.membershipTierEnum);
+
+        customerEntity.tierMessage = tierInfo.tierMessage;
+        customerEntity.tierUrl = tierInfo.tierUrl;
+
+        this.sessionService.setCurrentCustomer(customerEntity);
         this.refresh();
+        setTimeout(() => true, 300);
+        this.prizeClaimMessage = "Prize has been claimed!"
+        setTimeout(() => this.prizeClaimMessage = "", 4000);
       }
     )
   }

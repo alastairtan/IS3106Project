@@ -5,6 +5,7 @@
  */
 package datamodel.ws.rest;
 
+import entity.CustomerEntity;
 import entity.ScavengerHuntEntity;
 
 /**
@@ -15,6 +16,7 @@ public class ScavengerHuntRsp {
     
     private Boolean hasCustomerWonToday;
     private ScavengerHuntEntity scavengerHuntEntity;
+    private CustomerEntity customerEntity;
     
     public ScavengerHuntRsp() {
     }
@@ -25,6 +27,10 @@ public class ScavengerHuntRsp {
 
     public ScavengerHuntRsp(ScavengerHuntEntity scavengerHuntEntity) {
         this.scavengerHuntEntity = scavengerHuntEntity;
+    }
+
+    public ScavengerHuntRsp(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
     
     public Boolean getHasCustomerWonToday() {
@@ -41,6 +47,14 @@ public class ScavengerHuntRsp {
 
     public void setScavengerHuntEntity(ScavengerHuntEntity scavengerHuntEntity) {
         this.scavengerHuntEntity = scavengerHuntEntity;
+    }
+
+    public CustomerEntity getCustomerEntity() {
+        return customerEntity;
+    }
+
+    public void setCustomerEntity(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
     
 }
