@@ -112,26 +112,20 @@
         <div fxLayout="row wrap">
           <div fxFlex="1 1 70%" fxFlexOrder="1">
               <mat-card-header class="header">
-                Scavanger Hunt Winners:
+                Scavenger Hunt Winners: 
               </mat-card-header>
           </div>
           <div fxFlex="1 1 30%" fxFlexOrder="2">
-            <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
-              <mat-option *ngFor="let cg of communityGoals" [value]="cg.currentPoints*100/cg.targetPoints" > 
-                {{cg.goalTitle}}
+            <mat-select [(ngModel)]="scavengerHuntCurr" panelClass="dropDownSelector">
+              <mat-option *ngFor="let sh of scavengerHuntWinners" [value]="sh.firstName" > 
+                {{sh.firstName}}
               </mat-option>
             </mat-select>
           </div>
         </div>
         <br>
         
-        <mat-card-content class="content">
-          <div fxLayoutAlign="center">
-            <div class="progress md-progress" >
-              <div class="progress-bar"  [ngStyle]="{'width.%':selected}">{{selected}}%</div>
-            </div>
-          </div>
-        </mat-card-content>
+        
       </mat-card>
     </div>
   </div>

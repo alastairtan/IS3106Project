@@ -6,6 +6,8 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { CommunityGoal } from '../community-goal';
 import { CommunityGoalService } from '../community-goal.service';
+import { ScavengerHunt } from '../scavengerHunt';
+import { ScavengerHuntService } from '../scavenger-hunt.service';
 
 @Component({
   selector: 'app-index',
@@ -21,13 +23,16 @@ export class IndexComponent implements OnInit {
   country:string = "Singapore";
   selected: number;
   goalAmt: number;
-  
+  scavengerHunt: ScavengerHunt;
+  scavengerHuntWinners: Customer[];
+  scavengerHuntCurr: Customer;
   
 
 
   constructor(public sessionService: SessionService,
               private productService: ProductService,
-              private communityGoalService: CommunityGoalService) {
+              private communityGoalService: CommunityGoalService,
+              private scavengerHuntService: ScavengerHuntService) {
     this.currentDate = new Date();
     this.goalAmt = 0;
     
@@ -63,6 +68,23 @@ export class IndexComponent implements OnInit {
         console.log('********** IndexComponent.ts: community ' + error);
       }
     );
+
+    this.scavengerHuntService.retrieveScavengerHuntForTheDay().subscribe(
+      response => {
+        this.scavengerHunt = response.scavengerHuntEntity;
+        if(this.scavengerHunt != null ) {
+          if(this.scavengerHunt.customerEntities.length != 0) {
+            this.scavengerHuntWinners = this.scavengerHunt.customerEntities;
+          }
+          console.log('inside index.component.ts! scavengerHunt!' 
+          + this.scavengerHunt.customerEntities.length);
+        }
+      },
+      error => {
+        console.log('********** IndexComponent.ts: scavenger ' + error);
+      }
+      
+    )
   }
 
 }
