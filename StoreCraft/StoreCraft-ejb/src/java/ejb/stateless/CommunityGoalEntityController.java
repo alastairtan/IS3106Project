@@ -101,7 +101,6 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         }
         else
         {
-            System.err.println("sf09876543f");
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
@@ -172,7 +171,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         List<CommunityGoalEntity> currentCommunityGoalEntitys = new LinkedList<>();
         
         for(CommunityGoalEntity cge : communityGoalEntitys) {
-            if(cge.getCountry().equals(country) && cge.getEndDate().after(currentDate)==true) {
+            if(cge.getCountry().equals(country) && cge.getStartDate().before(currentDate) && cge.getEndDate().after(currentDate)) {
                 currentCommunityGoalEntitys.add(cge);
             }
         }
@@ -202,8 +201,9 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
             //Give Discount Code
             for(CommunityGoalEntity cge : communityGoals){
                 BigDecimal addingPoints = cge.getCurrentPoints().add(points);
-                if(addingPoints.compareTo(cge.getTargetPoints()) >= 1 && !cge.isCompleted()){
+                if(addingPoints.compareTo(cge.getTargetPoints()) >= 0 && !cge.isCompleted()){
                     cge.setCompleted(true);
+                    cge.setCurrentPoints(addingPoints);
                     DiscountCodeEntity dce = new DiscountCodeEntity(startDate, endDate,1, "cg" + cge.getCommunityGoalId(), DiscountCodeTypeEnum.PERCENTAGE, cge.getRewardPercentage());
                     List<Long> customerEntityIds = new ArrayList<>();
                     List<Long> productEntityIds = new ArrayList<>();

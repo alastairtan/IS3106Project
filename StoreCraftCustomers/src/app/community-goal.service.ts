@@ -35,4 +35,11 @@ export class CommunityGoalService {
 			catchError(this.handleError)
 		);
 	}
+
+	retrieveAllCommunityGoals(): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/retrieveAllCommunityGoals").pipe
+		(
+			catchError(this.handleError)
+		);
+	}
 }
