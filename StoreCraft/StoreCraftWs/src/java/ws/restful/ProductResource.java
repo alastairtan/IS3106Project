@@ -105,11 +105,13 @@ public class ProductResource {
             List<ProductEntity> productEntities = productEntityControllerLocal.retrieveRandomProducts();
             for (ProductEntity productEntity : productEntities) {
                 
+                
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
-
+                
                 List<TagEntity> tagEntities = productEntity.getTagEntities();
                 for (TagEntity tagEntity : tagEntities) {
                     tagEntity.getProductEntities().clear(); //unidirectional between product and tags
+                    
                 }
                                
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
@@ -118,10 +120,12 @@ public class ProductResource {
                     reviewEntity.setReplyReviewEntity(null);
                     reviewEntity.setStaffEntity(null);
                     reviewEntity.setParentReviewEntity(null);
+
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
                     dce.getProductEntities().clear(); //undirectional between product and discount codes
+                    System.out.println("random 6");
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
                 }
                 
