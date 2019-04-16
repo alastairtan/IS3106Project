@@ -18,37 +18,48 @@ import { Product } from '../product';
 })
 export class ShoppingCartComponent implements OnInit {
 
+  //Initial Load
   private cartItems: CartItem[];
-  private selectedCartItem: CartItem;
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
+  private customerDiscountCodes: DiscountCode[];
+  private currentCustomer: Customer;
+
+  //Checkout//
+  private currentSelectedDiscountCode: DiscountCode;
   private discountCodeToApply: DiscountCode;
-  private pointsToUse: number;
+  private pointsToUse: number
+  
+  //Messages
   private infoMessage: string;
   private errorMessage: string;
   private removeMessage: string;
   private removeMessageClose: boolean;
   private infoMessageClose: boolean;
+  private errorMessageClose: boolean;
 
-  private customerDiscountCodes: DiscountCode[];
-  private currentSelectedDiscountCode: DiscountCode;
-  private currentCustomer: Customer;
-
-  //For cart
+  //For cart discount
   applyingDiscountForCart: boolean;
   flatDiscountAmountForCart: number;
-  rateDiscountAmountForCart:number;
+  rateDiscountAmountForCart: number;
+
+  //For indiv products discount
+  cartItemsCopy: CartItem[] //loaded initially, used to display new price, modify this to show discounted prices
+  applyingDiscountForItems: boolean;
+  totalAmountDiscounted: number;
+
 
   constructor(private localService: LocalService,
     private saleTransactionService: SaleTransactionService,
     private sessionService: SessionService,
     private customerService: CustomerService,
-    private discountCodeService: DiscountCodeService) { 
-      this.applyingDiscountForCart = false;
-    }
+    private discountCodeService: DiscountCodeService) {
+    this.applyingDiscountForCart = false;
+  }
 
   ngOnInit() {
     this.cartItems = this.localService.getCart();
+    this.cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
     this.loadCustomerData();
     // this.cartItems.filter() --> to remove item that is no longer available (e.g. deleted)
     if (this.cartItems != null) {
@@ -138,26 +149,76 @@ export class ShoppingCartComponent implements OnInit {
     this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
   }
 
-  applyDiscountCode(){
+  resetSelected(){
+    this.rateDiscountAmountForCart = null;
+    this.flatDiscountAmountForCart = null;
+    this.applyingDiscountForCart = false;
+    this.applyingDiscountForItems = false;
+  }
+
+  applyDiscountCode() {
     this.discountCodeToApply = JSON.parse(JSON.stringify(this.currentSelectedDiscountCode));
-    if (this.discountCodeToApply != null){
+    if (this.discountCodeToApply != null) {
       console.log("APPLY 1");
-      if (this.discountCodeToApply.productEntities == null || this.discountCodeToApply.productEntities.length == 0){
+      if (this.discountCodeToApply.productEntities == null || this.discountCodeToApply.productEntities.length == 0) {
         console.log("APPLY 2");
         this.applyDiscountCodeToShoppingCart();
+      } else { //for some products
+        this.cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
+        this.applyDiscountCodeToCartItems(this.discountCodeToApply, this.cartItemsCopy);
       }
     }
   }
 
+  applyDiscountCodeToCartItems(discountCode: DiscountCode, cartItems: CartItem[]) {
+    let cartItemsToDiscount: CartItem[] = this.getCartItemsToApplyDiscountTo(discountCode, cartItems);
 
-  applyDiscountCodeToShoppingCart(){
+    if (discountCode.discountCodeTypeEnum.toString() == 'FLAT') {
+      let discountAmount: number = discountCode.discountAmountOrRate;
+
+      cartItemsToDiscount.forEach(cartItem => {
+        if (cartItem.subTotal - discountAmount > 0) {
+          cartItem.subTotal = cartItem.subTotal - discountAmount;
+        } 
+      })
+    } else if (discountCode.discountCodeTypeEnum.toString() == 'PERCENTAGE'){
+      let discountRate: number = discountCode.discountAmountOrRate;
+
+      cartItemsToDiscount.forEach(cartItem => {
+        let discountBy: number = cartItem.subTotal * discountRate;
+
+        cartItem.subTotal = cartItem.subTotal - discountBy;
+      })
+    }
+    this.totalAmountDiscounted = this.cartItemsCopy.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+    this.applyingDiscountForItems = true;
+  }
+
+  getCartItemsToApplyDiscountTo(discountCode: DiscountCode, cartItems: CartItem[]) {
+    let cartItemsToDiscount: CartItem[] = [];
+    let discountCodeProducts = discountCode.productEntities;
+    //console.log(discountCodeProducts);
+    discountCodeProducts.forEach(dcProduct => {
+      cartItems.forEach(cartItem => {
+        if (dcProduct.productId == cartItem.productEntity.productId) {
+          cartItemsToDiscount.push(cartItem);
+        }
+      })
+    })
+    //console.log(cartItemsToDiscount);
+    return cartItemsToDiscount;
+  }
+
+
+  applyDiscountCodeToShoppingCart() {
     let discountCodeType = this.discountCodeToApply.discountCodeTypeEnum.toString();
-    console.log(discountCodeType);  
-    if (discountCodeType == 'FLAT'){
+    console.log(discountCodeType);
+    if (discountCodeType == 'FLAT') {
+      this.rateDiscountAmountForCart = null;
       this.flatDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate;
-    } else if (discountCodeType == 'PERCENTAGE'){
-      let discountRate = this.discountCodeToApply.discountAmountOrRate;
-      this.rateDiscountAmountForCart = discountRate; //eg 5%
+    } else if (discountCodeType == 'PERCENTAGE') {
+      this.flatDiscountAmountForCart = null;
+      this.rateDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate; //eg 5%
     }
     this.applyingDiscountForCart = true;
   }
@@ -173,10 +234,10 @@ export class ShoppingCartComponent implements OnInit {
       dc.discountCodeId == discountCodeId);
 
     let discountCodeAmount = discountCodeToProcess.discountAmountOrRate;
-    if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'FLAT' ){
-      message += this.format(discountCodeAmount)+" Off " //e.g. $5
-    } else if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'PERCENTAGE'){
-      message += discountCodeAmount+"% Off ";
+    if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'FLAT') {
+      message += this.format(discountCodeAmount) + " Off " //e.g. $5
+    } else if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'PERCENTAGE') {
+      message += discountCodeAmount + "% Off ";
     }
 
     if (discountCodeToProcess.productEntities == null || discountCodeToProcess.productEntities.length == 0) {
@@ -190,13 +251,13 @@ export class ShoppingCartComponent implements OnInit {
     discountCodeProducts.forEach(dcProduct => {
 
       if (this.isDiscountCodeProductInCart(dcProduct.productId)) {
-        message += dcProduct.name + ","
+        message += dcProduct.name + ", "
       }
 
 
     })
 
-    message = message.slice(0, message.length - 1);
+    message = message.slice(0, message.length - 2);
     message += ")";
 
     return message;
@@ -247,7 +308,7 @@ export class ShoppingCartComponent implements OnInit {
     let filteredDiscountCodes = [];
     discountCodes.forEach(discountCode => {
       let endDate: Date = new Date(discountCode.endDate);
-      let startDate:Date = new Date(discountCode.startDate);
+      let startDate: Date = new Date(discountCode.startDate);
       if (endDate > now && startDate < now) {
         filteredDiscountCodes.push(discountCode)
       }
@@ -255,17 +316,17 @@ export class ShoppingCartComponent implements OnInit {
     return filteredDiscountCodes;
   }
 
-  filterOutUnavailableDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[]{
-      let filteredDiscountCodes = [];
-      discountCodes.forEach(discountCode => {
-        if (discountCode.numAvailable > 0){
-          filteredDiscountCodes.push(discountCode);
-        }
-      })
-      return filteredDiscountCodes;
+  filterOutUnavailableDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
+    let filteredDiscountCodes = [];
+    discountCodes.forEach(discountCode => {
+      if (discountCode.numAvailable > 0) {
+        filteredDiscountCodes.push(discountCode);
+      }
+    })
+    return filteredDiscountCodes;
   }
 
-  filterDiscountCodes(discountCodes : DiscountCode[]): DiscountCode[]{
+  filterDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
     return this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes)));
   }
 

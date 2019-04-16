@@ -21,7 +21,7 @@ export class ScavengerHuntService {
 			catchError(this.handleError)
 		);
   }
-
+  
   checkIfCustomerHasWonToday(customerId : number): Observable<any> {
 
     return this.httpClient.get<any>(this.baseUrl + "/hasCustomerWonToday?customerId=" + customerId)

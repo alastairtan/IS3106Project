@@ -36,4 +36,9 @@ public interface CustomerEntityControllerLocal {
 
     public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws InputDataValidationException, Exception;
 
+    public List<CustomerEntity> retrieveCustomersBySpendingPerMonth();
+
+    public List<CustomerEntity> retrieveCustomersBySpendingTotal();
+
+
 }

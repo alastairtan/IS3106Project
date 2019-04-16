@@ -269,6 +269,27 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         }
     }
     
+    
+    @Override
+    public List<CustomerEntity> retrieveCustomersBySpendingPerMonth() {
+        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce ORDER BY ce.pointsForCurrentMonth DESC");
+        List<CustomerEntity> customerEntitys = query.getResultList();
+        
+        System.out.println("customerEntitys by spending month: " + customerEntitys.size());
+        
+        return customerEntitys;
+    }
+    
+    @Override
+    public List<CustomerEntity> retrieveCustomersBySpendingTotal() {
+        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce ORDER BY ce.totalPoints DESC");
+        List<CustomerEntity> customerEntitys = query.getResultList();
+        System.out.println("customerEntitys by TOTAL SPENDING: " + customerEntitys.size());
+        
+        return customerEntitys;
+        
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomerEntity>>constraintViolations)
     {
         String msg = "Input data validation error!:";

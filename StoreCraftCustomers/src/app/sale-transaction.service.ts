@@ -26,7 +26,8 @@ export class SaleTransactionService {
 
     let totalAmountForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
     let totalQuantityForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
-
+    //discount code discounts are applied on server-side/EJB
+    //so are points to use
     let num = 1;
 
     cartItems.map((cartItem) => {

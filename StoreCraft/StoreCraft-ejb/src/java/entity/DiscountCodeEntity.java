@@ -50,7 +50,7 @@ public class DiscountCodeEntity implements Serializable {
     @NotNull
     private Date endDate; 
     
-    @Min(1)
+    @Min(0)
     @NotNull
     private Integer numAvailable;
     

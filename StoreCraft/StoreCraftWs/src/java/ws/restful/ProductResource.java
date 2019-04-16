@@ -76,6 +76,7 @@ public class ProductResource {
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
                     dce.getProductEntities().clear(); //undirectional between product and discount codes
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
+                    dce.getSaleTransactionEntities().clear();
                 }
                 
             }
@@ -127,6 +128,7 @@ public class ProductResource {
                     dce.getProductEntities().clear(); //undirectional between product and discount codes
                     System.out.println("random 6");
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
+                    dce.getSaleTransactionEntities().clear();
                 }
                 
             }
@@ -167,9 +169,11 @@ public class ProductResource {
             
             productEntity.setCategoryEntity(null);
             
-            for(DiscountCodeEntity discoutCode : productEntity.getDiscountCodeEntities())
+            for(DiscountCodeEntity discountCode : productEntity.getDiscountCodeEntities())
             {
-                discoutCode.getProductEntities().clear();
+                discountCode.getProductEntities().clear();
+                discountCode.getSaleTransactionEntities().clear();
+                discountCode.getCustomerEntities().clear();
             }
         
             ProductRsp productRsp = new ProductRsp(productEntity);

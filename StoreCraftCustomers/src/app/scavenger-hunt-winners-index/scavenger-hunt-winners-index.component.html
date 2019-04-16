@@ -1,0 +1,24 @@
+<table mat-table [dataSource]="scavengerHuntWinners" multiTemplateDataRows class="mat-elevation-z1">
+
+    <ng-container matColumnDef="First Name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let c"> {{c.firstName}} {{c.lastName}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Membership Tier">
+      <th mat-header-cell *matHeaderCellDef> Membership Tier </th>
+      <td mat-cell *matCellDef="let c"> {{c.membershipTierEnum}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="table-header">
+      <th mat-header-cell class="header" colspan="3" *matHeaderCellDef> Scavenger Hunt Winners for {{currentDate |  date:'ww LLLL'}}! </th>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['table-header']"> </tr>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+
+    <!--USE THIS-->
+    <tr mat-row *matRowDef="let customer; columns: columnsToDisplay" ></tr>
+  
+  
+  </table>

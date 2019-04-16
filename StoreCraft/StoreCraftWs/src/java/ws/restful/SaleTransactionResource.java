@@ -28,6 +28,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.CreateNewSaleTransactionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DiscountCodeNotFoundException;
+import util.exception.InputDataValidationException;
+import util.exception.NegativeSaleTransactionAmountException;
+import util.exception.NotEnoughPointsException;
 import util.exception.SaleTransactionNotFoundException;
 
 /**
@@ -153,14 +157,13 @@ public class SaleTransactionResource {
                 saleTransactionEntity.getCustomerEntity().setPassword(null);
                 saleTransactionEntity.setDiscountCodeEntity(null);
                 saleTransactionEntity.setSaleTransactionLineItemEntities(null);
-
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
 
-                System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
-                System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
+               // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
+               // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
 
                 return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-            } catch (CreateNewSaleTransactionException ex) {
+            } catch (CreateNewSaleTransactionException | InputDataValidationException | NegativeSaleTransactionAmountException | DiscountCodeNotFoundException | NotEnoughPointsException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("An error occured when creating the sale transaction!");
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();

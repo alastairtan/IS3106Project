@@ -50,6 +50,9 @@ import { RegisterDialogComponent } from './register-dialog/register-dialog.compo
 import { ReviewChainComponent } from './review-chain/review-chain.component';
 import { DiscountCodeTableComponent } from './discount-code-table/discount-code-table.component';
 import { WriteReviewComponent } from './write-review/write-review.component';
+import { LeaderboardTableComponent } from './leaderboard-table/leaderboard-table.component';
+import { LeaderboardTableAllTimeComponent } from './leaderboard-table-all-time/leaderboard-table-all-time.component';
+import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-index/scavenger-hunt-winners-index.component';
 
 
 
@@ -74,7 +77,10 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     RegisterDialogComponent,
     ReviewChainComponent,
     WriteReviewComponent,
-    DiscountCodeTableComponent
+    DiscountCodeTableComponent,
+    LeaderboardTableComponent,
+    LeaderboardTableAllTimeComponent,
+    ScavengerHuntWinnersIndexComponent
 
   ],
   imports: [
