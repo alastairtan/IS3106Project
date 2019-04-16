@@ -1,0 +1,29 @@
+<table mat-table [dataSource]="customersLeaderboardPerMonthMax5" multiTemplateDataRows class="mat-elevation-z1">
+
+    <ng-container matColumnDef="First Name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let c"> {{c.firstName}} {{c.lastName}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Points for Current Month">
+      <th mat-header-cell *matHeaderCellDef> Points for Current Month </th>
+      <td mat-cell *matCellDef="let c"> {{c.pointsForCurrentMonth}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Multiplier">
+      <th mat-header-cell *matHeaderCellDef> Multiplier </th>
+      <td mat-cell *matCellDef="let c"> {{c.multiplier}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="table-header">
+      <th mat-header-cell class="header" colspan="3" *matHeaderCellDef> Leaderboard For The Month Of {{currentDate |  date:'MMMM'}} </th>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['table-header']"> </tr>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+
+    <!--USE THIS-->
+    <tr mat-row *matRowDef="let customer; columns: columnsToDisplay" ></tr>
+  
+  
+  </table>
