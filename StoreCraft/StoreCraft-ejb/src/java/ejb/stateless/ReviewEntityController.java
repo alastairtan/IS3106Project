@@ -227,6 +227,13 @@ public class ReviewEntityController implements ReviewEntityControllerLocal {
         }
         return rootReviews;
     }
+    
+    @Override
+    public List<ReviewEntity> retrieveAllRootReviewsForCustomer(Long customerId){
+       Query query = entityManager.createQuery("SELECT re FROM ReviewEntity re WHERE re.customerEntity != NULL AND re.parentReviewEntity = NULL AND re.customerEntity.customerId = :inId");
+       query.setParameter("inId", customerId);
+       return query.getResultList();
+    }
 
     public void lazilyLoadReviewReplies(ReviewEntity reviewEntity) {
 

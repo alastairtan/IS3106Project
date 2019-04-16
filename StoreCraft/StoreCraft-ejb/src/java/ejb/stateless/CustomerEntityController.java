@@ -254,11 +254,13 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
             customerEntity.setMultiplier(new BigDecimal("2.0"));
+            System.out.print("mem 1");
         }
         else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("400")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
             customerEntity.setMultiplier(new BigDecimal("1.6"));
+             System.out.print("mem 2");
         }
         else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("300")) >= 1)
         {

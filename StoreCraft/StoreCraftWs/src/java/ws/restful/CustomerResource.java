@@ -88,7 +88,7 @@ public class CustomerResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response customerLogin(@QueryParam("customerId") Long customerId) {
+    public Response getCustomerById(@QueryParam("customerId") Long customerId) {
         try {
             CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
             customerEntity.setPassword(null);

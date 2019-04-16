@@ -5,11 +5,13 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.ReplyToStaffReplyReq;
 import datamodel.ws.rest.ReplyToStaffReplyRsp;
 import datamodel.ws.rest.ReviewChainRsp;
-import datamodel.ws.rest.ReviewReq;
 import datamodel.ws.rest.ReviewRsp;
 import datamodel.ws.rest.UpdateReviewReq;
+import ejb.stateless.CustomerEntityControllerLocal;
 import ejb.stateless.ReviewEntityControllerLocal;
+import entity.CustomerEntity;
 import entity.ReviewEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +29,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.ProductNotFoundException;
@@ -34,6 +37,8 @@ import util.exception.ReviewNotFoundException;
 
 @Path("Review")
 public class ReviewResource {
+
+    CustomerEntityControllerLocal customerEntityControllerLocal = lookupCustomerEntityControllerLocal();
 
     @Context
     private UriInfo context;
@@ -77,6 +82,38 @@ public class ReviewResource {
         } catch (Exception ex) {
 
             System.out.println("hello4");
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    @Path("getReviewsForCustomer")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReviewsForCustomer(@QueryParam("customerId") Long customerId) {
+        try {
+            List<ReviewEntity> reviews = reviewEntityControllerLocal.retrieveAllRootReviewsForCustomer(customerId);
+            for (ReviewEntity re : reviews) {
+                System.out.print(re.getReviewId());
+            }
+            for (ReviewEntity re : reviews) {
+                re.getCustomerEntity().setDiscountCodeEntities(null);
+                re.getCustomerEntity().setReviewEntities(null);
+                re.getCustomerEntity().setSaleTransactionEntities(null);
+                re.setParentReviewEntity(null);
+                re.getProductEntity().setCategoryEntity(null);
+                re.getProductEntity().setDiscountCodeEntities(null);
+                re.getProductEntity().setReviewEntities(null);
+                re.getProductEntity().setTagEntities(null);
+                re.setReplyReviewEntity(null);
+                re.setStaffEntity(null);
+
+            }
+            return Response.status(Status.OK).entity(new ReviewChainRsp(reviews)).build();
+        } catch (Exception ex) {
+            System.out.print("EXCEPTION");
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
@@ -138,18 +175,18 @@ public class ReviewResource {
         }
 
     }
-    
+
     @Path("createReview")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createReview(CreateReviewReq createReviewReq){
+    public Response createReview(CreateReviewReq createReviewReq) {
         Long customerId = createReviewReq.getCustomerId();
         Long productId = createReviewReq.getProductId();
         String newContent = createReviewReq.getNewContent();
         Integer productRating = createReviewReq.getNewProductRating();
-        
-        try{
+
+        try {
             ReviewEntity re = reviewEntityControllerLocal.createNewReview(customerId, newContent, productRating, productId);
             if (re.getCustomerEntity() != null) {
                 re.getCustomerEntity().getReviewEntities().clear();
@@ -164,8 +201,8 @@ public class ReviewResource {
                 re.getStaffEntity().getCommunityGoalEntities().clear();
             }
             return Response.status(Status.OK).entity(new ReviewRsp(re)).build();
-        } catch (CustomerNotFoundException | InputDataValidationException | ProductNotFoundException ex){
-             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+        } catch (CustomerNotFoundException | InputDataValidationException | ProductNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
@@ -174,6 +211,16 @@ public class ReviewResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ReviewEntityControllerLocal) c.lookup("java:global/StoreCraft/StoreCraft-ejb/ReviewEntityController!ejb.stateless.ReviewEntityControllerLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerEntityControllerLocal lookupCustomerEntityControllerLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerEntityControllerLocal) c.lookup("java:global/StoreCraft/StoreCraft-ejb/CustomerEntityController!ejb.stateless.CustomerEntityControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

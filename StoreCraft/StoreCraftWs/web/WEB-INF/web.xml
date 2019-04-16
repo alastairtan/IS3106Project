@@ -101,4 +101,10 @@
         <local>ejb.stateless.ScavengerHuntEntityControllerLocal</local>
         <ejb-link>StoreCraft-ejb.jar#ScavengerHuntEntityController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerEntityControllerLocal4</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.CustomerEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#CustomerEntityController</ejb-link>
+    </ejb-local-ref>
 </web-app>
