@@ -261,15 +261,15 @@
             <!-- Community goal and scavenger hunt-->
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3">
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
                 <app-leaderboard-table></app-leaderboard-table>
               </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3">
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
                   <app-leaderboard-table-all-time></app-leaderboard-table-all-time>
               </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3">
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
                 <mat-card>
                   <!--community goal-->
                   <div fxLayout="row wrap">
@@ -290,11 +290,11 @@
                 </mat-card>
               </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3">
-                <mat-card>
-                  <!--scavenger hunt-->
-                  scavenger hunt
-                </mat-card>
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                
+                <!--scavenger hunt-->
+                <app-scavenger-hunt-winners-index></app-scavenger-hunt-winners-index>
+                
               </div>
 
 
@@ -310,8 +310,8 @@
     </div>
 
     <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center">
-        <ng-container *ngFor="let product of products" class="card-item">
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center" class="cardProducts">
+        <ng-container *ngFor="let product of products" class="card-item cardProducts">
           <app-product-card fxFlex="1 1 33%" [product]="product"></app-product-card>
         </ng-container>
       </div>

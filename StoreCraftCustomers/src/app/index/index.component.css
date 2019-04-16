@@ -24,3 +24,18 @@
 .cgGoalDisplay {
     padding: 8px 8px 8px 8px;
 }
+
+.mat-elevate-z3 {
+    padding: 12px 12px 12px 12px;
+}
+
+.firstTable {
+    padding: 12px 12px 12px 12px !important;
+}
+
+.cardProducts {
+    padding: 8px 8px 8px 8px !important;
+}
+.card {
+    background-color: whitesmoke;
+}
