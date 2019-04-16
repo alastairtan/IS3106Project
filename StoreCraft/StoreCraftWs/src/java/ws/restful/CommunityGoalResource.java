@@ -46,7 +46,7 @@ public class CommunityGoalResource {
     public CommunityGoalResource() {
     }
     
-    @Path("retrieveAllCommuntiyGoals")
+    @Path("retrieveAllCommunityGoals")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllCommuntiyGoals() 

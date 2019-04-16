@@ -42,11 +42,9 @@
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.endDate | date }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="seeDetails">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> See Details </mat-header-cell>
-        <mat-cell *matCellDef="let communitygoal"> 
-            <button mat-raised-button (click)="openDialog(communitygoal)">Open</button>
-        </mat-cell>
+    <ng-container matColumnDef="rewardPercentage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Reward Percentage </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.currentPoints}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
