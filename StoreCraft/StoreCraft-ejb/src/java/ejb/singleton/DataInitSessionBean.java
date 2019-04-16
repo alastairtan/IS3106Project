@@ -6,6 +6,7 @@
 package ejb.singleton;
 
 import ejb.stateless.CategoryEntityControllerLocal;
+import ejb.stateless.CommunityGoalEntityControllerLocal;
 import ejb.stateless.CustomerEntityControllerLocal;
 import ejb.stateless.DiscountCodeEntityControllerLocal;
 import ejb.stateless.ProductEntityControllerLocal;
@@ -15,6 +16,7 @@ import ejb.stateless.ScavengerHuntEntityControllerLocal;
 import ejb.stateless.StaffEntityControllerLocal;
 import ejb.stateless.TagEntityControllerLocal;
 import entity.CategoryEntity;
+import entity.CommunityGoalEntity;
 import entity.CustomerEntity;
 import entity.DiscountCodeEntity;
 import entity.ProductEntity;
@@ -46,6 +48,9 @@ import util.exception.StaffNotFoundException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "CommunityGoalEntityControllerLocal")
+    private CommunityGoalEntityControllerLocal communityGoalEntityControllerLocal;
 
     @EJB
     private ScavengerHuntEntityControllerLocal scavengerHuntEntityControllerLocal;
@@ -92,8 +97,8 @@ public class DataInitSessionBean {
             CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
             CustomerEntity c1 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Peter", "Parker", "peter@gmail.com", "password", "America", "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop"));
             CustomerEntity c2 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Bruce", "Banner", "bruce@gmail.com", "password", "America", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtRb2rkBsxg1q60ki00KULSIqAS2SXmKTnObZO7qWQA7AV5pSbsg"));
+            CustomerEntity c3 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Ant", "Man", "ant@gmail.com", "password", "Singapore", "https://images-na.ssl-images-amazon.com/images/I/61bJf%2B2Z%2BXL._SY741_.jpg"));
 
-            
             List<Long> customerEntityIds = new ArrayList<>();
             customerEntityIds.add(c.getCustomerId());
             List<Long> productEntityIds = new ArrayList<>();
@@ -164,11 +169,21 @@ public class DataInitSessionBean {
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD017", "Supreme 2", "Supreme 2", 100, 10, new BigDecimal("19.05"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD018", "Supreme 3", "Supreme 3", 100, 10, new BigDecimal("10.50"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
             
+            
+            
             // Load transactions
             List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = new ArrayList<>();
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 5, new BigDecimal(10), new BigDecimal(50)));
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
+            
+            
+            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"America");
+            cge.setDescription("fsdfsd");
+            cge.setGoalTitle("har");
+            cge.setRewardPercentage(new BigDecimal(12));
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge, 1L);
+            
             
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );
             reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "Asus laptop is very good", 4, new Long(1) );

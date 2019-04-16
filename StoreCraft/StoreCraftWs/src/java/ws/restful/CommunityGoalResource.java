@@ -110,7 +110,7 @@ public class CommunityGoalResource {
     {
         try {
             List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveCurrentCommunityGoal(country);
-            
+            System.out.println("communityGoalEntitys.length" + communityGoalEntitys.size());
             for(CommunityGoalEntity cge: communityGoalEntitys) {
                 cge.getStaffEntity().getCommunityGoalEntities().clear();
                 cge.setStaffEntity(null);

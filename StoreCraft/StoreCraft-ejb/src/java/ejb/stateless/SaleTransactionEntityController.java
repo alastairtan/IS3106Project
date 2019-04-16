@@ -46,6 +46,9 @@ import util.exception.SaleTransactionNotFoundException;
 @Local(SaleTransactionEntityControllerLocal.class)
 public class SaleTransactionEntityController implements SaleTransactionEntityControllerLocal {
 
+    @EJB(name = "CommunityGoalEntityControllerLocal")
+    private CommunityGoalEntityControllerLocal communityGoalEntityControllerLocal;
+
     @PersistenceContext(unitName = "StoreCraft-ejbPU")
     private javax.persistence.EntityManager entityManager;
     @Resource
@@ -155,6 +158,9 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 entityManager.flush();
 
                 customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
+                
+                BigDecimal totalPoints = newSaleTransactionEntity.getTotalAmount().multiply(customerEntity.getMultiplier());
+                communityGoalEntityControllerLocal.addPointsToCommunityGoal(customerEntity.getCountry(), totalPoints);
 
                 return newSaleTransactionEntity;
             } catch (ProductNotFoundException | ProductInsufficientQuantityOnHandException | NotEnoughPointsException | NegativeSaleTransactionAmountException ex) {
