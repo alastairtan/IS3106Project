@@ -48,7 +48,6 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
-import { CarouselComponent } from './carousel/carousel.component';
 import { DiscountCodeTableComponent } from './discount-code-table/discount-code-table.component';
 import { WriteReviewComponent } from './write-review/write-review.component';
 
@@ -74,7 +73,6 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     ProductCardComponent,
     RegisterDialogComponent,
     ReviewChainComponent,
-    CarouselComponent,
     WriteReviewComponent,
     DiscountCodeTableComponent
 
