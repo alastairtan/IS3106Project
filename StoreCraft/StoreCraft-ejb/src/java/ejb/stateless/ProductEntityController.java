@@ -34,6 +34,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewDiscountCodeException;
 import util.exception.CreateNewProductException;
 import util.exception.CustomerNotFoundException;
 import util.exception.DeleteProductException;
@@ -497,7 +498,7 @@ public class ProductEntityController implements ProductEntityControllerLocal {
         }
     }
     
-    public Boolean checkIsScavengerHuntWinner(ProductEntity productEntity, CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException
+    public Boolean checkIsScavengerHuntWinner(ProductEntity productEntity, CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException, CreateNewDiscountCodeException, InputDataValidationException, ProductNotFoundException
     {
         if( customerEntity.getCustomerId() != null && productEntity.getProductId() != null)
         {
@@ -515,11 +516,23 @@ public class ProductEntityController implements ProductEntityControllerLocal {
                     }
                 }
                 // If the customer does not exist in the list of winners, make the customer one of the winner of the day
-                scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerEntity);
                 return Boolean.TRUE;
             }
+            else
+            {
+                return Boolean.FALSE;
+            }
         }
-        return Boolean.FALSE;
+        else
+        {
+            if (customerEntity.getCustomerId() == null) {
+                throw new CustomerNotFoundException("Customer not found!");
+            } else if (productEntity.getProductId() == null) {
+                throw new ProductNotFoundException("Product not found!");
+            } else {
+                throw new ScavengerHuntNotFoundException("Scavenger hunt not found!");
+            }
+        }
     }
     
     @Override

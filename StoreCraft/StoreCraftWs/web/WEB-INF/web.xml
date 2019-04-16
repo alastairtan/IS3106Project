@@ -95,4 +95,10 @@
         <local>ejb.stateless.DiscountCodeEntityControllerLocal</local>
         <ejb-link>StoreCraft-ejb.jar#DiscountCodeEntityController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ScavengerHuntEntityControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.stateless.ScavengerHuntEntityControllerLocal</local>
+        <ejb-link>StoreCraft-ejb.jar#ScavengerHuntEntityController</ejb-link>
+    </ejb-local-ref>
 </web-app>
