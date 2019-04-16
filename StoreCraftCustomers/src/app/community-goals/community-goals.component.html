@@ -1,8 +1,19 @@
 
-<div fxLayout fxLayoutAlign="center center">
+<!---<div fxLayout fxLayoutAlign="center center">
     <mat-form-field fxFlex="40%">
       <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Search">
     </mat-form-field>
+  </div>
+-->
+
+  <div fxLayout fxLayoutAlign="center center">
+      <mat-form-field>
+    <mat-select placeholder="Filter By Country" panelClass="dropDownSelector" (selectionChange)="doFilter($event.value)">
+      <mat-option *ngFor="let country of countries" [value]="country.name.common" >
+            {{country.name.common}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
   </div>
 
 <table mat-table class="mat-elevation z8" [dataSource] ="dataSource" matSort >
@@ -42,11 +53,15 @@
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.endDate | date }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="seeDetails">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> See Details </mat-header-cell>
-        <mat-cell *matCellDef="let communitygoal"> 
-            <button mat-raised-button (click)="openDialog(communitygoal)">Open</button>
-        </mat-cell>
+    <ng-container matColumnDef="rewardPercentage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Reward Percentage </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.rewardPercentage}} </mat-cell>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="completed">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Completed </mat-header-cell>
+        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.completed}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
