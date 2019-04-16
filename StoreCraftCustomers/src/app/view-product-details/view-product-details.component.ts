@@ -176,7 +176,7 @@ export class ViewProductDetailsComponent implements OnInit {
   claimScavengerHuntPrize() : void {
     this.scavengerHuntService.claimScavengerHuntPrize(this.currentCustomer.customerId).subscribe(
       response => {
-        // If come to here means prize updated in database
+        // Prize updated in database
         this.refresh();
       }
     )
