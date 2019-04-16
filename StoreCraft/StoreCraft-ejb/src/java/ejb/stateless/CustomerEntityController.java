@@ -230,37 +230,42 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
                 customerEntityToUpdate.setTotalPoints(customerEntity.getTotalPoints().add(actualPointToUpdate));
                 
                 // Update multiplier / membership tier if necessary
-                if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("35000")) >= 1)
-                {
-                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.GRANDMASTER);
-                    customerEntityToUpdate.setMultiplier(new BigDecimal("2.5"));
-                }
-                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("23000")) >= 1)
-                {
-                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
-                    customerEntityToUpdate.setMultiplier(new BigDecimal("2.0"));
-                }
-                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("15000")) >= 1)
-                {
-                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
-                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.6"));
-                }
-                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("10000")) >= 1)
-                {
-                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.GOLD);
-                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.4"));
-                }
-                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("3100")) >= 1)
-                {
-                    customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.SILVER);
-                    customerEntityToUpdate.setMultiplier(new BigDecimal("1.2"));
-                }
+                updateMembership(customerEntityToUpdate);
             }
             // If point to update is negative non-zero
             else if (basePointToUpdate.compareTo(BigDecimal.ZERO) == -1)
             {
                 customerEntityToUpdate.setRemainingPoints(customerEntity.getRemainingPoints().add(basePointToUpdate));
             }
+        }
+    }
+    
+    private void updateMembership(CustomerEntity customerEntity)
+    {
+        if (customerEntity.getTotalPoints().compareTo(new BigDecimal("35000")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.GRANDMASTER);
+            customerEntity.setMultiplier(new BigDecimal("2.5"));
+        }
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("23000")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
+            customerEntity.setMultiplier(new BigDecimal("2.0"));
+        }
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("15000")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
+            customerEntity.setMultiplier(new BigDecimal("1.6"));
+        }
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("10000")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.GOLD);
+            customerEntity.setMultiplier(new BigDecimal("1.4"));
+        }
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("3100")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.SILVER);
+            customerEntity.setMultiplier(new BigDecimal("1.2"));
         }
     }
     

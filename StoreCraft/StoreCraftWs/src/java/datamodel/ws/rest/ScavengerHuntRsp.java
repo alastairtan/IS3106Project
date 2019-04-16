@@ -6,21 +6,33 @@
 package datamodel.ws.rest;
 
 import entity.ScavengerHuntEntity;
-import java.util.List;
 
 /**
  *
- * @author Alastair
+ * @author Win Phong
  */
 public class ScavengerHuntRsp {
     
+    private Boolean hasCustomerWonToday;
     private ScavengerHuntEntity scavengerHuntEntity;
-
+    
     public ScavengerHuntRsp() {
+    }
+
+    public ScavengerHuntRsp(Boolean hasWonToday) {
+        this.hasCustomerWonToday = hasWonToday;
     }
 
     public ScavengerHuntRsp(ScavengerHuntEntity scavengerHuntEntity) {
         this.scavengerHuntEntity = scavengerHuntEntity;
+    }
+    
+    public Boolean getHasCustomerWonToday() {
+        return hasCustomerWonToday;
+    }
+
+    public void setHasCustomerWonToday(Boolean hasCustomerWonToday) {
+        this.hasCustomerWonToday = hasCustomerWonToday;
     }
 
     public ScavengerHuntEntity getScavengerHuntEntity() {
