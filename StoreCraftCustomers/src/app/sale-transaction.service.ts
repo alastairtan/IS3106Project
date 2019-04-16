@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { CartItem } from './cartItem';
 import { SaleTransaction } from './saleTransaction';
 import { SessionService } from './session.service';
+import { DiscountCode } from './discount-code';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,7 +22,7 @@ export class SaleTransactionService {
     public sessionService: SessionService) { }
 
 
-  createSaleTransaction(cartItems: CartItem[]): Observable<any> {
+  createSaleTransaction(cartItems: CartItem[],discountCode: DiscountCode, pointsToUse: number): Observable<any> {
 
     let totalAmountForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
     let totalQuantityForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
@@ -35,7 +36,7 @@ export class SaleTransactionService {
 
     let saleTransaction: SaleTransaction;
     saleTransaction = new SaleTransaction(cartItems.length, totalQuantityForTheCart, totalAmountForTheCart,
-      new Date(), false, this.sessionService.getCurrentCustomer(), cartItems);
+      new Date(), false, this.sessionService.getCurrentCustomer(), cartItems, discountCode, pointsToUse);
     
       console.log(saleTransaction);
 

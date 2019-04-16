@@ -61,6 +61,9 @@ public class SaleTransactionResource {
                 saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
                 saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+                saleTransactionEntity.getDiscountCodeEntity().setSaleTransactionEntity(null);
+                saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+                saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
                 for(SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) 
                 {
                     saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
@@ -141,6 +144,9 @@ public class SaleTransactionResource {
                 saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
                 saleTransactionEntity.getCustomerEntity().setSalt(null);
                 saleTransactionEntity.getCustomerEntity().setPassword(null);
+                saleTransactionEntity.getDiscountCodeEntity().setSaleTransactionEntity(null);
+                saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+                saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
 
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
                 

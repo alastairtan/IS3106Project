@@ -175,7 +175,7 @@ public class DataInitSessionBean {
             List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = new ArrayList<>();
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 5, new BigDecimal(10), new BigDecimal(50)));
             saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
-            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
             
             
             CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"America");
