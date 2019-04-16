@@ -77,7 +77,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 
                 customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
                 
-                BigDecimal totalPoints = newSaleTransactionEntity.getTotalAmount().multiply(new BigDecimal(20));
+                BigDecimal totalPoints = newSaleTransactionEntity.getTotalAmount().multiply(customerEntity.getMultiplier());
                 communityGoalEntityControllerLocal.addPointsToCommunityGoal(customerEntity.getCountry(), totalPoints);
 
                 return newSaleTransactionEntity;
