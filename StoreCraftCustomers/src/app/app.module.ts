@@ -45,6 +45,7 @@ import { CategoryMenuItemComponent } from './category-menu-item/category-menu-it
 import { ProductCardComponent } from './product-card/product-card.component';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { ReviewChainComponent } from './review-chain/review-chain.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 
 
@@ -67,7 +68,8 @@ import { ReviewChainComponent } from './review-chain/review-chain.component';
     CategoryMenuItemComponent,
     ProductCardComponent,
     RegisterDialogComponent,
-    ReviewChainComponent
+    ReviewChainComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,

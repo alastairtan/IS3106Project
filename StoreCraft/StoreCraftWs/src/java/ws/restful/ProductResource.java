@@ -106,20 +106,31 @@ public class ProductResource {
             List<ProductEntity> productEntities = productEntityControllerLocal.retrieveRandomProducts();
             for (ProductEntity productEntity : productEntities) {
                 
+                System.out.println("random 1");
                 clearParentToChildrenRelationship(productEntity.getCategoryEntity());
-
+                System.out.println("random 2");
                 List<TagEntity> tagEntities = productEntity.getTagEntities();
                 for (TagEntity tagEntity : tagEntities) {
                     tagEntity.getProductEntities().clear(); //unidirectional between product and tags
+                    System.out.println("random 3");
                 }
                                
                 for (ReviewEntity reviewEntity : productEntity.getReviewEntities()) {
                     reviewEntity.setProductEntity(null); //unidirectional between product and review
                     reviewEntity.getCustomerEntity().getReviewEntities().clear(); //unidirectional between product's review and customer
+                    reviewEntity.setReplyReviewEntity(null);
+                    System.out.println("random 4");
+                    reviewEntity.setStaffEntity(null);
+                    reviewEntity.setParentReviewEntity(null);
+                    reviewEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+                    System.out.println("random 5");
+                    reviewEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+                    reviewEntity.getCustomerEntity().getReviewEntities().clear();
                 }
 
                 for (DiscountCodeEntity dce : productEntity.getDiscountCodeEntities()) {
                     dce.getProductEntities().clear(); //undirectional between product and discount codes
+                    System.out.println("random 6");
                     dce.getCustomerEntities().clear(); //unidirectional between product's discount codes and customer
                 }
                 

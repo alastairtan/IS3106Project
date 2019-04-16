@@ -20,6 +20,8 @@ export class IndexComponent implements OnInit {
   currentDate: Date = new Date();
   country:string = "Singapore";
   selected: number;
+  goalAmt: number;
+  
   
 
 
@@ -27,6 +29,7 @@ export class IndexComponent implements OnInit {
               private productService: ProductService,
               private communityGoalService: CommunityGoalService) {
     this.currentDate = new Date();
+    this.goalAmt = 0;
     
   }
 
@@ -52,6 +55,7 @@ export class IndexComponent implements OnInit {
         this.communityGoals = response.communityGoalEntities;
         if(this.communityGoals.length != 0) {
           this.selected = this.communityGoals[0].currentPoints*100/this.communityGoals[0].targetPoints;
+          this.goalAmt = this.communityGoals[0].targetPoints;
         }
         console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
       },
