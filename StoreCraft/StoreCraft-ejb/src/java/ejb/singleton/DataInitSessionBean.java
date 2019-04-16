@@ -178,11 +178,11 @@ public class DataInitSessionBean {
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
             
             
-            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"America");
-            cge.setDescription("fsdfsd");
-            cge.setGoalTitle("har");
-            cge.setRewardPercentage(new BigDecimal(12));
-            communityGoalEntityControllerLocal.createNewCommunityGoal(cge, 1L);
+            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"America", "This is goal 1", "Goalllllllll", new BigDecimal(4), false);
+//            cge.setDescription("fsdfsd");
+//            cge.setGoalTitle("har");
+//            cge.setRewardPercentage(new BigDecimal(12));
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
             
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );

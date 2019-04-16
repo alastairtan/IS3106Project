@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,11 +81,16 @@ public class CommunityGoalEntity implements Serializable {
     public CommunityGoalEntity() {
     }
 
-    public CommunityGoalEntity(Date startDate, Date endDate, BigDecimal targetPoints, String country) {
+    public CommunityGoalEntity(Date startDate, Date endDate, BigDecimal targetPoints, String country, 
+            String goalTitle, String description, BigDecimal rewardPercentage, Boolean completed ) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.targetPoints = targetPoints;
         this.country = country;
+        this.goalTitle = goalTitle;
+        this.description = description;
+        this.rewardPercentage = rewardPercentage;
+        this.completed = false;
     }
 
     public Long getCommunityGoalId() {

@@ -206,8 +206,8 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     }
 
     @Override
-    public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId) {
-        Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerEntity = :inCustomerId");
+    public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId){
+        Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerId = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
 
         return query.getResultList();

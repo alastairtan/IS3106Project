@@ -12,6 +12,7 @@ import { SessionService } from '../session.service';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { ClickEvent } from 'angular-star-rating/angular-star-rating';
+import { ScavengerHuntService } from '../scavenger-hunt.service';
 
 @Component({
   selector: 'app-view-product-details',
@@ -39,25 +40,22 @@ export class ViewProductDetailsComponent implements OnInit {
   //For new Review
   isWriting: boolean;
 
+  //For scavenger hunt
+  hasCustomerWonToday : boolean;
+
   constructor(private activatedRoute: ActivatedRoute,
     private productService: ProductService,
     private localService: LocalService,
     private reviewService: ReviewService,
     private sessionService: SessionService,
+    private scavengerHuntService : ScavengerHuntService,
     private loginDialog: MatDialog) {
       this.isEditing= false;
       this.isWriting= false;
      }
 
   ngOnInit() {
-    let productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
-
-    this.productService.getProductId(productId).subscribe(response => {
-      this.product = response.productEntity
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
-    }, error => {
-      this.errorMessage = error;
-    })
+    this.refresh();
   }
 
   refresh() {
@@ -66,6 +64,10 @@ export class ViewProductDetailsComponent implements OnInit {
     this.productService.getProductId(productId).subscribe(response => {
       this.product = response.productEntity
       this.currentCustomer = this.sessionService.getCurrentCustomer();
+      this.scavengerHuntService.checkIfCustomerHasWonToday(
+        this.currentCustomer.customerId).subscribe(response => {
+          this.hasCustomerWonToday = response.hasCustomerWonToday;
+        });
     }, error => {
       this.errorMessage = error;
     })
@@ -169,6 +171,15 @@ export class ViewProductDetailsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.currentCustomer = this.sessionService.getCurrentCustomer();
     });
+  }
+
+  claimScavengerHuntPrize() : void {
+    this.scavengerHuntService.claimScavengerHuntPrize(this.currentCustomer.customerId).subscribe(
+      response => {
+        // If come to here means prize updated in database
+        this.refresh();
+      }
+    )
   }
 
 }

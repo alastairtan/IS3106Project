@@ -149,8 +149,14 @@ public class ProductEntityController implements ProductEntityControllerLocal {
     public List<ProductEntity> retrieveAllProducts()
     {
         Query query = entityManager.createQuery("SELECT p FROM ProductEntity p ORDER BY p.skuCode ASC");
-        List<ProductEntity> productEntities = query.getResultList();
         
+        System.out.println("QWEWQEWQEWQEWQEQWEQW");
+        List<ProductEntity> productEntities = query.getResultList();
+        System.out.println(productEntities);
+        
+        for(ProductEntity pe : productEntities) {
+            System.out.println(pe.getName());
+        }
         for(ProductEntity productEntity:productEntities)
         {
             productEntity.getCategoryEntity();
