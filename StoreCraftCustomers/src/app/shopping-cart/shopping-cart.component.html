@@ -18,7 +18,7 @@
       <mat-card-content>
         <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid">
           <div fxFlex="1 1 65%">
-            <mat-card *ngFor="let cartItem of cartItems" style="margin-bottom: 1vw">
+            <mat-card *ngFor="let cartItem of cartItems; let i = index" style="margin-bottom: 1vw">
               <mat-card-header>
                 <mat-card-title>
                   <span [routerLink]="['/product', cartItem.productEntity.productId]" style="cursor:pointer">
@@ -35,36 +35,56 @@
                     </a>
                   </div>
 
-                  <div fxFlex="1 1 35%">
+                  <div fxFlex="1 1 30%">
                     {{cartItem.productEntity.description}}
                   </div>
 
-                  <div fxFlex="1 1 15%" class="priceCol">
+                  <div fxFlex="1 1 10%" class="priceCol">
                     {{format(cartItem.unitPrice)}}
                   </div>
 
-                  <div fxFlex="1 1 30%">
-                    Quantity :
-                    <button class="quantity" mat-button disabled="{{cartItem.quantity==1}}"
-                      (click)="minus(cartItem)">-</button>
-                    {{cartItem.quantity}}
-                    <button class="quantity" mat-button
-                      disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
-                      (click)="add(cartItem)">+</button>
-
-                    <br /><br />
-                    Total : {{format(cartItem.subTotal)}}
-
-                    <br /><br />
-                    <button mat-raised-button color="warn" (click)="removeFromCart(cartItem)">
-                      Remove from cart
-                    </button>
+                  <div fxFlex="1 1 40%">
+                    <table class="table" style="text-align: center">
+                      <tr>
+                        <td>
+                          Quantity:
+                        </td>
+                        <td>
+                          <button class="quantity" mat-button disabled="{{cartItem.quantity==1}}"
+                            (click)="minus(cartItem)">-</button>
+                          {{cartItem.quantity}}
+                          <button class="quantity" mat-button
+                            disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
+                            (click)="add(cartItem)">+</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Total:</strong>
+                        </td>
+                        <td>
+                          <span *ngIf="!applyingDiscountForItems || cartItem.subTotal == cartItemsCopy[i].subTotal">
+                            {{format(cartItem.subTotal)}}
+                          </span>
+                          <span *ngIf="applyingDiscountForItems && cartItem.subTotal != cartItemsCopy[i].subTotal">
+                            <span class="discountedPrice">
+                              {{format(cartItemsCopy[i].subTotal)}}
+                            </span><br/>
+                            <s>{{format(cartItem.subTotal)}}</s>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" style="text-align: center">
+                          <button mat-raised-button color="warn" (click)="removeFromCart(cartItem)">
+                            <mat-icon>delete_forever</mat-icon>Remove from cart
+                          </button>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
-
                 </div>
-
               </mat-card-content>
-
             </mat-card>
           </div>
 
@@ -88,12 +108,23 @@
                         </span>
                       </strong>
                     </td>
-                    <td>{{format(totalAmountForTheCart)}}</td>
+                    <td>
+                      <span *ngIf="!applyingDiscountForItems">
+                        {{format(totalAmountForTheCart)}}
+                      </span>
+                      <span *ngIf="applyingDiscountForItems">
+                        <span class="discountedPrice">
+                          {{format(totalAmountDiscounted)}}
+                        </span><br/>
+                        <s>{{format(totalAmountForTheCart)}}</s>
+                      </span>
+                    </td>
                   <tr>
                     <td class="leftCell">
                       <mat-form-field>
                         <mat-label>Select Promo Code</mat-label>
-                        <mat-select name="promoCode" [(ngModel)]="currentSelectedDiscountCode">
+                        <mat-select name="promoCode" [(ngModel)]="currentSelectedDiscountCode"
+                          (openedChange)="resetSelected()">
                           <mat-option *ngFor="let dc of customerDiscountCodes" [value]="dc">
                             {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
                           </mat-option>
@@ -109,12 +140,26 @@
                       <strong>Total:</strong>
                     </td>
                     <td>
-                      <span *ngIf="!applyingDiscountForCart">
+                      <span *ngIf="!applyingDiscountForCart && !applyingDiscountForItems">
                         {{format(totalAmountForTheCart)}}
                       </span>
                       <span *ngIf="applyingDiscountForCart">
-                        <span style="color: #f57224; font-size: 2vw">
-                          {{format(totalAmountForTheCart - flatDiscountAmountForCart)}} </span><br />
+                        <span *ngIf="flatDiscountAmountForCart != null">
+                          <span class="discountedPrice">
+                            {{format(totalAmountForTheCart - flatDiscountAmountForCart)}} </span><br/>
+                          <s>{{format(totalAmountForTheCart)}}</s>
+                        </span>
+                        <span *ngIf="rateDiscountAmountForCart != null">
+                          <span class="discountedPrice">
+                            {{format(totalAmountForTheCart - totalAmountForTheCart*(rateDiscountAmountForCart/100))}}
+                          </span><br/>
+                          <s>{{format(totalAmountForTheCart)}}</s>
+                        </span>
+                      </span>
+                      <span *ngIf="applyingDiscountForItems">
+                        <span class="discountedPrice">
+                          {{format(totalAmountDiscounted)}}
+                        </span><br/>
                         <s>{{format(totalAmountForTheCart)}}</s>
                       </span>
                     </td>
