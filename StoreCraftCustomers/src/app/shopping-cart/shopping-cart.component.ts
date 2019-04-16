@@ -190,13 +190,13 @@ export class ShoppingCartComponent implements OnInit {
     discountCodeProducts.forEach(dcProduct => {
 
       if (this.isDiscountCodeProductInCart(dcProduct.productId)) {
-        message += dcProduct.name + ","
+        message += dcProduct.name + ", "
       }
 
 
     })
 
-    message = message.slice(0, message.length - 1);
+    message = message.slice(0, message.length - 2);
     message += ")";
 
     return message;
