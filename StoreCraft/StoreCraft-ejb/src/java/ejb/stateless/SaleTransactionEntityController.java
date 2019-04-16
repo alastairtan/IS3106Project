@@ -135,6 +135,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         }
                     }
                     discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable()-1);
+                    discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
                 }
                 
                // System.out.println(newSaleTransactionEntity.getTotalAmount());

@@ -22,7 +22,7 @@ export class ShoppingCartComponent implements OnInit {
   private selectedCartItem: CartItem;
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
-  private promoCode: DiscountCode;
+  private discountCodeToApply: DiscountCode;
   private pointsToUse: number;
   private infoMessage: string;
   private errorMessage: string;
@@ -31,13 +31,21 @@ export class ShoppingCartComponent implements OnInit {
   private infoMessageClose: boolean;
 
   private customerDiscountCodes: DiscountCode[];
+  private currentSelectedDiscountCode: DiscountCode;
   private currentCustomer: Customer;
+
+  //For cart
+  applyingDiscountForCart: boolean;
+  flatDiscountAmountForCart: number;
+  rateDiscountAmountForCart:number;
 
   constructor(private localService: LocalService,
     private saleTransactionService: SaleTransactionService,
     private sessionService: SessionService,
     private customerService: CustomerService,
-    private discountCodeService: DiscountCodeService) { }
+    private discountCodeService: DiscountCodeService) { 
+      this.applyingDiscountForCart = false;
+    }
 
   ngOnInit() {
     this.cartItems = this.localService.getCart();
@@ -79,7 +87,7 @@ export class ShoppingCartComponent implements OnInit {
 
   checkout(cartItems: CartItem[]) {
 
-    this.saleTransactionService.createSaleTransaction(cartItems, this.promoCode, this.pointsToUse).subscribe(response => {
+    this.saleTransactionService.createSaleTransaction(cartItems, this.discountCodeToApply, this.pointsToUse).subscribe(response => {
       console.log(response);
       this.removeMessageClose = true;
       this.infoMessageClose = false;
@@ -98,7 +106,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   updateCustomer(response) {
-
     console.log("Enum: " + response.saleTransactionEntity.customerEntity.membershipTierEnum);
 
     let tierInfo = this.customerService.setTierInfo(response.saleTransactionEntity.customerEntity.membershipTierEnum);
@@ -132,25 +139,30 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   applyDiscountCode(){
-    if (this.promoCode != null){
-      if (this.promoCode.productEntities == null || this.promoCode.productEntities.length == 0){
+    this.discountCodeToApply = JSON.parse(JSON.stringify(this.currentSelectedDiscountCode));
+    if (this.discountCodeToApply != null){
+      console.log("APPLY 1");
+      if (this.discountCodeToApply.productEntities == null || this.discountCodeToApply.productEntities.length == 0){
+        console.log("APPLY 2");
         this.applyDiscountCodeToShoppingCart();
       }
-
     }
   }
 
 
   applyDiscountCodeToShoppingCart(){
-    let discountCodeType = this.promoCode.discountCodeTypeEnum.toString();
+    let discountCodeType = this.discountCodeToApply.discountCodeTypeEnum.toString();
+    console.log(discountCodeType);  
     if (discountCodeType == 'FLAT'){
-      let discountAmount = this.promoCode.discountAmountOrRate;
-      
+      this.flatDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate;
     } else if (discountCodeType == 'PERCENTAGE'){
-      let discountRate = this.promoCode.discountAmountOrRate;
+      let discountRate = this.discountCodeToApply.discountAmountOrRate;
+      this.rateDiscountAmountForCart = discountRate; //eg 5%
     }
+    this.applyingDiscountForCart = true;
   }
 
+  //DISCOUNT CODE FILTERING
 
   getDiscountCodeMessage(discountCodeId: number): string {
     //If discount code is for some products, return a string of which products
@@ -249,4 +261,6 @@ export class ShoppingCartComponent implements OnInit {
   filterDiscountCodes(discountCodes : DiscountCode[]): DiscountCode[]{
     return this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes)));
   }
+
+
 }

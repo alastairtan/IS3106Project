@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -71,8 +72,8 @@ public class DiscountCodeEntity implements Serializable {
     @ManyToMany(mappedBy = "discountCodeEntities")
     private List<ProductEntity> productEntities;
     
-    @OneToOne(mappedBy = "discountCodeEntity")
-    private SaleTransactionEntity saleTransactionEntity;
+    @OneToMany(mappedBy = "discountCodeEntity")
+    private List<SaleTransactionEntity> saleTransactionEntities;
    
     public DiscountCodeEntity() {
         this.customerEntities = new ArrayList<>();
@@ -219,12 +220,13 @@ public class DiscountCodeEntity implements Serializable {
         this.discountAmountOrRate = discountAmountOrRate;
     }
 
-    public SaleTransactionEntity getSaleTransactionEntity() {
-        return saleTransactionEntity;
+    public List<SaleTransactionEntity> getSaleTransactionEntities() {
+        return saleTransactionEntities;
     }
 
-    public void setSaleTransactionEntity(SaleTransactionEntity saleTransactionEntity) {
-        this.saleTransactionEntity = saleTransactionEntity;
+    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
+        this.saleTransactionEntities = saleTransactionEntities;
     }
+
     
 }
