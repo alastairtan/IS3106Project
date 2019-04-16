@@ -90,8 +90,8 @@
           </div>
           <div fxFlex="1 1 30%" fxFlexOrder="2">
             <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
-              <mat-option *ngFor="let cg of communityGoals" [value]="cg.currentPoints*100/cg.targetPoints" > 
-                {{cg.goalTitle}}
+              <mat-option *ngFor="let cg of communityGoals" [value]="cg?.currentPoints*100/cg?.targetPoints" > 
+                {{cg?.goalTitle}}
               </mat-option>
             </mat-select>
           </div>
@@ -117,8 +117,8 @@
           </div>
           <div fxFlex="1 1 30%" fxFlexOrder="2">
             <mat-select [(ngModel)]="scavengerHuntCurr" panelClass="dropDownSelector">
-              <mat-option *ngFor="let sh of scavengerHuntWinners" [value]="sh.firstName" > 
-                {{sh.firstName}}
+              <mat-option *ngFor="let sh of scavengerHuntWinners" [value]="sh?.firstName" > 
+                {{sh?.firstName}}
               </mat-option>
             </mat-select>
           </div>

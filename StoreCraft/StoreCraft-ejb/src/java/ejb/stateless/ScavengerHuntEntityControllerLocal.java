@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.ScavengerHuntEntity;
 import java.util.Date;
 import java.util.List;
+import util.exception.CreateNewDiscountCodeException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.ScavengerHuntAlreadyExistException;
@@ -23,8 +24,6 @@ public interface ScavengerHuntEntityControllerLocal {
 
     public ScavengerHuntEntity retrieveScavengerHuntEntityByDate(Date date) throws ScavengerHuntNotFoundException;
 
-    public void updateWinnerForScavengerHunt(CustomerEntity customerEntity) throws ScavengerHuntNotFoundException, CustomerNotFoundException;
-
     public boolean hasCustomerWonToday(Long customerId) throws ScavengerHuntNotFoundException;
 
     public void createScavengerHuntEntity() throws ScavengerHuntAlreadyExistException;
@@ -36,5 +35,7 @@ public interface ScavengerHuntEntityControllerLocal {
     public ScavengerHuntEntity removeScavengerHuntEntity(Long id) throws ScavengerHuntNotFoundException;
 
     public ScavengerHuntEntity updateScavengerHuntEntity(ScavengerHuntEntity scHunt) throws ScavengerHuntNotFoundException, InputDataValidationException;
+
+    public ScavengerHuntEntity updateWinnerForScavengerHunt(Long customerId) throws ScavengerHuntNotFoundException, CustomerNotFoundException, CreateNewDiscountCodeException, InputDataValidationException;
     
 }
