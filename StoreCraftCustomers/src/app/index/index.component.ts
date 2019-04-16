@@ -8,6 +8,7 @@ import { CommunityGoal } from '../community-goal';
 import { CommunityGoalService } from '../community-goal.service';
 import { ScavengerHunt } from '../scavengerHunt';
 import { ScavengerHuntService } from '../scavenger-hunt.service';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-index',
@@ -26,13 +27,21 @@ export class IndexComponent implements OnInit {
   scavengerHunt: ScavengerHunt;
   scavengerHuntWinners: Customer[];
   scavengerHuntCurr: Customer;
+
+  customersLeaderboardPerMonth: Customer[];
+  customersLeaderboardTotal: Customer[];
+  customersLeaderboardPerMonthMax5: Customer[];
+  customersLeaderboardTotalMax5: Customer[];
+  perMonthNotEmpty: boolean = false;
+  totalNotEmpty: boolean = false;
   
 
 
   constructor(public sessionService: SessionService,
               private productService: ProductService,
               private communityGoalService: CommunityGoalService,
-              private scavengerHuntService: ScavengerHuntService) {
+              private scavengerHuntService: ScavengerHuntService,
+              private customerService: CustomerService) {
     this.currentDate = new Date();
     this.goalAmt = 0;
     
@@ -85,6 +94,20 @@ export class IndexComponent implements OnInit {
       }
       
     )
+  }
+
+  filterCustomerByCountry(customers: Customer[], customersNew: Customer[]) {
+   customersNew = [];
+    for(var cust of customers) {
+      if(customersNew.length <= 5) {
+        if(cust.country == this.sessionService.getCurrentCustomer().country) {
+          customersNew.push(cust);
+        } 
+      } else {
+        break;
+      }
+    }
+    return customersNew;
   }
 
 }

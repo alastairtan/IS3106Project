@@ -191,8 +191,64 @@ public class CustomerResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-
     
+    
+
+    @Path("retrieveCustomersBySpendingPerMonth")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCustomersBySpendingPerMonth() 
+    {
+        try 
+        {
+            List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
+            
+            // Clearing the relationship will not affect the database as it is not in the persistent context?
+            for(CustomerEntity customerEntity : customerEntities) {
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.getReviewEntities().clear();
+            }
+            
+            RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
+            
+            return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
+        }
+        catch ( Exception ex) 
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveCustomersBySpendingTotal")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCustomersBySpendingTotal() 
+    {
+        try 
+        {
+            List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
+            
+            // Clearing the relationship will not affect the database as it is not in the persistent context?
+            for(CustomerEntity customerEntity : customerEntities) {
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.getReviewEntities().clear();
+            }
+            
+            RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
+            
+            return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
+        }
+        catch ( Exception ex) 
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
     private CustomerEntityControllerLocal lookupCustomerEntityControllerLocal() {
         try {
