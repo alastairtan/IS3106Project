@@ -80,6 +80,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
 
 
             staffEntity.getCommunityGoalEntities().add(communityGoalEntity);
+            communityGoalEntity.setStaffEntity(staffEntity);
 
             entityManager.persist(communityGoalEntity);
             entityManager.flush();

@@ -43,7 +43,7 @@ public class ScavengerHuntEntity implements Serializable {
     @NotNull
     private Date scavengerHuntDate;
     
-    @Min(1)
+    @Min(0)
     @NotNull
     private Integer numWinnersRemaining;
        
