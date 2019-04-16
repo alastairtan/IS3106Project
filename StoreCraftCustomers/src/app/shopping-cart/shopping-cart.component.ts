@@ -167,13 +167,20 @@ export class ShoppingCartComponent implements OnInit {
   getDiscountCodeMessage(discountCodeId: number): string {
     //If discount code is for some products, return a string of which products
     //If discount code is for all products, return a string of "ALL"
-    let message: string = "(For: "
+    let message: string = "(";
 
     let discountCodeToProcess: DiscountCode = this.customerDiscountCodes.find(dc =>
       dc.discountCodeId == discountCodeId);
 
+    let discountCodeAmount = discountCodeToProcess.discountAmountOrRate;
+    if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'FLAT' ){
+      message += this.format(discountCodeAmount)+" Off " //e.g. $5
+    } else if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'PERCENTAGE'){
+      message += discountCodeAmount+"% Off ";
+    }
+
     if (discountCodeToProcess.productEntities == null || discountCodeToProcess.productEntities.length == 0) {
-      message = "(For Entire Cart)";
+      message += "Entire Cart)";
       return message;
     }
 
