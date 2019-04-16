@@ -159,7 +159,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
         List<CommunityGoalEntity> currentCommunityGoalEntitys = new LinkedList<>();
         
         for(CommunityGoalEntity cge : communityGoalEntitys) {
-            if(cge.getCountry().equals(country) && cge.getStartDate().before(currentDate) == true && cge.getEndDate().after(currentDate)==true) {
+            if(cge.getCountry().equals(country) && cge.getEndDate().after(currentDate)==true) {
                 currentCommunityGoalEntitys.add(cge);
             }
         }

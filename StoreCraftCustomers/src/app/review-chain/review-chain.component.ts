@@ -15,21 +15,32 @@ export class ReviewChainComponent implements OnInit {
   @Input()
   rootReviewId: number;
 
+  //Initial Load
   reviewChain: Review[];
-
   currentCustomer: Customer;
+  //************
 
+  //For Replying
   isReplying: boolean;
-
-  replyContent: string;
-
   staffReplyToReplyTo: Review;
+  replyContent: string;
+  //************
+  
+  //For Editing
+  isEditing: boolean;
+  updatedReplyContent: string; 
+  editReviewId: number;
+  //*********** 
+
+
+
 
   constructor(
     private reviewService: ReviewService,
     private sessionService: SessionService
   ) {
     this.isReplying = false;
+    this.isEditing = false;
   }
 
   ngOnInit() {
@@ -46,14 +57,31 @@ export class ReviewChainComponent implements OnInit {
   replying(staffReply: Review) {
     this.isReplying = true;
     this.staffReplyToReplyTo = staffReply;
-    console.log(this.replyContent);
   }
 
   cancelReply() {
     this.isReplying = false;
+    this.replyContent = null;
   }
 
+  editing(custReply: Review) {
+    this.isEditing = true;
+    this.updatedReplyContent = custReply.content;
+    this.editReviewId = custReply.reviewId;
+
+  }
+
+  cancelEdit(custReply: Review){
+    this.isEditing = false;
+    this.updatedReplyContent = custReply.content;
+    this.editReviewId = null;
+  }
+
+
   reply() {
+    console.log("HELLO");
+    console.log(this.staffReplyToReplyTo.reviewId);
+    console.log(this.currentCustomer);
     let customerReply: Review = new Review();
     customerReply.content = this.replyContent;
     customerReply.reviewDate = new Date();
@@ -66,6 +94,20 @@ export class ReviewChainComponent implements OnInit {
       error => {
         console.log(error);
       })
+  }
+
+  saveEdit(){
+
+    this.reviewService.updateReview(this.editReviewId, this.updatedReplyContent, null).subscribe(response => {
+      this.isEditing=false;
+      this.getReviewChain();
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  test(){
+    console.log(this.staffReplyToReplyTo.reviewId);
   }
 
 }

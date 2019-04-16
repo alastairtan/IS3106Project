@@ -43,6 +43,9 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
 
     @EJB
     private ProductEntityControllerLocal productEntityControllerLocal;
+    
+    @EJB
+    private CustomerEntityControllerLocal customerEntityControllerLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -135,8 +138,9 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
         if (customerEntity.getCustomerId() != null) {
             // retrieve by today's date
             ScavengerHuntEntity scavengerHuntEntity = retrieveScavengerHuntEntityByDate(new Date());
-
-            scavengerHuntEntity.getCustomerEntities().add(customerEntity);
+            
+            CustomerEntity customerEntityFromDb = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerEntity.getCustomerId());
+            scavengerHuntEntity.getCustomerEntities().add(customerEntityFromDb);
             scavengerHuntEntity.setNumWinnersRemaining(scavengerHuntEntity.getNumWinnersRemaining() - 1);
 
             /*

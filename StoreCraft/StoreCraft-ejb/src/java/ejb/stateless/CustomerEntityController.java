@@ -250,7 +250,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
                     customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.GOLD);
                     customerEntityToUpdate.setMultiplier(new BigDecimal("1.4"));
                 }
-                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("5000")) >= 1)
+                else if (customerEntityToUpdate.getTotalPoints().compareTo(new BigDecimal("3100")) >= 1)
                 {
                     customerEntityToUpdate.setMembershipTierEnum(MembershipTierEnum.SILVER);
                     customerEntityToUpdate.setMultiplier(new BigDecimal("1.2"));

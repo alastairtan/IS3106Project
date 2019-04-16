@@ -19,7 +19,7 @@
                 Welcome, {{sessionService.getCurrentCustomer().firstName 
                         + " " + sessionService.getCurrentCustomer().lastName }}
             </button>
-            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer().customerId]">
+            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer()?.customerId]">
                 <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
             </button>
             <button mat-button (click)="logout()">Logout</button>
@@ -37,7 +37,39 @@
         </form>
 
         <div class="shopping-cart-section">
-            <button id="shoppingCartBtn" mat-button [matMenuTriggerFor]="shoppingCartMenu">
+            <mat-menu #cartMenu="matMenu">
+                <table class="table" style="margin-bottom: 0 !important; vertical-align:center">
+                    <tr>
+                        <td>
+                            <strong>{{localService.getNumCartItems()}} Items</strong>
+                        </td>
+                        <td style="padding-right: 0">
+                            <a id="shoppingCartBtn" mat-button color="primary" style="width:90%"
+                                [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
+                                <mat-icon>shopping_cart</mat-icon>&nbsp;View Cart
+                            </a>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let cartItem of localService.getCart()" class="cartItems">
+                        <td>
+                            {{cartItem.productEntity.name}} ({{cartItem.quantity}})
+                        </td>
+                        <td class="rightCell">
+                            {{format(cartItem.subTotal)}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="localService.getCart() != null">
+                        <td>
+                            <strong>Subtotal</strong>
+                        </td>
+                        <td class="rightCell">
+                            {{format(localService.getSubTotal())}}
+                        </td>
+                    </tr>
+                </table>
+            </mat-menu>
+            <button mat-button [matMenuTriggerFor]="cartMenu" [matBadge]="localService.getNumCartItems()"
+                matBadgeColor="accent">
                 <mat-icon>shopping_cart</mat-icon>&nbsp;Shopping Cart
             </button>
         </div>
@@ -59,7 +91,7 @@
             <!-- Leaf node buttons here -->
             <span *ngIf="category.subCategoryEntities.length === 0">
                 <button mat-button>
-                    {{category.name}}  
+                    {{category.name}}
                 </button>
             </span>
         </span>

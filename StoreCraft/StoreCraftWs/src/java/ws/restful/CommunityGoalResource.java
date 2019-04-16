@@ -106,11 +106,10 @@ public class CommunityGoalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveCurrentCommunityGoalsByCountry(@QueryParam("country") String country)
-                                                            
+                                                           
     {
         try {
-            
-            List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveAllCommunityGoals();
+            List<CommunityGoalEntity> communityGoalEntitys = communityGoalEntityController.retrieveCurrentCommunityGoal(country);
             
             for(CommunityGoalEntity cge: communityGoalEntitys) {
                 cge.getStaffEntity().getCommunityGoalEntities().clear();
@@ -119,7 +118,6 @@ public class CommunityGoalResource {
             
 
             CommunityGoalRsp communityGoalRsp = new CommunityGoalRsp(communityGoalEntitys);
-            System.err.println("smthththt");
             return Response.status(Response.Status.OK).entity(communityGoalRsp).build();
         }
         catch (Exception ex) {

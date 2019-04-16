@@ -6,8 +6,10 @@
 package ejb.stateless;
 
 import entity.CustomerEntity;
+import entity.ProductEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -51,7 +53,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         if(newSaleTransactionEntity != null)
         {
             try
-            {
+            {   
                 CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
                 newSaleTransactionEntity.setCustomerEntity(customerEntity);
                 customerEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
@@ -61,10 +63,16 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 for(SaleTransactionLineItemEntity saleTransactionLineItemEntity:newSaleTransactionEntity.getSaleTransactionLineItemEntities())
                 {
                     productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
+
+//                    ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(saleTransactionLineItemEntity.getProductEntity().getProductId());
+//                    saleTransactionLineItemEntity.setProductEntity(productEntity);
+
                     entityManager.persist(saleTransactionLineItemEntity);
                 }
 
                 entityManager.flush();
+                
+                customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
 
                 return newSaleTransactionEntity;
             }
