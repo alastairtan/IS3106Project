@@ -23,6 +23,7 @@ export class ShoppingCartComponent implements OnInit {
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
   private promoCode: DiscountCode;
+  private pointsToUse: number;
   private infoMessage: string;
   private errorMessage: string;
   private removeMessage: string;
@@ -78,7 +79,7 @@ export class ShoppingCartComponent implements OnInit {
 
   checkout(cartItems: CartItem[]) {
 
-    this.saleTransactionService.createSaleTransaction(cartItems).subscribe(response => {
+    this.saleTransactionService.createSaleTransaction(cartItems, this.promoCode, this.pointsToUse).subscribe(response => {
       console.log(response);
       this.removeMessageClose = true;
       this.infoMessageClose = false;

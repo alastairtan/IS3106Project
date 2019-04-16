@@ -10,6 +10,10 @@ import entity.SaleTransactionLineItemEntity;
 import java.util.List;
 import util.exception.CreateNewSaleTransactionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DiscountCodeNotFoundException;
+import util.exception.InputDataValidationException;
+import util.exception.NegativeSaleTransactionAmountException;
+import util.exception.NotEnoughPointsException;
 import util.exception.SaleTransactionAlreadyVoidedRefundedException;
 import util.exception.SaleTransactionNotFoundException;
 
@@ -33,6 +37,6 @@ public interface SaleTransactionEntityControllerLocal {
 
     public void deleteSaleTransaction(Long saleTransactionEntityId) throws SaleTransactionNotFoundException;
 
-    public SaleTransactionEntity createNewSaleTransaction(Long customerId, SaleTransactionEntity newSaleTransactionEntity) throws CustomerNotFoundException, CreateNewSaleTransactionException;
+    public SaleTransactionEntity createNewSaleTransaction(Long customerId, SaleTransactionEntity newSaleTransactionEntity) throws InputDataValidationException, NegativeSaleTransactionAmountException, DiscountCodeNotFoundException, NotEnoughPointsException, CustomerNotFoundException, CreateNewSaleTransactionException;
     
 }
