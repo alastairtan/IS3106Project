@@ -78,49 +78,42 @@ public class ScavengerHuntResource {
         {
             try 
             {
-                ScavengerHuntEntity scavengerHuntEntity = scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerId);
-                System.out.println("OK");
+                CustomerEntity customerEntity = scavengerHuntEntityControllerLocal.updateWinnerForScavengerHunt(customerId);
                 
-                for(CustomerEntity customerEntity : scavengerHuntEntity.getCustomerEntities())
-                {
-                    customerEntity.getDiscountCodeEntities().clear();
-                    customerEntity.getReviewEntities().clear();
-                    customerEntity.getSaleTransactionEntities().clear();
-                }
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getReviewEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.setPassword(null);
+                customerEntity.setSalt(null);
                     
-                ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(scavengerHuntEntity);
+                ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(customerEntity);
 
                 return Response.status(Response.Status.OK).entity(scavengerHuntRsp).build();
             } 
             catch (ScavengerHuntNotFoundException ex)
             {
                 ErrorRsp errorRsp = new ErrorRsp();
-                System.out.println("Not OK 1");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
             catch (CustomerNotFoundException ex) 
             {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                System.out.println("Not OK 2");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             } 
             catch (CreateNewDiscountCodeException ex) 
             {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                System.out.println("Not OK 3");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             } 
             catch (InputDataValidationException ex) 
             {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                System.out.println("Not OK 4");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
         }
         else
         {
             ErrorRsp errorRsp = new ErrorRsp("Customer ID not provided");
-            System.out.println("Not OK");
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             
         }
@@ -150,7 +143,14 @@ public class ScavengerHuntResource {
             }
             ScavengerHuntRsp scavengerHuntRsp = new ScavengerHuntRsp(scavengerHuntEntity);
             return Response.status(Response.Status.OK).entity(scavengerHuntRsp).build();
-        } catch (Exception ex) {
+        }
+        catch (ScavengerHuntNotFoundException ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+        catch (Exception ex) {
             
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             

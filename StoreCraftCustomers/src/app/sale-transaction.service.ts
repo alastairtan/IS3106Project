@@ -50,8 +50,9 @@ export class SaleTransactionService {
   }
 
 
-  retrieveAllTransactions() : Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl).pipe
+  retrieveSaleTransactionByCustomerId() : Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveSaleTransactionByCustomerId?customerId=" 
+    + this.sessionService.getCurrentCustomer().customerId).pipe
     (
       catchError(this.handleError)
     );

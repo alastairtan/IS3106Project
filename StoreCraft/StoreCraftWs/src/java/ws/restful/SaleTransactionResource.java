@@ -60,28 +60,40 @@ public class SaleTransactionResource {
         try {
 
             List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
+            
             for (SaleTransactionEntity saleTransactionEntity : saleTransactionEntities) {
-                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
-                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
-                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
-                if (saleTransactionEntity.getDiscountCodeEntity() != null) {
-                    saleTransactionEntity.getDiscountCodeEntity().getSaleTransactionEntities().clear();
-                    saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
-                    saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
-                }
-                System.out.println("HELLO!!!!!!!!!!!!!!!!");
-                for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) {
-                    saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
-                    saleTransactionLineItemEntity.getProductEntity().getReviewEntities().clear();
-                    saleTransactionLineItemEntity.getProductEntity().getTagEntities().clear();
-                    saleTransactionLineItemEntity.getProductEntity().setCategoryEntity(null);
-                }
+                clearRelationship(saleTransactionEntity);
             }
 
             SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
 
             return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
         } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveSaleTransactionByCustomerId")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveSaleTransationByCustomer(@QueryParam("customerId") Long customerId) {
+        
+        try {
+            
+            List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveSaleTransactionByCustomer(customerId);
+            
+            for (SaleTransactionEntity saleTransactionEntity : saleTransactionEntities) {
+                clearRelationship(saleTransactionEntity);
+            }
+            
+            SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
+
+            return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
+            
+        } catch (Exception ex) {
+            
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
@@ -145,7 +157,6 @@ public class SaleTransactionResource {
                 saleTransactionEntity.getCustomerEntity().setPassword(null);
                 saleTransactionEntity.setDiscountCodeEntity(null);
                 saleTransactionEntity.setSaleTransactionLineItemEntities(null);
-      
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
 
                // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
@@ -162,13 +173,32 @@ public class SaleTransactionResource {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
             } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
+                System.out.println("Internal error:" + ex.getMessage());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create sale transaction request");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    private void clearRelationship(SaleTransactionEntity saleTransactionEntity) {
+        
+        saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+        saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+        saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+        if (saleTransactionEntity.getDiscountCodeEntity() != null) {
+            saleTransactionEntity.getDiscountCodeEntity().getSaleTransactionEntities().clear();
+            saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+            saleTransactionEntity.getDiscountCodeEntity().getProductEntities().clear();
+        }
+        System.out.println("HELLO!!!!!!!!!!!!!!!!");
+        for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) {
+            saleTransactionLineItemEntity.getProductEntity().getDiscountCodeEntities().clear();
+            saleTransactionLineItemEntity.getProductEntity().getReviewEntities().clear();
+            saleTransactionLineItemEntity.getProductEntity().getTagEntities().clear();
+            saleTransactionLineItemEntity.getProductEntity().setCategoryEntity(null);
         }
     }
 

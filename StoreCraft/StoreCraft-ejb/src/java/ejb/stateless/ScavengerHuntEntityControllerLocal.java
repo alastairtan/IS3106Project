@@ -36,6 +36,6 @@ public interface ScavengerHuntEntityControllerLocal {
 
     public ScavengerHuntEntity updateScavengerHuntEntity(ScavengerHuntEntity scHunt) throws ScavengerHuntNotFoundException, InputDataValidationException;
 
-    public ScavengerHuntEntity updateWinnerForScavengerHunt(Long customerId) throws ScavengerHuntNotFoundException, CustomerNotFoundException, CreateNewDiscountCodeException, InputDataValidationException;
+    public CustomerEntity updateWinnerForScavengerHunt(Long customerId) throws ScavengerHuntNotFoundException, CustomerNotFoundException, CreateNewDiscountCodeException, InputDataValidationException;
     
 }
