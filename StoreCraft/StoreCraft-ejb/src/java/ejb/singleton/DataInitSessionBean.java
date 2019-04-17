@@ -184,6 +184,15 @@ public class DataInitSessionBean {
 //            cge.setRewardPercentage(new BigDecimal(12));
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
+            CommunityGoalEntity cge2 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Frozen Throne", "For the Horde", "Fight for Azeroth and claim your prize", new BigDecimal(4), false);
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge2, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
+            CommunityGoalEntity cge3 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Singapore", "Nazareth", "Rax All Their Bases", new BigDecimal(4), false);
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge3, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
+            
+            CommunityGoalEntity cge4 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"NBA", "Stephen Curry", "Three Pointers Only", new BigDecimal(4), false);
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge4, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
+            CommunityGoalEntity cge5 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Steps", "Steps is Today", "Vote for Us", new BigDecimal(4), false);
+            communityGoalEntityControllerLocal.createNewCommunityGoal(cge5, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );
             reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "Asus laptop is very good", 4, new Long(1) );
