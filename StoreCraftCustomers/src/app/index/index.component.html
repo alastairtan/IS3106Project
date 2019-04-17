@@ -250,13 +250,13 @@
 
       <div class="mat-elevate-z3" fxFlex="1 1 100%" fxFlexOrder="2">
         <mat-card class="card">
-          <mat-card-header class="header">
-            Uniquely StoreCraft
+          <mat-card-header class="header" style="text-align: center">
+            <mat-card-title>Uniquely StoreCraft</mat-card-title>
           </mat-card-header>
           <br>
           <mat-divider></mat-divider>
 
-
+          <div id="withinCard">
           <mat-card-content class="content">
             <!-- Community goal and scavenger hunt-->
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
@@ -273,10 +273,10 @@
                 <mat-card>
                   <!--community goal-->
                   <div fxLayout="row wrap">
-                      <div fxFlex="1 1 70%">Community Goal: ${{this.goalAmt}}</div>
-                      <div fxFlex="1 1 30%">
-                        <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
-                          <mat-option *ngFor="let cg of communityGoals" [value]="cg?.currentPoints*100/cg?.targetPoints">
+                      <div fxFlex="1 1 65%">Community Goal: ${{this.goalAmt}}</div>
+                      <div fxFlex="1 1 35%">
+                        <mat-select [(ngModel)]="selected"  panelClass="dropDownSelector">
+                          <mat-option *ngFor="let cg of communityGoals" [value]="(cg)" (click)="onClickChange()">
                             {{cg?.goalTitle}}
                           </mat-option>
                         </mat-select>
@@ -284,7 +284,7 @@
                     </div>
                     <div fxLayoutAlign="center">
                       <div class="progress md-progress">
-                        <div class="progress-bar" [ngStyle]="{'width.%':selected}">{{selected}}%</div>
+                        <div class="progress-bar" [ngStyle]="{'width.%':this.percentage}">{{this.percentage}}%</div>
                       </div>
                     </div>
                 </mat-card>
@@ -305,6 +305,7 @@
             </div>
 
           </mat-card-content>
+        </div>
         </mat-card>
       </div>
     </div>

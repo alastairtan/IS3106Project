@@ -45,7 +45,11 @@ export class LeaderboardTableComponent implements OnInit {
     customersNew = [];
      for(var cust of customers) {
        if(customersNew.length <= 5) {
-         if(cust.country == this.sessionService.getCurrentCustomer().country) {
+        if(this.sessionService.getCurrentCustomer() == null) {
+          if(cust.country == "Singapore") {
+            customersNew.push(cust);
+          }
+        } else if (cust.country == this.sessionService.getCurrentCustomer().country) {
            customersNew.push(cust);
          } 
        } else {
