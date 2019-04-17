@@ -32,13 +32,13 @@ export class ReviewService {
 			"customerReply": custReply,
 			"customerId": customerId
 		}
-		
+
 		return this.httpClient.put<any>(this.baseUrl + '/replyToStaffReply/', replyToStaffReplyReq, httpOptions).pipe(
 			catchError(this.handleError)
 		)
 	}
-	
-	updateReview(reviewId: number, newContent: string, newProductRating: number): Observable<any>{
+
+	updateReview(reviewId: number, newContent: string, newProductRating: number): Observable<any> {
 
 		let updateReviewReq = {
 			"reviewId": reviewId,
@@ -51,7 +51,7 @@ export class ReviewService {
 		)
 	}
 
-	createReview(customerId: number, newContent: string, newProductRating: number, productId: number): Observable<any>{
+	createReview(customerId: number, newContent: string, newProductRating: number, productId: number): Observable<any> {
 
 		let createReviewReq = {
 			"customerId": customerId,
@@ -61,6 +61,12 @@ export class ReviewService {
 		}
 
 		return this.httpClient.post<any>(this.baseUrl + '/createReview', createReviewReq, httpOptions).pipe(
+			catchError(this.handleError)
+		)
+	}
+
+	getCustomerReviews(customerId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + '/getReviewsForCustomer?customerId=' + customerId).pipe(
 			catchError(this.handleError)
 		)
 	}

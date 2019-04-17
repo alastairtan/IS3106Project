@@ -13,15 +13,15 @@ import { CountryService } from '../country.service';
 })
 export class CommunityGoalsComponent implements OnInit {
 
-  public columnsToDisplay=['communityGoalId','goalTitle','description','targetPoints','currentPoints',
+  /*public columnsToDisplay=['communityGoalId','goalTitle','description','percentageLeft',
   'startDate','endDate','rewardPercentage','completed'];
 
   public dataSource = new MatTableDataSource<CommunityGoal>();
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  */
   country : String;
   countries;
+  communityGoals : CommunityGoal[];
+
 
   constructor(public sessionService : SessionService,
               public communityGoalService : CommunityGoalService,
@@ -29,7 +29,21 @@ export class CommunityGoalsComponent implements OnInit {
               public dialog : MatDialog) { }
 
   ngOnInit() {
-      this.getCommunityGoals();
+      this.communityGoalService.retrieveAllCommunityGoals().subscribe(
+      response =>{
+        this.communityGoals = response.communityGoalEntities;
+        for(let communityGoal of this.communityGoals){
+          if(this.communityGoals.length != 0) {
+            
+            communityGoal.targetPoints = (communityGoal.currentPoints*100)/communityGoal.targetPoints;
+            console.log('********** CommunityGoalComponent.ts: ' + communityGoal.rewardPercentage);
+          }
+      }
+      }
+      ,error =>{
+        console.log('********** CommunityGoalComponent.ts: ', error);
+      }
+    )
       this.countryService.getCountries().subscribe(
         response =>{
           this.countries = response;
@@ -39,28 +53,9 @@ export class CommunityGoalsComponent implements OnInit {
       )
   }
 
-  public getCommunityGoals(){
-    this.communityGoalService.retrieveAllCommunityGoals().subscribe(
-      response =>{
-        this.dataSource = new MatTableDataSource<CommunityGoal>(response.communityGoalEntities);
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-        });
-      }
-      ,error =>{
-        console.log('********** CommunityGoalComponent.ts: ', error);
-      }
-    )
-  }
-
-  ngAfterViewInit() : void{
-    
-    this.dataSource.paginator = this.paginator;
-  }
 
   public doFilter (value: string) {
     console.log("whats in here : " + value);
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
 }
