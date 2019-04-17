@@ -15,6 +15,8 @@ import entity.ProductEntity;
 import entity.TagEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,6 +82,10 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
     private List<String> filterTagIds;
     private String condition;
     //************
+    
+    private Date initialStartDate;
+    private Date minStartDate;
+    private Date afterStartDate;
 
     public ViewUpdateDiscountCodeManagedBean() {
         isUpdating = false;
@@ -92,6 +98,8 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
         customerEntities = customerEntityControllerLocal.retrieveAllCustomer();
         tagEntities = tagEntityControllerLocal.retrieveAllTags();
         this.selectedDiscountCodeEntity = (DiscountCodeEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("discountCodeEntityToUpdate");
+        minStartDate = this.selectedDiscountCodeEntity.getStartDate();
+        afterStartDate = plusOneDay(minStartDate);
         this.selectedCustomersUpdate = this.selectedDiscountCodeEntity.getCustomerEntities();
         this.selectedProductsUpdate = this.selectedDiscountCodeEntity.getProductEntities();
         this.dcTypeEnumIndex = this.selectedDiscountCodeEntity.getDiscountCodeTypeEnum().ordinal(); 
@@ -130,6 +138,7 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
     
     public void updating(ActionEvent event){
         setIsUpdating(true);
+        initialStartDate = selectedDiscountCodeEntity.getStartDate();
     }
     
     public void cancelUpdating(ActionEvent event){
@@ -163,6 +172,36 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
         } else {
             productEntities = productEntityControllerLocal.retrieveAllProducts();
         }
+    }
+    
+    public Date clearTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+        if (date != null) {
+            cal.setTime(date);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            return cal.getTime();
+        }
+        return new Date();
+    }
+
+    public Date plusOneDay(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        c.add(Calendar.DAY_OF_YEAR, 1);
+
+        return c.getTime();
+    }
+
+    public void update() {
+        minStartDate = clearTime(this.selectedDiscountCodeEntity.getStartDate());
+        System.out.print("GET MIN****" + minStartDate);
+        afterStartDate = plusOneDay(minStartDate);
+        System.out.print("GET AFTER****" + afterStartDate);
+        minStartDate = initialStartDate;
     }
 
     public List<DiscountCodeEntity> getDiscountCodeEntities() {
@@ -283,6 +322,30 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public Date getMinStartDate() {
+        return minStartDate;
+    }
+
+    public void setMinStartDate(Date minStartDate) {
+        this.minStartDate = minStartDate;
+    }
+
+    public Date getAfterStartDate() {
+        return afterStartDate;
+    }
+
+    public void setAfterStartDate(Date afterStartDate) {
+        this.afterStartDate = afterStartDate;
+    }
+
+    public Date getInitialStartDate() {
+        return initialStartDate;
+    }
+
+    public void setInitialStartDate(Date initialStartDate) {
+        this.initialStartDate = initialStartDate;
     }
 
 }
