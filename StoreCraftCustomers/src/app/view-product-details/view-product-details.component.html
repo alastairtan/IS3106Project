@@ -1,10 +1,10 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" style="margin-top: 20px">
   <div class="alert alert-success" style="text-align: center" role="alert"
-    *ngIf="addToCartMessage && !addToCartMessageClose">
+       *ngIf="addToCartMessage && !addToCartMessageClose">
     {{addToCartMessage}}
   </div>
   <div class="alert alert-success" style="text-align: center" role="alert"
-    *ngIf="prizeClaimMessage?.length > 0">
+       *ngIf="prizeClaimMessage?.length > 0">
     {{prizeClaimMessage}}
   </div>
 </div>
@@ -16,12 +16,12 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid" class="productDetailsContainer">
           <div fxFlex="1 1 40%">
-            <img class="productImage mat-elevation-z3" src="{{product?.productImageUrl}}" />
+            <img class="productImage mat-elevation-z3" src="{{product?.productImageUrl}}"/>
           </div>
 
           <div fxFlex="1 1 60%">
 
-            <mat-card>
+            <mat-card style="max-height: 100%">
 
               <mat-card-header class="header">
                 <mat-card-title class="headerText">{{product?.name}}</mat-card-title>
@@ -30,26 +30,42 @@
               <mat-divider></mat-divider>
 
               <mat-card-content class="content">
-                <br />
+
+                <div style="display:inline-block; margin-bottom: 2vw">
+
+                  <star-rating [starType]="'svg'" [readOnly]="true" [rating]="averageRating" [showHalfStars]="true"
+                               labelText="({{numberOfRatings}} Reviews)" labelPosition="right"></star-rating>
+                  <span *ngIf="numberOfRatings > 0"> Average Rating: {{averageRating | number:'0.0-2'}}/5.00 </span>
+                  <span *ngIf="numberOfRatings == 0"> No Reviews Yet </span>
+
+                </div>
+
                 <h3 class="price">{{format()}}</h3>
-                <br />
+
                 <div class="quantityAdjust">
                   <span class="quantityWord">Quantity: </span>&nbsp;&nbsp;&nbsp;&nbsp;
                   <button class="quantity" mat-raised-button disabled="{{quantity==0}}"
-                    (click)="minus()">-</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                          (click)="minus()">-
+                  </button>&nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="quantityWord">{{quantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                   <button class="quantity" mat-raised-button
-                    disabled="{{quantity==10 || quantity >= product?.quantityOnHand}}" (click)="add()">+</button>
+                          disabled="{{quantity >= product?.quantityOnHand}}" (click)="add()">+
+                  </button>
+                  <span>&nbsp;&nbsp;(Stock: {{product.quantityOnHand}})</span>
                 </div>
-                <br />
+
               </mat-card-content>
               <mat-card-actions>
-                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()" disabled="{{quantity == 0}}">
-                  Add to Cart</button>
+                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()"
+                        disabled="{{quantity == 0}}">
+                  Add to Cart
+                </button>
                 <button *ngIf="currentCustomer==null" mat-raised-button color="primary" (click)="openDialog()">Login To
-                  Purchase</button>
-                <button *ngIf="product?.isScavengerHuntPrize && canCustomerWin" 
-                mat-raised-button color="warn" (click)="claimScavengerHuntPrize()">Claim Scavenger Hunt Prize</button>
+                  Purchase
+                </button>
+                <button *ngIf="product?.isScavengerHuntPrize && canCustomerWin"
+                        mat-raised-button color="warn" (click)="claimScavengerHuntPrize()">Claim Scavenger Hunt Prize
+                </button>
               </mat-card-actions>
               <mat-divider></mat-divider>
               <mat-card-footer class="footer">
@@ -73,12 +89,12 @@
               </button>
             </mat-toolbar>
             <app-write-review [show]="isWriting" [productId]="product?.productId" (submitted)="refresh()"
-              (closed)="cancelWriteReview()"></app-write-review>
+                              (closed)="cancelWriteReview()"></app-write-review>
             <mat-accordion displayMode="flat">
 
               <!--ROOT REVIEWS-->
               <mat-expansion-panel *ngFor="let review of product?.reviewEntities.slice().reverse()"
-                [disabled]="review.customerEntity != null && isEditing">
+                                   [disabled]="review.customerEntity != null && isEditing">
                 <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
 
                   <!--LEFT SIDE TITLE-->
@@ -87,16 +103,19 @@
                     {{review.customerEntity.firstName}} {{review.customerEntity.lastName}}
 
                     <button mat-raised-button color="accent" class="editReplyBtn"
-                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
-                      (click)="editing(review);$event.stopPropagation()">Edit Review</button>
+                            *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
+                            (click)="editing(review);$event.stopPropagation()">Edit Review
+                    </button>
 
                     <button mat-raised-button color="primary" class="editReplyBtn"
-                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
-                      (click)="$event.stopPropagation()" form="updateForm" type="submit">Save</button>
+                            *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                            (click)="$event.stopPropagation()" form="updateForm" type="submit">Save
+                    </button>
 
                     <button mat-raised-button color="warn" class="editReplyBtn"
-                      *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
-                      (click)="cancelEdit(review);$event.stopPropagation()">Cancel Edit</button>
+                            *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                            (click)="cancelEdit(review);$event.stopPropagation()">Cancel Edit
+                    </button>
 
                   </mat-panel-title>
                   <!--END OF LEFT SIDE TITLE-->
@@ -106,40 +125,43 @@
 
                     <mat-list role="list" style="width: 100%">
                       <!--DATE-->
-                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
+                      <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong>
+                      </mat-list-item>
                       <!--END OF DATE-->
 
                       <!--STAR RATING-->
                       <mat-list-item role="listitem">
                         <star-rating [starType]="'svg'"
-                          [rating]="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)?review.productRating:updatedProductRating"
-                          [readOnly]="!(review.customerEntity != null && isEditing)" (starClickChange)="onClick($event)"
-                          labelText="Rating:">
+                                     [rating]="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)?review.productRating:updatedProductRating"
+                                     [readOnly]="!(review.customerEntity != null && isEditing)"
+                                     (starClickChange)="onClick($event)"
+                                     labelText="Rating:">
                         </star-rating>
                       </mat-list-item>
                       <!--END OF STAR RATING-->
-                      
+
                       <!--CONTENT BOX: If not editing, show the content, if editing, show text area-->
-                        <!--PLAIN REVIEW CONTENT-->
+                      <!--PLAIN REVIEW CONTENT-->
                       <mat-list-item
                         *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)"
                         role="listitem">
                         <div class="textBox">{{review.content}}</div>
                       </mat-list-item>
-                        <!--END OF PLAIN REVIEW CONTENT-->
+                      <!--END OF PLAIN REVIEW CONTENT-->
 
-                        <!--TEXT AREA FORM (DISPLAY IF EDITING )-->
+                      <!--TEXT AREA FORM (DISPLAY IF EDITING )-->
                       <mat-list-item
                         *ngIf="review.customerEntity != null && isEditing && review.reviewId == editReviewId"
                         role="listitem">
 
                         <form #updateForm="ngForm" (ngSubmit)="updateForm.valid?saveEdit():null" class="custReplyForm"
-                          id="updateForm">
+                              id="updateForm">
                           <mat-form-field class="replyContentField">
 
                             <textarea matInput name="updateTextArea" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                              cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" [(ngModel)]="updatedReviewContent"
-                              (click)="$event.stopPropagation()" #updateTextContent="ngModel" required></textarea>
+                                      cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" [(ngModel)]="updatedReviewContent"
+                                      (click)="$event.stopPropagation()" #updateTextContent="ngModel"
+                                      required></textarea>
 
                             <mat-error *ngIf="updateTextContent.errors?.required">
                               Content is <strong>required</strong>
@@ -149,7 +171,7 @@
                           </mat-form-field>
                         </form>
                       </mat-list-item>
-                        <!--END OF TEXT AREA FORM-->
+                      <!--END OF TEXT AREA FORM-->
                       <!--END OF CONTENT BOX-->
 
                     </mat-list>
