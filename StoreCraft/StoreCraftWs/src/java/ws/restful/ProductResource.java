@@ -7,6 +7,7 @@ package ws.restful;
 
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.ProductRsp;
+import datamodel.ws.rest.RatingsRsp;
 import datamodel.ws.rest.RetrieveProdByCategoryRsp;
 import ejb.stateless.ProductEntityControllerLocal;
 import entity.CategoryEntity;
@@ -14,6 +15,7 @@ import entity.DiscountCodeEntity;
 import entity.ProductEntity;
 import entity.ReviewEntity;
 import entity.TagEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -241,6 +243,29 @@ public class ProductResource {
         } else {
             subCategory.getSubCategoryEntities().clear();
             System.out.println(subCategory.getName() + " " + subCategory.getSubCategoryEntities().size());
+        }
+    }
+    
+    @Path("getRatingInfoForProduct")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRatingInfoForProduct(@QueryParam("productId") String productId) {
+        
+        try {
+
+            BigDecimal[] result = productEntityControllerLocal.getAverageRatingAndNumberOfRatingsForProduct(new Long(productId));
+            
+            RatingsRsp rsp = new RatingsRsp(result);
+            
+            return Response.status(Response.Status.OK).entity(rsp).build();
+            
+        } catch (NumberFormatException | ProductNotFoundException ex){
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
 

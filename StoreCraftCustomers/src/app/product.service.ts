@@ -43,6 +43,12 @@ export class ProductService {
 		return throwError(errorMessage);
 	}
 
+	getRatingInfoForProduct(productId: number): Observable<any>{
+		return this.httpClient.get<any>(this.baseUrl + "/getRatingInfoForProduct?productId="+productId).pipe(
+			catchError(this.handleError)
+		)
+	}
+
 	filterProductsByTagsOR(products: Product[], filterTagIds: number[]): Product[] {
 
 		let filteredList: Product[] = [];
