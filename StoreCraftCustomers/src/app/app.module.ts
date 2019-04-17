@@ -25,8 +25,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
 import { MatBadgeModule } from '@angular/material/badge';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
+import { NgAisModule } from 'angular-instantsearch';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -51,6 +50,10 @@ import { RegisterDialogComponent } from './register-dialog/register-dialog.compo
 import { ReviewChainComponent } from './review-chain/review-chain.component';
 import { DiscountCodeTableComponent } from './discount-code-table/discount-code-table.component';
 import { WriteReviewComponent } from './write-review/write-review.component';
+import { LeaderboardTableComponent } from './leaderboard-table/leaderboard-table.component';
+import { LeaderboardTableAllTimeComponent } from './leaderboard-table-all-time/leaderboard-table-all-time.component';
+import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-index/scavenger-hunt-winners-index.component';
+import { UserReviewTableComponent } from './user-review-table/user-review-table.component';
 
 
 
@@ -75,7 +78,11 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     RegisterDialogComponent,
     ReviewChainComponent,
     WriteReviewComponent,
-    DiscountCodeTableComponent
+    DiscountCodeTableComponent,
+    LeaderboardTableComponent,
+    LeaderboardTableAllTimeComponent,
+    ScavengerHuntWinnersIndexComponent,
+    UserReviewTableComponent
 
   ],
   imports: [
@@ -108,7 +115,7 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     TextFieldModule,
     StarRatingModule.forRoot(),
     MatBadgeModule,
-    AngularSvgIconModule
+    NgAisModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

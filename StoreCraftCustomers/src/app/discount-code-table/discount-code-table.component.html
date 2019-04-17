@@ -34,7 +34,7 @@
     <th mat-header-cell class="header" colspan="6" *matHeaderCellDef> My Discount Codes </th>
   </ng-container>
 
-
+  <!--start-->
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let dc" [attr.colspan]="columnsToDisplay.length" class="expandedContainer">
       <div class="example-element-detail" [@detailExpand]="dc === expandedDc ? 'expanded' : 'collapsed'">
@@ -63,23 +63,25 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="productColumnsToDisplay"></tr>
-              <tr mat-row *matRowDef="let product; columns: productColumnsToDisplay" ></tr>
+              <!--USE THIS--><tr mat-row *matRowDef="let product; columns: productColumnsToDisplay" ></tr>
             </table>
           </div>
       </div>
     </td>
   </ng-container>
-
+ <!--END-->
 
 
 
   <tr mat-header-row *matHeaderRowDef="['table-header']"> </tr>
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <!--exp-->
   <tr mat-row *matRowDef="let dc; columns: columnsToDisplay;" class="dcRow" [class.expandedDcRow]="expandedDc === dc" 
   [class.expandable]="dc.productEntities.length > 0"
   (click)="dc.productEntities?.length > 0 ? (expandedDc = expandedDc === dc ? null : dc) : null">
   </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="hidden-row" ></tr>
+  <!--exp-->
+  <!--INSTEAD OF THIS--><tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="hidden-row" ></tr>
 
 
 </table>

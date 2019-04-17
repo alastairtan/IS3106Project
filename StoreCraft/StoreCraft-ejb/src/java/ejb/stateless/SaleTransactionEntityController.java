@@ -60,7 +60,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     private ProductEntityControllerLocal productEntityControllerLocal;
     @EJB
     private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
-    
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
@@ -87,15 +87,16 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         //if remaining points not enough
                         throw new NotEnoughPointsException("You do not have enough points!");
                     }
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
                     customerEntity.setRemainingPoints(customerEntity.getRemainingPoints().subtract(BigDecimal.valueOf((double) newSaleTransactionEntity.getPointsToUse())));
-
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
                 }
 
                 //Discount by Discount Code
                 if (newSaleTransactionEntity.getDiscountCodeEntity() != null) {
                     DiscountCodeEntity discountCodeEntity = discountCodeEntityControllerLocal.retrieveDiscountCodeByDiscountCodeId(newSaleTransactionEntity.getDiscountCodeEntity().getDiscountCodeId());
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
-                    
+
                     if (discountCodeEntity.getProductEntities() == null
                             || discountCodeEntity.getProductEntities().isEmpty()) { //apply to all products
                         if (discountCodeEntity.getDiscountCodeTypeEnum().equals(DiscountCodeTypeEnum.FLAT)) {
@@ -109,39 +110,45 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                             BigDecimal discountBy = newSaleTransactionEntity.getTotalAmount().multiply(discountRate);
                             newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                         }
-                        
+
                     } else { //apply only to some products
                         List<SaleTransactionLineItemEntity> lineItemsToDiscount = this.getLineItemsToApplyDiscountTo(discountCodeEntity, newSaleTransactionEntity.getSaleTransactionLineItemEntities());
-                        
+                        System.out.print("**************" + lineItemsToDiscount.size());
+                        System.out.print("**************" + lineItemsToDiscount.get(0).getSubTotal());
                         if (discountCodeEntity.getDiscountCodeTypeEnum().equals(DiscountCodeTypeEnum.FLAT)) {
-                            
+
                             BigDecimal discountAmount = discountCodeEntity.getDiscountAmountOrRate();
-                            
+                            System.out.print("***************" + discountAmount);
                             for (SaleTransactionLineItemEntity lineItem : lineItemsToDiscount) {
+                                System.out.print("**************" + newSaleTransactionEntity.getSaleTransactionLineItemEntities().indexOf(lineItem));
                                 lineItem.setSubTotal(lineItem.getSubTotal().subtract(discountAmount));
+                                newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountAmount));
                                 if (lineItem.getSubTotal().compareTo(BigDecimal.ZERO) < 0) {
                                     throw new NegativeSaleTransactionAmountException("Sale Transaction Amount Cannot be Negative!");
                                 }
                             }
-                            
+                            System.out.print("*************" + newSaleTransactionEntity.getSaleTransactionLineItemEntities().get(0).getSubTotal());
+
                         } else if (discountCodeEntity.getDiscountCodeTypeEnum().equals(DiscountCodeTypeEnum.PERCENTAGE)) {
-                            
+
                             BigDecimal discountRate = discountCodeEntity.getDiscountAmountOrRate();
-                            
+
                             for (SaleTransactionLineItemEntity lineItem : lineItemsToDiscount) {
                                 BigDecimal discountBy = lineItem.getSubTotal().multiply(discountRate);
                                 lineItem.setSubTotal(lineItem.getSubTotal().subtract(discountBy));
+                                newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                             }
                         }
                     }
-                    discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable()-1);
+                    discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
+                    discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
                 }
-                
-               // System.out.println(newSaleTransactionEntity.getTotalAmount());
+
+                // System.out.println(newSaleTransactionEntity.getTotalAmount());
                 Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
                 //System.out.println(constraintViolations);
 
-                if (constraintViolations.isEmpty()){
+                if (constraintViolations.isEmpty()) {
                     entityManager.persist(newSaleTransactionEntity);
                 } else {
                     throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -152,13 +159,18 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
 
 //                    ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(saleTransactionLineItemEntity.getProductEntity().getProductId());
 //                    saleTransactionLineItemEntity.setProductEntity(productEntity);
-                    entityManager.persist(saleTransactionLineItemEntity);
+                    Set<ConstraintViolation<SaleTransactionLineItemEntity>> constraintViolationsLineItem = validator.validate(saleTransactionLineItemEntity);
+                    if (constraintViolationsLineItem.isEmpty()) {
+                        entityManager.persist(saleTransactionLineItemEntity);
+                    } else {
+                        throw new InputDataValidationException(prepareInputDataValidationErrorsMessageLineItem(constraintViolationsLineItem));
+                    }
                 }
 
                 entityManager.flush();
 
                 customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
-                
+
                 BigDecimal totalPoints = newSaleTransactionEntity.getTotalAmount().multiply(customerEntity.getMultiplier());
                 communityGoalEntityControllerLocal.addPointsToCommunityGoal(customerEntity.getCountry(), totalPoints);
 
@@ -206,7 +218,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
 
     @Override
     public List<SaleTransactionEntity> retrieveSaleTransactionByCustomer(Long customerId) {
-        Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerEntity = :inCustomerId");
+        Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st WHERE st.customerEntity.customerId = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
 
         return query.getResultList();
@@ -269,8 +281,18 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         }
         entityManager.remove(saleTransactionEntityToRemove);
     }
-    
-     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations) {
+
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations) {
+        String msg = "Input data validation error!:";
+
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+
+        return msg;
+    }
+
+    private String prepareInputDataValidationErrorsMessageLineItem(Set<ConstraintViolation<SaleTransactionLineItemEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
         for (ConstraintViolation constraintViolation : constraintViolations) {

@@ -260,24 +260,47 @@
           <mat-card-content class="content">
             <!-- Community goal and scavenger hunt-->
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
-              
-              <div fxFlex="1 1 50%" class="cgGoalDisplay">
-                <div fxLayout="row wrap">
-                  <div fxFlex="1 1 70%">Community Goal: ${{this.goalAmt}}</div>
-                  <div fxFlex="1 1 30%">
-                    <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
-                      <mat-option *ngFor="let cg of communityGoals" [value]="cg?.currentPoints*100/cg?.targetPoints">
-                        {{cg?.goalTitle}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-                <div fxLayoutAlign="center">
-                  <div class="progress md-progress">
-                    <div class="progress-bar" [ngStyle]="{'width.%':selected}">{{selected}}%</div>
-                  </div>
-                </div>
+
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                <app-leaderboard-table></app-leaderboard-table>
               </div>
+
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                  <app-leaderboard-table-all-time></app-leaderboard-table-all-time>
+              </div>
+
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                <mat-card>
+                  <!--community goal-->
+                  <div fxLayout="row wrap">
+                      <div fxFlex="1 1 70%">Community Goal: ${{this.goalAmt}}</div>
+                      <div fxFlex="1 1 30%">
+                        <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
+                          <mat-option *ngFor="let cg of communityGoals" [value]="cg?.currentPoints*100/cg?.targetPoints">
+                            {{cg?.goalTitle}}
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+                    <div fxLayoutAlign="center">
+                      <div class="progress md-progress">
+                        <div class="progress-bar" [ngStyle]="{'width.%':selected}">{{selected}}%</div>
+                      </div>
+                    </div>
+                </mat-card>
+              </div>
+
+              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                
+                <!--scavenger hunt-->
+                <app-scavenger-hunt-winners-index></app-scavenger-hunt-winners-index>
+                
+              </div>
+
+
+
+              
+
 
             </div>
 
@@ -286,7 +309,13 @@
       </div>
     </div>
 
-
+    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center" class="cardProducts">
+        <ng-container *ngFor="let product of products" class="card-item cardProducts">
+          <app-product-card fxFlex="1 1 33%" [product]="product"></app-product-card>
+        </ng-container>
+      </div>
+    </div>
 
 
 

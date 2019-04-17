@@ -29,7 +29,7 @@ export class SaleTransactionHistoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.saleTransactionService.retrieveAllTransactions().subscribe(response => {
+    this.saleTransactionService.retrieveSaleTransactionByCustomerId().subscribe(response => {
       this.saleTransactions = response.saleTransactionEntities;
     }
     )

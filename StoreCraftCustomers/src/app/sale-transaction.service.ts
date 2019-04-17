@@ -26,7 +26,8 @@ export class SaleTransactionService {
 
     let totalAmountForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
     let totalQuantityForTheCart = cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
-
+    //discount code discounts are applied on server-side/EJB
+    //so are points to use
     let num = 1;
 
     cartItems.map((cartItem) => {
@@ -49,8 +50,9 @@ export class SaleTransactionService {
   }
 
 
-  retrieveAllTransactions() : Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl).pipe
+  retrieveSaleTransactionByCustomerId() : Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveSaleTransactionByCustomerId?customerId=" 
+    + this.sessionService.getCurrentCustomer().customerId).pipe
     (
       catchError(this.handleError)
     );

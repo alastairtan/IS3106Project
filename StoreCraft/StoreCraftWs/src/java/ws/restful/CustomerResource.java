@@ -45,10 +45,8 @@ public class CustomerResource {
 
     @Context
     private UriInfo context;
-    
+
     private CustomerEntityControllerLocal customerEntityControllerLocal;
-    
-    
 
     /**
      * Creates a new instance of CustomerResource
@@ -56,7 +54,6 @@ public class CustomerResource {
     public CustomerResource() {
         this.customerEntityControllerLocal = lookupCustomerEntityControllerLocal();
     }
-
 
     @Path("customerLogin")
     @GET
@@ -70,129 +67,180 @@ public class CustomerResource {
             customerEntity.getSaleTransactionEntities().clear();
             customerEntity.getReviewEntities().clear();
             customerEntity.getDiscountCodeEntities().clear();
- 
+
             System.out.println(customerEntity.getMembershipTierEnum());
             CustLoginRsp response = new CustLoginRsp(customerEntity);
-            
+
             return Response.status(Status.OK).entity(response).build();
-    
+
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
-            
+
     }
-    
+
+    @Path("getCustomerById")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomerById(@QueryParam("customerId") Long customerId) {
+        try {
+            CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
+            customerEntity.setPassword(null);
+            customerEntity.setSalt(null);
+            customerEntity.getSaleTransactionEntities().clear();
+            customerEntity.getReviewEntities().clear();
+            customerEntity.getDiscountCodeEntities().clear();
+            
+            CustLoginRsp custRsp = new CustLoginRsp(customerEntity);
+            
+            return Response.status(Status.OK).entity(custRsp).build();
+                      
+        } catch (CustomerNotFoundException ex){
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.NO_CONTENT).entity(errorRsp).build();
+        }
+    }
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response customerRegister(CustomerReq customerReq) {
-                                
-        if(customerReq != null) 
-        {
-            try 
-            {
+    public Response customerRegister(CustomerReq customerReq
+    ) {
+
+        if (customerReq != null) {
+            try {
                 CustomerEntity customerEntity = customerEntityControllerLocal.createNewCustomer(customerReq.getCustomerEntity());
-                
+
                 System.out.println(customerEntity.getCustomerId());
                 CustomerRsp customerRsp = new CustomerRsp(customerEntity);
                 System.out.println(customerReq.getCustomerEntity());
 
                 return Response.status(Response.Status.OK).entity(customerRsp).build();
-            } 
-            catch (InputDataValidationException ex)
-            {
+            } catch (InputDataValidationException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("Input data validation exception");
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid register customer request");
-                
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @Path("updateCustomer")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCustomer(CustomerReq customerReq) {
-             System.out.println(customerReq.getCustomerEntity());                   
-        if(customerReq != null) 
-        {
-            try 
-            {
+    public Response updateCustomer(CustomerReq customerReq
+    ) {
+        System.out.println(customerReq.getCustomerEntity());
+        if (customerReq != null) {
+            try {
                 customerEntityControllerLocal.updateCustomerDetails(customerReq.getCustomerEntity());
-                
+
                 CustomerRsp customerRsp = new CustomerRsp(customerReq.getCustomerEntity());
-                
+
                 System.out.println(customerReq.getCustomerEntity());
 
                 return Response.status(Response.Status.OK).entity(customerRsp).build();
-            } 
-            catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException ex)
-            {
+            } catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("Error updating customer: " + ex.getMessage());
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
-                
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @Path("retrieveAllCustomers")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllCustomer() 
-    {
-        try 
-        {
+    public Response retrieveAllCustomer() {
+        try {
             List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveAllCustomer();
-            
+
             // Clearing the relationship will not affect the database as it is not in the persistent context?
-            for(CustomerEntity customerEntity : customerEntities) {
+            for (CustomerEntity customerEntity : customerEntities) {
                 customerEntity.getDiscountCodeEntities().clear();
                 customerEntity.getSaleTransactionEntities().clear();
                 customerEntity.getReviewEntities().clear();
             }
-            
+
             RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
-            
+
             return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
-        }
-        catch ( Exception ex) 
-        {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
 
-    
+    @Path("retrieveCustomersBySpendingPerMonth")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCustomersBySpendingPerMonth() {
+        try {
+            List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
+
+            // Clearing the relationship will not affect the database as it is not in the persistent context?
+            for (CustomerEntity customerEntity : customerEntities) {
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.getReviewEntities().clear();
+            }
+
+            RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
+
+            return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    @Path("retrieveCustomersBySpendingTotal")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCustomersBySpendingTotal() {
+        try {
+            List<CustomerEntity> customerEntities = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
+
+            // Clearing the relationship will not affect the database as it is not in the persistent context?
+            for (CustomerEntity customerEntity : customerEntities) {
+                customerEntity.getDiscountCodeEntities().clear();
+                customerEntity.getSaleTransactionEntities().clear();
+                customerEntity.getReviewEntities().clear();
+            }
+
+            RetrieveAllCustomerRsp retrieveAllCustomerRsp = new RetrieveAllCustomerRsp(customerEntities);
+
+            return Response.status(Status.OK).entity(retrieveAllCustomerRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
     private CustomerEntityControllerLocal lookupCustomerEntityControllerLocal() {
         try {

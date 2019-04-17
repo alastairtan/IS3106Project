@@ -34,17 +34,35 @@
                         <h:outputText value="#{saleTransactionEntity.customerEntity.email}" />
                     </p:column>   
 
-                    <p:column headerText="Total Quantity" sortBy="#{saleTransactionEntity.totalQuantity}" filterBy="#{saleTransactionEntity.totalQuantity}" filterMatchMode="contains">
+                    <p:column headerText="Total Quantity" sortBy="#{saleTransactionEntity.totalQuantity}" style="width: 8%" filterBy="#{saleTransactionEntity.totalQuantity}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.totalQuantity}" />
                     </p:column>
 
+                    <p:column headerText="Total Line Item" sortBy="#{saleTransactionEntity.totalLineItem}" style="width: 8%" filterBy="#{saleTransactionEntity.totalLineItem}" filterMatchMode="contains">
+                        <h:outputText value="#{saleTransactionEntity.totalLineItem}" />
+                    </p:column>
+
+
+                    <p:column headerText="Discount Code Applied" sortBy="#{saleTransactionEntity.discountCodeEntity.discountCodeId}" filterBy="#{saleTransactionEntity.discountCodeEntity.discountCodeId}" filterMatchMode="contains">
+                        <h:outputText rendered="#{saleTransactionEntity.discountCodeEntity == null}" value="None"/>
+                        <p:outputPanel rendered="#{saleTransactionEntity.discountCodeEntity != null}">
+                            <h:outputText value="ID: #{saleTransactionEntity.discountCodeEntity.discountCodeId}"/><br/>
+                            <h:outputText value="Code: #{saleTransactionEntity.discountCodeEntity.discountCode}"/><br/>
+                            <h:outputText rendered="#{saleTransactionEntity.discountCodeEntity.discountCodeTypeEnum == 'FLAT'}" value="$#{saleTransactionEntity.discountCodeEntity.discountAmountOrRate} Off"/>
+                            <h:outputText rendered="#{saleTransactionEntity.discountCodeEntity.discountCodeTypeEnum == 'PERCENTAGE'}" value="#{saleTransactionEntity.discountCodeEntity.discountAmountOrRate}% Off"/>
+                        </p:outputPanel>
+                    </p:column>
+                    
+                    <p:column headerText="Points Used" sortBy="#{saleTransactionEntity.pointsToUse}" filterBy="#{saleTransactionEntity.pointsToUse}" filterMatchMode="contains">
+                        <h:outputText rendered="#{saleTransactionEntity.pointsToUse > 0}" value="#{saleTransactionEntity.pointsToUse} ($#{saleTransactionEntity.pointsToUse*0.05})" />
+                        <h:outputText rendered="#{saleTransactionEntity.pointsToUse == null || saleTransactionEntity.pointsToUse == 0}" value="None" />
+                    </p:column>
+                    
+                    
                     <p:column headerText="Total Amount" sortBy="#{saleTransactionEntity.totalAmount}" filterBy="#{saleTransactionEntity.totalAmount}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.totalAmount}" />
                     </p:column>
 
-                    <p:column headerText="Total Line Item" sortBy="#{saleTransactionEntity.totalLineItem}" filterBy="#{saleTransactionEntity.totalLineItem}" filterMatchMode="contains">
-                        <h:outputText value="#{saleTransactionEntity.totalLineItem}" />
-                    </p:column>
 
                     <p:column headerText="Transaction Date Time" sortBy="#{saleTransactionEntity.transactionDateTime}" filterBy="#{saleTransactionEntity.transactionDateTime}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />

@@ -3,6 +3,10 @@
     *ngIf="addToCartMessage && !addToCartMessageClose">
     {{addToCartMessage}}
   </div>
+  <div class="alert alert-success" style="text-align: center" role="alert"
+    *ngIf="prizeClaimMessage?.length > 0">
+    {{prizeClaimMessage}}
+  </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
   <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1">
@@ -40,12 +44,12 @@
                 <br />
               </mat-card-content>
               <mat-card-actions>
-                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()">Add to
-                  Cart</button>
+                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()" disabled="{{quantity == 0}}">
+                  Add to Cart</button>
                 <button *ngIf="currentCustomer==null" mat-raised-button color="primary" (click)="openDialog()">Login To
                   Purchase</button>
-                <button *ngIf="product?.isScavengerHuntPrize" mat-raised-button color="warn">Claim Scavenger Hunt
-                  Prize</button>
+                <button *ngIf="product?.isScavengerHuntPrize && canCustomerWin" 
+                mat-raised-button color="warn" (click)="claimScavengerHuntPrize()">Claim Scavenger Hunt Prize</button>
               </mat-card-actions>
               <mat-divider></mat-divider>
               <mat-card-footer class="footer">

@@ -16,9 +16,26 @@ export class ScavengerHuntService {
 
   retrieveScavengerHuntForTheDay(): Observable<any> {
     console.log("HI from scavenger hunt");
-    return this.httpClient.get<any>(this.baseUrl + "/retrieveScavengerHuntForTheDay").pipe(
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveScavengerHuntForTheDay").pipe
+    (
 			catchError(this.handleError)
 		);
+  }
+  
+  checkIfCustomerHasWonToday(customerId : number): Observable<any> {
+
+    return this.httpClient.get<any>(this.baseUrl + "/hasCustomerWonToday?customerId=" + customerId)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  claimScavengerHuntPrize(customerId : number): Observable<any> {
+
+    return this.httpClient.get<any>(this.baseUrl + "/updateWinnerForScavengerHunt/?customerId=" + customerId)
+    .pipe(
+      catchError(this.handleError)
+    )
   }
 
 

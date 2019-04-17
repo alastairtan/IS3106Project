@@ -1,0 +1,429 @@
+{
+    "productEntities": [
+        {
+            "description": "This is a pretty damn good computer that you should buy. Just don't intall Angular on it cos it sucks",
+            "discountCodeEntities": [
+                {
+                    "customerEntities": [],
+                    "discountAmountOrRate": 2,
+                    "discountCode": "WuqEv7",
+                    "discountCodeId": 2,
+                    "discountCodeTypeEnum": "FLAT",
+                    "endDate": "2019-04-18T00:00:00+08:00",
+                    "numAvailable": 9,
+                    "productEntities": [],
+                    "saleTransactionEntities": [],
+                    "startDate": "2019-04-16T00:00:00+08:00"
+                }
+            ],
+            "isScavengerHuntPrize": false,
+            "name": "Asus 1",
+            "productId": 1,
+            "productImageUrl": "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg",
+            "quantityOnHand": 84,
+            "reorderQuantity": 10,
+            "reviewEntities": [
+                {
+                    "content": "Not worth the price",
+                    "customerEntity": {
+                        "country": "America",
+                        "customerId": 1,
+                        "discountCodeEntities": [],
+                        "email": "Steve@gmail.com",
+                        "firstName": "Steve",
+                        "lastName": "Rogers",
+                        "membershipTierEnum": "BRONZE",
+                        "multiplier": 1,
+                        "password": "2abbba2d3c423ff720948f976b24df52",
+                        "pointsForCurrentMonth": 185,
+                        "profilePicUrl": "https://avatarfiles.alphacoders.com/130/130595.jpg",
+                        "remainingPoints": 328,
+                        "reviewEntities": [],
+                        "saleTransactionEntities": [],
+                        "salt": "x6rI7FFRcbNDnS3EBAgkQ0cbagA26cK9",
+                        "totalPoints": 328
+                    },
+                    "productRating": 4,
+                    "reviewDate": "2019-04-16T21:31:02+08:00",
+                    "reviewId": 1
+                },
+                {
+                    "content": "Asus laptop is very good",
+                    "customerEntity": {
+                        "country": "America",
+                        "customerId": 2,
+                        "discountCodeEntities": [],
+                        "email": "peter@gmail.com",
+                        "firstName": "Peter",
+                        "lastName": "Parker",
+                        "membershipTierEnum": "BRONZE",
+                        "multiplier": 1,
+                        "password": "8d99b0e72a2c50c8a7a3a1536fde7115",
+                        "pointsForCurrentMonth": 0,
+                        "profilePicUrl": "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop",
+                        "remainingPoints": 0,
+                        "reviewEntities": [],
+                        "saleTransactionEntities": [],
+                        "salt": "yDhOtDoN1mU5CkHlyhnNnpb7c8F0wUbR",
+                        "totalPoints": 0
+                    },
+                    "productRating": 4,
+                    "reviewDate": "2019-04-16T21:31:02+08:00",
+                    "reviewId": 2
+                },
+                {
+                    "content": "What a scam",
+                    "customerEntity": {
+                        "country": "America",
+                        "customerId": 2,
+                        "discountCodeEntities": [],
+                        "email": "peter@gmail.com",
+                        "firstName": "Peter",
+                        "lastName": "Parker",
+                        "membershipTierEnum": "BRONZE",
+                        "multiplier": 1,
+                        "password": "8d99b0e72a2c50c8a7a3a1536fde7115",
+                        "pointsForCurrentMonth": 0,
+                        "profilePicUrl": "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop",
+                        "remainingPoints": 0,
+                        "reviewEntities": [],
+                        "saleTransactionEntities": [],
+                        "salt": "yDhOtDoN1mU5CkHlyhnNnpb7c8F0wUbR",
+                        "totalPoints": 0
+                    },
+                    "productRating": 5,
+                    "reviewDate": "2019-04-16T21:31:02+08:00",
+                    "reviewId": 3
+                },
+                {
+                    "content": "Is this good?",
+                    "customerEntity": {
+                        "country": "America",
+                        "customerId": 3,
+                        "discountCodeEntities": [],
+                        "email": "bruce@gmail.com",
+                        "firstName": "Bruce",
+                        "lastName": "Banner",
+                        "membershipTierEnum": "BRONZE",
+                        "multiplier": 1,
+                        "password": "abb1b1f022ac58e622baf4e349a16275",
+                        "pointsForCurrentMonth": 0,
+                        "profilePicUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtRb2rkBsxg1q60ki00KULSIqAS2SXmKTnObZO7qWQA7AV5pSbsg",
+                        "remainingPoints": 0,
+                        "reviewEntities": [],
+                        "saleTransactionEntities": [],
+                        "salt": "F2rxFDzyWZBENdoPM3PQ7tEuwvIbw7g3",
+                        "totalPoints": 0
+                    },
+                    "productRating": 4,
+                    "reviewDate": "2019-04-16T21:31:02+08:00",
+                    "reviewId": 4
+                }
+            ],
+            "skuCode": "PROD001",
+            "tagEntities": [
+                {
+                    "name": "Popular",
+                    "productEntities": [],
+                    "tagId": 1
+                }
+            ],
+            "unitPrice": 10
+        },
+        {
+            "description": "Asus 2",
+            "discountCodeEntities": [
+                {
+                    "customerEntities": [],
+                    "discountAmountOrRate": 2,
+                    "discountCode": "WuqEv7",
+                    "discountCodeId": 2,
+                    "discountCodeTypeEnum": "FLAT",
+                    "endDate": "2019-04-18T00:00:00+08:00",
+                    "numAvailable": 9,
+                    "productEntities": [],
+                    "saleTransactionEntities": [],
+                    "startDate": "2019-04-16T00:00:00+08:00"
+                }
+            ],
+            "isScavengerHuntPrize": true,
+            "name": "Asus 2",
+            "productId": 2,
+            "productImageUrl": "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg",
+            "quantityOnHand": 95,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD002",
+            "tagEntities": [
+                {
+                    "name": "Discount",
+                    "productEntities": [],
+                    "tagId": 2
+                }
+            ],
+            "unitPrice": 25.5
+        },
+        {
+            "description": "Asus 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": true,
+            "name": "Asus 3",
+            "productId": 3,
+            "productImageUrl": "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg",
+            "quantityOnHand": 98,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD003",
+            "tagEntities": [
+                {
+                    "name": "Popular",
+                    "productEntities": [],
+                    "tagId": 1
+                },
+                {
+                    "name": "Discount",
+                    "productEntities": [],
+                    "tagId": 2
+                }
+            ],
+            "unitPrice": 15
+        },
+        {
+            "description": "Dell 1",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Dell 1",
+            "productId": 4,
+            "productImageUrl": "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg",
+            "quantityOnHand": 99,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD004",
+            "tagEntities": [
+                {
+                    "name": "Popular",
+                    "productEntities": [],
+                    "tagId": 1
+                },
+                {
+                    "name": "New",
+                    "productEntities": [],
+                    "tagId": 3
+                }
+            ],
+            "unitPrice": 20
+        },
+        {
+            "description": "Dell 2",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Dell 2",
+            "productId": 5,
+            "productImageUrl": "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD005",
+            "tagEntities": [
+                {
+                    "name": "Discount",
+                    "productEntities": [],
+                    "tagId": 2
+                },
+                {
+                    "name": "New",
+                    "productEntities": [],
+                    "tagId": 3
+                },
+                {
+                    "name": "Popular",
+                    "productEntities": [],
+                    "tagId": 1
+                }
+            ],
+            "unitPrice": 10
+        },
+        {
+            "description": "Dell 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Dell 3",
+            "productId": 6,
+            "productImageUrl": "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD006",
+            "tagEntities": [],
+            "unitPrice": 100
+        },
+        {
+            "description": "HP 1",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": true,
+            "name": "HP 1",
+            "productId": 7,
+            "productImageUrl": "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD007",
+            "tagEntities": [],
+            "unitPrice": 35
+        },
+        {
+            "description": "HP 2",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "HP 2",
+            "productId": 8,
+            "productImageUrl": "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD008",
+            "tagEntities": [],
+            "unitPrice": 20.05
+        },
+        {
+            "description": "HP 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "HP 3",
+            "productId": 9,
+            "productImageUrl": "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD009",
+            "tagEntities": [],
+            "unitPrice": 5.5
+        },
+        {
+            "description": "Zara 1",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": true,
+            "name": "Zara 1",
+            "productId": 10,
+            "productImageUrl": "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD010",
+            "tagEntities": [],
+            "unitPrice": 20
+        },
+        {
+            "description": "Zara 2",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": true,
+            "name": "Zara 2",
+            "productId": 11,
+            "productImageUrl": "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD011",
+            "tagEntities": [],
+            "unitPrice": 30.5
+        },
+        {
+            "description": "Zara 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Zara 3",
+            "productId": 12,
+            "productImageUrl": "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD012",
+            "tagEntities": [],
+            "unitPrice": 18.5
+        },
+        {
+            "description": "Topman 1",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Topman 1",
+            "productId": 13,
+            "productImageUrl": "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD013",
+            "tagEntities": [],
+            "unitPrice": 50
+        },
+        {
+            "description": "Topman 2",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Topman 2",
+            "productId": 14,
+            "productImageUrl": "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD014",
+            "tagEntities": [],
+            "unitPrice": 100
+        },
+        {
+            "description": "Topman 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Topman 3",
+            "productId": 15,
+            "productImageUrl": "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD015",
+            "tagEntities": [],
+            "unitPrice": 200
+        },
+        {
+            "description": "Supreme 1",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Supreme 1",
+            "productId": 16,
+            "productImageUrl": "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD016",
+            "tagEntities": [],
+            "unitPrice": 95
+        },
+        {
+            "description": "Supreme 2",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Supreme 2",
+            "productId": 17,
+            "productImageUrl": "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD017",
+            "tagEntities": [],
+            "unitPrice": 19.05
+        },
+        {
+            "description": "Supreme 3",
+            "discountCodeEntities": [],
+            "isScavengerHuntPrize": false,
+            "name": "Supreme 3",
+            "productId": 18,
+            "productImageUrl": "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg",
+            "quantityOnHand": 100,
+            "reorderQuantity": 10,
+            "reviewEntities": [],
+            "skuCode": "PROD018",
+            "tagEntities": [],
+            "unitPrice": 10.5
+        }
+    ]
+}

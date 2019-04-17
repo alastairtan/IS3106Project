@@ -76,7 +76,7 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
 
                 em.persist(newDiscountCodeEntity);
                 em.flush();
-
+                
                 return newDiscountCodeEntity;
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null
