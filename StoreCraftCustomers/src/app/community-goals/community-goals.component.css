@@ -13,9 +13,21 @@ th.mat-header-cell {
 *{
     box-sizing: border-box;
 }
-maintitle {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
+.mainHeader {
+    font-family: "Helvetica";
+    font-size: 100px;
+    font-weight: 600;
+    color: #ffffff;
+    position: absolute;
+    z-index: 10;
+}
+
+.headerImage {
+    margin-top: 10px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    opacity:0.8;
 }
 
 .cardsCollection{
@@ -187,4 +199,11 @@ maintitle {
     letter-spacing: 0;
     color: #6a6a6a;
     margin-left: 5px;
+}
+
+.button{
+    border : 1px solid #6a6a6a;
+    margin-left: 15px;
+    align-content: center;
+    border-radius: 1px;
 }

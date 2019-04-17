@@ -21,6 +21,8 @@ export class CommunityGoalsComponent implements OnInit {
   country : String;
   countries;
   communityGoals : CommunityGoal[];
+  errorMessage : String;
+  originalCommunityGoals : CommunityGoal[];
 
 
   constructor(public sessionService : SessionService,
@@ -32,6 +34,7 @@ export class CommunityGoalsComponent implements OnInit {
       this.communityGoalService.retrieveAllCommunityGoals().subscribe(
       response =>{
         this.communityGoals = response.communityGoalEntities;
+        this.originalCommunityGoals = this.communityGoals;
         for(let communityGoal of this.communityGoals){
           if(this.communityGoals.length != 0) {
             
@@ -56,6 +59,27 @@ export class CommunityGoalsComponent implements OnInit {
 
   public doFilter (value: string) {
     console.log("whats in here : " + value);
+    let temp = [];
+    if(this.communityGoals.length != 0) {
+    for(let communityGoal of this.communityGoals){
+      if(communityGoal.country.includes(value)) {
+        
+        temp.push(communityGoal);
+      }
+    }
+    console.log(temp);
+    if(temp.length === 0){
+      this.errorMessage = "No half measures, type the exact wording";
+      this.communityGoals = this.originalCommunityGoals;
+    }else{
+      this.errorMessage = null;
+    this.communityGoals = temp;
+  }
+}
+  }
+
+  resetView(){
+    this.communityGoals = this.originalCommunityGoals;
   }
 
 }
