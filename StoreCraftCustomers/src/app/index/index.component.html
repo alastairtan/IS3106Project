@@ -273,10 +273,10 @@
                 <mat-card>
                   <!--community goal-->
                   <div fxLayout="row wrap">
-                      <div fxFlex="1 1 70%">Community Goal: ${{this.goalAmt}}</div>
-                      <div fxFlex="1 1 30%">
-                        <mat-select [(ngModel)]="selected" panelClass="dropDownSelector">
-                          <mat-option *ngFor="let cg of communityGoals" [value]="(cg?.currentPoints*100/cg?.targetPoints) | number:'.2-2' ">
+                      <div fxFlex="1 1 65%">Community Goal: ${{this.goalAmt}}</div>
+                      <div fxFlex="1 1 35%">
+                        <mat-select [(ngModel)]="selected"  panelClass="dropDownSelector">
+                          <mat-option *ngFor="let cg of communityGoals" [value]="(cg)" (click)="onClickChange()">
                             {{cg?.goalTitle}}
                           </mat-option>
                         </mat-select>
@@ -284,7 +284,7 @@
                     </div>
                     <div fxLayoutAlign="center">
                       <div class="progress md-progress">
-                        <div class="progress-bar" [ngStyle]="{'width.%':selected}">{{selected}}%</div>
+                        <div class="progress-bar" [ngStyle]="{'width.%':this.percentage}">{{this.percentage}}%</div>
                       </div>
                     </div>
                 </mat-card>

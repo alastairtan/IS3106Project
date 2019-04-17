@@ -22,8 +22,10 @@ export class IndexComponent implements OnInit {
   communityGoals: CommunityGoal[];
   currentDate: Date = new Date();
   country:string = "Singapore";
-  selected: number;
+  selected: CommunityGoal;
   goalAmt: number;
+  currentAmt: number;
+  percentage: number;
   scavengerHunt: ScavengerHunt;
   scavengerHuntWinners: Customer[];
   scavengerHuntCurr: Customer;
@@ -68,8 +70,10 @@ export class IndexComponent implements OnInit {
       response => {
         this.communityGoals = response.communityGoalEntities;
         if(this.communityGoals.length != 0) {
-          this.selected = this.communityGoals[0].currentPoints*100/this.communityGoals[0].targetPoints;
+          this.selected = this.communityGoals[0];
           this.goalAmt = this.communityGoals[0].targetPoints;
+          this.currentAmt = this.communityGoals[0].currentPoints;
+          this.percentage = this.currentAmt*100/this.goalAmt;
         }
         console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
       },
@@ -108,6 +112,12 @@ export class IndexComponent implements OnInit {
       }
     }
     return customersNew;
+  }
+
+  onClickChange() {
+    this.goalAmt = this.selected.targetPoints;
+    this.currentAmt = this.selected.currentPoints;
+    this.percentage = this.currentAmt*100 / this.goalAmt;
   }
 
 }
