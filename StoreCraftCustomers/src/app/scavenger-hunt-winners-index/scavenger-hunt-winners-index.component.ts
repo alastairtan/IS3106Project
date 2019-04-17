@@ -19,7 +19,7 @@ export class ScavengerHuntWinnersIndexComponent implements OnInit {
   errorMessage: string;
   currentDate: Date = new Date();
 
-  columnsToDisplay = ['First Name', 'Membership Tier'];
+  columnsToDisplay = ['First Name', 'Membership Tier', 'Country'];
 
 
   constructor(public scavengerHuntService: ScavengerHuntService,

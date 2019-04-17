@@ -9,6 +9,11 @@
       <th mat-header-cell *matHeaderCellDef> Membership Tier </th>
       <td mat-cell *matCellDef="let c"> {{c.membershipTierEnum}} </td>
     </ng-container>
+
+    <ng-container matColumnDef="Country">
+        <th mat-header-cell *matHeaderCellDef> Country </th>
+        <td mat-cell *matCellDef="let c"> {{c.country}} </td>
+      </ng-container>
   
     <ng-container matColumnDef="table-header">
       <th mat-header-cell class="header" colspan="3" *matHeaderCellDef> Scavenger Hunt Winners for {{currentDate |  date:'ww LLLL'}}! </th>

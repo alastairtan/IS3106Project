@@ -36,6 +36,17 @@
 .cardProducts {
     padding: 8px 8px 8px 8px !important;
 }
-.card {
+.content {
     background-color: whitesmoke;
+}
+.header {
+    text-align: center;
+}
+.mat-card-header{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    font-size: 3vw;
 }
