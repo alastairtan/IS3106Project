@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -29,7 +30,6 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
@@ -72,29 +72,16 @@ public class CommunityGoalsManagedBean implements Serializable{
     
     public CommunityGoalsManagedBean() throws FileNotFoundException, IOException {
         countries= new ArrayList<>();
-        countries.add("Singapore");
-        countries.add("China");
-        countries.add("India");
-        countries.add("Malaysia");
-        countries.add("Frozen Throne");
-        countries.add("America");
         
-        String content = new String(Files.readAllBytes(Paths.get("D:\\Information Systems\\IS3106\\IS3106Project\\StoreCraftCustomers\\src\\assets\\countries.json")));
-        JSONObject jsonObj = new JSONObject("{\"country\": "+content+"};");
-        JSONArray jsonArray = new JSONArray(content);
+        String[] locales = Locale.getISOCountries();
         
-        Iterator<String> keys = jsonObj.keys();
-        
-        System.out.println(keys);
-        
-        while(keys.hasNext())
+        for(String countryCode : locales)
         {
-            System.out.println(keys.next().charAt(3));
+            Locale obj = new Locale("", countryCode);
+            
+            countries.add(obj.getDisplayCountry());
         }
-                        
-//        Object obj = new JSONParser().parse(new FileReader("/../../../StoreCraftCustomers/src/assets/countries.json")); 
-//        JSONParser parser = new JSONParser();
-//        Object obj = parser.parse(new FileReader("/../../../StoreCraftCustomers/src/assets/countries.json"));
+        
         currentDate = getToday();
         afterStartDate = new Date();
         newCommunityGoal = new CommunityGoalEntity();
