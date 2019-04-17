@@ -38,7 +38,7 @@ export class CommunityGoalsComponent implements OnInit {
         for(let communityGoal of this.communityGoals){
           if(this.communityGoals.length != 0) {
             
-            communityGoal.targetPoints = (communityGoal.currentPoints*100)/communityGoal.targetPoints;
+            //communityGoal.targetPoints = (communityGoal.currentPoints*100)/communityGoal.targetPoints;
             console.log('********** CommunityGoalComponent.ts: ' + communityGoal.rewardPercentage);
           }
       }

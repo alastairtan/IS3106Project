@@ -1,4 +1,4 @@
-import { Component, OnInit, Input , ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Review } from '../review';
@@ -42,20 +42,20 @@ export class ViewProductDetailsComponent implements OnInit {
   isWriting: boolean;
 
   //For scavenger hunt
-  canCustomerWin : boolean;
-  prizeClaimMessage : string;
+  canCustomerWin: boolean;
+  prizeClaimMessage: string;
 
   constructor(private activatedRoute: ActivatedRoute,
     private productService: ProductService,
     private localService: LocalService,
     private reviewService: ReviewService,
     private sessionService: SessionService,
-    private scavengerHuntService : ScavengerHuntService,
-    private customerService : CustomerService,
+    private scavengerHuntService: ScavengerHuntService,
+    private customerService: CustomerService,
     private loginDialog: MatDialog) {
-      this.isEditing= false;
-      this.isWriting= false;
-     }
+    this.isEditing = false;
+    this.isWriting = false;
+  }
 
   ngOnInit() {
     this.refresh();
@@ -158,11 +158,11 @@ export class ViewProductDetailsComponent implements OnInit {
     console.log("UPDATED: " + this.updatedProductRating);
   };
 
-  writeReview(){
+  writeReview() {
     this.isWriting = true;
   }
 
-  cancelWriteReview(){
+  cancelWriteReview() {
     this.isWriting = false;
   }
 
@@ -176,7 +176,7 @@ export class ViewProductDetailsComponent implements OnInit {
     });
   }
 
-  claimScavengerHuntPrize() : void {
+  claimScavengerHuntPrize(): void {
     this.scavengerHuntService.claimScavengerHuntPrize(this.currentCustomer.customerId).subscribe(
       response => {
         // Prize updated in database
@@ -191,11 +191,25 @@ export class ViewProductDetailsComponent implements OnInit {
 
         this.sessionService.setCurrentCustomer(customerEntity);
         this.refresh();
-        setTimeout(() => true, 300);
-        this.prizeClaimMessage = "Prize has been claimed!"
-        setTimeout(() => this.prizeClaimMessage = "", 4000);
+
+        this.scavengerHuntService.retrieveScavengerHuntForTheDay().subscribe(
+          response => {
+
+            console.log(response.scavengerHuntEntity.rewardTypeEnum);
+
+            if (response.scavengerHuntEntity.rewardTypeEnum == "DISCOUNT_CODE_FLAT") {
+              this.prizeClaimMessage = "You have won a flat rate discount code! Check your profile to see the discount code!"
+            }
+            else if (response.scavengerHuntEntity.rewardTypeEnum == "DISCOUNT_CODE_PERCENTAGE") {
+              this.prizeClaimMessage = "You have won a percentage discount code from the scavenger hunt! Check your profile to see the discount code!"
+            }
+            else if (response.scavengerHuntEntity.rewardTypeEnum == "POINTS") {
+              this.prizeClaimMessage = "You have won points from the scavenger hunt! Check your profile to see the discount code!"
+            }
+            setTimeout(() => this.prizeClaimMessage = "", 6000);
+          }
+        )
       }
     )
   }
-
 }
