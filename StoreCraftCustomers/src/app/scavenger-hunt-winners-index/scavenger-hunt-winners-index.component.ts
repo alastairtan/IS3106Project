@@ -37,6 +37,7 @@ export class ScavengerHuntWinnersIndexComponent implements OnInit {
           console.log('inside index.component.ts! scavengerHunt!' 
           + this.scavengerHunt.customerEntities.length);
         }
+        console.log(this.currentDate);
       },
       error => {
         console.log('********** IndexComponent.ts: scavenger ' + error);
