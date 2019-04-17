@@ -57,23 +57,23 @@
         <div class="shopping-cart-section">
             <mat-menu #cartMenu="matMenu">
                 <table class="table" style="margin-bottom: 0 !important; vertical-align:center">
-                    <tr>
-                        <span *ngIf="sessionService.getIsLogin() == true">
-                            <td>
-                                <strong>{{localService.getNumCartItems()}} Items</strong>
-                            </td>
-                            <td style="padding-right: 0">
-                                <a id="shoppingCartBtn" mat-button color="primary" style="width:90%"
-                                    [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
-                                    <mat-icon>shopping_cart</mat-icon>&nbsp;View Cart
-                                </a>
-                            </td>
-                        </span>
-                        <span *ngIf="sessionService.getIsLogin() == false">
-                            <td colspan="2">
-                                <button mat-button (click)="openDialog()">Login to see your cart</button>
-                            </td>
-                        </span>
+                    <tr *ngIf="sessionService.getIsLogin() == true">
+                        <td>
+                            <strong>{{localService.getNumCartItems()}} Items</strong>
+                        </td>
+                        <td style="padding-right: 0">
+                            <a id="shoppingCartBtn" mat-button color="primary" style="width:90%"
+                                [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
+                                <mat-icon>shopping_cart</mat-icon>&nbsp;View Cart
+                            </a>
+                        </td>
+                    </tr>
+                    <tr *ngIf="sessionService.getIsLogin() == false">
+
+                        <td colspan="2">
+                            <button mat-button (click)="openDialog()">Login to see your cart</button>
+                        </td>
+
                     </tr>
                     <tr *ngFor="let cartItem of localService.getCart()" class="cartItems">
                         <td>
