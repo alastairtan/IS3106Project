@@ -71,23 +71,23 @@
 <mat-paginator [pageSize]="7" [pageSizeOptions]="[7,14,21,28,35]">
 </mat-paginator>
 -->
-<div fxLayout fxLayoutAlign="center center" style="box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.9);">
+<div fxLayout fxLayoutAlign="center center" style="background-color: rgba(0,0,0,0.5)">
     <div class="mainHeader">Community Goals</div>
-    <img class="headerImage" src="https://i.ibb.co/7Nbr7tP/comm-Goals.jpg"/>
-    </div>
+    <img class="headerImage" src="/assets/images/commGoals.jpg" />
+</div>
 <div fxLayout fxLayoutAlign="center center">
     <mat-form-field fxFlex="40%">
-      <input matInput type="text" (change)="doFilter($event.target.value)" placeholder="Filter By Country">
+        <input matInput type="text" (change)="doFilter($event.target.value)" placeholder="Filter By Country">
     </mat-form-field>
     <button mat-button class="button" (click)="resetView()">
         See All
     </button>
-  </div>
-  <div fxLayout fxLayoutAlign="center center">
-  <div ng-if="errorMessage">{{ errorMessage }}</div>
-  </div>
+</div>
+<div fxLayout fxLayoutAlign="center center">
+    <div ng-if="errorMessage">{{ errorMessage }}</div>
+</div>
 
-  
+
 
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
 
@@ -122,17 +122,22 @@
 
                                 <div class="progressContainer">
 
-                                    <div class="percentageReached"><strong>Reward:</strong> {{communitygoal?.rewardPercentage}}% Off
+                                    <div class="percentageReached"><strong>Reward:</strong>
+                                        {{communitygoal?.rewardPercentage}}% Off
                                         Store-wide
                                         Discount Code
                                     </div>
                                     <div class="currentPoints">
-                                        <strong>{{communitygoal?.currentPoints}} / {{communitygoal?.targetPoints}}</strong> Points Hit
-                                        <span style="float: right !important">{{((communitygoal?.currentPoints*100)/communitygoal?.targetPoints)|number:'0.0-2'}}%</span>
+                                        <strong>{{communitygoal?.currentPoints}} /
+                                            {{communitygoal?.targetPoints}}</strong> Points Hit
+                                        <span
+                                            style="float: right !important">{{((communitygoal?.currentPoints*100)/communitygoal?.targetPoints)|number:'0.0-2'}}%</span>
                                     </div>
                                     <div class="progress" style="height: 1vw; margin-top: 0.5vw; border-radius: 20px">
-                                        <div class="progress-bar bg-success" style="height: 1vw; margin-top: 0; border-radius: 20px"
-                                            [ngStyle]="{'width.%':(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}"></div>
+                                        <div class="progress-bar bg-success"
+                                            style="height: 1vw; margin-top: 0; border-radius: 20px"
+                                            [ngStyle]="{'width.%':(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}">
+                                        </div>
                                     </div>
                                     <div class="dateContainer">
 

@@ -16,6 +16,11 @@
     text-align: center;
     height:100%;
     align-content: flex-end;
+    cursor: pointer;
+}
+
+.card:hover{
+  transform: scale(1.02);
 }
 
 img{

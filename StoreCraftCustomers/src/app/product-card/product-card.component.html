@@ -1,9 +1,10 @@
-<mat-card class="card">
-  <img mat-card-image src="{{product.productImageUrl}}" />
+<mat-card class="card" [routerLink]="['/product', product.productId]">
+  <img mat-card-image src="{{product.productImageUrl}}"/>
   <mat-card-header class="header">
     <mat-card-title>{{product.name}}</mat-card-title>
     <mat-card-subtitle>{{product.categoryEntity.name}}
-    </mat-card-subtitle><br />
+    </mat-card-subtitle>
+    <br/>
   </mat-card-header>
   <mat-card-content class="content">
     <div>
@@ -14,14 +15,10 @@
         No Reviews Yet
       </span>
       <star-rating [starType]="'svg'" [readOnly]="true" [rating]="averageRating" [showHalfStars]="true"
-        labelText="({{numberOfRatings}})" labelPosition="right"></star-rating>
+                   labelText="({{numberOfRatings}})" labelPosition="right"></star-rating>
     </div>
     <mat-divider></mat-divider>
-    <h5 class="price"> 
+    <h5 class="price">
       {{format(product.unitPrice)}} </h5>
   </mat-card-content>
-  <mat-divider></mat-divider>
-  <mat-card-actions>
-    <button mat-flat-button color="primary" (click)="viewProduct(product)">View</button>
-  </mat-card-actions>
 </mat-card>

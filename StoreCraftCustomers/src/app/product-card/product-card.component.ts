@@ -10,9 +10,10 @@ import { DataService } from '../data.service';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css']
 })
+
 export class ProductCardComponent implements OnInit {
 
-  @Input() 
+  @Input()
   product: Product;
 
   averageRating: number;
@@ -21,19 +22,19 @@ export class ProductCardComponent implements OnInit {
 
   private productData;
 
-  constructor(private router:Router, private data: DataService, private productService: ProductService) { }
+  constructor(private router: Router, private data: DataService, private productService: ProductService) { }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => this.productData = data);
     this.getRatingInfo();
   }
 
-  viewProduct() {
-    this.data.updateData(JSON.stringify(this.product));
-    this.router.navigate(['/product', this.product.productId]);
-  }
+  // viewProduct() {
+  //   this.data.updateData(JSON.stringify(this.product));
+  //   this.router.navigate(['/product', this.product.productId]);
+  // }
 
-  getRatingInfo(){
+  getRatingInfo() {
     this.productService.getRatingInfoForProduct(this.product.productId).subscribe(response => {
       this.averageRating = response.result[0];
       this.numberOfRatings = response.result[1];

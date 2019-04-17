@@ -1,15 +1,15 @@
-<div fxLayout="row" fxLayoutAlign="center stretch" style="margin-top: 20px">
-  <div class="alert alert-success" style="text-align: center" role="alert"
+<div fxLayout="row" fxLayoutAlign="center stretch">
+  <div class="alert alert-success messages" style="text-align: center" role="alert"
        *ngIf="addToCartMessage && !addToCartMessageClose">
     {{addToCartMessage}}
   </div>
-  <div class="alert alert-success" style="text-align: center" role="alert"
+  <div class="alert alert-success messages" style="text-align: center" role="alert"
        *ngIf="prizeClaimMessage?.length > 0">
     {{prizeClaimMessage}}
   </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1">
+  <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
     <mat-card class="card">
 
       <mat-card-content>
@@ -19,7 +19,7 @@
             <img class="productImage mat-elevation-z3" src="{{product?.productImageUrl}}"/>
           </div>
 
-          <div fxFlex="1 1 60%">
+          <div fxFlex="1 1 60%" class="paddingZero">
 
             <mat-card style="max-height: 100%">
 
@@ -79,7 +79,7 @@
           </div>
 
           <!--REVIEWS-->
-          <div fxFlex="1 1 100%">
+          <div fxFlex="1 1 100%" class="paddingZero">
 
             <mat-toolbar color="primary" class="mat-elevation-z2">
               <span>Reviews</span>

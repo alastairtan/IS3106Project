@@ -25,27 +25,27 @@ export class ViewProductsComponent implements OnInit {
   filteredProducts: Product[];
   viewProducts: Product[];
 
-  //For Paginator
+  // For Paginator
   pageLength: number;
   pageSize: number;
   currentPage: number;
-  //*************
+  // *************
 
-  //For Category Selector
+  // For Category Selector
   subCategories: Category[];
   selectedCategoryOptions: number[];
-  //*********************
+  // *********************
 
-  //For Sort Selector
+  // For Sort Selector
   sortSelection: string;
-  //*****************
+  // *****************
 
-  //For Price Range Selector
+  // For Price Range Selector
   minPrice: number;
   maxPrice: number;
-  //*****************
+  // *****************
 
-  //For Tags Selector
+  // For Tags Selector
   allTags: Tag[];
   selectedTagOptions: number[];
   condition: string;
@@ -55,43 +55,45 @@ export class ViewProductsComponent implements OnInit {
     public sessionService: SessionService,
     public tagService: TagService,
     private activatedRoute: ActivatedRoute) {
+    this.condition = 'OR';
   }
 
   ngOnInit() {
     let selectedCategory: number;
     this.activatedRoute.params.subscribe(params => {
-      selectedCategory = parseInt(params["categoryId"])
+      selectedCategory = parseInt(params['categoryId']);
       this.productService.getProductsByCategory(selectedCategory).subscribe(response => {
         this.allProducts = response.productEntities;
         this.filteredProducts = this.allProducts;
 
-        //paginator 
+
+        // paginator
         this.pageLength = this.allProducts.length;
         this.pageSize = 8;
         this.currentPage = 0;
-        //********
+        // ********
 
-        //Sorting info
-        this.sortSelection = "alphAsc";
+        // Sorting info
+        this.sortSelection = 'alphAsc';
         this.minPrice = 0;
         this.maxPrice = 1000;
-        //************
+        // ************
 
         this.doFilter();
-      })
+      });
       this.categoryService.retrieveCategoryByCategoryId(selectedCategory).subscribe(response => {
         this.subCategories = response.categoryEntity.subCategoryEntities;
-      })
+      });
       this.tagService.retrieveAllTags().subscribe(response => {
         this.allTags = response.tagEntities;
-      })
+      });
     });
   }
 
   handlePageEvent(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    this.doFilter(); 
+    this.doFilter();
   }
 
   renderView() {
@@ -99,93 +101,93 @@ export class ViewProductsComponent implements OnInit {
     if (this.pageLength <= this.pageSize) {
       this.currentPage = 0;
     }
-    let start: number = this.currentPage * this.pageSize;
-    let end: number = this.currentPage * this.pageSize + this.pageSize;
+    const start: number = this.currentPage * this.pageSize;
+    const end: number = this.currentPage * this.pageSize + this.pageSize;
     this.viewProducts = this.filteredProducts.slice(start, end);
 
-    //console.log("RENDER");
+    // console.log("RENDER");
   }
 
   handleCategoryChange() {
 
     return new Promise((resolve, reject) => {
 
-      if (this.selectedCategoryOptions == null || this.selectedCategoryOptions.length == 0) { //all not selected
+      if (this.selectedCategoryOptions == null || this.selectedCategoryOptions.length == 0) { // all not selected
         this.filteredProducts = this.allProducts;
-       //console.log("CATEGORY")
+       // console.log("CATEGORY")
         resolve();
       }
 
-      let observables: Observable<any>[] = [];
+      const observables: Observable<any>[] = [];
 
-      for (let categoryId of this.selectedCategoryOptions) {
+      for (const categoryId of this.selectedCategoryOptions) {
         observables.push(this.productService.getProductsByCategory(categoryId));
       }
 
-      let filtered: Product[] = []
+      let filtered: Product[] = [];
       forkJoin(observables).subscribe(dataArray => {
-        for (let response of dataArray) {
+        for (const response of dataArray) {
           filtered = filtered.concat(response.productEntities);
         }
         this.filteredProducts = filtered;
-        //console.log("CATEGORY");
-        //console.log(this.filteredProducts)
+        // console.log("CATEGORY");
+        // console.log(this.filteredProducts)
         resolve();
-      })
+      });
 
-    })
+    });
   }
 
   handleSort() {
     switch (this.sortSelection) {
-      case "alphAsc": {
+      case 'alphAsc': {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.name.localeCompare(b.name);
-        })
+        });
         break;
       }
-      case "alphDsc": {
+      case 'alphDsc': {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.name.localeCompare(b.name);
-        })
+        });
         this.filteredProducts.reverse();
         break;
       }
-      case "pAsc": {
+      case 'pAsc': {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.unitPrice - b.unitPrice;
-        })
+        });
         break;
       }
-      case "pDsc": {
+      case 'pDsc': {
         this.filteredProducts.sort((a: Product, b: Product) => {
           return a.unitPrice - b.unitPrice;
-        })
+        });
         this.filteredProducts.reverse();
         break;
       }
     }
-    //console.log("SORT");
+    // console.log("SORT");
   }
 
   handlePriceRange() {
-    let filteredProductsCopy = Array.from(this.filteredProducts);
+    const filteredProductsCopy = Array.from(this.filteredProducts);
     this.filteredProducts = filteredProductsCopy.filter(product => {
-      return (product.unitPrice >= this.minPrice && product.unitPrice <= this.maxPrice)
-    })
-    //console.log("PRICE RANGE");
-    //console.log(this.filteredProducts);
+      return (product.unitPrice >= this.minPrice && product.unitPrice <= this.maxPrice);
+    });
+    // console.log("PRICE RANGE");
+    // console.log(this.filteredProducts);
   }
 
   handleTagChange() {
-    //console.log("TAG CHANGE");
-    if (this.selectedTagOptions == null || this.selectedTagOptions.length == 0) { //all not selected
+    // console.log("TAG CHANGE");
+    if (this.selectedTagOptions == null || this.selectedTagOptions.length == 0) { // all not selected
       return;
     }
 
-    if (this.condition == null || this.condition == "OR") {
+    if (this.condition == null || this.condition == 'OR') {
       this.filteredProducts = this.productService.filterProductsByTagsOR(this.filteredProducts, this.selectedTagOptions);
-    } else if (this.condition == "AND") {
+    } else if (this.condition == 'AND') {
       this.filteredProducts = this.productService.filterProductsByTagsAND(this.filteredProducts, this.selectedTagOptions);
     }
     console.log(this.filteredProducts);
@@ -197,7 +199,7 @@ export class ViewProductsComponent implements OnInit {
     this.handleSort();
     this.handlePriceRange();
     this.renderView();
-    })
+    });
   }
 
 
