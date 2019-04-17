@@ -8,10 +8,15 @@ package jsf.managedbean;
 import ejb.stateless.CommunityGoalEntityControllerLocal;
 import entity.CommunityGoalEntity;
 import entity.StaffEntity;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +29,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCommunityGoalException;
 import util.exception.InputDataValidationException;
@@ -63,13 +70,31 @@ public class CommunityGoalsManagedBean implements Serializable{
     private Date afterStartDate;
     private Date updatingMinDate;
     
-    public CommunityGoalsManagedBean() {
+    public CommunityGoalsManagedBean() throws FileNotFoundException, IOException {
         countries= new ArrayList<>();
         countries.add("Singapore");
         countries.add("China");
         countries.add("India");
         countries.add("Malaysia");
         countries.add("Frozen Throne");
+        countries.add("America");
+        
+        String content = new String(Files.readAllBytes(Paths.get("D:\\Information Systems\\IS3106\\IS3106Project\\StoreCraftCustomers\\src\\assets\\countries.json")));
+        JSONObject jsonObj = new JSONObject("{\"country\": "+content+"};");
+        JSONArray jsonArray = new JSONArray(content);
+        
+        Iterator<String> keys = jsonObj.keys();
+        
+        System.out.println(keys);
+        
+        while(keys.hasNext())
+        {
+            System.out.println(keys.next().charAt(3));
+        }
+                        
+//        Object obj = new JSONParser().parse(new FileReader("/../../../StoreCraftCustomers/src/assets/countries.json")); 
+//        JSONParser parser = new JSONParser();
+//        Object obj = parser.parse(new FileReader("/../../../StoreCraftCustomers/src/assets/countries.json"));
         currentDate = getToday();
         afterStartDate = new Date();
         newCommunityGoal = new CommunityGoalEntity();
