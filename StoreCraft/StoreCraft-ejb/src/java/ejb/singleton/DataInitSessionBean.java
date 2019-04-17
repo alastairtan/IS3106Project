@@ -94,9 +94,9 @@ public class DataInitSessionBean {
         try {
             staffEntityControllerLocal.createNewStaff(new StaffEntity("John", "Doe", "manager", "password", StaffTypeEnum.MANAGER, "http://www.gstatic.com/tv/thumb/persons/1805/1805_v9_bb.jpg"));
 
-            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "America", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
-            CustomerEntity c1 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Peter", "Parker", "peter@gmail.com", "password", "America", "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop"));
-            CustomerEntity c2 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Bruce", "Banner", "bruce@gmail.com", "password", "America", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtRb2rkBsxg1q60ki00KULSIqAS2SXmKTnObZO7qWQA7AV5pSbsg"));
+            CustomerEntity c = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Steve", "Rogers", "Steve@gmail.com", "password", "United States", "https://avatarfiles.alphacoders.com/130/130595.jpg"));
+            CustomerEntity c1 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Peter", "Parker", "peter@gmail.com", "password", "United States", "https://www.gannett-cdn.com/-mm-/51e30e00349d6f72262284dc0b87892012a4e819/c=1343-90-2398-883/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG?width=534&height=401&fit=crop"));
+            CustomerEntity c2 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Bruce", "Banner", "bruce@gmail.com", "password", "United States", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtRb2rkBsxg1q60ki00KULSIqAS2SXmKTnObZO7qWQA7AV5pSbsg"));
             CustomerEntity c3 = customerEntityControllerLocal.createNewCustomer(new CustomerEntity("Ant", "Man", "ant@gmail.com", "password", "Singapore", "https://images-na.ssl-images-amazon.com/images/I/61bJf%2B2Z%2BXL._SY741_.jpg"));
 
             List<Long> customerEntityIds = new ArrayList<>();
@@ -178,20 +178,20 @@ public class DataInitSessionBean {
             saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
             
             
-            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"America", "This is goal 1", "Goalllllllll", new BigDecimal(4), false);
+            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"United States", "1000 Points", "Lorem Ipsum Bla Bla Bla Bla", new BigDecimal(4), false);
 //            cge.setDescription("fsdfsd");
 //            cge.setGoalTitle("har");
 //            cge.setRewardPercentage(new BigDecimal(12));
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
-            CommunityGoalEntity cge2 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Frozen Throne", "For the Horde", "Fight for Azeroth and claim your prize", new BigDecimal(4), false);
+            CommunityGoalEntity cge2 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Malaysia", "For the Horde", "Fight for Azeroth and claim your prize", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge2, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             CommunityGoalEntity cge3 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Singapore", "Nazareth", "Rax All Their Bases", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge3, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
-            CommunityGoalEntity cge4 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"NBA", "Stephen Curry", "Three Pointers Only", new BigDecimal(4), false);
+            CommunityGoalEntity cge4 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"United States", "Stephen Curry", "Three Pointers Only", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge4, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            CommunityGoalEntity cge5 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Steps", "Steps is Today", "Vote for Us", new BigDecimal(4), false);
+            CommunityGoalEntity cge5 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Singapore", "Steps is Today", "Vote for Us", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge5, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
             
             reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );
