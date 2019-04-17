@@ -34,7 +34,7 @@
                 <div style="display:inline-block; margin-bottom: 2vw">
 
                   <star-rating [starType]="'svg'" [readOnly]="true" [rating]="averageRating" [showHalfStars]="true"
-                               labelText="({{numberOfRatings}} Reviews)" labelPosition="right"></star-rating>
+                               labelText="({{numberOfRatings}} {{numberOfRatings == 1 ? 'Review' : 'Reviews'}})" labelPosition="right"></star-rating>
                   <span *ngIf="numberOfRatings > 0"> Average Rating: {{averageRating | number:'0.0-2'}}/5.00 </span>
                   <span *ngIf="numberOfRatings == 0"> No Reviews Yet </span>
 

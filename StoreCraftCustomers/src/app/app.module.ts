@@ -55,6 +55,7 @@ import { LeaderboardTableComponent } from './leaderboard-table/leaderboard-table
 import { LeaderboardTableAllTimeComponent } from './leaderboard-table-all-time/leaderboard-table-all-time.component';
 import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-index/scavenger-hunt-winners-index.component';
 import { UserReviewTableComponent } from './user-review-table/user-review-table.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 
 
@@ -83,7 +84,8 @@ import { UserReviewTableComponent } from './user-review-table/user-review-table.
     LeaderboardTableComponent,
     LeaderboardTableAllTimeComponent,
     ScavengerHuntWinnersIndexComponent,
-    UserReviewTableComponent
+    UserReviewTableComponent,
+    SearchResultComponent
 
   ],
   imports: [

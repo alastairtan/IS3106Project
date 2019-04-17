@@ -7,21 +7,20 @@ import { throwError, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommunityGoalService {
-  baseUrl: string = "/api/CommunityGoal"
-  
+  baseUrl = '/api/CommunityGoal';
 
-  constructor(private httpClient: HttpClient) { 
-    
+
+  constructor(private httpClient: HttpClient) {
+
   }
 
   private handleError(error: HttpErrorResponse) {
-		let errorMessage: string = "";
+		let errorMessage = '';
 
 		if (error.error instanceof ErrorEvent) {
-			errorMessage = "An unknown error has occurred: " + error.error.message;
-		}
-		else {
-			errorMessage = "A HTTP error has occurred: " + `HTTP ${error.status}: ${error.error.message}`;
+			errorMessage = 'An unknown error has occurred: ' + error.error.message;
+		} else {
+			errorMessage = 'A HTTP error has occurred: ' + `HTTP ${error.status}: ${error.error.message}`;
 		}
 
 		console.error(errorMessage);
@@ -30,14 +29,14 @@ export class CommunityGoalService {
 	}
 
   retrieveCurrentCommunityGoalsByCountry(country: string): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentCommunityGoalsByCountry?country=" +country).pipe
+		return this.httpClient.get<any>(this.baseUrl + '/retrieveCurrentCommunityGoalsByCountry?country=' + country).pipe
 		(
 			catchError(this.handleError)
 		);
 	}
 
 	retrieveAllCommunityGoals(): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/retrieveAllCommunityGoals").pipe
+		return this.httpClient.get<any>(this.baseUrl + '/retrieveAllCommunityGoals').pipe
 		(
 			catchError(this.handleError)
 		);
