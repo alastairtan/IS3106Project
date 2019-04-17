@@ -15,6 +15,8 @@ import entity.ProductEntity;
 import entity.TagEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,11 +79,18 @@ public class CreateDiscountCodeManagedBean implements Serializable {
     private String condition;
     //************
 
+    private Date currentDate;
+    private Date minStartDate;
+    private Date afterStartDate;
+
     public CreateDiscountCodeManagedBean() {
         newDiscountCodeEntity = new DiscountCodeEntity();
         selectedCustomers = new ArrayList<>();
         selectedProducts = new ArrayList<>();
         dcTypeEnumIndex = -1;
+        currentDate = getToday();
+        minStartDate = currentDate;
+        afterStartDate = plusOneDay(minStartDate);
     }
 
     @PostConstruct
@@ -142,6 +151,45 @@ public class CreateDiscountCodeManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occured: " + ex.getMessage(), null));
         }
 
+    }
+
+    public Date getToday() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    public Date clearTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+        if (date != null) {
+            cal.setTime(date);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            return cal.getTime();
+        }
+        return new Date();
+    }
+
+    public Date plusOneDay(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        c.add(Calendar.DAY_OF_YEAR, 1);
+
+        return c.getTime();
+    }
+
+    public void update() {
+        minStartDate = clearTime(this.newDiscountCodeEntity.getStartDate());
+        System.out.print("GET MIN****" + minStartDate);
+        afterStartDate = plusOneDay(minStartDate);
+        System.out.print("GET AFTER****" + afterStartDate);
+        minStartDate = getToday();
     }
 
     public void generateDiscountCode(ActionEvent event) {
@@ -264,6 +312,30 @@ public class CreateDiscountCodeManagedBean implements Serializable {
 
     public void setDcTypeEnumIndex(Integer dcTypeEnumIndex) {
         this.dcTypeEnumIndex = dcTypeEnumIndex;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    public Date getMinStartDate() {
+        return minStartDate;
+    }
+
+    public void setMinStartDate(Date minStartDate) {
+        this.minStartDate = minStartDate;
+    }
+
+    public Date getAfterStartDate() {
+        return afterStartDate;
+    }
+
+    public void setAfterStartDate(Date afterStartDate) {
+        this.afterStartDate = afterStartDate;
     }
 
 }
