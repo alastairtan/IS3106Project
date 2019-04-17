@@ -10,11 +10,11 @@
     <td mat-cell *matCellDef="let review">
       <table class="table" style="vertical-align: middle">
         <tr>
-          <td>
+          <td style="width:50%">
             <img src="{{review.productEntity.productImageUrl}}" class="prodImage" 
             [routerLink]="['/product', review.productEntity.productId]">
           </td>
-          <td>
+          <td style="width:50%">
             <span [routerLink]="['/product', review.productEntity.productId]" class="prodName">
               {{review.productEntity.name}} 
             </span>
