@@ -26,18 +26,24 @@
 }
 
 .mat-elevate-z3 {
-    padding: 12px 12px 12px 12px;
+    /*padding: 12px 12px 12px 12px;*/
 }
 
 .firstTable {
-    padding: 12px 12px 12px 12px !important;
+    /*padding: 12px 12px 12px 12px !important;*/
 }
 
 .cardProducts {
     padding: 8px 8px 8px 8px !important;
 }
+
+.card{
+    background-image:url('https://mobirise.com/video-background/assets1/images/background6.jpg');
+    background-size: contain;
+}
+
 .content {
-    background-color: whitesmoke;
+    margin-top: 1vw;
 }
 .header {
     text-align: center;

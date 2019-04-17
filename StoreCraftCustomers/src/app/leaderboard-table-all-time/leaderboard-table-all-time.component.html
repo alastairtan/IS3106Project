@@ -7,12 +7,12 @@
   
     <ng-container matColumnDef="Points for Current Month">
       <th mat-header-cell *matHeaderCellDef> Total Points </th>
-      <td mat-cell *matCellDef="let c"> {{c.totalPoints}} </td>
+      <td mat-cell *matCellDef="let c"> {{c.totalPoints | number:'0.0-2'}} </td>
     </ng-container>
   
     <ng-container matColumnDef="Multiplier">
-      <th mat-header-cell *matHeaderCellDef> Multiplier </th>
-      <td mat-cell *matCellDef="let c"> {{c.multiplier}} </td>
+      <th mat-header-cell *matHeaderCellDef> Tier </th>
+      <td mat-cell *matCellDef="let c"> {{c.membershipTierEnum}} </td>
     </ng-container>
   
     <ng-container matColumnDef="table-header">

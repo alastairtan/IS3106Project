@@ -1,8 +1,8 @@
 <mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[2,4,8,12,16,20]"
   [pageIndex]="currentPage" (page)="handlePageEvent($event)" class="paginator mat-elevate-z4"></mat-paginator>
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container">
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container" style="padding-right: 24px">
 
-  <div class="sidebar mat-elevate-z3" fxFlex="0 1 20%" fxFlexOrder="1">
+  <div class="sidebar mat-elevate-z3" fxFlex="1 1 20%" fxFlexOrder="1">
     <mat-accordion style="height: 100%" displayMode="flat" multi="true">
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
@@ -84,7 +84,7 @@
     </mat-accordion>
   </div>
 
-  <div fxFlex fxFlexOrder="2">
+  <div fxFlex="1 1 80%" fxFlexOrder="2">
     <!-- <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start">
       <ng-container *ngFor="let product of viewProducts" class="card-item">
         <div fxFlex="1 1 25%" fxLayoutAlign="stretch">

@@ -98,7 +98,7 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
         customerEntities = customerEntityControllerLocal.retrieveAllCustomer();
         tagEntities = tagEntityControllerLocal.retrieveAllTags();
         this.selectedDiscountCodeEntity = (DiscountCodeEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("discountCodeEntityToUpdate");
-        minStartDate = this.selectedDiscountCodeEntity.getStartDate();
+        minStartDate = getToday();
         afterStartDate = plusOneDay(minStartDate);
         this.selectedCustomersUpdate = this.selectedDiscountCodeEntity.getCustomerEntities();
         this.selectedProductsUpdate = this.selectedDiscountCodeEntity.getProductEntities();
@@ -196,12 +196,21 @@ public class ViewUpdateDiscountCodeManagedBean implements Serializable {
         return c.getTime();
     }
 
+    public Date getToday() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+    
     public void update() {
         minStartDate = clearTime(this.selectedDiscountCodeEntity.getStartDate());
         System.out.print("GET MIN****" + minStartDate);
         afterStartDate = plusOneDay(minStartDate);
         System.out.print("GET AFTER****" + afterStartDate);
-        minStartDate = initialStartDate;
+        minStartDate = getToday();
     }
 
     public List<DiscountCodeEntity> getDiscountCodeEntities() {
