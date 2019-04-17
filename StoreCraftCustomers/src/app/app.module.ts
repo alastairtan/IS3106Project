@@ -25,6 +25,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
 import { MatBadgeModule } from '@angular/material/badge';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 
 
@@ -106,7 +107,8 @@ import { WriteReviewComponent } from './write-review/write-review.component';
     MatSortModule,
     TextFieldModule,
     StarRatingModule.forRoot(),
-    MatBadgeModule
+    MatBadgeModule,
+    AngularSvgIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],

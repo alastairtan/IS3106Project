@@ -4,8 +4,13 @@
       <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Search">
     </mat-form-field>
   </div>
--->
 
+<div fxLayout fxLayoutAlign="center center" class="maintitle">Community Goal></div>
+<div fxLayout fxLayoutAlign="center center">
+    <mat-card>
+        <img mat-card-image src="https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png">
+    </mat-card>
+</div>
   <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
     <mat-select placeholder="Filter By Country" panelClass="dropDownSelector" (selectionChange)="doFilter($event.value)">
@@ -33,14 +38,9 @@
         <mat-cell *matCellDef="let communitygoal"> {{communitygoal.description}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="targetPoints">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Target Points </mat-header-cell>
-        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.targetPoints}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="currentPoints">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Current Points </mat-header-cell>
-        <mat-cell *matCellDef="let communitygoal"> {{communitygoal.currentPoints}} </mat-cell>
+    <ng-container matColumnDef="percentageLeft">
+        <mat-header-cell *matHeaderCellDef > % Left </mat-header-cell>
+        <mat-progress-bar mode="determinate" value="{{communitygoal.targetPoints - communitygoal.currentPoints}}"></mat-progress-bar>
     </ng-container>
 
     <ng-container matColumnDef="startDate">
@@ -69,6 +69,59 @@
 
 </table>
 
-<mat-paginator [pageSize]="2" [pageSizeOptions]="[2, 4, 6, 10, 20]">
+<mat-paginator [pageSize]="7" [pageSizeOptions]="[7,14,21,28,35]">
 </mat-paginator>
+-->
 
+<div class="cardsCollection">
+
+    <div class ="row">
+
+        <div class="cardContainer" *ngFor="let communitygoal of communityGoals" >
+
+            <mat-card class="card">
+
+                <div class="image" 
+                    style="background-image: url(&quot;https://c1.iggcdn.com/indiegogo-media-prod-cld/image/upload/c_fill,f_auto,h_273,w_273/hq6t9qslbi7riql25waw.jpg&quot;);">
+                </div>
+
+                <mat-card-content class="cardContent">
+
+                    <div class="statusHeader">
+
+                        <span class="status">Ongoing</span>
+
+                    </div>
+
+                    <div class="title">{{communitygoal?.goalTitle}}</div>
+
+                    <div class="description">{{communitygoal?.description}}</div>
+
+                    <div class="country">{{communitygoal?.country}}</div>
+
+                    <div class="progressContainer">
+
+                        <div class="currentPoints">{{communitygoal?.currentPoints}}</div>
+                        <div class="point">Points Hit</div>
+                        <div class="percentageReached">Reward: {{communitygoal?.rewardPercentage}}%</div>
+                        
+                        
+                        
+                    </div>
+                    
+                    <div class="progress-bar" [ngStyle]="{'width.%':selected}">{{communitygoal.targetPoints}}%</div>
+                    <div class="dateContainer">
+
+                        <span class="endDate">End Date : {{communitygoal?.endDate | date }}</span>
+
+                    </div>
+
+                </mat-card-content>
+
+            </mat-card>
+
+        </div>
+
+    </div>
+
+</div>
