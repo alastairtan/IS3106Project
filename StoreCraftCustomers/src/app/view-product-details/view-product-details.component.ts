@@ -29,6 +29,7 @@ export class ViewProductDetailsComponent implements OnInit {
   private errorMessage: string;
   private productRating: number;
   currentCustomer: Customer;
+  private existInCart : boolean;
 
   //For Updating
   updatedReviewContent: string;
@@ -66,6 +67,7 @@ export class ViewProductDetailsComponent implements OnInit {
 
     this.productService.getProductId(productId).subscribe(response => {
       this.product = response.productEntity
+      this.checkExistInCart();
       this.currentCustomer = this.sessionService.getCurrentCustomer();
       this.scavengerHuntService.checkIfCustomerHasWonToday(
         this.currentCustomer.customerId).subscribe(response => {
@@ -74,6 +76,16 @@ export class ViewProductDetailsComponent implements OnInit {
     }, error => {
       this.errorMessage = error;
     })
+  }
+
+  checkExistInCart() {
+    let cartItems = this.localService.getCart();
+    if (cartItems != null) {
+      let existingCartItem = cartItems.find((cartItem) => cartItem.productEntity.productId == this.product.productId);
+      if (existingCartItem != null) {
+        this.existInCart = true;
+      }
+    }
   }
 
   format() {
@@ -111,11 +123,13 @@ export class ViewProductDetailsComponent implements OnInit {
       }
       else {
         cartItems.push(newCartItem);
+        this.existInCart = true;
       }
     }
     else {
       cartItems = [];
       cartItems.push(newCartItem);
+      this.existInCart = true;
     }
 
     if (newCartItem.quantity != 0) {
