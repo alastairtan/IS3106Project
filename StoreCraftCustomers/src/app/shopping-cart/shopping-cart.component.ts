@@ -18,19 +18,19 @@ import { Product } from '../product';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  //Initial Load
+  // Initial Load
   private cartItems: CartItem[];
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
   private customerDiscountCodes: DiscountCode[];
- 
 
-  //Checkout//
+
+  // Checkout//
   private currentSelectedDiscountCode: DiscountCode;
   private discountCodeToApply: DiscountCode;
-  private pointsToUse: number
-  
-  //Messages
+  private pointsToUse: number;
+
+  // Messages
   private infoMessage: string;
   private errorMessage: string;
   private removeMessage: string;
@@ -38,18 +38,18 @@ export class ShoppingCartComponent implements OnInit {
   private infoMessageClose: boolean;
   private errorMessageClose: boolean;
 
-  //For cart discount
+  // For cart discount
   applyingDiscountForCart: boolean;
   flatDiscountAmountForCart: number;
   rateDiscountAmountForCart: number;
 
-  //For indiv products discount
-  cartItemsCopy: CartItem[] //loaded initially, used to display new price, modify this to show discounted prices
+  // For indiv products discount
+  cartItemsCopy: CartItem[]; // loaded initially, used to display new price, modify this to show discounted prices
   applyingDiscountForItems: boolean;
   totalAmountDiscounted: number;
 
-  //For points slider
-  currentCustomer: Customer; //initial load as well
+  // For points slider
+  currentCustomer: Customer; // initial load as well
 
 
 
@@ -75,28 +75,28 @@ export class ShoppingCartComponent implements OnInit {
 
   retrieveDiscountCodesForCustomer(customerId: number) {
     this.discountCodeService.retrieveDiscountCodesForCustomer(customerId).subscribe(response => {
-      //console.log(response.discountCodeEntities);
+      // console.log(response.discountCodeEntities);
       this.customerDiscountCodes = this.filterDiscountCodes(response.discountCodeEntities);
-    })
+    });
   }
 
   loadCustomerData() {
-    this.retrieveDiscountCodesForCustomer(this.sessionService.getCurrentCustomer().customerId)
+    this.retrieveDiscountCodesForCustomer(this.sessionService.getCurrentCustomer().customerId);
     this.currentCustomer = this.sessionService.getCurrentCustomer();
   }
 
-  getMaxPointsAllowed() : number {
-    let remainingPoints : number = this.currentCustomer.remainingPoints;
-    if (!this.applyingDiscountForCart && !this.applyingDiscountForItems){
-      return remainingPoints < Math.floor(this.totalAmountForTheCart*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountForTheCart*0.5/0.05);
-    } else if (this.applyingDiscountForCart){
-      if (this.flatDiscountAmountForCart != null){
-        return remainingPoints < Math.floor((this.totalAmountForTheCart-this.flatDiscountAmountForCart)*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart-this.flatDiscountAmountForCart)*0.5/0.05);
-      } else if (this.rateDiscountAmountForCart != null){
-        return remainingPoints < Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart*(this.rateDiscountAmountForCart/100))*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart*(this.rateDiscountAmountForCart/100))*0.5/0.05);
-      } 
-    } else if (this.applyingDiscountForItems){
-      return remainingPoints < Math.floor(this.totalAmountDiscounted*0.5/0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountDiscounted*0.5/0.05);
+  getMaxPointsAllowed(): number {
+    const remainingPoints: number = this.currentCustomer.remainingPoints;
+    if (!this.applyingDiscountForCart && !this.applyingDiscountForItems) {
+      return remainingPoints < Math.floor(this.totalAmountForTheCart * 0.5 / 0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountForTheCart * 0.5 / 0.05);
+    } else if (this.applyingDiscountForCart) {
+      if (this.flatDiscountAmountForCart != null) {
+        return remainingPoints < Math.floor((this.totalAmountForTheCart - this.flatDiscountAmountForCart) * 0.5 / 0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart - this.flatDiscountAmountForCart) * 0.5 / 0.05);
+      } else if (this.rateDiscountAmountForCart != null) {
+        return remainingPoints < Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart * (this.rateDiscountAmountForCart / 100)) * 0.5 / 0.05) ? Math.floor(remainingPoints) : Math.floor((this.totalAmountForTheCart - this.totalAmountForTheCart * (this.rateDiscountAmountForCart / 100)) * 0.5 / 0.05);
+      }
+    } else if (this.applyingDiscountForItems) {
+      return remainingPoints < Math.floor(this.totalAmountDiscounted * 0.5 / 0.05) ? Math.floor(remainingPoints) : Math.floor(this.totalAmountDiscounted * 0.5 / 0.05);
     }
   }
 
@@ -122,7 +122,7 @@ export class ShoppingCartComponent implements OnInit {
       console.log(response);
       this.removeMessageClose = true;
       this.infoMessageClose = false;
-      this.infoMessage = "Thank you for shopping with us!";
+      this.infoMessage = 'Thank you for shopping with us!';
       this.localService.clearCart();
       this.cartItems = this.localService.getCart();
 
@@ -132,16 +132,16 @@ export class ShoppingCartComponent implements OnInit {
     }
     ), (error: string) => {
       this.errorMessage = error;
-      console.log("Error 500?? " + error);
-    }
+      console.log('Error 500?? ' + error);
+    };
   }
 
   updateCustomer(response) {
-    console.log("Enum: " + response.saleTransactionEntity.customerEntity.membershipTierEnum);
+    console.log('Enum: ' + response.saleTransactionEntity.customerEntity.membershipTierEnum);
 
-    let tierInfo = this.customerService.setTierInfo(response.saleTransactionEntity.customerEntity.membershipTierEnum);
+    const tierInfo = this.customerService.setTierInfo(response.saleTransactionEntity.customerEntity.membershipTierEnum);
 
-    console.log("Test");
+    console.log('Test');
     console.log(tierInfo.tierMessage);
     console.log(tierInfo.tierUrl);
     response.saleTransactionEntity.customerEntity.tierMessage = tierInfo.tierMessage;
@@ -169,7 +169,7 @@ export class ShoppingCartComponent implements OnInit {
     this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
   }
 
-  resetSelected(){
+  resetSelected() {
     this.rateDiscountAmountForCart = null;
     this.flatDiscountAmountForCart = null;
     this.applyingDiscountForCart = false;
@@ -179,11 +179,11 @@ export class ShoppingCartComponent implements OnInit {
   applyDiscountCode() {
     this.discountCodeToApply = JSON.parse(JSON.stringify(this.currentSelectedDiscountCode));
     if (this.discountCodeToApply != null) {
-      console.log("APPLY 1");
+      console.log('APPLY 1');
       if (this.discountCodeToApply.productEntities == null || this.discountCodeToApply.productEntities.length == 0) {
-        console.log("APPLY 2");
+        console.log('APPLY 2');
         this.applyDiscountCodeToShoppingCart();
-      } else { //for some products
+      } else { // for some products
         this.cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
         this.applyDiscountCodeToCartItems(this.discountCodeToApply, this.cartItemsCopy);
       }
@@ -191,100 +191,100 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   applyDiscountCodeToCartItems(discountCode: DiscountCode, cartItems: CartItem[]) {
-    let cartItemsToDiscount: CartItem[] = this.getCartItemsToApplyDiscountTo(discountCode, cartItems);
+    const cartItemsToDiscount: CartItem[] = this.getCartItemsToApplyDiscountTo(discountCode, cartItems);
 
     if (discountCode.discountCodeTypeEnum.toString() == 'FLAT') {
-      let discountAmount: number = discountCode.discountAmountOrRate;
+      const discountAmount: number = discountCode.discountAmountOrRate;
 
       cartItemsToDiscount.forEach(cartItem => {
         if (cartItem.subTotal - discountAmount > 0) {
           cartItem.subTotal = cartItem.subTotal - discountAmount;
-        } 
-      })
-    } else if (discountCode.discountCodeTypeEnum.toString() == 'PERCENTAGE'){
-      let discountRate: number = discountCode.discountAmountOrRate;
+        }
+      });
+    } else if (discountCode.discountCodeTypeEnum.toString() == 'PERCENTAGE') {
+      const discountRate: number = discountCode.discountAmountOrRate;
 
       cartItemsToDiscount.forEach(cartItem => {
-        let discountBy: number = cartItem.subTotal * discountRate;
+        const discountBy: number = cartItem.subTotal * discountRate;
 
         cartItem.subTotal = cartItem.subTotal - discountBy;
-      })
+      });
     }
     this.totalAmountDiscounted = this.cartItemsCopy.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
     this.applyingDiscountForItems = true;
   }
 
   getCartItemsToApplyDiscountTo(discountCode: DiscountCode, cartItems: CartItem[]) {
-    let cartItemsToDiscount: CartItem[] = [];
-    let discountCodeProducts = discountCode.productEntities;
-    //console.log(discountCodeProducts);
+    const cartItemsToDiscount: CartItem[] = [];
+    const discountCodeProducts = discountCode.productEntities;
+    // console.log(discountCodeProducts);
     discountCodeProducts.forEach(dcProduct => {
       cartItems.forEach(cartItem => {
         if (dcProduct.productId == cartItem.productEntity.productId) {
           cartItemsToDiscount.push(cartItem);
         }
-      })
-    })
-    //console.log(cartItemsToDiscount);
+      });
+    });
+    // console.log(cartItemsToDiscount);
     return cartItemsToDiscount;
   }
 
 
   applyDiscountCodeToShoppingCart() {
-    let discountCodeType = this.discountCodeToApply.discountCodeTypeEnum.toString();
+    const discountCodeType = this.discountCodeToApply.discountCodeTypeEnum.toString();
     console.log(discountCodeType);
     if (discountCodeType == 'FLAT') {
       this.rateDiscountAmountForCart = null;
       this.flatDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate;
     } else if (discountCodeType == 'PERCENTAGE') {
       this.flatDiscountAmountForCart = null;
-      this.rateDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate; //eg 5%
+      this.rateDiscountAmountForCart = this.discountCodeToApply.discountAmountOrRate; // eg 5%
     }
     this.applyingDiscountForCart = true;
   }
 
-  //DISCOUNT CODE FILTERING
+  // DISCOUNT CODE FILTERING
 
   getDiscountCodeMessage(discountCodeId: number): string {
-    //If discount code is for some products, return a string of which products
-    //If discount code is for all products, return a string of "ALL"
-    let message: string = "(";
+    // If discount code is for some products, return a string of which products
+    // If discount code is for all products, return a string of "ALL"
+    let message = '(';
 
-    let discountCodeToProcess: DiscountCode = this.customerDiscountCodes.find(dc =>
+    const discountCodeToProcess: DiscountCode = this.customerDiscountCodes.find(dc =>
       dc.discountCodeId == discountCodeId);
 
-    let discountCodeAmount = discountCodeToProcess.discountAmountOrRate;
+    const discountCodeAmount = discountCodeToProcess.discountAmountOrRate;
     if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'FLAT') {
-      message += this.format(discountCodeAmount) + " Off " //e.g. $5
+      message += this.format(discountCodeAmount) + ' Off '; // e.g. $5
     } else if (discountCodeToProcess.discountCodeTypeEnum.toString() == 'PERCENTAGE') {
-      message += discountCodeAmount + "% Off ";
+      message += discountCodeAmount + '% Off ';
     }
 
     if (discountCodeToProcess.productEntities == null || discountCodeToProcess.productEntities.length == 0) {
-      message += "Entire Cart)";
+      message += 'Entire Cart)';
       return message;
     }
 
-    let discountCodeProducts: Product[] = discountCodeToProcess.productEntities;
+    const discountCodeProducts: Product[] = discountCodeToProcess.productEntities;
 
-    //for each discount code product, check if product exists in shopping cart
+    // for each discount code product, check if product exists in shopping cart
     discountCodeProducts.forEach(dcProduct => {
 
       if (this.isDiscountCodeProductInCart(dcProduct.productId)) {
-        message += dcProduct.name + ", "
+        message += dcProduct.name + ', ';
       }
 
 
-    })
+    });
 
     message = message.slice(0, message.length - 2);
-    message += ")";
+    message += ')';
 
     return message;
   }
 
   isDiscountCodeProductInCart(dcProductId: number): boolean {
-    let foundCartItem: CartItem = this.cartItems.find(cartItem => cartItem.productEntity.productId == dcProductId);
+    const foundCartItem: CartItem = this.cartItems.find(cartItem => cartItem.productEntity.productId == dcProductId);
 
     if (foundCartItem != null) {
       return true;
@@ -293,14 +293,14 @@ export class ShoppingCartComponent implements OnInit {
     }
   }
 
-  //applicable if all of its products are in cart, or it is meant for all products
+  // applicable if all of its products are in cart, or it is meant for all products
   isDiscountCodeApplicable(discountCode: DiscountCode): boolean {
     if (discountCode.productEntities == null || discountCode.productEntities.length == 0) {
       return true;
     }
-    let discountCodeProducts: Product[] = discountCode.productEntities;
-    //console.log(discountCodeProducts);
-    //for each discount code product, check if product exists in shopping cart
+    const discountCodeProducts: Product[] = discountCode.productEntities;
+    // console.log(discountCodeProducts);
+    // for each discount code product, check if product exists in shopping cart
     for (let i = 0; i < discountCodeProducts.length; i++) {
       if (this.isDiscountCodeProductInCart(discountCodeProducts[i].productId)) {
         return true;
@@ -312,37 +312,37 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   filterOutInapplicableDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
-    //console.log(discountCodes);
+    // console.log(discountCodes);
     if (discountCodes != null) {
-      let filteredDiscountCodes: DiscountCode[] = discountCodes.filter(discountCode =>
+      const filteredDiscountCodes: DiscountCode[] = discountCodes.filter(discountCode =>
         this.isDiscountCodeApplicable(discountCode)
-      )
-      //console.log(filteredDiscountCodes);
+      );
+      // console.log(filteredDiscountCodes);
       return filteredDiscountCodes;
     }
 
   }
 
   filterValidDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
-    let now: Date = new Date();
-    let filteredDiscountCodes = [];
+    const now: Date = new Date();
+    const filteredDiscountCodes = [];
     discountCodes.forEach(discountCode => {
-      let endDate: Date = new Date(discountCode.endDate);
-      let startDate: Date = new Date(discountCode.startDate);
+      const endDate: Date = new Date(discountCode.endDate);
+      const startDate: Date = new Date(discountCode.startDate);
       if (endDate > now && startDate < now) {
-        filteredDiscountCodes.push(discountCode)
+        filteredDiscountCodes.push(discountCode);
       }
-    })
+    });
     return filteredDiscountCodes;
   }
 
   filterOutUnavailableDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
-    let filteredDiscountCodes = [];
+    const filteredDiscountCodes = [];
     discountCodes.forEach(discountCode => {
       if (discountCode.numAvailable > 0) {
         filteredDiscountCodes.push(discountCode);
       }
-    })
+    });
     return filteredDiscountCodes;
   }
 

@@ -59,7 +59,9 @@ export class ViewProductDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refresh();
+    this.activatedRoute.params.subscribe(params => {
+      this.refresh();
+    });
   }
 
   refresh() {

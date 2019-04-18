@@ -120,7 +120,9 @@ export class HeaderComponent implements OnInit {
           console.log(object[k]);
           let found = false;
           for (let i = 0; i < object[k].length; i++) {
-            if (this.objectPropertiesHasValue(object[k][i], searchString)) { found = true; }
+            if (this.objectPropertiesHasValue(object[k][i], searchString)) {
+              found = true;
+            }
           }
           return found;
         } else {
@@ -139,6 +141,20 @@ export class HeaderComponent implements OnInit {
 
   format(currency: number) {
     return (new Intl.NumberFormat('en-SG', {style: 'currency', currency: 'SGD'}).format(currency));
+  }
+
+  getSubCategoryListInclParent(category: Category): Category[] {
+    const categoryItems: Category[] = category.subCategoryEntities;
+    const categoryEmptied: Category = JSON.parse(JSON.stringify(category));
+    if (categoryItems.find(item => item.categoryId == categoryEmptied.categoryId) == null) {
+      categoryEmptied.subCategoryEntities = [];
+      categoryEmptied.name = 'All';
+      categoryItems.push(categoryEmptied);
+      console.log(categoryItems);
+      return categoryItems;
+    } else {
+      return categoryItems;
+    }
   }
 
 }

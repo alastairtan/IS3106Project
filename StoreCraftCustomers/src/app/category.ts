@@ -4,9 +4,11 @@ export class Category {
     name: string;
     description: string;
     parentCategoryEntity: Category;
+    subCategoryEntities: Category[];
 
-    constructor(categoryId?: number, name?: string, description?: string) {
+    constructor(categoryId?: number, name?: string, description?: string, subCategoryEntities?: Category[]) {
         this.categoryId = categoryId;
         this.name = name;
+        this.subCategoryEntities = subCategoryEntities;
     }
 }

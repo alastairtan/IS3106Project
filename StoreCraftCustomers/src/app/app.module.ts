@@ -25,7 +25,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
 import { MatBadgeModule } from '@angular/material/badge';
-import { NgAisModule } from 'angular-instantsearch';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
@@ -118,7 +117,6 @@ import { SearchResultComponent } from './search-result/search-result.component';
     TextFieldModule,
     StarRatingModule.forRoot(),
     MatBadgeModule,
-    NgAisModule.forRoot(),
     MatAutocompleteModule
   ],
   providers: [],

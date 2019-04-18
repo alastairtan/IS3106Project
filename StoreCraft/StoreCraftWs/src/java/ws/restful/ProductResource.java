@@ -212,7 +212,7 @@ public class ProductResource {
                     tag.getProductEntities().clear();
                 }
 
-                productEntity.setCategoryEntity(null);
+                clearChildToParentRelationship(productEntity.getCategoryEntity());
 
                 for (DiscountCodeEntity discountCode : productEntity.getDiscountCodeEntities()) {
                     discountCode.getProductEntities().clear();
@@ -243,6 +243,17 @@ public class ProductResource {
         } else {
             subCategory.getSubCategoryEntities().clear();
             System.out.println(subCategory.getName() + " " + subCategory.getSubCategoryEntities().size());
+        }
+    }
+    
+    private void clearChildToParentRelationship(CategoryEntity subCategory) { //so relationships are unidirectional, goes top-down
+        subCategory.setParentCategoryEntity(null);
+        subCategory.getProductEntities().clear();
+        if (subCategory.getSubCategoryEntities().isEmpty() || subCategory.getSubCategoryEntities() == null) {
+            return;
+        }
+        for (CategoryEntity c : subCategory.getSubCategoryEntities()) {
+            clearChildToParentRelationship(c);
         }
     }
     

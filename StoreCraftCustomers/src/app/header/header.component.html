@@ -119,7 +119,7 @@
                     {{category.name}}
                   <mat-icon>expand_more</mat-icon>
                 </button>
-                <app-category-menu-item #menu [categoryItems]="category.subCategoryEntities"></app-category-menu-item>
+                <app-category-menu-item #menu [categoryItems]="getSubCategoryListInclParent(category)"></app-category-menu-item>
             </span>
       <!-- Leaf node buttons here -->
             <span *ngIf="category.subCategoryEntities.length === 0">

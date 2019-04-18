@@ -1,0 +1,12 @@
+<div *ngIf="product != null" [routerLink]="['/product/', product?.productId]">
+  {{product?.name}} - <span style="color:#f44336">{{format(product.unitPrice)}}</span>
+  (Tags: <i>{{getTagEntityNamesForProduct(product)}}</i>)
+</div>
+
+<div *ngIf="category != null" [routerLink]="['/viewProductsByCategory/', category?.categoryId]">
+  Category: {{category?.name}}
+</div>
+
+<div *ngIf="communityGoal != null" [routerLink]="['/communitygoals']">
+  Community Goal: {{communityGoal?.goalTitle}} ({{communityGoal?.country}})
+</div>
