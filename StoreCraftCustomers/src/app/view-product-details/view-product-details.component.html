@@ -51,7 +51,7 @@
                   <button class="quantity" mat-raised-button
                           disabled="{{quantity >= product?.quantityOnHand}}" (click)="add()">+
                   </button>
-                  <span>&nbsp;&nbsp;(Stock: {{product.quantityOnHand}})</span>
+                  <span>&nbsp;&nbsp;(Stock: {{product?.quantityOnHand}})</span>
                 </div>
 
               </mat-card-content>
@@ -158,9 +158,8 @@
                               id="updateForm">
                           <mat-form-field class="replyContentField">
 
-                            <textarea matInput name="updateTextArea" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                                      cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" [(ngModel)]="updatedReviewContent"
-                                      (click)="$event.stopPropagation()" #updateTextContent="ngModel"
+                            <textarea matInput name="updateTextArea" [(ngModel)]="updatedReviewContent"
+                                      (keydown)="$event.stopPropagation()" #updateTextContent="ngModel"
                                       required></textarea>
 
                             <mat-error *ngIf="updateTextContent.errors?.required">
