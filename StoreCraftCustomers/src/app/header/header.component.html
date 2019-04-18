@@ -88,14 +88,6 @@
                   {{format(localService.getSubTotal())}}
                 </td>
               </tr>
-              <tr *ngIf="sessionService.getIsLogin() == true">
-                <td colspan="2">
-                  <button mat-button color="warn" style="width: 100%" (click)="localService.clearCart()">
-                    <mat-icon>remove_shopping_cart</mat-icon>
-                    Clear Cart
-                  </button>
-                </td>
-              </tr>
             </table>
           </mat-menu>
           <button mat-button [matMenuTriggerFor]="cartMenu" [matBadge]="localService.getNumCartItems()"
