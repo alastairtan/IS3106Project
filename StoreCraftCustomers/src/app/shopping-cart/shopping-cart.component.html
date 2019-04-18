@@ -1,5 +1,5 @@
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div fxFlex="1 1 100%">
+  <div fxFlex="1 1 100%" style="padding: 0!important">
     <div class="alert alert-primary messages" role="alert" *ngIf="cartItems == null && infoMessage == null">
       Your Cart is Empty! <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
@@ -12,7 +12,7 @@
       <button color="accent" mat-flat-button routerLink="/index">Continue Shopping</button>
     </div>
   </div>
-  <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1" *ngIf="cartItems != null">
+  <div class="mat-elevate-z3" fxFlex="1 1 98%" *ngIf="cartItems != null">
     <mat-card class="card">
 
       <mat-card-content>
@@ -36,7 +36,8 @@
                   </div>
 
                   <div fxFlex="1 1 30%">
-                    {{cartItem.productEntity.description}}
+                    {{cartItem.productEntity.description}}<br/><br/>
+                    <span class="stock">({{cartItem.productEntity.quantityOnHand}} items remaining)</span>
                   </div>
 
                   <div fxFlex="1 1 10%" class="priceCol">

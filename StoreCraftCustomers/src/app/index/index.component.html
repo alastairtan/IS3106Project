@@ -209,9 +209,9 @@
 
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
 
-  <div class="mat-elevate-z3" fxFlex="1 1 95%">
+  <div class="mat-elevate-z3" fxFlex="1 1 98%">
 
-    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center" style="margin: 0">
       <div fxFlex="1 1 100%" fxFlexOrder="1" fxLayoutAlign="center">
         <div id="carousel" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
@@ -249,33 +249,28 @@
       </div>
 
       <div class="mat-elevate-z3" fxFlex="1 1 100%" fxFlexOrder="2">
-        <mat-card class="card">
-          <mat-card-header class="header" style="text-align: center">
-            <mat-card-title>Uniquely StoreCraft</mat-card-title>
-          </mat-card-header>
-          <br>
-          <mat-divider></mat-divider>
+        <mat-card class="card" style="border-radius: 0">
 
           <div id="withinCard">
-          <mat-card-content class="content">
-            <!-- Community goal and scavenger hunt-->
-            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+            <mat-card-content class="content">
+              <!-- Community goal and scavenger hunt-->
+              <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start" style="padding: 12px">
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
-                <app-leaderboard-table></app-leaderboard-table>
-              </div>
+                <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                  <app-leaderboard-table></app-leaderboard-table>
+                </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
                   <app-leaderboard-table-all-time></app-leaderboard-table-all-time>
-              </div>
+                </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
-                <mat-card>
-                  <!--community goal-->
-                  <div fxLayout="row wrap">
+                <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+                  <mat-card style="opacity: 0.9; border-radius: 0">
+                    <!--community goal-->
+                    <div fxLayout="row wrap">
                       <div fxFlex="1 1 65%">Community Goal: ${{this.goalAmt}}</div>
                       <div fxFlex="1 1 35%">
-                        <mat-select [(ngModel)]="selected"  panelClass="dropDownSelector">
+                        <mat-select [(ngModel)]="selected" panelClass="dropDownSelector" style="text-align:right">
                           <mat-option *ngFor="let cg of communityGoals" [value]="(cg)" (click)="onClickChange()">
                             {{cg?.goalTitle}}
                           </mat-option>
@@ -283,40 +278,35 @@
                       </div>
                     </div>
                     <div fxLayoutAlign="center">
-                      <div class="progress md-progress">
-                        <div class="progress-bar" [ngStyle]="{'width.%':this.percentage}">{{this.percentage}}%</div>
+                      <div class="progress" style="border-radius: 20px">
+                        <div class="progress-bar" style="border-radius: 20px" [ngStyle]="{'width.%':this.percentage}">
+                          {{this.percentage | number:'0.0-2'}}%</div>
                       </div>
                     </div>
-                </mat-card>
+                  </mat-card>
+                </div>
+
+                <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
+
+                  <!--scavenger hunt-->
+                  <app-scavenger-hunt-winners-index></app-scavenger-hunt-winners-index>
+
+                </div>
               </div>
 
-              <div fxFlex="1 1 50%" class="mat-elevate-z3 firstTable">
-                
-                <!--scavenger hunt-->
-                <app-scavenger-hunt-winners-index></app-scavenger-hunt-winners-index>
-                
-              </div>
-
-
-
-              
-
-
-            </div>
-
-          </mat-card-content>
-        </div>
+            </mat-card-content>
+          </div>
         </mat-card>
       </div>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="center" class="cardProducts">
-        <ng-container *ngFor="let product of products" class="card-item cardProducts">
-          <app-product-card fxFlex="1 1 33%" [product]="product"></app-product-card>
-        </ng-container>
-      </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center" class="cardProducts">
+      <ng-container *ngFor="let product of products" class="card-item cardProducts">
+        <app-product-card fxFlex="1 1 25%" [product]="product"></app-product-card>
+      </ng-container>
     </div>
+
 
 
 

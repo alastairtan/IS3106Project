@@ -1,9 +1,8 @@
 .content{
-    display: flex;
+    display: block;
     justify-content: center;
     align-content: center;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
+    margin-bottom: 10px;
 }
 
 .mat-card-header{
@@ -17,9 +16,21 @@
     text-align: center;
     height:100%;
     align-content: flex-end;
+    cursor: pointer;
+}
+
+.card:hover{
+  transform: scale(1.02);
 }
 
 img{
-    height: 200px;
+    height: 150px;
     object-fit: contain;
+}
+
+.price{
+    color: #f44336; 
+    font-weight: bold; 
+    font-size: 2vw; 
+    margin-top: 14px;
 }

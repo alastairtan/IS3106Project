@@ -25,9 +25,8 @@ th.mat-header-cell {
     width: 100%;
     height: auto;
     position: relative;
-    opacity:1;
+    opacity:0.5;
 }
-
 
 .cardsCollection{
     margin-top: 40px;
@@ -59,7 +58,8 @@ th.mat-header-cell {
 }
 
 .cardBg{
-    background-color:whitesmoke;
+    background-image:url('/assets/images/wallpaper.jpg');
+    background-size: 100% 100%;
     margin-top: 1vw;
 }
 

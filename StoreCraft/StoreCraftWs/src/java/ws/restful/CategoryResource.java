@@ -44,8 +44,8 @@ public class CategoryResource {
 
             for (CategoryEntity rootCategoryEntity : rootCategoryEntities) {
 
-                    clearChildToParentRelationship(rootCategoryEntity);
-                
+                clearChildToParentRelationship(rootCategoryEntity);
+
             }
 
             return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(rootCategoryEntities)).build();
@@ -57,21 +57,46 @@ public class CategoryResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
+    @Path("retrieveAllCategoriesList")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllCategoriesList() {
+        try {
+
+            List<CategoryEntity> categoryEntities = categoryEntityControllerLocal.retrieveAllCategories();
+
+            for (CategoryEntity categoryEntity : categoryEntities) {
+
+                clearChildToParentRelationship(categoryEntity);
+
+            }
+
+            return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(categoryEntities)).build();
+
+        } catch (Exception ex) {
+
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
     @Path("retrieveCategoryByCategoryId")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveCategoryByCategoryId(@QueryParam("categoryId") Long categoryId){
-        try{
-            
+    public Response retrieveCategoryByCategoryId(@QueryParam("categoryId") Long categoryId) {
+        try {
+
             CategoryEntity category = categoryEntityControllerLocal.retrieveCategoryByCategoryId(categoryId);
-            
+
             clearChildToParentRelationship(category);
-            
+
             return Response.status(Status.OK).entity(new CategoryRsp(category)).build();
-                 
-        } catch (Exception ex){
+
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();

@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="topToolbar mat-elevation-z2">
 
-    <mat-toolbar-row class="topMenu">
+  <mat-toolbar-row class="topMenu">
         <span class="phone">
             <button mat-button disabled style="color:white; padding: 0">
                 <mat-icon>phone</mat-icon>&nbsp;&nbsp;+65 3106 3106
@@ -10,123 +10,131 @@
                 <mat-icon>email</mat-icon>&nbsp;&nbsp;support@storecraft.com
             </button>
         </span>
-        <div *ngIf="sessionService.getIsLogin() == false" class="topMenuButtons">
-            <button mat-button (click)="openDialog()">Login</button>
-            <button mat-button (click)="openRegisterDialog()">Register</button>
-        </div>
-        <div *ngIf="sessionService.getIsLogin() == true">
-            <button mat-button disabled style="color:white; padding: 0">
-                Welcome, {{sessionService.getCurrentCustomer()?.firstName 
-                        + " " + sessionService.getCurrentCustomer()?.lastName }}
-            </button>
-            <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer()?.customerId]">
-                <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
-            </button>
-            <button mat-button (click)="logout()">Logout</button>
-        </div>
-    </mat-toolbar-row>
+    <div *ngIf="sessionService.getIsLogin() == false" class="topMenuButtons">
+      <button mat-button (click)="openDialog()">Login</button>
+      <button mat-button (click)="openRegisterDialog()">Register</button>
+    </div>
+    <div *ngIf="sessionService.getIsLogin() == true">
+      <button mat-button disabled style="color:white; padding: 0">
+        Welcome, {{sessionService.getCurrentCustomer()?.firstName
+      + " " + sessionService.getCurrentCustomer()?.lastName }}
+      </button>
+      <button mat-button [routerLink]="['/profile', sessionService.getCurrentCustomer()?.customerId]">
+        <mat-icon>account_circle</mat-icon>&nbsp;&nbsp;Account
+      </button>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+  </mat-toolbar-row>
 
-    <mat-toolbar-row class="mainHeaderContent">
+  <mat-toolbar-row class="mainHeaderContent">
+    <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="40px grid" class="mainHeaderRow">
+      <div fxFlex="0 1 20%">
         <a class="sclogo" routerLink="/index">
-            <img style="height: 100%; width: auto" src="assets/images/scwhite.png" />
+          <img style="height: auto; width: 100%" src="assets/images/scwhite.png"/>
         </a>
-        <!--
-        <ais-instantsearch [config]="{
-    apiKey: 'c8154cb9be7f12cf578f5a7bfdd937b3',
-    appId: '0B4ODLCUAM',
-    indexName: 'StoreCraft',
-    routing: true
-  }">
-            <ais-search-box></ais-search-box>
-            <ais-hits>
-                <ng-template let-hits="hits">
-                    <div *ngFor="let hit of hits">
-                        {{hit.name}} <ais-highlight attribute="name" [hit]="hit">
-                        </ais-highlight>
-                    </div>
-                </ng-template>
-            </ais-hits>
-        </ais-instantsearch>
-    -->
-        <!--
-        <form class="search-form">
-            <input class="search-box" type="search" placeholder="Search" />
-            <mat-icon inline color="primary" style="width: auto">search</mat-icon>
-        </form>-->
+      </div>
 
-        <div class="shopping-cart-section">
-            <mat-menu #cartMenu="matMenu">
-                <table class="table" style="margin-bottom: 0 !important; vertical-align:center">
-                    <tr *ngIf="sessionService.getIsLogin() == true">
-                        <td>
-                            <strong>{{localService.getNumCartItems()}} Items</strong>
-                        </td>
-                        <td style="padding-right: 0">
-                            <a id="shoppingCartBtn" mat-button color="primary" style="width:90%"
-                                [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
-                                <mat-icon>shopping_cart</mat-icon>&nbsp;View Cart
-                            </a>
-                        </td>
-                    </tr>
-                    <tr *ngIf="sessionService.getIsLogin() == false">
-
-                        <td colspan="2">
-                            <button mat-button (click)="openDialog()">Login to see your cart</button>
-                        </td>
-
-                    </tr>
-                    <tr *ngFor="let cartItem of localService.getCart()" class="cartItems">
-                        <td>
-                            {{cartItem.productEntity.name}} ({{cartItem.quantity}})
-                        </td>
-                        <td class="rightCell">
-                            {{format(cartItem.subTotal)}}
-                        </td>
-                    </tr>
-                    <tr *ngIf="localService.getCart() != null">
-                        <td>
-                            <strong>Subtotal</strong>
-                        </td>
-                        <td class="rightCell">
-                            {{format(localService.getSubTotal())}}
-                        </td>
-                    </tr>
-                </table>
-            </mat-menu>
-            <button mat-button [matMenuTriggerFor]="cartMenu" [matBadge]="localService.getNumCartItems()"
-                matBadgeColor="accent">
-                <mat-icon>shopping_cart</mat-icon>&nbsp;Shopping Cart
-            </button>
+      <div fxFlex="0 1 60%" class="searchContainer">
+        <div class="searchBar">
+          <input matInput class="search-box" placeholder="Search" type="text"
+                 [matAutocomplete]="auto" [(ngModel)]="searchString" (keyup)="this.doFilter(searchString)">
+          <button mat-button *ngIf="searchString" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="searchString=''">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
-    </mat-toolbar-row>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let stuff of filteredStuff">
+            <app-search-result [object]="stuff"></app-search-result>
+          </mat-option>
+        </mat-autocomplete>
+      </div>
 
-    <mat-toolbar-row class="categoryNavbar">
-        <button mat-button routerLink="/index">
-            Home
-        </button>
-        <span *ngFor="let category of rootCategories">
+      <div fxFlex="0 1 20%" class="shopping-cart-section">
+        <div>
+          <mat-menu #cartMenu="matMenu">
+            <table class="table" style="margin-bottom: 0 !important; vertical-align:center">
+              <tr *ngIf="sessionService.getIsLogin() == true">
+                <td>
+                  <strong>{{localService.getNumCartItems()}} Items</strong>
+                </td>
+                <td style="padding-right: 0">
+                  <a id="shoppingCartBtn" mat-button color="primary" style="width:90%"
+                     [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
+                    <mat-icon>shopping_cart</mat-icon>&nbsp;View Cart
+                  </a>
+                </td>
+              </tr>
+              <tr *ngIf="sessionService.getIsLogin() == false">
+
+                <td colspan="2">
+                  <button mat-button (click)="openDialog()">Login to see your cart</button>
+                </td>
+
+              </tr>
+              <tr *ngFor="let cartItem of localService.getCart()" class="cartItems">
+                <td>
+                  {{cartItem.productEntity.name}} ({{cartItem.quantity}})
+                </td>
+                <td class="rightCell">
+                  {{format(cartItem.subTotal)}}
+                </td>
+              </tr>
+              <tr *ngIf="localService.getCart() != null">
+                <td>
+                  <strong>Subtotal</strong>
+                </td>
+                <td class="rightCell">
+                  {{format(localService.getSubTotal())}}
+                </td>
+              </tr>
+              <tr *ngIf="sessionService.getIsLogin() == true">
+                <td colspan="2">
+                  <button mat-button color="warn" style="width: 100%" (click)="localService.clearCart()">
+                    <mat-icon>remove_shopping_cart</mat-icon>
+                    Clear Cart
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </mat-menu>
+          <button mat-button [matMenuTriggerFor]="cartMenu" [matBadge]="localService.getNumCartItems()"
+                  matBadgeColor="accent">
+            <mat-icon>shopping_cart</mat-icon>&nbsp;Shopping Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar-row>
+
+
+  <mat-toolbar-row class="categoryNavbar">
+    <button mat-button routerLink="/index">
+      Home
+    </button>
+    <span *ngFor="let category of rootCategories">
             <!-- Handle branch node buttons here -->
             <span *ngIf="category.subCategoryEntities.length > 0">
                 <button mat-button [matMenuTriggerFor]="menu.childMenu" #menuTrigger="matMenuTrigger">
                     {{category.name}}
-                    <mat-icon>expand_more</mat-icon>
+                  <mat-icon>expand_more</mat-icon>
                 </button>
-                <app-category-menu-item #menu [categoryItems]="category.subCategoryEntities"></app-category-menu-item>
+                <app-category-menu-item #menu [categoryItems]="getSubCategoryListInclParent(category)"></app-category-menu-item>
             </span>
-            <!-- Leaf node buttons here -->
+      <!-- Leaf node buttons here -->
             <span *ngIf="category.subCategoryEntities.length === 0">
                 <button mat-button>
                     {{category.name}}
                 </button>
             </span>
         </span>
-        <button mat-button routerLink="/communitygoals">
-            Community Goals
-        </button>
-    </mat-toolbar-row>
+    <button mat-button routerLink="/communitygoals">
+      Community Goals
+    </button>
+  </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-menu #shoppingCartMenu="matMenu">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
+  <button mat-menu-item>Item 1</button>
+  <button mat-menu-item>Item 2</button>
 </mat-menu>

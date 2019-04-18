@@ -6,6 +6,7 @@
 package ejb.stateless;
 
 import entity.ProductEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewProductException;
@@ -49,5 +50,7 @@ public interface ProductEntityControllerLocal {
     public List<ProductEntity> retrieveRandomProducts();
 
     public List<ProductEntity> retrieveAllScavengerHuntProducts();
+
+    public BigDecimal[] getAverageRatingAndNumberOfRatingsForProduct(Long productId) throws ProductNotFoundException;
 
 }

@@ -1,27 +1,39 @@
-.content{
+.content {
     justify-content: center;
-    align-content: center;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-}
-.content2{
-    justify-content: center;
-    justify-items:center;
     align-content: center;
     margin-top: 1vw;
     margin-bottom: 1vw;
 }
 
-.leftCell{
+.content2 {
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+}
+
+.translucent {
+    opacity: 0.9;
+}
+
+.translucentCard{
+    opacity: 0.8;
+}
+
+.leftCell {
     text-align: left;
 }
 
-.table{
+.table {
     width: 100%;
     align-self: center;
 }
 
-.mat-card-header{
+mat-card{
+    border-radius: 0;
+}
+.mat-card-header {
     display: flex;
     align-content: center;
     align-items: center;
@@ -29,25 +41,37 @@
     justify-items: center;
 }
 
-.headerText{
-    margin-bottom: 0 !important;
-    font-size: 4vw;
-}
-.card{
-    text-align: center;
-    margin-top: 1vw;
+.mainHeader{
+    margin: -16px -16px -24px -16px !important;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 
-.formField{
+.headerText {
+    margin-bottom: 0 !important;
+    font-size: 4vw;
+    color: white;
+}
+
+.card {
+    text-align: center;
+    margin-top: 1vw;
+    background-image: url('/assets/images/UserProfileBackground.gif');
+    background-size: contain;
+}
+
+.formField {
     width: 90%;
 }
 
-.avatar{
+.avatar {
     height: 10vw;
     width: auto;
 }
 
-.avatar2{
+.avatar2 {
     height: 7vw;
     width: auto;
 }
+

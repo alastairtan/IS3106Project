@@ -1,6 +1,6 @@
 import { Category } from './category';
 
-export class Product{
+export class Product {
     productId: number;
     skuCode: string;
     name: string;
@@ -16,9 +16,9 @@ export class Product{
     tagEntities: object;
     reviewEntities: object;
 
-    constructor(skuCode?:string, name?:string, description?:string, quantityOnHand?:number,
-        reorderQuantity?:number, unitPrice?:number, isScavengerHuntPrize?:boolean, 
-        productImageUrl?:string ){
+    constructor(skuCode?: string, name?: string, description?: string, quantityOnHand?: number,
+        reorderQuantity?: number, unitPrice?: number, isScavengerHuntPrize?: boolean,
+        productImageUrl?: string ) {
 
         this.skuCode = skuCode;
         this.name = name;
@@ -27,6 +27,6 @@ export class Product{
         this.reorderQuantity = reorderQuantity;
         this.unitPrice = unitPrice;
         this.isScavengerHuntPrize = isScavengerHuntPrize;
-        this.productImageUrl = productImageUrl
+        this.productImageUrl = productImageUrl;
     }
 }

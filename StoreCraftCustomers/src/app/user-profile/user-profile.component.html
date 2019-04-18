@@ -1,8 +1,8 @@
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
-  <div class="mat-elevate-z3" fxFlex="1 1 90%" fxFlexOrder="1">
+  <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
     <mat-card class="card">
 
-      <mat-card-header class="header">
+      <mat-card-header class="mainHeader">
         <img mat-card-avatar class="avatar" src="{{customer.profilePicUrl}}">
         <mat-card-title class="headerText">{{customer.firstName + " " + customer.lastName}}</mat-card-title>
       </mat-card-header>
@@ -21,9 +21,9 @@
 
           <div fxFlex="1 1 50%" fxFlexOrder="1">
 
-            <mat-card>
+            <mat-card class="translucentCard">
               <mat-card-header>
-                <mat-card-title>Personal Information</mat-card-title>
+                <mat-card-title style="font-size: 2vw">Personal Information</mat-card-title>
               </mat-card-header>
               <mat-divider></mat-divider>
               <mat-card-content style="margin-top: 1vw; margin-bottom: 0">
@@ -72,10 +72,10 @@
 
           <div fxFlex="1 1 50%" fxFlexOrder="2">
 
-              <mat-card>
+              <mat-card class="translucentCard">
                 <mat-card-header class="header2">
                   <img mat-card-avatar class="avatar2" src="{{customer.tierUrl}}">
-                  <mat-card-title><strong>TIER: </strong>{{customer.membershipTierEnum}}</mat-card-title>
+                  <mat-card-title style="font-size:2vw"><strong>TIER: </strong>{{customer.membershipTierEnum}}</mat-card-title>
                   <mat-card-subtitle style="margin-bottom: 0">{{customer.tierMessage}}</mat-card-subtitle>
                 </mat-card-header>
   
@@ -106,18 +106,18 @@
 
 
           <div fxFlex="1 1 50%" fxFlexOrder="3">
-              <app-sale-transaction-history [customerId]="customer.customerId"></app-sale-transaction-history>
+              <app-sale-transaction-history class="translucent " [customerId]="customer.customerId"></app-sale-transaction-history>
           </div>
 
           <div fxFlex="1 1 50%" fxFlexOrder="4">
 
-            <app-discount-code-table [customerId]="customer.customerId"></app-discount-code-table>
+            <app-discount-code-table class="translucent " [customerId]="customer.customerId"></app-discount-code-table>
 
           </div>
 
           <div fxFlex="1 1 100%" fxFlexOrder="5">
            
-            <app-user-review-table [customerId]="customer.customerId"></app-user-review-table>
+            <app-user-review-table class="translucent " [customerId]="customer.customerId"></app-user-review-table>
           </div>
 
 

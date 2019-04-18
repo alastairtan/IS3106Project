@@ -58,7 +58,7 @@ export class IndexComponent implements OnInit {
     
     this.productService.getRandomProductsForIndexPage().subscribe(
 			response => {
-        this.products = response.productEntities;
+        this.products = response.productEntities.slice(0, 8)
         console.log('inside index.component.ts!' + this.products.length);
 			},
 			error => {

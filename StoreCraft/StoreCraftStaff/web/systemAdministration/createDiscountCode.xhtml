@@ -40,12 +40,14 @@
                             <p:panelGrid columns="3" columnClasses="ui-g-2, ui-g-5, ui-g-5" layout="grid" style="width:100%">
 
                                 <p:outputLabel  value="Start Date: " />
-                                <p:datePicker id="startDate" value="#{createDiscountCodeManagedBean.newDiscountCodeEntity.startDate}" 
-                                              required="true" requiredMessage="Start date required"/>
+                                <p:datePicker id="startDate" value="#{createDiscountCodeManagedBean.newDiscountCodeEntity.startDate}" onselect="#{createDiscountCodeManagedBean.update()}" mindate="#{createDiscountCodeManagedBean.minStartDate}"
+                                              required="true" requiredMessage="Start date required">
+                                    <p:ajax event="dateSelect" update="startDate endDate" listener="#{createDiscountCodeManagedBean.update}"/>
+                                </p:datePicker>
                                 <p:message for="startDate" />
 
                                 <p:outputLabel  value="End Date: " />
-                                <p:datePicker id="endDate" value="#{createDiscountCodeManagedBean.newDiscountCodeEntity.endDate}" 
+                                <p:datePicker id="endDate" value="#{createDiscountCodeManagedBean.newDiscountCodeEntity.endDate}" onselect="#{createDiscountCodeManagedBean.update()}" mindate="#{createDiscountCodeManagedBean.afterStartDate}"
                                               required="true" requiredMessage="End date required" />
                                 <p:message for="endDate" />
 

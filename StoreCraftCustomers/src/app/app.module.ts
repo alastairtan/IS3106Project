@@ -25,7 +25,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { StarRatingModule } from 'angular-star-rating';
 import { MatBadgeModule } from '@angular/material/badge';
-import { NgAisModule } from 'angular-instantsearch';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
@@ -55,6 +54,7 @@ import { LeaderboardTableComponent } from './leaderboard-table/leaderboard-table
 import { LeaderboardTableAllTimeComponent } from './leaderboard-table-all-time/leaderboard-table-all-time.component';
 import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-index/scavenger-hunt-winners-index.component';
 import { UserReviewTableComponent } from './user-review-table/user-review-table.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 
 
@@ -83,7 +83,8 @@ import { UserReviewTableComponent } from './user-review-table/user-review-table.
     LeaderboardTableComponent,
     LeaderboardTableAllTimeComponent,
     ScavengerHuntWinnersIndexComponent,
-    UserReviewTableComponent
+    UserReviewTableComponent,
+    SearchResultComponent
 
   ],
   imports: [
@@ -116,7 +117,6 @@ import { UserReviewTableComponent } from './user-review-table/user-review-table.
     TextFieldModule,
     StarRatingModule.forRoot(),
     MatBadgeModule,
-    NgAisModule.forRoot(),
     MatAutocompleteModule
   ],
   providers: [],

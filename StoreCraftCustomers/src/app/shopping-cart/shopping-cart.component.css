@@ -77,7 +77,6 @@ p {
 }
 
 .card{
-    margin-top: 1vw;
     background-color: whitesmoke;
 }
 
@@ -111,4 +110,8 @@ td{
 .discountedPrice{
     color: #f57224; 
     font-size: 2vw;
+}
+
+.stock{
+    color: darkgray;
 }
