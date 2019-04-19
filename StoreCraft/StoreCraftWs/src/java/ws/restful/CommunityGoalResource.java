@@ -9,6 +9,7 @@ import datamodel.ws.rest.CommunityGoalRsp;
 import datamodel.ws.rest.ErrorRsp;
 import ejb.stateless.CommunityGoalEntityControllerLocal;
 import entity.CommunityGoalEntity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,10 +54,16 @@ public class CommunityGoalResource {
     {
         try {
             List<CommunityGoalEntity> communityGoalEntities = communityGoalEntityController.retrieveAllCommunityGoals();
-        
-            for(CommunityGoalEntity communityGoalEntity : communityGoalEntities) 
+            List<CommunityGoalEntity> copy = new ArrayList();
+            copy.addAll(communityGoalEntities);
+            
+            for(CommunityGoalEntity communityGoalEntity : copy) 
             {
-                communityGoalEntity.getStaffEntity().getCommunityGoalEntities().clear();
+                if (communityGoalEntity.getEndDate().before(new Date()) ) {
+                    communityGoalEntities.remove(communityGoalEntity);
+                } else {
+                    communityGoalEntity.getStaffEntity().getCommunityGoalEntities().clear();
+                }
             }
 
             CommunityGoalRsp communityGoalRsp = new CommunityGoalRsp(communityGoalEntities);

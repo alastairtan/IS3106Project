@@ -42,7 +42,7 @@
 
                 <h3 class="price">{{format()}}</h3>
 
-                <div class="quantityAdjust">
+                <div class="quantityAdjust" *ngIf="product?.quantityOnHand > 0">
                   <span class="quantityWord">Quantity: </span>&nbsp;&nbsp;&nbsp;&nbsp;
                   <button class="quantity" mat-raised-button disabled="{{quantity==0}}"
                           (click)="minus()">-
@@ -53,13 +53,17 @@
                   </button>
                   <span>&nbsp;&nbsp;(Stock: {{product?.quantityOnHand}})</span>
                 </div>
+                <div *ngIf="product?.quantityOnHand == 0">
+                  <p class="outOfStock">Product of stock</p>
+                </div>
 
               </mat-card-content>
-              <mat-card-actions>
-                <button *ngIf="currentCustomer!=null" mat-raised-button color="accent" (click)="addToCart()"
-                        disabled="{{quantity == 0}}">
-                  Add to Cart
-                </button>
+              <mat-card-actions *ngIf="product?.quantityOnHand > 0">
+                <button *ngIf="currentCustomer!=null && !existInCart" mat-raised-button color="accent" (click)="addToCart()" disabled="{{quantity == 0}}">
+                  Add to Cart</button>
+                <button *ngIf="currentCustomer!=null && existInCart" mat-raised-button color="primary"
+                [routerLink]="['/cart', sessionService.getCurrentCustomer()?.customerId]">
+                    Go to cart</button>
                 <button *ngIf="currentCustomer==null" mat-raised-button color="primary" (click)="openDialog()">Login To
                   Purchase
                 </button>

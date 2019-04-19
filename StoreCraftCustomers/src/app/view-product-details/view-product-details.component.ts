@@ -30,6 +30,7 @@ export class ViewProductDetailsComponent implements OnInit {
   private averageRating: number;
   private numberOfRatings: number;
   currentCustomer: Customer;
+  private existInCart : boolean;
 
   // For Updating
   updatedReviewContent: string;
@@ -69,7 +70,8 @@ export class ViewProductDetailsComponent implements OnInit {
     const productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
 
     this.productService.getProductId(productId).subscribe(response => {
-      this.product = response.productEntity;
+      this.product = response.productEntity
+      this.checkExistInCart();
       this.currentCustomer = this.sessionService.getCurrentCustomer();
       this.scavengerHuntService.checkIfCustomerHasWonToday(
         this.currentCustomer.customerId).subscribe(response => {
@@ -82,6 +84,16 @@ export class ViewProductDetailsComponent implements OnInit {
     }, error => {
       this.errorMessage = error;
     });
+  }
+
+  checkExistInCart() {
+    let cartItems = this.localService.getCart();
+    if (cartItems != null) {
+      let existingCartItem = cartItems.find((cartItem) => cartItem.productEntity.productId == this.product.productId);
+      if (existingCartItem != null) {
+        this.existInCart = true;
+      }
+    }
   }
 
   format() {
@@ -118,10 +130,12 @@ export class ViewProductDetailsComponent implements OnInit {
         cartItems[index].quantity += newCartItem.quantity;
       } else {
         cartItems.push(newCartItem);
+        this.existInCart = true;
       }
     } else {
       cartItems = [];
       cartItems.push(newCartItem);
+      this.existInCart = true;
     }
 
     if (newCartItem.quantity != 0) {
@@ -201,10 +215,8 @@ export class ViewProductDetailsComponent implements OnInit {
           response => {
 
             console.log(response.scavengerHuntEntity.rewardTypeEnum);
-
-            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_FLAT') {
-              this.prizeClaimMessage = 'You have won a flat rate discount code! Check your profile to see the discount code!';
-            } else if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
+            
+            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
               this.prizeClaimMessage = 'You have won a percentage discount code from the scavenger hunt! Check your profile to see the discount code!';
             } else if (response.scavengerHuntEntity.rewardTypeEnum == 'POINTS') {
               this.prizeClaimMessage = 'You have won points from the scavenger hunt! Check your profile to see the discount code!';
