@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
 import {CategoryService} from '../category.service';
 import {Category} from '../category';
 import {SessionService} from '../session.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {RegisterDialogComponent} from '../register-dialog/register-dialog.component';
 import {LocalService} from '../local.service';
 import {ProductService} from '../product.service';
@@ -57,7 +57,13 @@ export class HeaderComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(LoginDialogComponent, {});
+    const dialogRef = this.dialog.open(LoginDialogComponent,
+      {
+        height: '400px',
+        width: '300px',
+        panelClass: 'loginBg',
+        autoFocus: true
+      });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

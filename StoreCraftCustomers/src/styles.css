@@ -11,3 +11,9 @@ html {
   max-width: 100%;
   overflow-x:hidden;
 }
+
+.mat-dialog-container{
+  background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+  opacity: 0.97;
+}
+
