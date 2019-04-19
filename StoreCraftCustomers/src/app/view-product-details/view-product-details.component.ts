@@ -215,10 +215,8 @@ export class ViewProductDetailsComponent implements OnInit {
           response => {
 
             console.log(response.scavengerHuntEntity.rewardTypeEnum);
-
-            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_FLAT') {
-              this.prizeClaimMessage = 'You have won a flat rate discount code! Check your profile to see the discount code!';
-            } else if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
+            
+            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
               this.prizeClaimMessage = 'You have won a percentage discount code from the scavenger hunt! Check your profile to see the discount code!';
             } else if (response.scavengerHuntEntity.rewardTypeEnum == 'POINTS') {
               this.prizeClaimMessage = 'You have won points from the scavenger hunt! Check your profile to see the discount code!';

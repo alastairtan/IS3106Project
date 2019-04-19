@@ -23,7 +23,6 @@ export class CommunityGoalsComponent implements OnInit {
   errorMessage: String;
   originalCommunityGoals: CommunityGoal[];
 
-
   constructor(public sessionService: SessionService,
               public communityGoalService: CommunityGoalService,
               public countryService: CountryService,
@@ -34,6 +33,11 @@ export class CommunityGoalsComponent implements OnInit {
     this.communityGoalService.retrieveAllCommunityGoals().subscribe(
       response => {
         this.communityGoals = response.communityGoalEntities;
+
+        // Moved the processing to backend
+        // this.communityGoals = this.communityGoals.filter(communityGoal => communityGoal.completed || 
+        //   (new Date(Date.parse(`${communityGoal.endDate}`)) > new Date) )
+
         this.originalCommunityGoals = this.communityGoals;
         for (const communityGoal of this.communityGoals) {
           if (this.communityGoals.length != 0) {

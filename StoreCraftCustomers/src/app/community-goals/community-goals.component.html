@@ -110,7 +110,8 @@
 
                                 <div class="statusHeader">
 
-                                    <span class="status">Ongoing</span>
+                                    <span class="status" *ngIf="!communitygoal.completed">Ongoing</span>
+                                    <span class="status" *ngIf="communitygoal.completed">Completed</span>
 
                                 </div>
 
@@ -141,7 +142,7 @@
                                     </div>
                                     <div class="dateContainer">
 
-                                        <span class="endDate">End Date : {{communitygoal?.endDate | date }}</span>
+                                        <span class="endDate" *ngIf="!communitygoal.completed">End Date : {{communitygoal?.endDate | date }}</span>
 
                                     </div>
 

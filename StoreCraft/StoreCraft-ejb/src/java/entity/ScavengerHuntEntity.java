@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -60,8 +61,8 @@ public class ScavengerHuntEntity implements Serializable {
         this();
         this.scavengerHuntDate = scavengerHuntDate;     
         this.numWinnersRemaining = numWinnersRemaining;
-        int index = (int) (Math.random() * 3);
-        this.rewardTypeEnum = RewardTypeEnum.values()[index]; //randomly select reward type 
+        Random rand = new Random();
+        this.rewardTypeEnum = RewardTypeEnum.values()[rand.ints(0, 1+1).limit(1).findFirst().getAsInt()]; //randomly select reward type 
     }
 
     public Long getScavengerHuntId() {

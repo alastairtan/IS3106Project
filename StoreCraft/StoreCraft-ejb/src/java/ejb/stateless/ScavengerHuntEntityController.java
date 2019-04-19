@@ -193,55 +193,31 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
                 Set<ConstraintViolation<DiscountCodeEntity>>constraintViolations;
                 
                 customerIds.add(customerId);                
-                    
-                switch(scavengerHuntEntity.getRewardTypeEnum()) 
+
+                // 5 - 10% percentage discount
+                discountAmount = new BigDecimal(rand.ints(5, 10+1).limit(1).findFirst().getAsInt());
+
+                System.out.println("Discount amount percentage: " + discountAmount);
+
+                discountCodeEntity = new DiscountCodeEntity(currentDate, endDate, 1, discountCode, DiscountCodeTypeEnum.PERCENTAGE, discountAmount);
+
+                constraintViolations = validator.validate(discountCodeEntity);
+
+                if ( constraintViolations.isEmpty() ) {
+
+                discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
+
+                } 
+                else 
                 {
-                    case DISCOUNT_CODE_FLAT:
-                        
-                        // 10 - 20 dollars flat rate discount
-                        discountAmount = new BigDecimal(rand.ints(10, 20+1).limit(1).findFirst().getAsInt());
-                        System.out.println("Discount amount flat: " + discountAmount);
-                        
-                        discountCodeEntity = new DiscountCodeEntity(currentDate, endDate, 1, discountCode, DiscountCodeTypeEnum.FLAT, discountAmount);
-                        
-                        constraintViolations = validator.validate(discountCodeEntity);
-                        
-                        if ( constraintViolations.isEmpty() ) {
-                            discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
-                        }
-                        else 
-                        {
-                            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageDC(constraintViolations));
-                        }
-
-                        break;
-                        
-                    case DISCOUNT_CODE_PERCENTAGE:
-                        
-                        // 5 - 10% percentage discount
-                        discountAmount = new BigDecimal(rand.ints(5, 10+1).limit(1).findFirst().getAsInt());
-                        
-                        System.out.println("Discount amount percentage: " + discountAmount);
-
-                        discountCodeEntity = new DiscountCodeEntity(currentDate, endDate, 1, discountCode, DiscountCodeTypeEnum.PERCENTAGE, discountAmount);
-                        
-                        constraintViolations = validator.validate(discountCodeEntity);
-                        
-                        if ( constraintViolations.isEmpty() ) {
-                        
-                        discountCodeEntityControllerLocal.createNewDiscountCode(discountCodeEntity, customerIds, productIds);
-                        
-                        } 
-                        else 
-                        {
-                            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageDC(constraintViolations));
-                        }
-                        break;   
+                    throw new InputDataValidationException(prepareInputDataValidationErrorsMessageDC(constraintViolations));
                 }
             } 
             else
             {
                 BigDecimal rewardPoint = new BigDecimal(rand.ints(50, 100+1).limit(1).findFirst().getAsInt());
+                
+                System.out.println(rewardPoint);
 
                 customerEntityFromDb.setPointsForCurrentMonth(customerEntityFromDb.getPointsForCurrentMonth().add(rewardPoint));
                 customerEntityFromDb.setRemainingPoints(customerEntityFromDb.getRemainingPoints().add(rewardPoint));
