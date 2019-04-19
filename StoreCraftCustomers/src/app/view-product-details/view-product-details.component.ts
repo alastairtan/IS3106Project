@@ -30,7 +30,7 @@ export class ViewProductDetailsComponent implements OnInit {
   private averageRating: number;
   private numberOfRatings: number;
   currentCustomer: Customer;
-  private existInCart : boolean;
+  private existInCart: boolean;
 
   // For Updating
   updatedReviewContent: string;
@@ -70,16 +70,18 @@ export class ViewProductDetailsComponent implements OnInit {
     const productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
 
     this.productService.getProductId(productId).subscribe(response => {
-      this.product = response.productEntity
+      this.product = response.productEntity;
       this.checkExistInCart();
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
-      this.scavengerHuntService.checkIfCustomerHasWonToday(
-        this.currentCustomer.customerId).subscribe(response => {
-        this.canCustomerWin = !response.hasCustomerWonToday;
-      });
+      if (this.sessionService.getIsLogin() == true) {
+        this.currentCustomer = this.sessionService.getCurrentCustomer();
+        this.scavengerHuntService.checkIfCustomerHasWonToday(
+          this.currentCustomer.customerId).subscribe(response => {
+          this.canCustomerWin = !response.hasCustomerWonToday;
+        });
+      }
       this.productService.getRatingInfoForProduct(this.product.productId).subscribe(response => {
-          this.averageRating = response.result[0];
-          this.numberOfRatings = response.result[1];
+        this.averageRating = response.result[0];
+        this.numberOfRatings = response.result[1];
       });
     }, error => {
       this.errorMessage = error;
@@ -176,7 +178,7 @@ export class ViewProductDetailsComponent implements OnInit {
     console.log('onClick $event: ', $event);
     this.updatedProductRating = $event.rating;
     console.log('UPDATED: ' + this.updatedProductRating);
-  }
+  };
 
   writeReview() {
     this.isWriting = true;
@@ -215,7 +217,7 @@ export class ViewProductDetailsComponent implements OnInit {
           response => {
 
             console.log(response.scavengerHuntEntity.rewardTypeEnum);
-            
+
             if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
               this.prizeClaimMessage = 'You have won a percentage discount code from the scavenger hunt! Check your profile to see the discount code!';
             } else if (response.scavengerHuntEntity.rewardTypeEnum == 'POINTS') {

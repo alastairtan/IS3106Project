@@ -12,6 +12,10 @@
     height: 100px;
 }
 
+mat-card-title{
+  font-size: 15px !important;
+}
+
 .card{
     text-align: center;
     height:100%;
@@ -24,7 +28,7 @@
 }
 
 img{
-    height: 150px;
+    height: 200px;
     object-fit: contain;
 }
 

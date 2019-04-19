@@ -1,8 +1,7 @@
 .productImage {
     width: 100%;
-    height: 450px;
     border-radius: 4px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .productDetailsContainer {

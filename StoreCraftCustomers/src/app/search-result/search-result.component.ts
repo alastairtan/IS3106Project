@@ -56,7 +56,7 @@ export class SearchResultComponent implements OnInit {
   getTagEntityNamesForProduct(product: Product) {
     // @ts-ignore
     if (product.tagEntities == null || product.tagEntities.length == 0) {
-      return;
+      return '- ';
     }
 
     let names: String = '';
