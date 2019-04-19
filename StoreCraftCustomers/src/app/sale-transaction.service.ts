@@ -45,7 +45,9 @@ export class SaleTransactionService {
 
       return this.httpClient.put<any>(this.baseUrl + "/createSaleTransaction", saleTransactionReq, httpOptions).pipe
       (
-        catchError(this.handleError)
+        catchError(error => {
+           return JSON.stringify(error.status)
+        })
       )
   }
 
@@ -55,7 +57,7 @@ export class SaleTransactionService {
     + this.sessionService.getCurrentCustomer().customerId).pipe
     (
       catchError(this.handleError)
-    );
+    )
   }
 
 

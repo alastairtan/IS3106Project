@@ -8,6 +8,7 @@ import { CustomerService } from '../customer.service';
 import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
 import { DiscountCode } from '../discount-code';
 import { DiscountCodeService } from '../discount-code.service';
+import { ProductService } from '../product.service';
 import { Customer } from '../customer';
 import { Product } from '../product';
 
@@ -24,7 +25,6 @@ export class ShoppingCartComponent implements OnInit {
   private totalQuantityForTheCart: number;
   private customerDiscountCodes: DiscountCode[];
 
-
   // Checkout//
   private currentSelectedDiscountCode: DiscountCode;
   private discountCodeToApply: DiscountCode;
@@ -37,6 +37,9 @@ export class ShoppingCartComponent implements OnInit {
   private removeMessageClose: boolean;
   private infoMessageClose: boolean;
   private errorMessageClose: boolean;
+  private updateMessages = [];
+  private autoRemoveMessages = [];
+
 
   // For cart discount
   applyingDiscountForCart: boolean;
@@ -57,16 +60,71 @@ export class ShoppingCartComponent implements OnInit {
     private saleTransactionService: SaleTransactionService,
     private sessionService: SessionService,
     private customerService: CustomerService,
-    private discountCodeService: DiscountCodeService) {
+    private discountCodeService: DiscountCodeService,
+    private productService: ProductService) {
     this.applyingDiscountForCart = false;
     this.pointsToUse = 0;
   }
 
   ngOnInit() {
     this.cartItems = this.localService.getCart();
+    // this.cartItems.filter() --> to remove item that is no longer available (e.g. deleted)
+    if (this.cartItems != null) {
+
+      let products;
+
+      this.productService.getAllProducts().subscribe(response => {
+        products = response.productEntities.filter(product => this.cartItems.find(cartItem =>
+          cartItem.productEntity.productId == product.productId) != null)
+
+        console.log("Product");
+        console.log(products);
+        let cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
+
+        this.cartItems.forEach(cartItem => {
+
+          let product = products.find(product => product.productId == cartItem.productEntity.productId);
+          let productQtyOnHand = product.quantityOnHand;
+
+          console.log("How many times");
+          console.log(product);
+
+          if (cartItem.quantity > productQtyOnHand) {
+            console.log("**** if")
+            if (productQtyOnHand != 0) {
+              cartItem.quantity = productQtyOnHand;
+              cartItem.subTotal = productQtyOnHand * cartItem.unitPrice;
+              cartItem.productEntity.quantityOnHand = productQtyOnHand;
+              this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+              this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+              this.updateMessages.push(`Quantity of product ${product.name} in cart has been adjust to ${productQtyOnHand} due to limited stock`);
+              console.log("This is messages: " + this.updateMessages);
+              console.log(this.updateMessages.length)
+            } else {
+              cartItemsCopy.splice(cartItemsCopy.indexOf(cartItem), 1);
+              console.log(this.cartItems);
+              console.log(cartItemsCopy);
+              this.autoRemoveMessages.push(`Product ${cartItem.productEntity.name} has been removed from cart due to lack of stock`);
+              console.log(this.autoRemoveMessages);
+              this.totalAmountForTheCart = cartItemsCopy.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+              this.totalQuantityForTheCart = cartItemsCopy.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+            }
+          } else {
+            console.log("*** else")
+            cartItem.productEntity.quantityOnHand = productQtyOnHand;
+          }
+        });
+        if (this.autoRemoveMessages.length > 0) {
+          this.localService.setCart(cartItemsCopy);
+        } else {
+          this.localService.setCart(this.cartItems);
+        }
+        this.cartItems = this.localService.getCart();
+      });
+    }
+
     this.cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
     this.loadCustomerData();
-    // this.cartItems.filter() --> to remove item that is no longer available (e.g. deleted)
     if (this.cartItems != null) {
       this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
       this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
@@ -119,21 +177,22 @@ export class ShoppingCartComponent implements OnInit {
   checkout(cartItems: CartItem[]) {
 
     this.saleTransactionService.createSaleTransaction(cartItems, this.discountCodeToApply, this.pointsToUse).subscribe(response => {
-      console.log(response);
-      this.removeMessageClose = true;
-      this.infoMessageClose = false;
-      this.infoMessage = 'Thank you for shopping with us!';
-      this.localService.clearCart();
-      this.cartItems = this.localService.getCart();
 
-      this.updateCustomer(response);
-
-      // setTimeout(() => this.infoMessageClose = true, 3000);
-    }
-    ), (error: string) => {
-      this.errorMessage = error;
-      console.log('Error 500?? ' + error);
-    };
+      if (response != 0) {
+        if (response === "4") {
+          this.errorMessage = "Error checking out, reloading the page";
+          window.location.reload();
+        }
+        else {
+          this.removeMessageClose = true;
+          this.infoMessageClose = false;
+          this.infoMessage = 'Thank you for shopping with us!';
+          this.localService.clearCart();
+          this.cartItems = this.localService.getCart();
+          this.updateCustomer(response);
+        }
+      }
+    })
   }
 
   updateCustomer(response) {
@@ -348,6 +407,12 @@ export class ShoppingCartComponent implements OnInit {
 
   filterDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
     return this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes)));
+  }
+
+  // can call this function to clear
+  clearCart() {
+    this.localService.clearCart();
+    this.cartItems = this.localService.getCart();
   }
 
 

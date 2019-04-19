@@ -138,3 +138,8 @@ mat-list-item {
     align-self: baseline;
 }
 
+.outOfStock {
+    font-style: italic;
+    color: red;
+    font-size: 20px;
+}
