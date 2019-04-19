@@ -1,6 +1,7 @@
 .productImage {
     width: 100%;
-    height: auto;
+    border-radius: 4px;
+    object-fit: contain;
 }
 
 .productDetailsContainer {
@@ -29,7 +30,7 @@ h3.reviewName {
 
 .card {
     margin-top: 1vw;
-    background-color: whitesmoke;
+    background-image:url('/assets/images/green.jpg');
 }
 
 .headerText {

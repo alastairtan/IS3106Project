@@ -1,23 +1,23 @@
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+<div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
   <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
     <mat-card class="card">
 
       <mat-card-header class="mainHeader">
-        <img mat-card-avatar class="avatar" src="{{customer.profilePicUrl}}">
+        <img class="avatar" mat-card-avatar src="{{customer.profilePicUrl}}">
         <mat-card-title class="headerText">{{customer.firstName + " " + customer.lastName}}</mat-card-title>
       </mat-card-header>
       <br>
       <mat-divider></mat-divider>
 
-      <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
         {{errorMessage}}
       </div>
-      <div class="alert alert-success" role="alert" *ngIf="infoMessage">
+      <div *ngIf="infoMessage" class="alert alert-success" role="alert">
         {{infoMessage}}
       </div>
       <mat-card-content class="content">
 
-        <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+        <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
 
           <div fxFlex="1 1 50%" fxFlexOrder="1">
 
@@ -28,41 +28,41 @@
               <mat-divider></mat-divider>
               <mat-card-content style="margin-top: 1vw; margin-bottom: 0">
                 <mat-form-field class="formField">
-                  <input matInput placeholder="Email" [(ngModel)]="customer.email" readonly="true">
+                  <input [(ngModel)]="customer.email" matInput placeholder="Email" readonly="true">
                 </mat-form-field>
                 <br>
 
                 <mat-form-field class="formField">
-                  <input matInput placeholder="Country" [(ngModel)]="customer.country" readonly="{{!isUpdating}}">
+                  <input [(ngModel)]="customer.country" matInput placeholder="Country" readonly="{{!isUpdating}}">
                 </mat-form-field>
                 <br>
 
                 <mat-form-field class="formField">
-                  <input matInput placeholder="Profile Picture URL" [(ngModel)]="customer.profilePicUrl"
-                    readonly="{{!isUpdating}}">
+                  <input [(ngModel)]="customer.profilePicUrl" matInput placeholder="Profile Picture URL"
+                         readonly="{{!isUpdating}}">
                 </mat-form-field>
                 <br>
 
-                <mat-form-field class="formField" *ngIf="isUpdating">
-                  <input matInput placeholder="First Name" [(ngModel)]="customer.firstName" readonly="{{!isUpdating}}">
+                <mat-form-field *ngIf="isUpdating" class="formField">
+                  <input [(ngModel)]="customer.firstName" matInput placeholder="First Name" readonly="{{!isUpdating}}">
                   <br>
                 </mat-form-field>
-              
 
-                <mat-form-field class="formField" *ngIf="isUpdating">
-                  <input matInput placeholder="Last Name" [(ngModel)]="customer.lastName" readonly="{{!isUpdating}}">
+
+                <mat-form-field *ngIf="isUpdating" class="formField">
+                  <input [(ngModel)]="customer.lastName" matInput placeholder="Last Name" readonly="{{!isUpdating}}">
                   <br>
                 </mat-form-field>
 
               </mat-card-content>
               <mat-card-actions>
-                <button *ngIf="!isUpdating" mat-raised-button color="primary" (click)="updating()">
+                <button (click)="updating()" *ngIf="!isUpdating" color="primary" mat-raised-button>
                   Update Profile
                 </button>
-                <button *ngIf="isUpdating" mat-raised-button color="primary" (click)="saveChanges()">
+                <button (click)="saveChanges()" *ngIf="isUpdating" color="primary" mat-raised-button>
                   Save Changes
                 </button>
-                <button *ngIf="isUpdating" mat-raised-button color="warn" (click)="cancelUpdating()">
+                <button (click)="cancelUpdating()" *ngIf="isUpdating" color="warn" mat-raised-button>
                   Cancel Updating
                 </button>
               </mat-card-actions>
@@ -72,52 +72,57 @@
 
           <div fxFlex="1 1 50%" fxFlexOrder="2">
 
-              <mat-card class="translucentCard">
-                <mat-card-header class="header2">
-                  <img mat-card-avatar class="avatar2" src="{{customer.tierUrl}}">
-                  <mat-card-title style="font-size:2vw"><strong>TIER: </strong>{{customer.membershipTierEnum}}</mat-card-title>
-                  <mat-card-subtitle style="margin-bottom: 0">{{customer.tierMessage}}</mat-card-subtitle>
-                </mat-card-header>
-  
-                <mat-card-content class="content2">
-                  <table class="table">
-                    <tr>
-                      <td class="leftCell"><strong>Multiplier:</strong></td>
-                      <td>{{customer.multiplier}}X</td>
-                    </tr>
-                    <tr>
-                      <td class="leftCell"><strong>Total Points:</strong></td>
-                      <td>{{customer.totalPoints | number:'1.0-2'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="leftCell"><strong>Remaining Points:</strong></td>
-                      <td>{{customer.remainingPoints | number:'1.0-2'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="leftCell"><strong>Points for Current Month:</strong></td>
-                      <td>{{customer.pointsForCurrentMonth | number:'1.0-2'}}</td>
-                    </tr>
-                  </table>
-                </mat-card-content>
-  
-              </mat-card>
-            </div>
+            <mat-card class="translucentCard">
+              <mat-card-header class="header2">
+                <img (click)="openDialog()" class="avatar2" mat-card-avatar src="{{customer.tierUrl}}">
+                <mat-card-title style="font-size:2vw"><strong>TIER: </strong>{{customer.membershipTierEnum}}
+                </mat-card-title>
+                <mat-card-subtitle style="margin-bottom: 0">{{customer.tierMessage}}</mat-card-subtitle>
+                <button (click)="openDialog()" color="accent" mat-icon-button
+                        style="margin-top: -8px; margin-right: -10px">
+                  <mat-icon class="infoIcon">help</mat-icon>
+                </button>
+              </mat-card-header>
 
+              <mat-card-content class="content2">
+                <table class="table">
+                  <tr>
+                    <td class="leftCell"><strong>Multiplier:</strong></td>
+                    <td>{{customer.multiplier}}X</td>
+                  </tr>
+                  <tr>
+                    <td class="leftCell"><strong>Total Points:</strong></td>
+                    <td>{{customer.totalPoints | number:'1.0-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="leftCell"><strong>Remaining Points:</strong></td>
+                    <td>{{customer.remainingPoints | number:'1.0-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="leftCell"><strong>Points for Current Month:</strong></td>
+                    <td>{{customer.pointsForCurrentMonth | number:'1.0-2'}}</td>
+                  </tr>
+                </table>
+              </mat-card-content>
+
+            </mat-card>
+          </div>
 
 
           <div fxFlex="1 1 50%" fxFlexOrder="3">
-              <app-sale-transaction-history class="translucent " [customerId]="customer.customerId"></app-sale-transaction-history>
+            <app-sale-transaction-history [customerId]="customer.customerId"
+                                          class="translucent "></app-sale-transaction-history>
           </div>
 
           <div fxFlex="1 1 50%" fxFlexOrder="4">
 
-            <app-discount-code-table class="translucent " [customerId]="customer.customerId"></app-discount-code-table>
+            <app-discount-code-table [customerId]="customer.customerId" class="translucent "></app-discount-code-table>
 
           </div>
 
           <div fxFlex="1 1 100%" fxFlexOrder="5">
-           
-            <app-user-review-table class="translucent " [customerId]="customer.customerId"></app-user-review-table>
+
+            <app-user-review-table [customerId]="customer.customerId" class="translucent "></app-user-review-table>
           </div>
 
 

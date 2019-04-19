@@ -11,6 +11,5 @@ package util.enumeration;
  */
 public enum RewardTypeEnum {
     POINTS,
-    DISCOUNT_CODE_FLAT,
-    DISCOUNT_CODE_PERCENTAGE
+    DISCOUNT_CODE_PERCENTAGE,
 }

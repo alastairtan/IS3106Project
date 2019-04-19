@@ -1,0 +1,32 @@
+<table class="table" style="text-align: center">
+  <tr>
+    <td>
+      &nbsp;
+    </td>
+    <td *ngFor="let url of urlList" style="width: 100px">
+      <img style="width: 80px" src="{{url}}"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Rank:
+    </td>
+    <td *ngFor="let tier of tiers" style="font-weight: 900">
+      {{tier}}
+    </td>
+  </tr>
+  <tr>
+    <td>Points Required:</td>
+    <td *ngFor="let points of pointsRequiredList" >
+      {{points}}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      $ to Points Multiplier:
+    </td>
+    <td *ngFor="let multiplier of multipliers">
+      {{multiplier | number:'0.1-1'}}
+    </td>
+  </tr>
+</table>

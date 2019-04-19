@@ -1,80 +1,97 @@
-<table mat-table [dataSource]="saleTransactions" multiTemplateDataRows class="mat-elevation-z1">
+<table [dataSource]="saleTransactions" class="mat-elevation-z1" mat-table multiTemplateDataRows>
 
   <ng-container matColumnDef="saleTransactionId">
-    <th mat-header-cell *matHeaderCellDef> Sale Transaction Id </th>
-    <td mat-cell *matCellDef="let saleTransaction"> {{saleTransaction.saleTransactionId}} </td>
+    <th *matHeaderCellDef mat-header-cell> Id</th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.saleTransactionId}} </td>
   </ng-container>
 
   <ng-container matColumnDef="totalLineItem">
-    <th mat-header-cell *matHeaderCellDef> Total Line Item </th>
-    <td mat-cell *matCellDef="let saleTransaction"> {{saleTransaction.totalLineItem}} </td>
+    <th *matHeaderCellDef mat-header-cell> No. of Items </th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.totalLineItem}} </td>
   </ng-container>
 
   <ng-container matColumnDef="totalQuantity">
-    <th mat-header-cell *matHeaderCellDef> Total Quantity </th>
-    <td mat-cell *matCellDef="let saleTransaction"> {{saleTransaction.totalQuantity}} </td>
+    <th *matHeaderCellDef mat-header-cell> Quantity</th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.totalQuantity}} </td>
   </ng-container>
 
   <ng-container matColumnDef="totalAmount">
-    <th mat-header-cell *matHeaderCellDef> Total Amount </th>
-    <td mat-cell *matCellDef="let saleTransaction"> {{format(saleTransaction.totalAmount)}} </td>
+    <th *matHeaderCellDef mat-header-cell> Total Amount</th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 20%"> {{format(saleTransaction.totalAmount)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discountCodeUsed">
+    <th *matHeaderCellDef mat-header-cell> Discount Code</th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 50%; text-align: left">
+
+      <span *ngIf="saleTransaction.discountCodeEntity != null">
+
+        <strong>{{saleTransaction.discountCodeEntity.discountCode}}</strong>
+
+        {{getProductsMessage(saleTransaction.discountCodeEntity)}}
+
+      </span>
+      <span *ngIf="saleTransaction.discountCodeEntity == null">
+        None
+      </span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="table-header">
-      <th mat-header-cell class="header" colspan="4" *matHeaderCellDef> My Sale Transactions </th>
-    </ng-container>
+    <th *matHeaderCellDef class="header" colspan="5" mat-header-cell> My Sale Transactions</th>
+  </ng-container>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
   <ng-container matColumnDef="saleTransactionLineItems">
     <!-- Might need ngFor -->
-    <td mat-cell *matCellDef="let saleTransaction" [attr.colspan]="columnsToDisplay.length" class="expandedContainer">
-      <div class="example-element-detail"
-        [@detailExpand]="saleTransaction == expandedSaleTransaction ? 'expanded' : 'collapsed'">
-        
+    <td *matCellDef="let saleTransaction" [attr.colspan]="columnsToDisplay.length" class="expandedContainer" mat-cell>
+      <div [@detailExpand]="saleTransaction == expandedSaleTransaction ? 'expanded' : 'collapsed'"
+           class="example-element-detail">
+
         <div class="details">
-            <!-- <div *ngFor="let lineItem of saleTransaction.saleTransactionLineItemEntities"> -->
-                <table mat-table [dataSource]="saleTransaction.saleTransactionLineItemEntities" class="mat-elevation-z1">
+          <!-- <div *ngFor="let lineItem of saleTransaction.saleTransactionLineItemEntities"> -->
+          <table [dataSource]="saleTransaction.saleTransactionLineItemEntities" class="mat-elevation-z1" mat-table>
 
-                    <ng-container matColumnDef="productImage">
-                      <th mat-header-cell *matHeaderCellDef> Product </th>
-                      <td mat-cell *matCellDef="let lineItem" class="imageCol"> 
-                          <img src={{lineItem.productEntity.productImageUrl}} 
-                          [routerLink]="['/product', lineItem.productEntity.productId]">
-                      </td>
-                    </ng-container>
+            <ng-container matColumnDef="productImage">
+              <th *matHeaderCellDef mat-header-cell> Product</th>
+              <td *matCellDef="let lineItem" class="imageCol" mat-cell>
+                <img [routerLink]="['/product', lineItem.productEntity.productId]"
+                     src={{lineItem.productEntity.productImageUrl}}>
+              </td>
+            </ng-container>
 
-                    <ng-container matColumnDef="productName" >
-                      <th mat-header-cell *matHeaderCellDef> Name </th>
-                      <td mat-cell *matCellDef="let lineItem"> 
+            <ng-container matColumnDef="productName">
+              <th *matHeaderCellDef mat-header-cell> Name</th>
+              <td *matCellDef="let lineItem" mat-cell>
                           <span [routerLink]="['/product', lineItem.productEntity.productId]" class="prodName">
                             {{lineItem.productEntity.name}} 
                           </span>
-                      </td>
-                    </ng-container>
-                  
-                    <ng-container matColumnDef="quantity">
-                      <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                      <td mat-cell *matCellDef="let lineItem"> {{lineItem.quantity}} </td>
-                    </ng-container>
-                  
-                    <ng-container matColumnDef="sub-total">
-                      <th mat-header-cell *matHeaderCellDef> Sub-total </th>
-                      <td mat-cell *matCellDef="let lineItem"> {{format(lineItem.subTotal)}} </td>
-                    </ng-container>
+              </td>
+            </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-            </div>
+            <ng-container matColumnDef="quantity">
+              <th *matHeaderCellDef mat-header-cell> Quantity</th>
+              <td *matCellDef="let lineItem" mat-cell> {{lineItem.quantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sub-total">
+              <th *matHeaderCellDef mat-header-cell> Sub-total</th>
+              <td *matCellDef="let lineItem" mat-cell> {{format(lineItem.subTotal)}} </td>
+            </ng-container>
+
+            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+          </table>
         </div>
+      </div>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="['table-header']"> </tr>
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  <tr mat-row *matRowDef="let saleTransaction; columns: columnsToDisplay;" class="example-element-row expandable"
-    [class.example-expanded-row]="expandedSaleTransaction === saleTransaction"
-    (click)="expandedSaleTransaction = expandedSaleTransaction === saleTransaction ? null : saleTransaction">
+  <tr *matHeaderRowDef="['table-header']" mat-header-row></tr>
+  <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+  <tr (click)="expandedSaleTransaction = expandedSaleTransaction === saleTransaction ? null : saleTransaction" *matRowDef="let saleTransaction; columns: columnsToDisplay;" [class.example-expanded-row]="expandedSaleTransaction === saleTransaction"
+      class="example-element-row expandable"
+      mat-row>
   </tr>
-  <tr mat-row *matRowDef="let row; columns: ['saleTransactionLineItems']" class="example-detail-row"></tr>
+  <tr *matRowDef="let row; columns: ['saleTransactionLineItems']" class="example-detail-row" mat-row></tr>
 </table>

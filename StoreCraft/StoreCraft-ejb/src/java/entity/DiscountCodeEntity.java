@@ -78,6 +78,7 @@ public class DiscountCodeEntity implements Serializable {
     public DiscountCodeEntity() {
         this.customerEntities = new ArrayList<>();
         this.productEntities = new ArrayList<>();
+        this.saleTransactionEntities = new ArrayList<>();
     }
 
     public DiscountCodeEntity(Date startDate, Date endDate, Integer numAvailable, String discountCode, DiscountCodeTypeEnum discountCodeTypeEnum, BigDecimal discountAmountOrRate) {

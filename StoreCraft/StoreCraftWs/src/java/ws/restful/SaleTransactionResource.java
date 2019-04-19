@@ -9,6 +9,7 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.SaleTransactionReq;
 import datamodel.ws.rest.SaleTransactionRsp;
 import ejb.stateless.SaleTransactionEntityControllerLocal;
+import entity.ProductEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import java.util.List;
@@ -32,7 +33,6 @@ import util.exception.DiscountCodeNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.NegativeSaleTransactionAmountException;
 import util.exception.NotEnoughPointsException;
-import util.exception.SaleTransactionNotFoundException;
 
 /**
  * REST Web Service
@@ -60,7 +60,7 @@ public class SaleTransactionResource {
         try {
 
             List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveAllSaleTransactions();
-            
+
             for (SaleTransactionEntity saleTransactionEntity : saleTransactionEntities) {
                 clearRelationship(saleTransactionEntity);
             }
@@ -74,26 +74,49 @@ public class SaleTransactionResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     @Path("retrieveSaleTransactionByCustomerId")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveSaleTransationByCustomer(@QueryParam("customerId") Long customerId) {
-        
+
         try {
-            
+
             List<SaleTransactionEntity> saleTransactionEntities = saleTransactionEntityControllerLocal.retrieveSaleTransactionByCustomer(customerId);
-            
+
             for (SaleTransactionEntity saleTransactionEntity : saleTransactionEntities) {
-                clearRelationship(saleTransactionEntity);
+                saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
+                saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();
+                if (saleTransactionEntity.getDiscountCodeEntity() != null) {
+                    saleTransactionEntity.getDiscountCodeEntity().getSaleTransactionEntities().clear();
+                    saleTransactionEntity.getDiscountCodeEntity().getCustomerEntities().clear();
+                    if (saleTransactionEntity.getDiscountCodeEntity().getProductEntities() != null) {
+                        for (ProductEntity p : saleTransactionEntity.getDiscountCodeEntity().getProductEntities()) {
+                            System.out.println("ws.restful.SaleTransactionResource.retrieveSaleTransationByCustomer()");
+                            p.setCategoryEntity(null);
+                            p.setDiscountCodeEntities(null);
+                            p.setReviewEntities(null);
+                            p.setTagEntities(null);
+                        }
+                    }
+                }
+                System.out.println("HELLO!!!!!!!!!!!!!!!!");
+                for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : saleTransactionEntity.getSaleTransactionLineItemEntities()) {
+                    System.out.println("bbbbbbbbbbbbbbbbbbbbbb");
+                    saleTransactionLineItemEntity.getProductEntity().setDiscountCodeEntities(null);
+                    saleTransactionLineItemEntity.getProductEntity().setReviewEntities(null);
+                    saleTransactionLineItemEntity.getProductEntity().setTagEntities(null);
+                    saleTransactionLineItemEntity.getProductEntity().setCategoryEntity(null);
+                }
             }
-            
+            System.out.println("aaaaaaaaaaaaaaaaaa");
             SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntities);
 
             return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
-            
+
         } catch (Exception ex) {
-            
+
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
@@ -159,9 +182,8 @@ public class SaleTransactionResource {
                 saleTransactionEntity.setSaleTransactionLineItemEntities(null);
                 SaleTransactionRsp saleTransactionRsp = new SaleTransactionRsp(saleTransactionEntity);
 
-               // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
-               // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
-
+                // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getSaleTransactionId());
+                // System.out.println(saleTransactionRsp.getSaleTransactionEntity().getCustomerEntity().getTotalPoints());
                 return Response.status(Response.Status.OK).entity(saleTransactionRsp).build();
             } catch (CreateNewSaleTransactionException | InputDataValidationException | NegativeSaleTransactionAmountException | DiscountCodeNotFoundException | NotEnoughPointsException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("An error occured when creating the sale transaction!");
@@ -182,9 +204,9 @@ public class SaleTransactionResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     private void clearRelationship(SaleTransactionEntity saleTransactionEntity) {
-        
+
         saleTransactionEntity.getCustomerEntity().getSaleTransactionEntities().clear();
         saleTransactionEntity.getCustomerEntity().getDiscountCodeEntities().clear();
         saleTransactionEntity.getCustomerEntity().getReviewEntities().clear();

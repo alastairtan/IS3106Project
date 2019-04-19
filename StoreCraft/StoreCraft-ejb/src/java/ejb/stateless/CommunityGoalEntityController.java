@@ -207,7 +207,7 @@ public class CommunityGoalEntityController implements CommunityGoalEntityControl
                 if(addingPoints.compareTo(cge.getTargetPoints()) >= 0 && !cge.isCompleted()){
                     cge.setCompleted(true);
                     cge.setCurrentPoints(addingPoints);
-                    DiscountCodeEntity dce = new DiscountCodeEntity(startDate, endDate,1, "cg" + cge.getCommunityGoalId(), DiscountCodeTypeEnum.PERCENTAGE, cge.getRewardPercentage());
+                    DiscountCodeEntity dce = new DiscountCodeEntity(startDate, endDate,customers.size(), "cg" + cge.getCommunityGoalId(), DiscountCodeTypeEnum.PERCENTAGE, cge.getRewardPercentage());
                     List<Long> customerEntityIds = new ArrayList<>();
                     List<Long> productEntityIds = new ArrayList<>();
                     

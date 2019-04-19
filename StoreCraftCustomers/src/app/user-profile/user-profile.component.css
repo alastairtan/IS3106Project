@@ -33,12 +33,17 @@
 mat-card{
     border-radius: 0;
 }
+
 .mat-card-header {
     display: flex;
     align-content: center;
     align-items: center;
     justify-content: center;
     justify-items: center;
+}
+
+::ng-deep .mat-card-header-text{
+  width: unset;
 }
 
 .mainHeader{
@@ -67,11 +72,19 @@ mat-card{
 
 .avatar {
     height: 10vw;
-    width: auto;
+    width: 10vw;
 }
 
 .avatar2 {
     height: 7vw;
     width: auto;
+}
+
+.avatar2:hover{
+  cursor: pointer
+}
+
+.infoIcon:hover{
+  transform:scale(1.2)
 }
 

@@ -1,9 +1,11 @@
-<mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[2,4,8,12,16,20]"
-  [pageIndex]="currentPage" (page)="handlePageEvent($event)" class="paginator mat-elevate-z4"></mat-paginator>
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container" style="padding-right: 24px">
+<mat-paginator (page)="handlePageEvent($event)" [length]="pageLength" [pageIndex]="currentPage" [pageSizeOptions]="[2,4,8,12,16,20]"
+               [pageSize]="pageSize" class="paginator mat-elevate-z4"
+               color="accent"></mat-paginator>
+<div class="card-deck-container" fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid"
+     style="padding-right: 24px; margin-right: 0">
 
   <div class="sidebar mat-elevate-z3" fxFlex="1 1 20%" fxFlexOrder="1">
-    <mat-accordion style="height: 100%" displayMode="flat" multi="true">
+    <mat-accordion displayMode="flat" multi="true" style="height: 100%">
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -11,7 +13,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div *ngIf="subCategories?.length > 0; else elseBlock">
-          <mat-selection-list #categoryList [(ngModel)]="selectedCategoryOptions" (selectionChange)="doFilter()">
+          <mat-selection-list #categoryList (selectionChange)="doFilter()" [(ngModel)]="selectedCategoryOptions">
             <mat-list-option *ngFor="let subCategory of subCategories" [value]="subCategory.categoryId">
               {{subCategory.name}}
             </mat-list-option>
@@ -28,7 +30,7 @@
         </mat-expansion-panel-header>
         <mat-form-field>
           <mat-label>Select an option</mat-label>
-          <mat-select #sortSelect [(ngModel)]="sortSelection" (selectionChange)="doFilter()">
+          <mat-select #sortSelect (selectionChange)="doFilter()" [(ngModel)]="sortSelection">
             <mat-option value="alphAsc">Alphabetical (a-Z)</mat-option>
             <mat-option value="alphDsc">Alphabetical (Z-a)</mat-option>
             <mat-option value="pAsc">Price (Low to High)</mat-option>
@@ -46,18 +48,18 @@
         <span>
           <strong>Minimum:</strong> $
           <mat-form-field style="width: 50%">
-            <input matInput [(ngModel)]="minPrice" type="number" (input)="doFilter()">
+            <input (input)="doFilter()" [(ngModel)]="minPrice" matInput type="number">
           </mat-form-field>
-          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="minPrice" (change)="doFilter()">
+          <mat-slider (change)="doFilter()" [(ngModel)]="minPrice" [max]="1000" [min]="0" [step]="1" style="width:100%">
           </mat-slider>
         </span>
 
         <span>
           <strong>Maximum:</strong> $
           <mat-form-field style="width: 50%">
-            <input matInput [(ngModel)]="maxPrice" type="number" (input)="doFilter()">
+            <input (input)="doFilter()" [(ngModel)]="maxPrice" matInput type="number">
           </mat-form-field>
-          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="maxPrice" (change)="doFilter()">
+          <mat-slider (change)="doFilter()" [(ngModel)]="maxPrice" [max]="1000" [min]="0" [step]="1" style="width:100%">
           </mat-slider>
         </span>
       </mat-expansion-panel>
@@ -70,12 +72,12 @@
         </mat-expansion-panel-header>
         <mat-form-field>
           <mat-label>Condition</mat-label>
-          <mat-select [(ngModel)]="condition" (selectionChange)="doFilter()">
+          <mat-select (selectionChange)="doFilter()" [(ngModel)]="condition">
             <mat-option value="OR">OR (default)</mat-option>
             <mat-option value="AND">AND</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-selection-list #tagList [(ngModel)]="selectedTagOptions" (selectionChange)="doFilter()">
+        <mat-selection-list #tagList (selectionChange)="doFilter()" [(ngModel)]="selectedTagOptions">
           <mat-list-option *ngFor="let tag of allTags" [value]="tag.tagId">
             {{tag.name}}
           </mat-list-option>
@@ -92,7 +94,7 @@
         </div>
       </ng-container>
     </div> -->
-    <div gdArea gdColumns="25% 25% 25% 25%" gdGap="8px" gdRows="1fr!">
+    <div gdArea gdColumns="25% 25% 25% 25%" gdGap="12px" gdRows="1fr!" style="padding-right:12px">
       <ng-container *ngFor="let product of viewProducts" class="card-item">
         <app-product-card [product]="product"></app-product-card>
       </ng-container>

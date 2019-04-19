@@ -53,12 +53,16 @@ th.mat-header-cell {
     font-family: "benton-sans", "Helvetica", "sans-serif";
 }
 
-.card{
-    margin-bottom: 12px;
+.cardContainer{
+
+}
+
+.card:hover{
+    transform:scale(1.01);
 }
 
 .cardBg{
-    background-image:url('/assets/images/wallpaper.jpg');
+    background-image:url('/assets/images/gradientGreen.jpg');
     background-size: 100% 100%;
     margin-top: 1vw;
 }
