@@ -62,7 +62,7 @@ public class CommunityGoalResource {
                 if (communityGoalEntity.getEndDate().before(new Date()) ) {
                     communityGoalEntities.remove(communityGoalEntity);
                 } else {
-                    communityGoalEntity.getStaffEntity().getCommunityGoalEntities().clear();
+                    communityGoalEntity.setStaffEntity(null);
                 }
             }
 
