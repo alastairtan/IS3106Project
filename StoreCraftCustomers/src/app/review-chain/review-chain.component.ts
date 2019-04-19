@@ -15,22 +15,22 @@ export class ReviewChainComponent implements OnInit {
   @Input()
   rootReviewId: number;
 
-  //Initial Load
+  // Initial Load
   reviewChain: Review[];
   currentCustomer: Customer;
-  //************
+  // ************
 
-  //For Replying
+  // For Replying
   isReplying: boolean;
   staffReplyToReplyTo: Review;
   replyContent: string;
-  //************
-  
-  //For Editing
+  // ************
+
+  // For Editing
   isEditing: boolean;
-  updatedReplyContent: string; 
+  updatedReplyContent: string;
   editReviewId: number;
-  //*********** 
+  // ***********
 
 
 
@@ -51,7 +51,7 @@ export class ReviewChainComponent implements OnInit {
     this.reviewService.getReviewChain(this.rootReviewId).subscribe(response => {
       this.reviewChain = response.reviewEntities;
       this.currentCustomer = this.sessionService.getCurrentCustomer();
-    })
+    });
   }
 
   replying(staffReply: Review) {
@@ -71,7 +71,8 @@ export class ReviewChainComponent implements OnInit {
 
   }
 
-  cancelEdit(custReply: Review){
+
+  cancelEdit(custReply: Review) {
     this.isEditing = false;
     this.updatedReplyContent = custReply.content;
     this.editReviewId = null;
@@ -79,35 +80,35 @@ export class ReviewChainComponent implements OnInit {
 
 
   reply() {
-    console.log("HELLO");
+    console.log('HELLO');
     console.log(this.staffReplyToReplyTo.reviewId);
     console.log(this.currentCustomer);
-    let customerReply: Review = new Review();
+    const customerReply: Review = new Review();
     customerReply.content = this.replyContent;
     customerReply.reviewDate = new Date();
-    let customerId = this.sessionService.getCurrentCustomer().customerId;
+    const customerId = this.sessionService.getCurrentCustomer().customerId;
     this.reviewService.replyToStaffReply(customerReply, this.staffReplyToReplyTo, customerId).subscribe(response => {
-      //console.log(response.customerReplyId);
+      // console.log(response.customerReplyId);
       this.isReplying = false;
       this.getReviewChain();
     },
       error => {
         console.log(error);
-      })
+      });
   }
 
-  saveEdit(){
+  saveEdit() {
 
     this.reviewService.updateReview(this.editReviewId, this.updatedReplyContent, null).subscribe(response => {
-      this.isEditing=false;
+      this.isEditing = false;
       this.getReviewChain();
     }, error => {
-      console.log(error)
-    })
+      console.log(error);
+    });
   }
 
-  test(){
-    console.log(this.staffReplyToReplyTo.reviewId);
+  test() {
+    console.log(this.updatedReplyContent);
   }
 
 }

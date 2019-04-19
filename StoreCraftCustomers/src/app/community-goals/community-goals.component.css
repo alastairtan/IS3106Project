@@ -13,10 +13,19 @@ th.mat-header-cell {
 *{
     box-sizing: border-box;
 }
+.mainHeader {
+    font-family: "Helvetica";
+    font-size: 100px;
+    color: #ffffff;
+    position: absolute;
+    z-index: 10;
+}
 
-maintitle {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
+.headerImage {
+    width: 100%;
+    height: auto;
+    position: relative;
+    opacity:0.5;
 }
 
 .cardsCollection{
@@ -49,7 +58,8 @@ maintitle {
 }
 
 .cardBg{
-    background-color:whitesmoke;
+    background-image:url('/assets/images/wallpaper.jpg');
+    background-size: 100% 100%;
     margin-top: 1vw;
 }
 
@@ -76,7 +86,7 @@ maintitle {
     display: flex;
     align-items: center;
     top: 0;
-    font-size: 2vw;
+    font-size: 1.6vw;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 1px;
@@ -92,7 +102,8 @@ maintitle {
 }
 
 .title{
-    font-size: 2vw;
+    font-size: 1.5vw;
+    margin-top: 0.5vw;
 }
 
 .description{
@@ -127,7 +138,6 @@ maintitle {
 }
 
 .currentPoints{
-    font-weight: 700;
     font-size: 14px;
     line-height: 20px;
     margin-right: 3px;
@@ -145,7 +155,6 @@ maintitle {
 
 .percentageReached{
     font-size: 1.1vw;
-    font-weight: bold;
     letter-spacing: 1;
     color: #ac1b1b;
 }
@@ -172,6 +181,14 @@ maintitle {
     line-height: 18px;
     letter-spacing: 0;
     color: #6a6a6a;
+    margin-left: 5px;
+}
+
+.button{
+    border : 1px solid #6a6a6a;
+    margin-left: 15px;
+    align-content: center;
+    border-radius: 1px;
 }
 
 .mat-card-header{
@@ -181,3 +198,4 @@ maintitle {
     justify-content: center;
     justify-items: center;
 }
+

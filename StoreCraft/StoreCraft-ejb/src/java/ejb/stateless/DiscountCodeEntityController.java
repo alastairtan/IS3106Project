@@ -193,6 +193,7 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
         }
     }
     
+    @Override
     public List<DiscountCodeEntity> retrieveDiscountCodesForCustomer(Long customerId) throws CustomerNotFoundException{
         
         CustomerEntity customer = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
@@ -200,7 +201,7 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
         List<DiscountCodeEntity> eligibleDiscountCodes = new ArrayList<>();
         
         eligibleDiscountCodes.addAll(customer.getDiscountCodeEntities());
-        
+
         Query query = em.createQuery("SELECT dc FROM DiscountCodeEntity dc WHERE SIZE(dc.customerEntities) = 0");
         eligibleDiscountCodes.addAll(query.getResultList());
         

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SessionService } from './session.service';
 import { CartItem } from './cartItem';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class LocalService {
   private key : string;
 
   constructor(
-    public sessionService: SessionService ) { }
+    public sessionService: SessionService,
+    private router : Router ) { }
 
   getCart() {
 

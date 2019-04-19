@@ -1,6 +1,6 @@
 <mat-accordion multi="true">
   <mat-expansion-panel *ngFor="let review of reviewChain" [disabled]="true"
-    [expanded]="isReplying && review.reviewId == staffReplyToReplyTo.reviewId" (opened)="test()">
+                       [expanded]="isReplying && review.reviewId == staffReplyToReplyTo.reviewId" (opened)="test()">
 
     <!--MAIN REPLIES: Shows all base replies-->
     <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
@@ -9,21 +9,25 @@
       <mat-panel-title class="reviewTitle">
         {{review.staffEntity?.firstName}} {{review.staffEntity?.lastName}}
         {{review.customerEntity?.firstName}} {{review.customerEntity?.lastName}}
-        <br />
+        <br/>
         <button mat-raised-button color="accent" class="editReplyBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
-          (click)="editing(review)">Edit Reply</button>
+                *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && !(isEditing && review.reviewId == editReviewId)"
+                (click)="editing(review)">Edit Reply
+        </button>
         <button mat-raised-button color="primary" class="editReplyBtn saveBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
-          form="updateForm" type="submit">Save</button>
+                *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                form="updateForm" type="submit">Save
+        </button>
         <button mat-raised-button color="warn" class="editReplyBtn"
-          *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
-          (click)="cancelEdit(review)">Cancel Edit</button>
+                *ngIf="review.customerEntity != null && review.customerEntity.customerId == currentCustomer?.customerId && isEditing && review.reviewId == editReviewId"
+                (click)="cancelEdit(review)">Cancel Edit
+        </button>
 
         <button mat-raised-button color="accent" *ngIf="review.reviewDate == 
               reviewChain[reviewChain.length-1].reviewDate && review.staffEntity != null
               && review.parentReviewEntity.customerEntity.customerId == currentCustomer?.customerId"
-          (click)="replying(review)" class="editReplyBtn">Reply</button>
+                (click)="replying(review)" class="editReplyBtn">Reply
+        </button>
 
       </mat-panel-title>
       <!--END OF PANEL TITLE-->
@@ -34,16 +38,16 @@
           <mat-list-item role="listitem"><strong>{{review.reviewDate | date:'medium'}}</strong></mat-list-item>
 
           <mat-list-item *ngIf="!(review.customerEntity != null && isEditing && review.reviewId == editReviewId)"
-            role="listitem" class="reviewContent">{{review.content}}
+                         role="listitem" class="reviewContent">{{review.content}}
           </mat-list-item>
 
           <mat-list-item *ngIf="review.customerEntity != null && isEditing && review.reviewId == editReviewId">
 
             <form #updateForm="ngForm" (ngSubmit)="updateForm.valid?saveEdit():null" class="custReplyForm"
-              id="updateForm">
+                  id="updateForm">
               <mat-form-field class="replyContentField">
-                <textarea matInput name="updateTextArea" [(ngModel)]="updatedReplyContent" #updateTextContent="ngModel"
-                  required></textarea>
+                <textarea matInput type="text" name="messages" required [(ngModel)]="updatedReplyContent" #updateTextContent="ngModel"
+                          (keydown)="$event.stopPropagation()"></textarea>
                 <mat-error *ngIf="updateTextContent.errors?.required">
                   Content is <strong>required</strong>
                 </mat-error>
@@ -65,18 +69,22 @@
         <mat-panel-title class="reviewTitle">
           {{currentCustomer?.firstName}} {{currentCustomer?.lastName}}
           <button mat-raised-button type="submit" *ngIf="isReplying && review.reviewId == staffReplyToReplyTo.reviewId"
-            color="primary" class="editReplyBtn2" form="customerReplyForm" type="submit" (click)="test()">Submit Reply</button>
+                  color="primary" class="editReplyBtn2" form="customerReplyForm" type="submit" (click)="test()">Submit
+            Reply
+          </button>
           <button mat-raised-button type="reset" *ngIf="isReplying && review.reviewId == staffReplyToReplyTo.reviewId"
-            color="warn" class="editReplyBtn2" (click)="cancelReply()">Cancel</button>
+                  color="warn" class="editReplyBtn2" (click)="cancelReply()">Cancel
+          </button>
         </mat-panel-title>
         <!--END OF LEFT SIDE-->
 
         <!--RIGHT SIDE: text area to input reply-->
         <mat-panel-description>
-          <form #replyForm="ngForm" (ngSubmit)="reply()" class="custReplyForm" id="customerReplyForm" *ngIf="staffReplyToReplyTo != null">
+          <form #replyForm="ngForm" (ngSubmit)="reply()" class="custReplyForm" id="customerReplyForm"
+                *ngIf="staffReplyToReplyTo != null">
             <mat-form-field class="replyContentField">
               <textarea matInput name="replyTextArea" [(ngModel)]="replyContent" placeholder="Enter your reply"
-                #replyTextContent="ngModel" required></textarea>
+                        #replyTextContent="ngModel" required (keydown)="$event.stopPropagation()"></textarea>
               <mat-error *ngIf="replyTextContent.errors?.required">
                 Content is <strong>required</strong>
               </mat-error>

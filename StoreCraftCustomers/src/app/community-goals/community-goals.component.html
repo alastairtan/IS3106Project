@@ -71,10 +71,27 @@
 <mat-paginator [pageSize]="7" [pageSizeOptions]="[7,14,21,28,35]">
 </mat-paginator>
 -->
+<div fxLayout fxLayoutAlign="center center" style="background-color: rgba(0,0,0,0.5)">
+    <div class="mainHeader">Community Goals</div>
+    <img class="headerImage" src="/assets/images/commGoals.jpg" />
+</div>
+<div fxLayout fxLayoutAlign="center center">
+    <mat-form-field fxFlex="40%">
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter By Country">
+    </mat-form-field>
+    <button mat-button class="button" (click)="resetView()">
+        See All
+    </button>
+</div>
+<div fxLayout fxLayoutAlign="center center">
+    <div ng-if="errorMessage">{{ errorMessage }}</div>
+</div>
+
+
 
 <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
 
-    <div class="mat-elevate-z3" fxFlex="1 1 95%" fxFlexOrder="1">
+    <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
 
         <mat-card class="cardBg">
             <mat-card-content>
@@ -86,12 +103,7 @@
                     style="background-image: url(&quot;https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png&quot;);">
                 </div>
                 -->
-                            <mat-card-header>
-                                <mat-card-title>
-                                    <div class="title">{{communitygoal?.goalTitle}}</div>
-                                </mat-card-title>
-                            </mat-card-header>
-                            <mat-divider></mat-divider>
+
                             <img mat-card-image src="https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png">
 
                             <mat-card-content class="cardContent">
@@ -102,6 +114,7 @@
 
                                 </div>
 
+                                <div class="title"><strong>{{communitygoal?.goalTitle}}</strong></div>
 
                                 <div class="description">{{communitygoal?.description}}</div>
 
@@ -109,17 +122,22 @@
 
                                 <div class="progressContainer">
 
-                                    <div class="percentageReached">Reward: {{communitygoal?.rewardPercentage}}% Off
+                                    <div class="percentageReached"><strong>Reward:</strong>
+                                        {{communitygoal?.rewardPercentage}}% Off
                                         Store-wide
                                         Discount Code
                                     </div>
                                     <div class="currentPoints">
-                                        {{communitygoal?.currentPoints}} / {{communitygoal?.targetPoints}} Points Hit
+                                        <strong>{{communitygoal?.currentPoints}} /
+                                            {{communitygoal?.targetPoints}}</strong> Points Hit
+                                        <span
+                                            style="float: right !important">{{((communitygoal?.currentPoints*100)/communitygoal?.targetPoints)|number:'0.0-2'}}%</span>
                                     </div>
-                                    <div class="progress" style="height: 2vw; margin-top: 0.5vw">
-                                        <div class="progress-bar bg-info" style="height: 2vw; margin-top: 0"
+                                    <div class="progress" style="height: 1vw; margin-top: 0.5vw; border-radius: 20px">
+                                        <div class="progress-bar bg-success"
+                                            style="height: 1vw; margin-top: 0; border-radius: 20px"
                                             [ngStyle]="{'width.%':(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}">
-                                            {{(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}}%</div>
+                                        </div>
                                     </div>
                                     <div class="dateContainer">
 

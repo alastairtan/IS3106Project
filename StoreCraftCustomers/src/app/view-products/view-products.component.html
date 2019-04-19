@@ -1,8 +1,8 @@
 <mat-paginator color="accent" [length]="pageLength" [pageSize]="pageSize" [pageSizeOptions]="[2,4,8,12,16,20]"
   [pageIndex]="currentPage" (page)="handlePageEvent($event)" class="paginator mat-elevate-z4"></mat-paginator>
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container">
+<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start" class="card-deck-container" style="padding-right: 24px">
 
-  <div class="sidebar mat-elevate-z3" fxFlex="0 1 20%" fxFlexOrder="1">
+  <div class="sidebar mat-elevate-z3" fxFlex="1 1 20%" fxFlexOrder="1">
     <mat-accordion style="height: 100%" displayMode="flat" multi="true">
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
@@ -11,8 +11,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div *ngIf="subCategories?.length > 0; else elseBlock">
-          <mat-selection-list #categoryList [(ngModel)]="selectedCategoryOptions" 
-          (selectionChange)="doFilter()">
+          <mat-selection-list #categoryList [(ngModel)]="selectedCategoryOptions" (selectionChange)="doFilter()">
             <mat-list-option *ngFor="let subCategory of subCategories" [value]="subCategory.categoryId">
               {{subCategory.name}}
             </mat-list-option>
@@ -49,8 +48,7 @@
           <mat-form-field style="width: 50%">
             <input matInput [(ngModel)]="minPrice" type="number" (input)="doFilter()">
           </mat-form-field>
-          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="minPrice"
-            (change)="doFilter()">
+          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="minPrice" (change)="doFilter()">
           </mat-slider>
         </span>
 
@@ -59,8 +57,7 @@
           <mat-form-field style="width: 50%">
             <input matInput [(ngModel)]="maxPrice" type="number" (input)="doFilter()">
           </mat-form-field>
-          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="maxPrice"
-            (change)="doFilter()">
+          <mat-slider [min]="0" [max]="1000" style="width:100%" [step]="1" [(ngModel)]="maxPrice" (change)="doFilter()">
           </mat-slider>
         </span>
       </mat-expansion-panel>
@@ -72,12 +69,12 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-form-field>
-            <mat-label>Condition</mat-label>
-            <mat-select [(ngModel)]="condition" (selectionChange)="doFilter()">
-              <mat-option value="OR">OR (default)</mat-option>
-              <mat-option value="AND">AND</mat-option>
-            </mat-select>
-          </mat-form-field>
+          <mat-label>Condition</mat-label>
+          <mat-select [(ngModel)]="condition" (selectionChange)="doFilter()">
+            <mat-option value="OR">OR (default)</mat-option>
+            <mat-option value="AND">AND</mat-option>
+          </mat-select>
+        </mat-form-field>
         <mat-selection-list #tagList [(ngModel)]="selectedTagOptions" (selectionChange)="doFilter()">
           <mat-list-option *ngFor="let tag of allTags" [value]="tag.tagId">
             {{tag.name}}
@@ -87,10 +84,17 @@
     </mat-accordion>
   </div>
 
-  <div fxFlex fxFlexOrder="2">
-    <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start">
+  <div fxFlex="1 1 80%" fxFlexOrder="2">
+    <!-- <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start">
       <ng-container *ngFor="let product of viewProducts" class="card-item">
-        <app-product-card fxFlex="1 1 25%" [product]="product"></app-product-card>
+        <div fxFlex="1 1 25%" fxLayoutAlign="stretch">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </ng-container>
+    </div> -->
+    <div gdArea gdColumns="25% 25% 25% 25%" gdGap="8px" gdRows="1fr!">
+      <ng-container *ngFor="let product of viewProducts" class="card-item">
+        <app-product-card [product]="product"></app-product-card>
       </ng-container>
     </div>
   </div>

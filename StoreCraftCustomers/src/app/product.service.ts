@@ -12,30 +12,34 @@ import { Tag } from './tag';
 
 export class ProductService {
 
-	baseUrl: string = "/api/Product";
+	baseUrl = '/api/Product';
 
 	constructor(private httpClient: HttpClient) {
 
 	}
 
+	getAllProducts(): Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + '/retrieveAllProducts').
+      pipe(catchError(this.handleError));
+  }
+
 	getProductsByCategory(categoryId: number): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/getProductsByCategory?categoryId=" + categoryId)
-			.pipe(catchError(this.handleError))
+		return this.httpClient.get<any>(this.baseUrl + '/getProductsByCategory?categoryId=' + categoryId)
+			.pipe(catchError(this.handleError));
 	}
 
 	getProductId(productId: number): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/getProductById?productId=" + productId)
-			.pipe(catchError(this.handleError))
+		return this.httpClient.get<any>(this.baseUrl + '/getProductById?productId=' + productId)
+			.pipe(catchError(this.handleError));
 	}
 
 	private handleError(error: HttpErrorResponse) {
-		let errorMessage: string = "";
+		let errorMessage = '';
 
 		if (error.error instanceof ErrorEvent) {
-			errorMessage = "An unknown error has occurred: " + error.error.message;
-		}
-		else {
-			errorMessage = "A HTTP error has occurred: " + `HTTP ${error.status}: ${error.error.message}`;
+			errorMessage = 'An unknown error has occurred: ' + error.error.message;
+		} else {
+			errorMessage = 'A HTTP error has occurred: ' + `HTTP ${error.status}: ${error.error.message}`;
 		}
 
 		console.error(errorMessage);
@@ -43,12 +47,18 @@ export class ProductService {
 		return throwError(errorMessage);
 	}
 
+	getRatingInfoForProduct(productId: number): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + '/getRatingInfoForProduct?productId=' + productId).pipe(
+			catchError(this.handleError)
+		);
+	}
+
 	filterProductsByTagsOR(products: Product[], filterTagIds: number[]): Product[] {
 
-		let filteredList: Product[] = [];
+		const filteredList: Product[] = [];
 
-		for (let product of products) {
-			let productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
+		for (const product of products) {
+			const productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
 			if (this.productTagIdsContainsOne(productTagIds, filterTagIds)) {
 				filteredList.push(product);
 			}
@@ -59,10 +69,10 @@ export class ProductService {
 
 	filterProductsByTagsAND(products: Product[], filterTagIds: number[]): Product[] {
 
-		let filteredList: Product[] = [];
+		const filteredList: Product[] = [];
 
-		for (let product of products) {
-			let productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
+		for (const product of products) {
+			const productTagIds: number[] = this.getTagIdsFromTagEntities(product.tagEntities);
 			if (this.productTagIdsContainsAll(productTagIds, filterTagIds)) {
 				filteredList.push(product);
 			}
@@ -73,15 +83,15 @@ export class ProductService {
 
 
 	getTagIdsFromTagEntities(tags): number[] {
-		let tagIds: number[] = [];
-		for (let tag of tags) {
+		const tagIds: number[] = [];
+		for (const tag of tags) {
 			tagIds.push(tag.tagId);
 		}
 		return tagIds;
 	}
 
 	productTagIdsContainsOne(productTagIds: number[], filterTagIds: number[]) {
-		for (let filterTagId of filterTagIds) {
+		for (const filterTagId of filterTagIds) {
 			if (productTagIds.includes(filterTagId)) {
 				return true;
 			}
@@ -90,7 +100,7 @@ export class ProductService {
 	}
 
 	productTagIdsContainsAll(productTagIds: number[], filterTagIds: number[]) {
-		for (let filterTagId of filterTagIds) {
+		for (const filterTagId of filterTagIds) {
 			if (!productTagIds.includes(filterTagId)) {
 				return false;
 			}
@@ -99,7 +109,7 @@ export class ProductService {
 	}
 
 	getRandomProductsForIndexPage(): Observable<any> {
-		return this.httpClient.get<any>(this.baseUrl + "/index").pipe
+		return this.httpClient.get<any>(this.baseUrl + '/index').pipe
 		(
 			catchError(this.handleError)
 		);

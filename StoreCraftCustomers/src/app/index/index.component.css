@@ -8,12 +8,13 @@
 }
 
 .carousel {
-    width: 1210px; 
+    margin-top: 12px;
+    width: 100%;
     height: 360px;
 }
 
 .carousel-inner {
-    width: 1210px; 
+    width: 100%; 
     height: 360px;
 }
 
@@ -26,18 +27,25 @@
 }
 
 .mat-elevate-z3 {
-    padding: 12px 12px 12px 12px;
+    /*padding: 12px 12px 12px 12px;*/
 }
 
 .firstTable {
-    padding: 12px 12px 12px 12px !important;
+    /*padding: 12px 12px 12px 12px !important;*/
 }
 
 .cardProducts {
-    padding: 8px 8px 8px 8px !important;
+    /*padding: 8px 8px 8px 8px !important;*/
+    margin-top: 12px !important;
 }
+
+.card{
+    background-image:url('/assets/images/leaderboardsWallpaper.jpg');
+    background-size: cover;
+}
+
 .content {
-    background-color: whitesmoke;
+    margin-top: 1vw;
 }
 .header {
     text-align: center;
