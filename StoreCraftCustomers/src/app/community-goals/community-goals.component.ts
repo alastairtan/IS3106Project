@@ -35,7 +35,7 @@ export class CommunityGoalsComponent implements OnInit {
         this.communityGoals = response.communityGoalEntities;
 
         // Moved the processing to backend
-        // this.communityGoals = this.communityGoals.filter(communityGoal => communityGoal.completed || 
+        // this.communityGoals = this.communityGoals.filter(communityGoal => communityGoal.completed ||
         //   (new Date(Date.parse(`${communityGoal.endDate}`)) > new Date) )
 
         this.originalCommunityGoals = this.communityGoals;

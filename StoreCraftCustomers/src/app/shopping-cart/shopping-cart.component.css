@@ -95,7 +95,7 @@ p {
 }
 
 .card {
-  background-color: whitesmoke;
+  background-image: url('/assets/images/gradientBluePurple.jpg');
 }
 
 .priceCol {

@@ -42,6 +42,10 @@ mat-card{
     justify-items: center;
 }
 
+::ng-deep .mat-card-header-text{
+  width: unset;
+}
+
 .mainHeader{
     margin: -16px -16px -24px -16px !important;
     background-color: rgba(0, 0, 0, 0.1);

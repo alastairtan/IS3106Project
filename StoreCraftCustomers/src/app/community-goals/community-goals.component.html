@@ -72,90 +72,86 @@
 </mat-paginator>
 -->
 <div fxLayout fxLayoutAlign="center center" style="background-color: rgba(0,0,0,0.5)">
-    <div class="mainHeader">Community Goals</div>
-    <img class="headerImage" src="/assets/images/commGoals.jpg" />
+  <div class="mainHeader">Community Goals</div>
+  <img class="headerImage" src="/assets/images/commGoals.jpg"/>
+</div>
+<div fxLayout fxLayoutAlign="center center" style="margin-bottom: -12px">
+  <mat-form-field fxFlex="40%">
+    <input (keyup)="doFilter($event.target.value)" matInput placeholder="Filter By Country" type="text">
+  </mat-form-field>
+  <button (click)="resetView()" class="button" mat-button>
+    See All
+  </button>
 </div>
 <div fxLayout fxLayoutAlign="center center">
-    <mat-form-field fxFlex="40%">
-        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter By Country">
-    </mat-form-field>
-    <button mat-button class="button" (click)="resetView()">
-        See All
-    </button>
-</div>
-<div fxLayout fxLayoutAlign="center center">
-    <div ng-if="errorMessage">{{ errorMessage }}</div>
+  <div ng-if="errorMessage">{{ errorMessage }}</div>
 </div>
 
 
+<div *ngIf="communityGoals?.length > 0 " fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
 
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+  <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
 
-    <div class="mat-elevate-z3" fxFlex="1 1 98%" fxFlexOrder="1">
+    <mat-card class="cardBg">
+      <mat-card-content>
+        <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid">
+          <div *ngFor="let communitygoal of communityGoals" fxFlex="1 1 25%">
+            <mat-card class="card">
 
-        <mat-card class="cardBg">
-            <mat-card-content>
-                <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid">
-                    <div fxFlex="1 1 25%" *ngFor="let communitygoal of communityGoals">
-                        <mat-card>
-                            <!--
-                <div class="image"
-                    style="background-image: url(&quot;https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png&quot;);">
+              <img mat-card-image src="https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png">
+
+              <mat-card-content class="cardContent">
+
+                <div class="statusHeader">
+
+                  <span *ngIf="!communitygoal.completed" class="status">Ongoing</span>
+                  <span *ngIf="communitygoal.completed" class="status">Completed</span>
+
                 </div>
-                -->
 
-                            <img mat-card-image src="https://www.wininlife.com/wp-content/uploads/2016/08/servlet.png">
+                <div class="title"><strong>{{communitygoal?.goalTitle}}</strong></div>
 
-                            <mat-card-content class="cardContent">
+                <div class="description">{{communitygoal?.description}}</div>
 
-                                <div class="statusHeader">
+                <div class="country">{{communitygoal?.country}}</div>
 
-                                    <span class="status" *ngIf="!communitygoal.completed">Ongoing</span>
-                                    <span class="status" *ngIf="communitygoal.completed">Completed</span>
+                <div class="progressContainer">
 
-                                </div>
-
-                                <div class="title"><strong>{{communitygoal?.goalTitle}}</strong></div>
-
-                                <div class="description">{{communitygoal?.description}}</div>
-
-                                <div class="country">{{communitygoal?.country}}</div>
-
-                                <div class="progressContainer">
-
-                                    <div class="percentageReached"><strong>Reward:</strong>
-                                        {{communitygoal?.rewardPercentage}}% Off
-                                        Store-wide
-                                        Discount Code
-                                    </div>
-                                    <div class="currentPoints">
-                                        <strong>{{communitygoal?.currentPoints}} /
-                                            {{communitygoal?.targetPoints}}</strong> Points Hit
-                                        <span
-                                            style="float: right !important">{{((communitygoal?.currentPoints*100)/communitygoal?.targetPoints)|number:'0.0-2'}}%</span>
-                                    </div>
-                                    <div class="progress" style="height: 1vw; margin-top: 0.5vw; border-radius: 20px">
-                                        <div class="progress-bar bg-success"
-                                            style="height: 1vw; margin-top: 0; border-radius: 20px"
-                                            [ngStyle]="{'width.%':(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}">
-                                        </div>
-                                    </div>
-                                    <div class="dateContainer">
-
-                                        <span class="endDate" *ngIf="!communitygoal.completed">End Date : {{communitygoal?.endDate | date }}</span>
-
-                                    </div>
-
-                                </div><br />
-
-                            </mat-card-content>
-
-                        </mat-card>
+                  <div class="percentageReached"><strong>Reward:</strong>
+                    {{communitygoal?.rewardPercentage}}% Off
+                    Store-wide
+                    Discount Code
+                  </div>
+                  <div class="currentPoints">
+                    <strong>{{communitygoal?.currentPoints}} /
+                      {{communitygoal?.targetPoints}}</strong> Points Hit
+                    <span
+                      style="float: right !important">{{((communitygoal?.currentPoints * 100) / communitygoal?.targetPoints)|number:'0.0-2'}}
+                      %</span>
+                  </div>
+                  <div class="progress" style="height: 1vw; margin-top: 0.5vw; border-radius: 20px">
+                    <div [ngStyle]="{'width.%':(communitygoal?.currentPoints*100)/communitygoal?.targetPoints}"
+                         class="progress-bar bg-success"
+                         style="height: 1vw; margin-top: 0; border-radius: 20px">
                     </div>
-                </div>
+                  </div>
+                  <div class="dateContainer">
 
-            </mat-card-content>
-        </mat-card>
-    </div>
+                    <span class="endDate">End Date : {{communitygoal?.endDate | date }}</span>
+
+                  </div>
+
+                </div>
+                <br/>
+
+              </mat-card-content>
+
+            </mat-card>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
 
 </div>
