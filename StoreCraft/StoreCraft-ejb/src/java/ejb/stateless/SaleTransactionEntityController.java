@@ -96,6 +96,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 if (newSaleTransactionEntity.getDiscountCodeEntity() != null) {
                     DiscountCodeEntity discountCodeEntity = discountCodeEntityControllerLocal.retrieveDiscountCodeByDiscountCodeId(newSaleTransactionEntity.getDiscountCodeEntity().getDiscountCodeId());
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
+ 
 
                     if (discountCodeEntity.getProductEntities() == null
                             || discountCodeEntity.getProductEntities().isEmpty()) { //apply to all products
@@ -134,7 +135,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                             BigDecimal discountRate = discountCodeEntity.getDiscountAmountOrRate();
 
                             for (SaleTransactionLineItemEntity lineItem : lineItemsToDiscount) {
-                                BigDecimal discountBy = lineItem.getSubTotal().multiply(discountRate);
+                                BigDecimal discountBy = lineItem.getSubTotal().multiply(discountRate.divide(BigDecimal.valueOf(100.0)));
                                 lineItem.setSubTotal(lineItem.getSubTotal().subtract(discountBy));
                                 newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                             }
@@ -142,18 +143,20 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                     }
                     discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
                     discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
-                }
-
+                    newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
+                 }
+                System.out.print("***************BEFORE PERSIST CART1");
                 // System.out.println(newSaleTransactionEntity.getTotalAmount());
                 Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
-                //System.out.println(constraintViolations);
+                System.out.println(constraintViolations);
 
                 if (constraintViolations.isEmpty()) {
+                    System.out.print("***************CONSTRAINTS EMPTY");
                     entityManager.persist(newSaleTransactionEntity);
                 } else {
                     throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
                 }
-
+                System.out.print("***************AFTER PERSIST CART");
                 for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : newSaleTransactionEntity.getSaleTransactionLineItemEntities()) {
                     productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
 

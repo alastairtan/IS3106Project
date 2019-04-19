@@ -12,11 +12,11 @@ img {
   width: 100%;
 }
 
-.removeIcon{
+.removeIcon {
   font-size: 40px;
 }
 
-.removeIcon:hover{
+.removeIcon:hover {
   transform: scale(1.08);
 }
 
