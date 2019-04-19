@@ -97,8 +97,8 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                     DiscountCodeEntity discountCodeEntity = discountCodeEntityControllerLocal.retrieveDiscountCodeByDiscountCodeId(newSaleTransactionEntity.getDiscountCodeEntity().getDiscountCodeId());
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
 
-                    if (discountCodeEntity.getProductEntities() == null
-                            || discountCodeEntity.getProductEntities().isEmpty()) { //apply to all products
+                    if (discountCodeEntity.getProductEntities().isEmpty()) { //apply to all products
+
                         if (discountCodeEntity.getDiscountCodeTypeEnum().equals(DiscountCodeTypeEnum.FLAT)) {
                             BigDecimal discountAmount = discountCodeEntity.getDiscountAmountOrRate();
                             newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountAmount));
@@ -110,6 +110,8 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                             BigDecimal discountBy = newSaleTransactionEntity.getTotalAmount().multiply(discountRate);
                             newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                         }
+//                        discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                        customerEntity.getDiscountCodeEntities().remove(discountCodeEntity);
 
                     } else { //apply only to some products
                         List<SaleTransactionLineItemEntity> lineItemsToDiscount = this.getLineItemsToApplyDiscountTo(discountCodeEntity, newSaleTransactionEntity.getSaleTransactionLineItemEntities());
@@ -128,26 +130,30 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                                 }
                             }
                             System.out.print("*************" + newSaleTransactionEntity.getSaleTransactionLineItemEntities().get(0).getSubTotal());
-
+                            
                         } else if (discountCodeEntity.getDiscountCodeTypeEnum().equals(DiscountCodeTypeEnum.PERCENTAGE)) {
-
-                            BigDecimal discountRate = discountCodeEntity.getDiscountAmountOrRate();
-
+                            
+                            BigDecimal discountRate = discountCodeEntity.getDiscountAmountOrRate().divide(BigDecimal.valueOf(100.0));
                             for (SaleTransactionLineItemEntity lineItem : lineItemsToDiscount) {
                                 BigDecimal discountBy = lineItem.getSubTotal().multiply(discountRate);
                                 lineItem.setSubTotal(lineItem.getSubTotal().subtract(discountBy));
                                 newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                             }
                         }
+                        
+                        if (!discountCodeEntity.getCustomerEntities().isEmpty() ) {
+//                            discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                            customerEntity.getDiscountCodeEntities().remove(discountCodeEntity);
+                        }
                     }
                     discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
                     discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
                 }
-
+                
                 // System.out.println(newSaleTransactionEntity.getTotalAmount());
                 Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
                 //System.out.println(constraintViolations);
-
+                
                 if (constraintViolations.isEmpty()) {
                     entityManager.persist(newSaleTransactionEntity);
                 } else {
