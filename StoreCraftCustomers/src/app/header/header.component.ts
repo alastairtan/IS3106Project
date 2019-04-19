@@ -11,12 +11,14 @@ import {ProductService} from '../product.service';
 import {Product} from '../product';
 import {CommunityGoal} from '../community-goal';
 import {CommunityGoalService} from '../community-goal.service';
+import {ShoppingCartComponent} from '../shopping-cart/shopping-cart.component';
 
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [ShoppingCartComponent]
 })
 export class HeaderComponent implements OnInit {
 
@@ -40,11 +42,11 @@ export class HeaderComponent implements OnInit {
               public router: Router,
               public localService: LocalService,
               private productService: ProductService,
-              private communityGoalService: CommunityGoalService) {
+              private communityGoalService: CommunityGoalService,
+              private shoppingCartComponent: ShoppingCartComponent) {
 
     this.rootCategories = [];
     this.allStuffToFilter = [];
-
   }
 
   ngOnInit() {

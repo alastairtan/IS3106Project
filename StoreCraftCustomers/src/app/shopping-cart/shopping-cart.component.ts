@@ -67,6 +67,10 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
     this.cartItems = this.localService.getCart();
     // this.cartItems.filter() --> to remove item that is no longer available (e.g. deleted)
     if (this.cartItems != null) {
@@ -129,6 +133,18 @@ export class ShoppingCartComponent implements OnInit {
       this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
       this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
     }
+  }
+
+  update() {
+    this.localService.setCart(this.cartItems);
+    this.cartItems = this.localService.getCart();
+    this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
+    this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+  }
+  
+  clearCart() {
+    this.localService.clearCart();
+    this.cartItems = this.localService.getCart();
   }
 
   retrieveDiscountCodesForCustomer(customerId: number) {
@@ -212,20 +228,13 @@ export class ShoppingCartComponent implements OnInit {
   add(cartItem: CartItem) {
     cartItem.quantity = cartItem.quantity + 1;
     cartItem.subTotal = cartItem.quantity * cartItem.unitPrice;
-    this.refresh();
+    this.update();
   }
 
   minus(cartItem: CartItem) {
     cartItem.quantity = cartItem.quantity - 1;
     cartItem.subTotal = cartItem.quantity * cartItem.unitPrice;
-    this.refresh();
-  }
-
-  refresh() {
-    this.localService.setCart(this.cartItems);
-    this.cartItems = this.localService.getCart();
-    this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
-    this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+    this.update();
   }
 
   resetSelected() {
@@ -264,7 +273,7 @@ export class ShoppingCartComponent implements OnInit {
       const discountRate: number = discountCode.discountAmountOrRate;
 
       cartItemsToDiscount.forEach(cartItem => {
-        const discountBy: number = cartItem.subTotal * discountRate;
+        const discountBy: number = cartItem.subTotal * discountRate / 100;
 
         cartItem.subTotal = cartItem.subTotal - discountBy;
       });
@@ -408,12 +417,4 @@ export class ShoppingCartComponent implements OnInit {
   filterDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
     return this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes)));
   }
-
-  // can call this function to clear
-  clearCart() {
-    this.localService.clearCart();
-    this.cartItems = this.localService.getCart();
-  }
-
-
 }
