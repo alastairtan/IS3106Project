@@ -72,6 +72,7 @@ public class CommunityGoalsManagedBean implements Serializable{
     
     public CommunityGoalsManagedBean() throws FileNotFoundException, IOException {
         countries= new ArrayList<>();
+
         
         String[] locales = Locale.getISOCountries();
         

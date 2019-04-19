@@ -12,9 +12,21 @@ import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import entity.StaffEntity;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
@@ -63,6 +75,9 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
+
+    private TreeMap treeMap;
+    private TreeMap sortedMap;
 
     public SaleTransactionEntityController() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -289,6 +304,120 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
             }
         }
         entityManager.remove(saleTransactionEntityToRemove);
+    }
+
+    @Override
+    public List<BigDecimal> retrieveSaleTransactionForTheYear() {
+        Calendar c = Calendar.getInstance();
+        int currYear = c.get(Calendar.YEAR);
+        int[] months = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        List<BigDecimal> total = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        List<SaleTransactionEntity> thisMonthSaleTransactionEntitys = new ArrayList<SaleTransactionEntity>();
+        List<SaleTransactionEntity> saleTransactionEntitys = retrieveAllSaleTransactions();
+        System.out.println("saleTransactionEntitys size" + saleTransactionEntitys.size());
+
+        for (int i = 0; i < months.length; i++) {
+            int currMonth = months[i];
+            System.out.println("inside first loop");
+            BigDecimal addUp = new BigDecimal(BigInteger.ZERO);
+            for (SaleTransactionEntity s : saleTransactionEntitys) {
+                calendar.setTime(s.getTransactionDateTime());
+                System.out.println("inside 2nd loop");
+                if (calendar.get(Calendar.MONTH) == currMonth && calendar.get(Calendar.YEAR) == currYear) {
+                    System.out.println("s.getLE SIZE: " + s.getSaleTransactionLineItemEntities().size());
+
+                    for (SaleTransactionLineItemEntity stlie : s.getSaleTransactionLineItemEntities()) {
+                        addUp = addUp.add(stlie.getSubTotal());
+                        System.out.println("can work!");
+                    }
+
+                }
+            }
+            total.add(addUp);
+        }
+
+        return total;
+
+    }
+
+    @Override
+    public List<ProductEntity> retrieveTopSellingProductsAllTime() {
+//        List<ProductEntity> productEntitys = productEntityControllerLocal.retrieveAllProducts();
+//        int size = productEntitys.size();
+        countProductsSold();
+        List<ProductEntity> productEntitys = new ArrayList<>();
+        int size = Math.min(sortedMap.size(), 3);
+        for(int i = 0; i < size; i++) {
+            int topFive = (int) sortedMap.lastKey();
+            try {
+                productEntitys.add(productEntityControllerLocal.retrieveProductByProductId(Long.valueOf(topFive)));
+            } catch (ProductNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("SORTED MAP LAST KEY: " + sortedMap.lastKey());
+            System.out.println(sortedMap);
+            
+            //int value = (int) sortedMap.get(topFive-1);
+            sortedMap.remove(topFive);
+            
+        }
+        return productEntitys;
+    }
+
+    public void countProductsSold() {
+        
+        treeMap = new TreeMap<Integer, Integer>();
+        List<ProductEntity> productEntitys = productEntityControllerLocal.retrieveAllProducts();
+        int size = productEntitys.size();
+        int[] total = new int[size];
+        for (int i = 0; i < size; i++) {
+            total[i] = numberOfProductsSold(Long.valueOf(i));
+        }
+        for (int i = 0; i < size; i++) {
+            treeMap.put(i, total[i]);
+            System.out.println("treeMap items" + total[i]);
+        }
+        System.out.println("TREE MAAAAP MAP SIZE: " +treeMap);
+        sortedMap = (TreeMap) sortByValues(treeMap);
+        System.out.println("SORTED MAP SIZE: " +sortedMap.size());
+        System.out.println(sortedMap);
+
+        //return sortedMap;
+    }
+
+    public int numberOfProductsSold(Long productId) {
+        List<SaleTransactionLineItemEntity> saleTransactionLineItemEntitys = retrieveSaleTransactionLineItemsByProductId(productId);
+//        BigDecimal numSold = new BigDecimal(BigInteger.ZERO);
+        int numSold = 0;
+        for (SaleTransactionLineItemEntity s : saleTransactionLineItemEntitys) {
+            if (s.getProductEntity().getProductId().equals(productId)) {
+                numSold += s.getQuantity();
+            }
+        }
+        return numSold;
+    }
+
+    public static <K, V extends Comparable<V>> Map<K, V>
+            sortByValues(final Map<K, V> map) {
+        Comparator<K> valueComparator
+                = new Comparator<K>() {
+            public int compare(K k1, K k2) {
+                int compare
+                        = map.get(k1).compareTo(map.get(k2));
+                if (compare == 0) {
+                    return 0;
+                } else {
+                    return compare;
+                }
+            }
+        };
+
+        Map<K, V> sortedByValues
+                = new TreeMap<K, V>(valueComparator);
+        sortedByValues.putAll(map);
+        return sortedByValues;
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations) {

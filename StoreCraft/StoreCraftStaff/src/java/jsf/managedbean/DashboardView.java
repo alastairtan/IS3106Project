@@ -5,8 +5,18 @@
  */
 package jsf.managedbean;
 
+import ejb.stateless.CustomerEntityControllerLocal;
+import ejb.stateless.ProductEntityControllerLocal;
+import ejb.stateless.SaleTransactionEntityControllerLocal;
+import entity.CustomerEntity;
+import entity.ProductEntity;
+import entity.SaleTransactionEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -28,7 +38,23 @@ import org.primefaces.model.DefaultDashboardModel;
 public class DashboardView implements Serializable {
      
     private DashboardModel model;
-     
+    
+    @EJB
+    private CustomerEntityControllerLocal customerEntityControllerLocal;
+    
+    @EJB
+    private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
+    
+    @EJB
+    private ProductEntityControllerLocal productEntityControllerLocal;
+    
+    private List<CustomerEntity> topCustomersAllTime;
+    private List<CustomerEntity> topCustomersForTheMonth;
+    private List<BigDecimal> saleTransactionsForTheYear;
+    private List<String> months = new ArrayList<>();
+    private List<ProductEntity> topSellingProductsAllTime;
+    
+    
     @PostConstruct
     public void init() {
         model = new DefaultDashboardModel();
@@ -47,7 +73,45 @@ public class DashboardView implements Serializable {
         model.addColumn(column1);
         model.addColumn(column2);
         model.addColumn(column3);
+        
+        retrieveDetailsForDashboard();
+        
     }
+    
+    public void retrieveDetailsForDashboard() {
+        topCustomersAllTime = new ArrayList<CustomerEntity>();
+        topCustomersForTheMonth = new ArrayList<CustomerEntity>();
+        months.add("Jan");
+        months.add("Feb");
+        months.add("Mar");
+        months.add("Apr");
+        months.add("May");
+        months.add("Jun");
+        months.add("Jul");
+        months.add("Aug");
+        months.add("Sep");
+        months.add("Oct");
+        months.add("Nov");
+        months.add("Dec");
+        
+        
+        
+        
+        List<CustomerEntity> allCustomersAllTime = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
+        topCustomersAllTime = allCustomersAllTime.subList(0, Math.min(allCustomersAllTime.size(), 3));
+        
+        List<CustomerEntity> allCustomersPerMonth = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
+        topCustomersForTheMonth = allCustomersPerMonth.subList(0, Math.min(allCustomersAllTime.size(), 3));
+        System.out.println("topCustomers size" + topCustomersAllTime.size());
+        
+        saleTransactionsForTheYear = saleTransactionEntityControllerLocal.retrieveSaleTransactionForTheYear();
+        System.out.println("saleTransactionsForTheYear"+ saleTransactionsForTheYear.size());
+        
+        topSellingProductsAllTime = saleTransactionEntityControllerLocal.retrieveTopSellingProductsAllTime();
+        System.out.println("topselling products size" + topSellingProductsAllTime.size());
+    }
+    
+    
      
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();
@@ -56,6 +120,22 @@ public class DashboardView implements Serializable {
         message.setDetail("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex() + ", Sender index: " + event.getSenderColumnIndex());
          
         addMessage(message);
+    }
+
+    public List<CustomerEntity> getTopCustomersAllTime() {
+        return topCustomersAllTime;
+    }
+
+    public void setTopCustomersAllTime(List<CustomerEntity> topCustomersAllTime) {
+        this.topCustomersAllTime = topCustomersAllTime;
+    }
+
+    public List<CustomerEntity> getTopCustomersForTheMonth() {
+        return topCustomersForTheMonth;
+    }
+
+    public void setTopCustomersForTheMonth(List<CustomerEntity> topCustomersForTheMonth) {
+        this.topCustomersForTheMonth = topCustomersForTheMonth;
     }
      
     public void handleClose(CloseEvent event) {
@@ -77,4 +157,30 @@ public class DashboardView implements Serializable {
     public DashboardModel getModel() {
         return model;
     }
+
+    public List<BigDecimal> getSaleTransactionsForTheYear() {
+        return saleTransactionsForTheYear;
+    }
+
+    public void setSaleTransactionsForTheYear(List<BigDecimal> saleTransactionsForTheYear) {
+        this.saleTransactionsForTheYear = saleTransactionsForTheYear;
+    }
+
+    public List<String> getMonths() {
+        return months;
+    }
+
+    public void setMonths(List<String> months) {
+        this.months = months;
+    }
+
+    public List<ProductEntity> getTopSellingProductsAllTime() {
+        return topSellingProductsAllTime;
+    }
+
+    public void setTopSellingProductsAllTime(List<ProductEntity> topSellingProductsAllTime) {
+        this.topSellingProductsAllTime = topSellingProductsAllTime;
+    }
+
+    
 }

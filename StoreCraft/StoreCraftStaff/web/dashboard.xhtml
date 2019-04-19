@@ -8,19 +8,19 @@
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        
+
         <ez:Breadcrumb pageName="dashboard"/>
-        
+
         <style type="text/css">
-        .ui-panel, div.ui-state-hover {
+            .ui-panel, div.ui-state-hover {
                 margin: 10px;
                 width: 95%;
-        }
-        .ui-dashboard-column {
-                width: 33%;
-        }
+            }
+            .ui-dashboard-column {
+                width: 50%;
+            }
         </style>
-        
+
         <div>
             <h:form>
                 <p:growl id="msgs" showDetail="true" />
@@ -29,15 +29,74 @@
                     <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs" />
 
                     <p:panel id="topCustomersAllTime" header="Top Customers (All Time)">
-                        <h:outputText value="Top Customers (All Time) Content" />
+                        <p:dataTable value="#{dashboardView.topCustomersAllTime}" var="topCustomer">
+                            <p:column headerText="ID" style="width: 10px;" >
+                                <h:outputText value="#{topCustomer.customerId}" />
+                            </p:column>
+                            <p:column headerText="Name"  >
+                                <h:outputText value="#{topCustomer.firstName} #{topCustomer.lastName}" />
+                            </p:column>
+                            <p:column headerText="Country"  >
+                                <h:outputText value="#{topCustomer.country}" />
+                            </p:column>
+                        </p:dataTable>
                     </p:panel>
 
                     <p:panel id="topCustomersMonth" header="Top Customers (Month)">
-                        <h:outputText value="Top Customers (Month) Content" />
+                        <p:dataTable value="#{dashboardView.topCustomersForTheMonth}" var="topCustomer">
+                            <p:column headerText="ID" style="width: 10px;" >
+                                <h:outputText value="#{topCustomer.customerId}" />
+                            </p:column>
+                            <p:column headerText="Name"  >
+                                <h:outputText value="#{topCustomer.firstName} #{topCustomer.lastName}" />
+                            </p:column>
+                            <p:column headerText="Country"  >
+                                <h:outputText value="#{topCustomer.country}" />
+                            </p:column>
+                        </p:dataTable>
                     </p:panel>
 
                     <p:panel id="salesForMonth" header="Sales For The Month">
-                        <h:outputText value="Sales For the Month Content"  />
+                        <p:dataTable value="#{dashboardView.saleTransactionsForTheYear}" var="saleTransaction">                    
+                            <p:columns value="#{dashboardView.months}" var="month" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{month}" />
+                                </f:facet>
+                                <h:outputText value="saleTransaction"/>
+                            </p:columns>
+                        </p:dataTable>
+                        <!--                        <table border="1">
+                                                    <tr>
+                                                        <th>Jan</th>
+                                                        <th>Feb</th>
+                                                        <th>Mar</th>
+                                                        <th>Apr</th>
+                                                        <th>May</th>
+                                                        <th>Jun</th>
+                                                        <th>Jul</th>
+                                                        <th>Aug</th>
+                                                        <th>Sep</th>
+                                                        <th>Oct</th>
+                                                        <th>Nov</th>
+                                                        <th>Dec</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(0)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(1)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(2)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(3)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(4)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(5)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(6)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(7)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(8)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(9)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(10)}</td>
+                                                        <td>#{dashboardView.saleTransactionsForTheYear.get(11)}</td>
+                                                        
+                                                    </tr>
+                                                </table>-->
+
                     </p:panel>
 
                     <p:panel id="topSellingProductsMonth" header="Top Selling Products (Month)">
@@ -45,7 +104,14 @@
                     </p:panel>
 
                     <p:panel id="topSellingProductsAllTime" header="Top Selling Products (All Time)">
-                        <h:outputText value="Top Selling Products (All Time) " />
+                        <p:dataTable value="#{dashboardView.topSellingProductsAllTime}" var="product">
+                            <p:column headerText="ID" style="width: 10px;" >
+                                <h:outputText value="#{product.productId}" />
+                            </p:column>
+                            <p:column headerText="Description"  >
+                                <h:outputText value="#{product.description}" />
+                            </p:column>
+                        </p:dataTable>
                     </p:panel>
                 </p:dashboard>
 
