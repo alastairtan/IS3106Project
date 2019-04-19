@@ -33,6 +33,7 @@
 mat-card{
     border-radius: 0;
 }
+
 .mat-card-header {
     display: flex;
     align-content: center;
@@ -67,7 +68,7 @@ mat-card{
 
 .avatar {
     height: 10vw;
-    width: auto;
+    width: 10vw;
 }
 
 .avatar2 {

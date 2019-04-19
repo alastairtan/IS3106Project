@@ -47,15 +47,14 @@ export class SaleTransactionService {
       (
         catchError(error => {
 
-          if (error.status == "500")
-          {
+          if (error.status == '500') {
             this.handleError(error);
           } else {
             console.log(error);
-            return JSON.stringify(error.status)
+            return JSON.stringify(error.status);
           }
         })
-      )
+      );
   }
 
 
@@ -64,7 +63,7 @@ export class SaleTransactionService {
     + this.sessionService.getCurrentCustomer().customerId).pipe
     (
       catchError(this.handleError)
-    )
+    );
   }
 
 
