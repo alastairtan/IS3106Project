@@ -70,7 +70,7 @@ export class ViewProductsComponent implements OnInit {
 
         // paginator
         this.pageLength = this.allProducts.length;
-        this.pageSize = 8;
+        this.pageSize = 6;
         this.currentPage = 0;
         // ********
 

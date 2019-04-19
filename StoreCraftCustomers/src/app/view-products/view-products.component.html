@@ -1,4 +1,4 @@
-<mat-paginator (page)="handlePageEvent($event)" [length]="pageLength" [pageIndex]="currentPage" [pageSizeOptions]="[2,4,8,12,16,20]"
+<mat-paginator (page)="handlePageEvent($event)" [length]="pageLength" [pageIndex]="currentPage" [pageSizeOptions]="[6,12,18]"
                [pageSize]="pageSize" class="paginator mat-elevate-z4"
                color="accent"></mat-paginator>
 <div class="card-deck-container" fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px grid"
@@ -94,7 +94,7 @@
         </div>
       </ng-container>
     </div> -->
-    <div gdArea gdColumns="25% 25% 25% 25%" gdGap="12px" gdRows="1fr!" style="padding-right:12px">
+    <div gdArea gdColumns="33% 33% 33%" gdGap="12px" gdRows="1fr!">
       <ng-container *ngFor="let product of viewProducts" class="card-item">
         <app-product-card [product]="product"></app-product-card>
       </ng-container>
