@@ -80,3 +80,11 @@ mat-card{
     width: auto;
 }
 
+.avatar2:hover{
+  cursor: pointer
+}
+
+.infoIcon:hover{
+  transform:scale(1.2)
+}
+

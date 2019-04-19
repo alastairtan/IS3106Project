@@ -55,6 +55,7 @@ import { LeaderboardTableAllTimeComponent } from './leaderboard-table-all-time/l
 import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-index/scavenger-hunt-winners-index.component';
 import { UserReviewTableComponent } from './user-review-table/user-review-table.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.component';
 
 
 
@@ -84,7 +85,8 @@ import { SearchResultComponent } from './search-result/search-result.component';
     LeaderboardTableAllTimeComponent,
     ScavengerHuntWinnersIndexComponent,
     UserReviewTableComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    TierInfoDialogComponent
 
   ],
   imports: [
@@ -121,6 +123,6 @@ import { SearchResultComponent } from './search-result/search-result.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginDialogComponent, RegisterDialogComponent]
+  entryComponents: [LoginDialogComponent, RegisterDialogComponent, TierInfoDialogComponent]
 })
 export class AppModule { }
