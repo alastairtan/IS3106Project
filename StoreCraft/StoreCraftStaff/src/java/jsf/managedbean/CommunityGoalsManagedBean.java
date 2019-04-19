@@ -70,6 +70,7 @@ public class CommunityGoalsManagedBean implements Serializable{
         countries.add("India");
         countries.add("Malaysia");
         countries.add("Frozen Throne");
+        countries.add("America");
         currentDate = getToday();
         afterStartDate = new Date();
         newCommunityGoal = new CommunityGoalEntity();
