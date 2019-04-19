@@ -14,6 +14,8 @@ import entity.SaleTransactionEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -53,6 +55,13 @@ public class DashboardView implements Serializable {
     private List<BigDecimal> saleTransactionsForTheYear;
     private List<String> months = new ArrayList<>();
     private List<ProductEntity> topSellingProductsAllTime;
+
+    public DashboardView() {
+        this.topCustomersAllTime = new ArrayList<>();
+        this.topCustomersForTheMonth = new ArrayList<>();
+        this.topSellingProductsAllTime = new ArrayList<>();
+    }
+    
     
     
     @PostConstruct
@@ -107,8 +116,10 @@ public class DashboardView implements Serializable {
         saleTransactionsForTheYear = saleTransactionEntityControllerLocal.retrieveSaleTransactionForTheYear();
         System.out.println("saleTransactionsForTheYear"+ saleTransactionsForTheYear.size());
         
-        topSellingProductsAllTime = saleTransactionEntityControllerLocal.retrieveTopSellingProductsAllTime();
-        System.out.println("topselling products size" + topSellingProductsAllTime.size());
+        //topSellingProductsAllTime = saleTransactionEntityControllerLocal.retrieveTopSellingProductsAllTime();
+        //System.out.println("topselling products size" + topSellingProductsAllTime.size());
+        topSellingProductsAllTime = productEntityControllerLocal.retrieveAllProducts();
+        sortProducts(topSellingProductsAllTime);
     }
     
     
@@ -120,6 +131,20 @@ public class DashboardView implements Serializable {
         message.setDetail("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex() + ", Sender index: " + event.getSenderColumnIndex());
          
         addMessage(message);
+    }
+    
+    public void sortProducts(List<ProductEntity> allProducts){
+        Collections.sort(allProducts, new Comparator<ProductEntity>(){
+            public int compare(ProductEntity pe1, ProductEntity pe2){
+                int pe1Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe1.getProductId());
+                int pe2Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe2.getProductId());
+                return pe1Qty < pe2Qty ? 1 : pe1Qty > pe2Qty ? -1 : 0;
+            }
+        });
+    }
+    
+    public int getNumProductsSold(Long productId){
+        return saleTransactionEntityControllerLocal.numberOfProductsSold(productId);
     }
 
     public List<CustomerEntity> getTopCustomersAllTime() {
