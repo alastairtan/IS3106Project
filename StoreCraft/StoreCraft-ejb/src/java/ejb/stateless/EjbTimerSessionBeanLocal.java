@@ -5,10 +5,15 @@
  */
 package ejb.stateless;
 
+import util.exception.CreateNewDiscountCodeException;
+import util.exception.InputDataValidationException;
+
 /**
  *
  * @author shawn
  */
 public interface EjbTimerSessionBeanLocal {
-    
+
+    public void giveLeaderBoardPrizes() throws CreateNewDiscountCodeException, InputDataValidationException;
+
 }

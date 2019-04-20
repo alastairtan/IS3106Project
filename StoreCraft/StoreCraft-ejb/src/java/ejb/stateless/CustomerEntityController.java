@@ -79,6 +79,14 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     }
     
     @Override
+    public List<CustomerEntity> retireveAllCustomersOrderedByPoints(){
+        
+        Query query = entityManager.createQuery("SELECT c from CustomerEntity c ORDER BY c.pointsForCurrentMonth DESC");
+        
+        return query.getResultList();
+    }
+    
+    @Override
     public CustomerEntity retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException
     {
         if(customerId == null)

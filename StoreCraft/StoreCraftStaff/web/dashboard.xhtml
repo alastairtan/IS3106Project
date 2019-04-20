@@ -43,6 +43,19 @@
                     </p:panel>
 
                     <p:panel id="topCustomersMonth" header="Top Customers (Month)">
+                        <f:facet name="header">
+                            <div class="ui-g">
+                                <div class="ui-g-4">
+                                    &nbsp;
+                                </div>
+                                <div class="ui-g-4">
+                                    Top Customers (Month)
+                                </div>
+                                <div class="ui-g-4">
+                                    <p:commandButton value="Give Leaderboard Prizes" update="@form" actionListener="#{dashboardView.giveLeaderBoardPrizes}"/>
+                                </div>
+                            </div>
+                        </f:facet>
                         <p:dataTable value="#{dashboardView.topCustomersForTheMonth}" var="topCustomer">
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{topCustomer.customerId}" />

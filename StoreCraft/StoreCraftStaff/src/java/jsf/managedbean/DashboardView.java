@@ -6,11 +6,11 @@
 package jsf.managedbean;
 
 import ejb.stateless.CustomerEntityControllerLocal;
+import ejb.stateless.EjbTimerSessionBeanLocal;
 import ejb.stateless.ProductEntityControllerLocal;
 import ejb.stateless.SaleTransactionEntityControllerLocal;
 import entity.CustomerEntity;
 import entity.ProductEntity;
-import entity.SaleTransactionEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
@@ -30,6 +31,8 @@ import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
+import util.exception.CreateNewDiscountCodeException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -38,18 +41,21 @@ import org.primefaces.model.DefaultDashboardModel;
 @Named(value = "dashboardView")
 @ViewScoped
 public class DashboardView implements Serializable {
-     
+
     private DashboardModel model;
-    
+
     @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
-    
+
     @EJB
     private SaleTransactionEntityControllerLocal saleTransactionEntityControllerLocal;
-    
+
     @EJB
     private ProductEntityControllerLocal productEntityControllerLocal;
-    
+
+    @EJB
+    private EjbTimerSessionBeanLocal ejbTimerSessionBeanLocal;
+
     private List<CustomerEntity> topCustomersAllTime;
     private List<CustomerEntity> topCustomersForTheMonth;
     private List<BigDecimal> saleTransactionsForTheYear;
@@ -61,32 +67,30 @@ public class DashboardView implements Serializable {
         this.topCustomersForTheMonth = new ArrayList<>();
         this.topSellingProductsAllTime = new ArrayList<>();
     }
-    
-    
-    
+
     @PostConstruct
     public void init() {
         model = new DefaultDashboardModel();
         DashboardColumn column1 = new DefaultDashboardColumn();
         DashboardColumn column2 = new DefaultDashboardColumn();
         DashboardColumn column3 = new DefaultDashboardColumn();
-         
+
         column1.addWidget("topCustomersAllTime"); //match the id of panel in the dashboard
         column1.addWidget("topCustomersMonth");
-         
+
         column2.addWidget("salesForMonth");
         column2.addWidget("topSellingProductsMonth");
-         
+
         column3.addWidget("topSellingProductsAllTime");
- 
+
         model.addColumn(column1);
         model.addColumn(column2);
         model.addColumn(column3);
-        
+
         retrieveDetailsForDashboard();
-        
+
     }
-    
+
     public void retrieveDetailsForDashboard() {
         topCustomersAllTime = new ArrayList<CustomerEntity>();
         topCustomersForTheMonth = new ArrayList<CustomerEntity>();
@@ -102,48 +106,55 @@ public class DashboardView implements Serializable {
         months.add("Oct");
         months.add("Nov");
         months.add("Dec");
-        
-        
-        
-        
+
         List<CustomerEntity> allCustomersAllTime = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
         topCustomersAllTime = allCustomersAllTime.subList(0, Math.min(allCustomersAllTime.size(), 3));
-        
+
         List<CustomerEntity> allCustomersPerMonth = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
         topCustomersForTheMonth = allCustomersPerMonth.subList(0, Math.min(allCustomersAllTime.size(), 3));
         System.out.println("topCustomers size" + topCustomersAllTime.size());
-        
+
         saleTransactionsForTheYear = saleTransactionEntityControllerLocal.retrieveSaleTransactionForTheYear();
-        System.out.println("saleTransactionsForTheYear"+ saleTransactionsForTheYear.size());
-        
+        System.out.println("saleTransactionsForTheYear" + saleTransactionsForTheYear.size());
+
         //topSellingProductsAllTime = saleTransactionEntityControllerLocal.retrieveTopSellingProductsAllTime();
         //System.out.println("topselling products size" + topSellingProductsAllTime.size());
         topSellingProductsAllTime = productEntityControllerLocal.retrieveAllProducts();
         sortProducts(topSellingProductsAllTime);
     }
-    
-    
-     
+
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();
         message.setSeverity(FacesMessage.SEVERITY_INFO);
         message.setSummary("Reordered: " + event.getWidgetId());
         message.setDetail("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex() + ", Sender index: " + event.getSenderColumnIndex());
-         
+
         addMessage(message);
     }
-    
-    public void sortProducts(List<ProductEntity> allProducts){
-        Collections.sort(allProducts, new Comparator<ProductEntity>(){
-            public int compare(ProductEntity pe1, ProductEntity pe2){
+
+    public void sortProducts(List<ProductEntity> allProducts) {
+        Collections.sort(allProducts, new Comparator<ProductEntity>() {
+            public int compare(ProductEntity pe1, ProductEntity pe2) {
                 int pe1Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe1.getProductId());
                 int pe2Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe2.getProductId());
                 return pe1Qty < pe2Qty ? 1 : pe1Qty > pe2Qty ? -1 : 0;
             }
         });
     }
-    
-    public int getNumProductsSold(Long productId){
+
+    public void giveLeaderBoardPrizes(ActionEvent event) {
+        try {
+            ejbTimerSessionBeanLocal.giveLeaderBoardPrizes();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully gave prizes!", null));
+        } catch (CreateNewDiscountCodeException | InputDataValidationException  ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: " + ex.getMessage(), null));
+        } catch (Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unexpected ERROR: " + ex.getMessage(), null));
+        }
+                
+    }
+
+    public int getNumProductsSold(Long productId) {
         return saleTransactionEntityControllerLocal.numberOfProductsSold(productId);
     }
 
@@ -162,23 +173,23 @@ public class DashboardView implements Serializable {
     public void setTopCustomersForTheMonth(List<CustomerEntity> topCustomersForTheMonth) {
         this.topCustomersForTheMonth = topCustomersForTheMonth;
     }
-     
+
     public void handleClose(CloseEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Panel Closed", "Closed panel id:'" + event.getComponent().getId() + "'");
-         
+
         addMessage(message);
     }
-     
+
     public void handleToggle(ToggleEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, event.getComponent().getId() + " toggled", "Status:" + event.getVisibility().name());
-         
+
         addMessage(message);
     }
-     
+
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-     
+
     public DashboardModel getModel() {
         return model;
     }
@@ -207,5 +218,4 @@ public class DashboardView implements Serializable {
         this.topSellingProductsAllTime = topSellingProductsAllTime;
     }
 
-    
 }

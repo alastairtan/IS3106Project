@@ -40,5 +40,7 @@ public interface CustomerEntityControllerLocal {
 
     public List<CustomerEntity> retrieveCustomersBySpendingTotal();
 
+    public List<CustomerEntity> retireveAllCustomersOrderedByPoints();
+
 
 }
