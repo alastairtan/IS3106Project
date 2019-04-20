@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -12,6 +12,7 @@ import entity.ReviewEntity;
 import entity.SaleTransactionEntity;
 import entity.SaleTransactionLineItemEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,7 +30,6 @@ import util.exception.CustomerNotFoundException;
 @ViewScoped
 public class CustomerDetailsManagedBean implements Serializable {
 
-
     @EJB
     private CustomerEntityControllerLocal customerEntityControllerLocal;
 
@@ -38,44 +38,42 @@ public class CustomerDetailsManagedBean implements Serializable {
     private List<DiscountCodeEntity> discountCodeEntities;
     private List<ReviewEntity> reviewEntities;
     private List<SaleTransactionEntity> saleTransactionEntities;
-    
+
     // Filtered list
     private List<DiscountCodeEntity> filteredDiscountCodeEntities;
     private List<ReviewEntity> filteredReviewEntities;
     private List<SaleTransactionEntity> filteredSaleTransactionEntities;
-    
+
     private List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities;
     private List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities;
     private SaleTransactionEntity currentSaleTransactionEntity;
-    
-    public CustomerDetailsManagedBean() 
-    {
+
+    public CustomerDetailsManagedBean() {
+        discountCodeEntities = new ArrayList<>();
+        reviewEntities = new ArrayList<>();
+        saleTransactionEntities = new ArrayList<>();
     }
-    
+
     @PostConstruct
-    public void postConstruct()
-    {
-        try 
-        {
+    public void postConstruct() {
+        try {
             Long customerId = Long.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("customerId"));
             customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
 
             discountCodeEntities = customerEntity.getDiscountCodeEntities();
-            reviewEntities = customerEntity.getReviewEntities();
+            List<ReviewEntity> allReviewEntities = customerEntity.getReviewEntities();
+            for (ReviewEntity re : allReviewEntities) {
+                if (re.getProductEntity() != null) {
+                    this.reviewEntities.add(re);
+                }
+            }
             saleTransactionEntities = customerEntity.getSaleTransactionEntities();
-        }
-        catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Customer ID not provided", null));
-        }
-        catch (CustomerNotFoundException ex)
-        {
+        } catch (CustomerNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the customer record: " + ex.getMessage(), null));
         }
     }
-    
-    
-    
 
     public List<DiscountCodeEntity> getDiscountCodeEntities() {
         return discountCodeEntities;
@@ -148,7 +146,7 @@ public class CustomerDetailsManagedBean implements Serializable {
     public void setCurrentSaleTransactionEntity(SaleTransactionEntity currentSaleTransactionEntity) {
         this.currentSaleTransactionEntity = currentSaleTransactionEntity;
     }
-    
+
     public List<SaleTransactionLineItemEntity> getFilteredSaleTransactionLineItemEntities() {
         return filteredSaleTransactionLineItemEntities;
     }
@@ -156,6 +154,5 @@ public class CustomerDetailsManagedBean implements Serializable {
     public void setFilteredSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> filteredSaleTransactionLineItemEntities) {
         this.filteredSaleTransactionLineItemEntities = filteredSaleTransactionLineItemEntities;
     }
-    
-    
+
 }

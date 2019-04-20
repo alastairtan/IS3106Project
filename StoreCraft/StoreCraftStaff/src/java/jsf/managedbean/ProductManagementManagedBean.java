@@ -104,6 +104,7 @@ public class ProductManagementManagedBean implements Serializable {
         setIsUpdating(false);
         try { //to reset fields in the dialog
             selectedProductEntity = productEntityControllerLocal.retrieveProductByProductId(selectedProductEntity.getProductId());
+            productEntities = productEntityControllerLocal.retrieveAllProducts();
         } catch (ProductNotFoundException ex) {
             Logger.getLogger(FilterProductsByCategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex); //exception should not occur
         }
