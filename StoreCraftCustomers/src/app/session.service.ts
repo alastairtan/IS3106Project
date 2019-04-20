@@ -3,25 +3,28 @@ import { Customer } from './customer';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
 
+  public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private httpClient: HttpClient) { }
 
   getIsLogin(): boolean {
-    if (sessionStorage.isLogin == "true") {
+    if (sessionStorage.isLogin == 'true') {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
   setIsLogin(isLogin: boolean): void {
     sessionStorage.isLogin = isLogin;
+    this.isLoggedIn.next(isLogin);
   }
 
 
@@ -33,21 +36,21 @@ export class SessionService {
     }
   }
 
-  
-  refreshCurrentCustomer(): Customer{
+
+  refreshCurrentCustomer(): Customer {
     if (sessionStorage.currentCustomer != null) {
-      let customer: Customer = JSON.parse(sessionStorage.currentCustomer);
-      this.httpClient.get<any>("/api/Customer/getCustomerById?customerId=" + customer.customerId).subscribe(response => {
+      const customer: Customer = JSON.parse(sessionStorage.currentCustomer);
+      this.httpClient.get<any>('/api/Customer/getCustomerById?customerId=' + customer.customerId).subscribe(response => {
         if (customer != null) {
           this.setCurrentCustomer(response.customerEntity);
           return response.customerEntity;
         }
-      })
+      });
     } else {
       return null;
     }
   }
-  
+
 
 
 

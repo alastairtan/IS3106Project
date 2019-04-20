@@ -57,6 +57,9 @@ export class ViewProductDetailsComponent implements OnInit {
               private loginDialog: MatDialog) {
     this.isEditing = false;
     this.isWriting = false;
+    this.sessionService.isLoggedIn.subscribe(value => {
+      this.refresh();
+    })
   }
 
   ngOnInit() {
@@ -192,7 +195,7 @@ export class ViewProductDetailsComponent implements OnInit {
     const dialogRef = this.loginDialog.open(LoginDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
+      this.refresh();
     });
   }
 
