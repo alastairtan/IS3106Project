@@ -25,6 +25,7 @@ import entity.SaleTransactionLineItemEntity;
 import entity.StaffEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -205,12 +206,43 @@ public class DataInitSessionBean {
             productEntityControllerLocal.createNewProduct(new ProductEntity("PROD036", "Vans G-DRAGON Unisex", "Constructed from hard wearing leather and suede, it features contrasting leather on the side stripe and sits on top of a classic waffle sole.", 100, 10, new BigDecimal("79.90"), "https://laz-img-sg.alicdn.com/p/190cdc9429e46af18369065970b9a1e2.jpg_720x720q80.jpg"), vansCategory.getCategoryId(), tagIdsDiscount);
             
 
+            
+
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            //January
+            Date date = sdf.parse("05-01-2019");
+            List<SaleTransactionLineItemEntity> janSaleTransactionLineItemEntities = new ArrayList<>();
+            janSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(1, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD003"), 1, new BigDecimal(1200), new BigDecimal(1200)));
+            janSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(2, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD004"), 1, new BigDecimal(1250), new BigDecimal(1250)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 2, new BigDecimal(2450), date, Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("peter@gmail.com"), janSaleTransactionLineItemEntities, null, null));
+            //Febuary
+            Date date1 = sdf.parse("05-02-2019");
+            List<SaleTransactionLineItemEntity> febSaleTransactionLineItemEntities = new ArrayList<>();
+            febSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(3, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD005"), 1, new BigDecimal(1170), new BigDecimal(1170)));
+            febSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(4, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD006"), 1, new BigDecimal(1852), new BigDecimal(1852)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(2), new SaleTransactionEntity(2, 2, new BigDecimal(3022), date1, Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("bruce@gmail.com"), febSaleTransactionLineItemEntities, null, null));
+            //March
+            Date date2 = sdf.parse("05-03-2019");
+            List<SaleTransactionLineItemEntity> marSaleTransactionLineItemEntities = new ArrayList<>();
+            marSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(5, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD007"), 1, new BigDecimal(799), new BigDecimal(799)));
+            marSaleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(6, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD008"), 1, new BigDecimal(1349), new BigDecimal(1349)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(3), new SaleTransactionEntity(2, 2, new BigDecimal(2148), date2, Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("bruce@gmail.com"), marSaleTransactionLineItemEntities, null, null));
+            
+            CustomerEntity ce1 = customerEntityControllerLocal.retrieveCustomerByCustomerId(2L);
+            ce1.setPointsForCurrentMonth(BigDecimal.ZERO);
+            CustomerEntity ce2 = customerEntityControllerLocal.retrieveCustomerByCustomerId(1L);
+            ce2.setPointsForCurrentMonth(BigDecimal.ZERO);
+            CustomerEntity ce3 = customerEntityControllerLocal.retrieveCustomerByCustomerId(3L);
+            ce3.setPointsForCurrentMonth(BigDecimal.ZERO);
+            
             // Load transactions
             List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = new ArrayList<>();
-            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 1, new BigDecimal(1598), new BigDecimal(1598)));
-            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 1, new BigDecimal(1852), new BigDecimal(1852)));
-            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 2, new BigDecimal(3450), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
-
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(7, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 1, new BigDecimal(1598), new BigDecimal(1598)));
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(8, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 1, new BigDecimal(1852), new BigDecimal(1852)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(4), new SaleTransactionEntity(2, 2, new BigDecimal(3450), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
+            
+            
             CommunityGoalEntity cge = new CommunityGoalEntity(startDate, endDate, new BigDecimal(10000), "United States", "Impeach Donald Trump", "Get many, many points. All kinds of points. I have the best points.", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
 
