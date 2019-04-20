@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../product';
 import {Category} from '../category';
 import {CommunityGoal} from '../community-goal';
@@ -50,7 +50,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   format(number: number) {
-      return (new Intl.NumberFormat('en-SG', {style: 'currency', currency: 'SGD'}).format(number));
+    return (new Intl.NumberFormat('en-SG', {style: 'currency', currency: 'SGD'}).format(number));
   }
 
   getTagEntityNamesForProduct(product: Product) {

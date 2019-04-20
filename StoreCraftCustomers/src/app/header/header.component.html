@@ -43,8 +43,11 @@
             <mat-icon>close</mat-icon>
           </button>
         </div>
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let stuff of filteredStuff">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigate($event.option.value)" [displayWith]="displayFn">
+          <mat-option *ngFor="let stuff of filteredStuff"
+                      [value]="stuff.productId != null ? ['/product/', stuff.productId]
+                      : stuff.categoryId != null ? ['/viewProductsByCategory/', stuff.categoryId]
+                      : stuff.goalTitle != null ? ['/communitygoals'] : null">
             <app-search-result [object]="stuff"></app-search-result>
           </mat-option>
         </mat-autocomplete>

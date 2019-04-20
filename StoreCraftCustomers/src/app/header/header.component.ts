@@ -111,7 +111,7 @@ export class HeaderComponent implements OnInit {
   }
 
   doFilter(value: string) {
-    if (value.length > 0) {
+    if (value != null && value.length > 0) {
       this.filteredStuff = this.filterByValue(this.allStuffToFilter, value);
     } else {
       this.filteredStuff = [];
@@ -168,6 +168,14 @@ export class HeaderComponent implements OnInit {
     } else {
       return categoryItems;
     }
+  }
+
+  navigate(link) {
+    this.router.navigate(link);
+  }
+
+  displayFn(value) {
+    return '';
   }
 
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ReviewService } from '../review.service';
-import { SessionService } from '../session.service';
-import { Review } from '../review';
-import { ClickEvent } from 'angular-star-rating/angular-star-rating';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ReviewService} from '../review.service';
+import {SessionService} from '../session.service';
+import {ClickEvent} from 'angular-star-rating/angular-star-rating';
 
 @Component({
   selector: 'app-write-review',
@@ -15,7 +14,7 @@ export class WriteReviewComponent implements OnInit {
   productId: number;
 
   @Input()
-  show: boolean
+  show: boolean;
 
   @Output()
   submitted = new EventEmitter();
@@ -30,7 +29,8 @@ export class WriteReviewComponent implements OnInit {
   constructor(
     private reviewService: ReviewService,
     private sessionService: SessionService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -38,21 +38,22 @@ export class WriteReviewComponent implements OnInit {
   createReview() {
     this.reviewService.createReview(this.sessionService.getCurrentCustomer().customerId,
       this.newReviewContent, this.newProductRating, this.productId).subscribe(response => {
-        console.log(response.reviewEntity);
-        this.show = false;
-        this.submitted.emit();
-      }, error => {
-        console.log(error);
-      })
+      console.log(response.reviewEntity);
+      this.show = false;
+      this.submitted.emit();
+    }, error => {
+      console.log(error);
+    });
   }
 
   onClick = ($event: ClickEvent) => {
     console.log('onClick $event: ', $event);
-    this.newProductRating = $event.rating;;
-  };
+    this.newProductRating = $event.rating;
+  }
 
-  close(){
-    this.show=false;
+
+  close() {
+    this.show = false;
     this.closed.emit();
     this.newReviewContent = null;
     this.newProductRating = null;
