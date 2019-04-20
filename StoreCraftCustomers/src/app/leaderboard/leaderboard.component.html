@@ -24,6 +24,11 @@
                     </h2>
                 </div>  
 
+                <h3 *ngIf="loggedIn">Your Current Rank : {{currentCustomer.rank}}</h3>
+                <h3 *ngIf="loggedIn">Your Current Total Points : {{currentCustomer.totalPoints}}</h3>
+                <h3 *ngIf="loggedIn">Your Current Points This Month : {{currentCustomer.pointsForCurrentMonth}}</h3>
+                <h3>Prizes this month :<br /><br />   Rank 1 and 2 : 20%, <br />  Rank 3 to 4: 15%, <br />    Rank 5 to 6: 10%, <br />    Rest of the noobs: 5%</h3>
+
                 <div class="filterBar" fxLayout fxLayoutAlign="center center">
                     <mat-form-field fxFlex="40%">
                         <input matInput type="text" (keyup)="doFilter($event.target.value)">
