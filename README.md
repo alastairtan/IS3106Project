@@ -5,7 +5,12 @@
 - Group Member 3: Bryan Chee Guang Hao, A0167656N, e0176089@u.nus.edu, 92323154
 
 
-# For Angular Project StoreCraftCustomers
+# To Run Angular Project StoreCraftCustomers
 1. cd StoreCraftCustomers
 2. npm install
 3. npm start (not ng serve)
+
+# To Run Netbeans Project StoreCraft
+1. Open Project in Netbeans
+2. Deploy
+3. Proceed to localhost:8080/StoreCraftStaff
