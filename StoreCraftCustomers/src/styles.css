@@ -12,8 +12,12 @@ html {
   overflow-x:hidden;
 }
 
-.mat-dialog-container{
+.loginBg .mat-dialog-container{
   background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
   opacity: 0.97;
 }
 
+.registerBg .mat-dialog-container{
+  background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+  opacity: 0.97;
+}

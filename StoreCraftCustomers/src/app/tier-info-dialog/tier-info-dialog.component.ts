@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CustomerService} from '../customer.service';
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
+import {CustomerService} from '../customer.service';
 
 @Component({
   selector: 'app-tier-info-dialog',
@@ -17,18 +16,19 @@ export class TierInfoDialogComponent implements OnInit {
     'https://opgg-static.akamaized.net/images/medals/diamond_1.png',
     'https://opgg-static.akamaized.net/images/medals/master_1.png',
     'https://opgg-static.akamaized.net/images/medals/grandmaster_1.png',
-  ]
+  ];
 
   tiers: String[] = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'GRANDMASTER'];
 
   pointsRequiredList: number[] = [0, 3000, 6000, 9000, 12000, 15000, 18000];
 
-  multipliers: number[] = [1, 1.2, 1.4, 1.6, 2.0, 2.5, 3.0]
+  multipliers: number[] = [1, 1.2, 1.4, 1.6, 2.0, 2.5, 3.0];
 
   constructor(
-    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    public dialogRef: MatDialogRef<TierInfoDialogComponent>,
     public customerService: CustomerService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
