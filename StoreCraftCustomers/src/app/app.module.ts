@@ -56,6 +56,7 @@ import { ScavengerHuntWinnersIndexComponent } from './scavenger-hunt-winners-ind
 import { UserReviewTableComponent } from './user-review-table/user-review-table.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.component';
+import { ScavengerPrizeDialogComponent } from './scavenger-prize-dialog/scavenger-prize-dialog.component';
 
 
 
@@ -86,7 +87,8 @@ import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.com
     ScavengerHuntWinnersIndexComponent,
     UserReviewTableComponent,
     SearchResultComponent,
-    TierInfoDialogComponent
+    TierInfoDialogComponent,
+    ScavengerPrizeDialogComponent
 
   ],
   imports: [
@@ -123,6 +125,6 @@ import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.com
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginDialogComponent, RegisterDialogComponent, TierInfoDialogComponent]
+  entryComponents: [LoginDialogComponent, RegisterDialogComponent, TierInfoDialogComponent, ScavengerPrizeDialogComponent]
 })
 export class AppModule { }

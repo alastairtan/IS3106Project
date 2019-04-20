@@ -71,7 +71,9 @@ export class HeaderComponent implements OnInit {
   }
 
   openRegisterDialog(): void {
-    const dialogRef = this.dialog.open(RegisterDialogComponent, {});
+    const dialogRef = this.dialog.open(RegisterDialogComponent, {
+      panelClass: 'registerBg'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
