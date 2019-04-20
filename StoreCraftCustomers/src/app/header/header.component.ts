@@ -145,7 +145,10 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.sessionService.setIsLogin(false);
     this.sessionService.setCurrentCustomer(null);
-    this.router.navigateByUrl('/index');
+    this.router.navigateByUrl('/index').then(value => {
+      this.sessionService.setIsLogin(false);
+      this.sessionService.setCurrentCustomer(null);
+    });
   }
 
 

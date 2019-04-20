@@ -55,10 +55,10 @@
                 </div>
 
                 <div class="mat-elevate-z3 firstTable" fxFlex="1 1 50%">
-                  <mat-card *ngIf="communityGoals?.length > 0" style="opacity: 0.9; border-radius: 0">
+                  <mat-card *ngIf="communityGoals?.length > 0 && sessionService.getIsLogin()" style="opacity: 0.9; border-radius: 0">
                     <!--community goal-->
                     <div fxLayout="row wrap">
-                      <div fxFlex="1 1 65%">Community Goal: ${{this.goalAmt}}</div>
+                      <div fxFlex="1 1 65%">Community Goal ({{country}}): ${{this.goalAmt}}</div>
                       <div fxFlex="1 1 35%">
                         <mat-select [(ngModel)]="selected" panelClass="dropDownSelector" style="text-align:right">
                           <mat-option (click)="onClickChange()" *ngFor="let cg of communityGoals" [value]="(cg)">
@@ -74,6 +74,20 @@
                         </div>
                       </div>
                     </div>
+                  </mat-card>
+                  <mat-card style="opacity: 0.9; padding-bottom: 0" *ngIf="sessionService.getIsLogin() == false">
+                    <mat-card-header>
+                      <mat-card-title style="font-size: 2vw">
+                        Login to see Community Goals
+                      </mat-card-title>
+                    </mat-card-header>
+                  </mat-card>
+                  <mat-card style="opacity: 0.9; padding-bottom: 0" *ngIf = "communityGoals?.length == 0 && sessionService.getIsLogin()">
+                    <mat-card-header>
+                      <mat-card-title style="font-size: 2vw">
+                        No Ongoing Community Goals
+                      </mat-card-title>
+                    </mat-card-header>
                   </mat-card>
                 </div>
 
