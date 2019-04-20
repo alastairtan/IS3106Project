@@ -137,7 +137,7 @@ public class DashboardView implements Serializable {
         List<CustomerEntity> toRemove = new ArrayList<>();
         for(int i = 0; i < topCustomersAllTime.size(); i++) {
             
-            if(topCustomersAllTime.get(i).getPointsForCurrentMonth().equals(BigDecimal.ZERO)) {
+            if(topCustomersAllTime.get(i).getTotalPoints().equals(BigDecimal.ZERO)) {
                 toRemove.add(topCustomersAllTime.get(i));
             }
         }
