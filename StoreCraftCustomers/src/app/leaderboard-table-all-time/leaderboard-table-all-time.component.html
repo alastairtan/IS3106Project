@@ -16,7 +16,9 @@
     </ng-container>
   
     <ng-container matColumnDef="table-header">
-      <th mat-header-cell class="header" colspan="3" *matHeaderCellDef> All-Time Leaderboard {{currentDate |  date:'yyyy'}} </th>
+      <th mat-header-cell class="header" colspan="3" *matHeaderCellDef>
+        All-Time Leaderboard {{currentDate |  date:'yyyy'}} <br/> {{getCountry()}}
+      </th>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="['table-header']"> </tr>

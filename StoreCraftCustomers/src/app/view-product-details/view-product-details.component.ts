@@ -14,6 +14,7 @@ import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
 import {ClickEvent} from 'angular-star-rating/angular-star-rating';
 import {ScavengerHuntService} from '../scavenger-hunt.service';
 import {CustomerService} from '../customer.service';
+import {ScavengerPrizeDialogComponent} from '../scavenger-prize-dialog/scavenger-prize-dialog.component';
 
 @Component({
   selector: 'app-view-product-details',
@@ -54,9 +55,13 @@ export class ViewProductDetailsComponent implements OnInit {
               private sessionService: SessionService,
               private scavengerHuntService: ScavengerHuntService,
               private customerService: CustomerService,
-              private loginDialog: MatDialog) {
+              private loginDialog: MatDialog,
+              private scavengerDialog: MatDialog) {
     this.isEditing = false;
     this.isWriting = false;
+    this.sessionService.isLoggedIn.subscribe(value => {
+      this.refreshWithoutDialog();
+    });
   }
 
   ngOnInit() {
@@ -72,7 +77,32 @@ export class ViewProductDetailsComponent implements OnInit {
     this.productService.getProductId(productId).subscribe(response => {
       this.product = response.productEntity;
       this.checkExistInCart();
-      if (this.sessionService.getIsLogin() == true) {
+      if (this.sessionService.getIsLogin() === true) {
+        this.currentCustomer = this.sessionService.getCurrentCustomer();
+        this.scavengerHuntService.checkIfCustomerHasWonToday(
+          this.currentCustomer.customerId).subscribe(response => {
+          this.canCustomerWin = !response.hasCustomerWonToday;
+          if (this.product != null && this.canCustomerWin && this.product.isScavengerHuntPrize) {
+            const scavengerDialogRef = this.scavengerDialog.open(ScavengerPrizeDialogComponent, {});
+            setTimeout(() => scavengerDialogRef.close(), 2500);
+          }
+        });
+      }
+      this.productService.getRatingInfoForProduct(this.product.productId).subscribe(response => {
+        this.averageRating = response.result[0];
+        this.numberOfRatings = response.result[1];
+      });
+    }, error => {
+      this.errorMessage = error;
+    });
+  }
+
+  refreshWithoutDialog() {
+    const productId = parseInt(this.activatedRoute.snapshot.paramMap.get('productId'));
+    this.productService.getProductId(productId).subscribe(response => {
+      this.product = response.productEntity;
+      this.checkExistInCart();
+      if (this.sessionService.getIsLogin() === true) {
         this.currentCustomer = this.sessionService.getCurrentCustomer();
         this.scavengerHuntService.checkIfCustomerHasWonToday(
           this.currentCustomer.customerId).subscribe(response => {
@@ -89,9 +119,9 @@ export class ViewProductDetailsComponent implements OnInit {
   }
 
   checkExistInCart() {
-    let cartItems = this.localService.getCart();
+    const cartItems = this.localService.getCart();
     if (cartItems != null) {
-      let existingCartItem = cartItems.find((cartItem) => cartItem.productEntity.productId == this.product.productId);
+      const existingCartItem = cartItems.find((cartItem) => cartItem.productEntity.productId == this.product.productId);
       if (existingCartItem != null) {
         this.existInCart = true;
       }
@@ -143,7 +173,7 @@ export class ViewProductDetailsComponent implements OnInit {
     if (newCartItem.quantity != 0) {
       this.localService.setCart(cartItems);
       this.addToCartMessageClose = false;
-      this.addToCartMessage = 'Product succesfully added to cart!';
+      this.addToCartMessage = 'Product successfully added to cart!';
       setTimeout(() => this.addToCartMessageClose = true, 3000);
     }
     console.log(cartItems);
@@ -192,7 +222,7 @@ export class ViewProductDetailsComponent implements OnInit {
     const dialogRef = this.loginDialog.open(LoginDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
+      this.refresh();
     });
   }
 
@@ -210,7 +240,7 @@ export class ViewProductDetailsComponent implements OnInit {
         customerEntity.tierUrl = tierInfo.tierUrl;
 
         this.sessionService.setCurrentCustomer(customerEntity);
-        this.refresh();
+        this.refreshWithoutDialog();
 
         this.scavengerHuntService.retrieveScavengerHuntForTheDay().subscribe(
           // tslint:disable-next-line:no-shadowed-variable

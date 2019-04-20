@@ -7,6 +7,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ViewProductDetailsComponent } from './view-product-details/view-product-details.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CommunityGoalsComponent } from './community-goals/community-goals.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'product/:productId', component: ViewProductDetailsComponent},
   { path: 'cart/:userId', component: ShoppingCartComponent},
   { path: 'communitygoals', component: CommunityGoalsComponent},
+  { path: 'leaderboard', component: LeaderboardComponent},
 ];
 
 @NgModule({

@@ -43,6 +43,16 @@
                     </p:panel>
 
                     <p:panel id="topCustomersMonth" header="Top Customers (Month)">
+                        <f:facet name="header">
+                            <div class="ui-g" style="align-items: center; margin-bottom: -18px; margin-top: -6px">
+                                <div class="ui-g-6" style="text-align: left">
+                                    Top Customers (Month)
+                                </div>
+                                <div class="ui-g-6" style="text-align:right">
+                                    <p:commandButton value="Give Leaderboard Prizes" update="@form" actionListener="#{dashboardView.giveLeaderBoardPrizes}"/>
+                                </div>
+                            </div>
+                        </f:facet>
                         <p:dataTable value="#{dashboardView.topCustomersForTheMonth}" var="topCustomer">
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{topCustomer.customerId}" />
@@ -138,13 +148,10 @@
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{product.productId}" />
                             </p:column>
-                            <p:column headerText="Name"  style="width: 80px;">
+                            <p:column headerText="Name"  >
                                 <h:outputText value="#{product.name}" />
                             </p:column>
-                            <p:column headerText="Description"  >
-                                <h:outputText value="#{product.description}" />
-                            </p:column>
-                            <p:column headerText="Amount Sold" style="width: 50px;">
+                            <p:column headerText="Amount Sold" style="width: 50px; text-align: center;">
                                 <h:outputText value="#{dashboardView.getNumProductsSold(product.productId)}"/>
                             </p:column>
                         </p:dataTable>
@@ -157,13 +164,11 @@
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{product.productId}" />
                             </p:column>
-                            <p:column headerText="Name"  style="width: 80px;">
+                            <p:column headerText="Name" >
                                 <h:outputText value="#{product.name}" />
                             </p:column>
-                            <p:column headerText="Description"  >
-                                <h:outputText value="#{product.description}" />
-                            </p:column>
-                            <p:column headerText="Amount Sold" style="width: 50px;">
+                            
+                            <p:column headerText="Amount Sold" style="width: 50px; text-align: center;">
                                 <h:outputText value="#{dashboardView.getNumProductsSold(product.productId)}"/>
                             </p:column>
                         </p:dataTable>

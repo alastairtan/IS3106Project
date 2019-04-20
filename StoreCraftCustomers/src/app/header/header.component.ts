@@ -71,7 +71,9 @@ export class HeaderComponent implements OnInit {
   }
 
   openRegisterDialog(): void {
-    const dialogRef = this.dialog.open(RegisterDialogComponent, {});
+    const dialogRef = this.dialog.open(RegisterDialogComponent, {
+      panelClass: 'registerBg'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -143,7 +145,10 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.sessionService.setIsLogin(false);
     this.sessionService.setCurrentCustomer(null);
-    this.router.navigateByUrl('/index');
+    this.router.navigateByUrl('/index').then(value => {
+      this.sessionService.setIsLogin(false);
+      this.sessionService.setCurrentCustomer(null);
+    });
   }
 
 
