@@ -1,3 +1,76 @@
-<p>
-  leaderboard works!
-</p>
+<div class="mainBody">
+
+    <div class="mainContainer">
+
+        <div class="contentContainer">
+
+            <div class="content">
+
+                <img id="globe" src="http://cdn.dota2.com/apps/dota2/images/leaderboards/globe.png" width="339"
+                    height="339">
+                <h1>World Leaderboards</h1>
+                <div class="buttons">
+                    <h2>
+                        <button (click)="getAllTimeTopCustomers()" mat-raised-button>
+                            Top Customers of All Time
+                        </button>
+
+                    </h2>
+                    <h2>
+                        <button (click)="getThisMonthTopCustomers()" mat-raised-button>
+                            Top Customers of This Month
+                        </button>
+
+                    </h2>
+                </div>  
+
+                <div class="filterBar" fxLayout fxLayoutAlign="center center">
+                    <mat-form-field fxFlex="40%">
+                        <input matInput type="text" (keyup)="doFilter($event.target.value)">
+                        <mat-placeholder>Filter</mat-placeholder>
+                    </mat-form-field>
+                </div>
+
+                <div style="position:relative;z-index:2;">
+
+                    <table mat-table [dataSource]="dataSource" matSort>
+
+                        <ng-container matColumnDef="rank">
+                            <th class="row-rank" mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+                            <td class="row-rank" mat-cell *matCellDef="let customer"> {{customer.rank}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <th class="row-email" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                            <td class="row-email" mat-cell *matCellDef="let customer"> {{customer.email}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="totalPoints">
+                            <th class="row-totalPoints" mat-header-cell *matHeaderCellDef mat-sort-header> Total Points
+                            </th>
+                            <td class="row-totalPoints" mat-cell *matCellDef="let customer"> {{customer.totalPoints}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="country">
+                            <th class="row-country" mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                            <td class="row-country" mat-cell *matCellDef="let customer"> {{customer.country}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    </table>
+                    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15, 20, 25]" (page)="pageChanged($event)">
+                    </mat-paginator>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
