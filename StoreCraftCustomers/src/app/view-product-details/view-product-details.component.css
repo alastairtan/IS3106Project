@@ -76,6 +76,7 @@ mat-list-item {
 
 .headerSubText {
     margin-left: -1.3vw !important;
+    margin-top: 0 !important;
 }
 
 .quantityAdjust {
