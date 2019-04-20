@@ -16,6 +16,7 @@ export class Customer {
     profilePicUrl: string;
     tierUrl: string;
     tierMessage: string;
+    rank : number;
 
     constructor(customerId?: number, firstName?: string, lastName?: string, email?: string, password?: string,
         membershipTierEnum?: MembershipTierEnum, country?: string,
