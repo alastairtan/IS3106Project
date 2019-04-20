@@ -1,20 +1,23 @@
-<form>
-  <h1 mat-dialog-title>Log In</h1>
-  <div class="alert alert-danger" *ngIf="errorMessage">
-    {{errorMessage}}
-  </div>
-  <div class="dialog-content" mat-dialog-content>
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="usernameField">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input type="password" matInput [(ngModel)]="password" name="passwordField">
-    </mat-form-field>
-  </div>
-  <div class="actions" mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="login()" cdkFocusInitial>Login</button>
-    <button mat-raised-button color="warn" (click)="exit()">Exit</button>
-  </div>
-</form>
+<div class="dialogBg">
+  <form>
+    <h1 mat-dialog-title style="text-align: center">Log In</h1>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{errorMessage}}
+    </div>
+    <div class="dialog-content" mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input [(ngModel)]="username" matInput name="usernameField">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input [(ngModel)]="password" matInput name="passwordField" type="password">
+      </mat-form-field>
+    </div>
+    <div class="actions" mat-dialog-actions>
+      <button (click)="login()" cdkFocusInitial color="primary" mat-raised-button class="login">Login</button>
+      <button (click)="exit()" color="warn" mat-raised-button class="exit">Exit</button>
+    </div>
+  </form>
+
+</div>

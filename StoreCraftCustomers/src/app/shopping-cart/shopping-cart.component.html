@@ -1,18 +1,42 @@
-<div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+<div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
   <div fxFlex="1 1 100%" style="padding: 0!important">
+    <div *ngIf="updateMessages.length > 0">
+      <div *ngFor="let updateMsg of updateMessages">
+        <div class="alert alert-primary messages" role="alert" close="true">
+          <button ng-show="alert.closeable" type="button" class="close" data-dismiss="alert"><span>&times;
+            </span><span class="sr-only">Close</span>
+          </button>
+          {{updateMsg}} <br /><br />
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="autoRemoveMessages.length > 0">
+      <div *ngFor="let removeMsg of autoRemoveMessages">
+        <div class="alert alert-primary messages" role="alert" close="true">
+          <button ng-show="alert.closeable" type="button" class="close" data-dismiss="alert"><span>&times;
+            </span><span class="sr-only">Close</span>
+          </button>
+          {{removeMsg}} <br /><br />
+        </div>
+      </div>
+    </div>
+
     <div class="alert alert-primary messages" role="alert" *ngIf="cartItems == null && infoMessage == null">
-      Your Cart is Empty! <br/><br/>
+      Your Cart is Empty! <br /><br />
       <button color="accent" mat-flat-button routerLink="/index">Go Back to Shopping</button>
     </div>
+
     <div class="alert alert-danger messages" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
     <div class="alert alert-primary messages" role="alert" *ngIf="removeMessage && !removeMessageClose">
       {{removeMessage}}</div>
-    <div class="alert alert-success messages" role="alert" *ngIf="infoMessage && !infoMessageClose">
+    <div *ngIf="infoMessage && !infoMessageClose" class="alert alert-success messages" role="alert">
       {{infoMessage}} <br/><br/>
       <button color="accent" mat-flat-button routerLink="/index">Continue Shopping</button>
     </div>
   </div>
-  <div class="mat-elevate-z3" fxFlex="1 1 98%" *ngIf="cartItems != null">
+
+  <div *ngIf="cartItems != null" class="mat-elevate-z3" fxFlex="1 1 98%">
     <mat-card class="card">
 
       <mat-card-content>
@@ -27,7 +51,7 @@
                   </span>
 
 
-                  <button mat-icon-button color="warn" (click)="removeFromCart(cartItem)"
+                  <button (click)="removeFromCart(cartItem)" color="warn" mat-icon-button
                           style="margin-top: -8px; margin-right: -10px">
                     <mat-icon class="removeIcon">remove_circle</mat-icon>
                   </button>
@@ -36,7 +60,7 @@
               </mat-card-header>
               <mat-divider></mat-divider>
               <mat-card-content style="padding-top: 1vw">
-                <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="center">
+                <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
                   <div fxFlex="1 1 20%">
                     <a [routerLink]="['/product', cartItem.productEntity.productId]">
                       <img class="avatar" src="{{cartItem.productEntity.productImageUrl}}">
@@ -48,7 +72,7 @@
                     <span class="stock">({{cartItem.productEntity.quantityOnHand}} items remaining)</span>
                   </div>
 
-                  <div fxFlex="1 1 15%" class="priceCol">
+                  <div class="priceCol" fxFlex="1 1 15%">
                     {{format(cartItem.unitPrice)}}
                   </div>
 
@@ -59,20 +83,22 @@
                           Quantity:
                         </td>
                         <td>
-                          <button class="addMinusBtns" mat-button disabled="{{cartItem.quantity==1}}"
-                                  (click)="minus(cartItem)">-
+                          <button (click)="minus(cartItem)" class="addMinusBtns" disabled="{{cartItem.quantity==1}}"
+                                  mat-button>-
                           </button>
                           {{cartItem.quantity}}
-                          <button class="addMinusBtns" mat-button
+                          <button (click)="add(cartItem)" class="addMinusBtns"
                                   disabled="{{cartItem.quantity >= cartItem.productEntity?.quantityOnHand}}"
-                                  (click)="add(cartItem)">+
+                                  mat-button>+
                           </button>
                         </td>
                       </tr>
                       <tr>
+
                         <td>
                           <strong>Total:</strong>
                         </td>
+
                         <td>
                           <span *ngIf="!applyingDiscountForItems || cartItem.subTotal == cartItemsCopy[i].subTotal">
                             {{format(cartItem.subTotal)}}
@@ -84,6 +110,7 @@
                             <s>{{format(cartItem.subTotal)}}</s>
                           </span>
                         </td>
+
                       </tr>
                     </table>
                   </div>
@@ -91,7 +118,7 @@
               </mat-card-content>
             </mat-card>
             <div style="width: 100%; text-align: right">
-              <button mat-raised-button color="warn" style="margin-bottom: 1vw" (click)="clearCart()">
+              <button (click)="clearCart()" color="warn" mat-raised-button style="margin-bottom: 1vw">
                 <mat-icon>remove_shopping_cart</mat-icon>
                 Clear Cart
               </button>
@@ -133,8 +160,8 @@
                     <td class="leftCell">
                       <mat-form-field>
                         <mat-label>Select Promo Code</mat-label>
-                        <mat-select name="promoCode" [(ngModel)]="currentSelectedDiscountCode"
-                                    (openedChange)="resetSelected()">
+                        <mat-select (openedChange)="resetSelected()" [(ngModel)]="currentSelectedDiscountCode"
+                                    name="promoCode">
                           <mat-option *ngFor="let dc of customerDiscountCodes" [value]="dc">
                             {{dc.discountCode}} {{getDiscountCodeMessage(dc.discountCodeId)}}
                           </mat-option>
@@ -142,7 +169,7 @@
                       </mat-form-field>
                     </td>
                     <td style="vertical-align: center">
-                      <button color="primary" mat-raised-button (click)="applyDiscountCode()"> Apply</button>
+                      <button (click)="applyDiscountCode()" color="primary" mat-raised-button> Apply</button>
                     </td>
                   </tr>
                   <tr>
@@ -181,8 +208,8 @@
                   </tr>
                   <tr>
                     <td>
-                      <mat-slider [min]="0" [max]="getMaxPointsAllowed()" style="width:100%" [step]="1"
-                                  [(ngModel)]="pointsToUse"></mat-slider>
+                      <mat-slider [(ngModel)]="pointsToUse" [max]="getMaxPointsAllowed()" [min]="0" [step]="1"
+                                  style="width:100%"></mat-slider>
                     </td>
                     <td>
                       {{pointsToUse}} Points = {{format(pointsToUse * 0.05)}} Off
@@ -258,8 +285,9 @@
                     </td>
                   </tr>
                 </table>
-                <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="accent" mat-raised-button
-                        (click)="checkout(cartItems)"> Checkout
+                <button (click)="checkout(cartItems)" *ngIf="totalQuantityForTheCart != 0" class="checkout"
+                        color="accent"
+                        mat-raised-button> Checkout
                 </button>
               </mat-card-content>
 
@@ -273,107 +301,3 @@
 </div>
 
 
-<!--
-<div fxLayout="row">
-
-  <div *ngIf="cartItems != null" fxFlex="1 1 70%" style="margin-top:50px">
-
-
-    <div *ngFor="let cartItem of cartItems">
-      <div fxLayout="column" fxLayoutAlign="center start">
-        <div class="product">
-          <div fxLayout="row">
-            <div fxFlex="25" style="text-align: center">
-              <a [routerLink]="['/product', cartItem.productEntity.productId]">
-                <img src="{{cartItem.productEntity.productImageUrl}}" />
-              </a>
-            </div>
-            <div fxFlex="30" class="mid">
-              <h4> {{cartItem.productEntity.name}}</h4>
-              <h6> {{cartItem.productEntity.description}}</h6>
-              <hr>
-              <h5> {{format(cartItem.unitPrice)}} </h5>
-            </div>
-            <div fxFlex="25" class="mid" style="text-align: center">
-              <h5> Quantity : {{cartItem.quantity}}</h5>
-              <h6><br /></h6>
-              <br />
-              <h4> Total : {{format(cartItem.subTotal)}} </h4>
-            </div>
-            <div fxFlex style="text-align: center">
-              <button class="removeFromCart" mat-raised-button color="warn" (click)="removeFromCart(cartItem)">Remove
-                from
-                cart</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<div fxFlex="1 1 30%" *ngIf="cartItems != null">
-  <div class="summary">
-    <h1>
-      Order summary
-    </h1>
-    <hr>
-
-    <div class="grid-container">
-      <div class="firstbox">
-        <p *ngIf="totalQuantityForTheCart == 1">
-          Subtotal ({{totalQuantityForTheCart}} item)
-        </p>
-        <p *ngIf="totalQuantityForTheCart > 1">
-          Subtotal ({{totalQuantityForTheCart}} items)
-        </p>
-      </div>
-      <div style="text-align: right">
-        <p>{{format(totalAmountForTheCart)}}</p>
-      </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="firstbox">
-        <p>
-          Shipping fee
-        </p>
-      </div>
-      <div style="text-align: right">
-        <p>{{format(10)}}</p>
-      </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="firstbox">
-        <p>
-          Promotion
-        </p>
-      </div>
-      <div style="text-align: right">
-        <p>{{format(-10)}}</p>
-      </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="firstbox">
-        <input matInput [(ngModel)]="promotionalCode" name="promotionalCode" placeholder="Enter Promo Code">
-      </div>
-      <div style="text-align: right">
-        <button color="primary" mat-raised-button> APPLY </button>
-      </div>
-    </div>
-
-    <div class="grid-container" style="margin-top: 30px">
-      <div class="firstbox" style="text-align: right; margin-top: 7px">
-        <p>Total: </p>
-      </div>
-      <div style="text-align: right">
-        <p style="font-size: 23px;">{{format(totalAmountForTheCart)}}</p>
-      </div>
-    </div>
-    <button class="checkout" *ngIf="totalQuantityForTheCart != 0" color="warn" mat-raised-button
-      (click)="checkout(cartItems)"> Checkout </button>
-  </div>
-
-</div>
--->

@@ -9,7 +9,11 @@
     display: flex;
     align-content: center;
     justify-content: center;
-    height: 100px;
+    height: 75px;
+}
+
+mat-card-title{
+  font-size: 15px !important;
 }
 
 .card{
@@ -24,7 +28,7 @@
 }
 
 img{
-    height: 150px;
+    height: 200px;
     object-fit: contain;
 }
 

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../session.service';
-import { Customer } from '../customer';
-import { MembershipTierEnum } from '../MembershipTierEnum.enum';
-import { CustomerService } from '../customer.service';
+import {Component, OnInit} from '@angular/core';
+import {SessionService} from '../session.service';
+import {Customer} from '../customer';
+import {CustomerService} from '../customer.service';
+import {MatDialog} from '@angular/material';
+import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+import {TierInfoDialogComponent} from '../tier-info-dialog/tier-info-dialog.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -12,7 +14,7 @@ import { CustomerService } from '../customer.service';
 export class UserProfileComponent implements OnInit {
 
   customer: Customer;
-  customerMemTierString:string;
+  customerMemTierString: string;
 
   isUpdating: boolean;
   infoMessage: string;
@@ -20,29 +22,35 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     public sessionService: SessionService,
-    public customerService: CustomerService) {
+    public customerService: CustomerService,
+    public dialog: MatDialog,) {
     this.isUpdating = false;
-   }
+  }
 
   ngOnInit() {
     this.customer = this.sessionService.getCurrentCustomer();
     this.setTierInfo();
   }
 
-  updating(){
+  openDialog() {
+    const dialogRef = this.dialog.open(TierInfoDialogComponent, {});
+    
+  }
+
+  updating() {
     this.isUpdating = true;
   }
 
-  cancelUpdating(){
+  cancelUpdating() {
     this.isUpdating = false;
   }
 
-  saveChanges(){
+  saveChanges() {
     this.customerService.updateCustomer(this.customer).subscribe(
       response => {
         console.log(response);
         this.sessionService.setCurrentCustomer(this.customer);
-        this.infoMessage = "Succesfully updated!";
+        this.infoMessage = 'Succesfully updated!';
         this.isUpdating = false;
       },
       error => {
@@ -53,10 +61,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   setTierInfo() {
-    
-    console.log("Is this num or enum" + this.customer.membershipTierEnum);
-    
-    let response = this.customerService.setTierInfo(this.customer.membershipTierEnum);
+
+    console.log('Is this num or enum' + this.customer.membershipTierEnum);
+
+    const response = this.customerService.setTierInfo(this.customer.membershipTierEnum);
 
     this.customer.tierMessage = response.tierMessage;
     this.customer.tierUrl = response.tierUrl;

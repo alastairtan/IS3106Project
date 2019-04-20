@@ -30,6 +30,7 @@ export class ViewProductDetailsComponent implements OnInit {
   private averageRating: number;
   private numberOfRatings: number;
   currentCustomer: Customer;
+  private existInCart: boolean;
 
   // For Updating
   updatedReviewContent: string;
@@ -56,6 +57,9 @@ export class ViewProductDetailsComponent implements OnInit {
               private loginDialog: MatDialog) {
     this.isEditing = false;
     this.isWriting = false;
+    this.sessionService.isLoggedIn.subscribe(value => {
+      this.refresh();
+    })
   }
 
   ngOnInit() {
@@ -70,18 +74,31 @@ export class ViewProductDetailsComponent implements OnInit {
 
     this.productService.getProductId(productId).subscribe(response => {
       this.product = response.productEntity;
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
-      this.scavengerHuntService.checkIfCustomerHasWonToday(
-        this.currentCustomer.customerId).subscribe(response => {
-        this.canCustomerWin = !response.hasCustomerWonToday;
-      });
+      this.checkExistInCart();
+      if (this.sessionService.getIsLogin() == true) {
+        this.currentCustomer = this.sessionService.getCurrentCustomer();
+        this.scavengerHuntService.checkIfCustomerHasWonToday(
+          this.currentCustomer.customerId).subscribe(response => {
+          this.canCustomerWin = !response.hasCustomerWonToday;
+        });
+      }
       this.productService.getRatingInfoForProduct(this.product.productId).subscribe(response => {
-          this.averageRating = response.result[0];
-          this.numberOfRatings = response.result[1];
+        this.averageRating = response.result[0];
+        this.numberOfRatings = response.result[1];
       });
     }, error => {
       this.errorMessage = error;
     });
+  }
+
+  checkExistInCart() {
+    let cartItems = this.localService.getCart();
+    if (cartItems != null) {
+      let existingCartItem = cartItems.find((cartItem) => cartItem.productEntity.productId == this.product.productId);
+      if (existingCartItem != null) {
+        this.existInCart = true;
+      }
+    }
   }
 
   format() {
@@ -118,10 +135,12 @@ export class ViewProductDetailsComponent implements OnInit {
         cartItems[index].quantity += newCartItem.quantity;
       } else {
         cartItems.push(newCartItem);
+        this.existInCart = true;
       }
     } else {
       cartItems = [];
       cartItems.push(newCartItem);
+      this.existInCart = true;
     }
 
     if (newCartItem.quantity != 0) {
@@ -162,7 +181,7 @@ export class ViewProductDetailsComponent implements OnInit {
     console.log('onClick $event: ', $event);
     this.updatedProductRating = $event.rating;
     console.log('UPDATED: ' + this.updatedProductRating);
-  }
+  };
 
   writeReview() {
     this.isWriting = true;
@@ -176,7 +195,7 @@ export class ViewProductDetailsComponent implements OnInit {
     const dialogRef = this.loginDialog.open(LoginDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {
-      this.currentCustomer = this.sessionService.getCurrentCustomer();
+      this.refresh();
     });
   }
 
@@ -202,9 +221,7 @@ export class ViewProductDetailsComponent implements OnInit {
 
             console.log(response.scavengerHuntEntity.rewardTypeEnum);
 
-            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_FLAT') {
-              this.prizeClaimMessage = 'You have won a flat rate discount code! Check your profile to see the discount code!';
-            } else if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
+            if (response.scavengerHuntEntity.rewardTypeEnum == 'DISCOUNT_CODE_PERCENTAGE') {
               this.prizeClaimMessage = 'You have won a percentage discount code from the scavenger hunt! Check your profile to see the discount code!';
             } else if (response.scavengerHuntEntity.rewardTypeEnum == 'POINTS') {
               this.prizeClaimMessage = 'You have won points from the scavenger hunt! Check your profile to see the discount code!';

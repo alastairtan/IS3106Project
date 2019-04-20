@@ -8,7 +8,17 @@ mat-form-field{
 }
 
 .actions{
-    justify-content: space-between;
+    width: 100%;
 }
 
+
+.login{
+  width: 100%;
+}
+
+.exit{
+  width: 100%;
+  margin-left: 0!important;
+  margin-top: 10px;
+}
 

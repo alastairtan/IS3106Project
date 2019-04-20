@@ -45,8 +45,9 @@ public class ProductEntity implements Serializable {
     @Size(max = 64)
     private String name;
     
-    @Column(length = 128)
-    @Size(max = 128)
+   
+    @Column(columnDefinition = "VARCHAR(1337)")
+    @Size(max = 1337)
     private String description;
     
     @Column(nullable = false)

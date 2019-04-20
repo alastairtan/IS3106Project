@@ -8,7 +8,7 @@ mat-form-field{
 }
 
 .actions{
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .profPic{

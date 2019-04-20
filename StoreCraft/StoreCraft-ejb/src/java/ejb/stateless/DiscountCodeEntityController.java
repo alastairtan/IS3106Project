@@ -57,17 +57,17 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
     @Override
     public DiscountCodeEntity createNewDiscountCode(DiscountCodeEntity newDiscountCodeEntity, List<Long> customerEntityIds, List<Long> productEntityIds) throws CreateNewDiscountCodeException, InputDataValidationException {
         Set<ConstraintViolation<DiscountCodeEntity>> constraintViolations = validator.validate(newDiscountCodeEntity);
-
+        System.out.println(constraintViolations);
         if (constraintViolations.isEmpty()) {
             try {
-                if (!customerEntityIds.isEmpty()) {
+                if ( customerEntityIds != null && !customerEntityIds.isEmpty()) {
                     for (Long customerId : customerEntityIds) {
                         CustomerEntity customerEntity = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
                         newDiscountCodeEntity.addCustomer(customerEntity); //2 way
                     }
                 }
 
-                if (!productEntityIds.isEmpty()) {
+                if (productEntityIds != null  && !productEntityIds.isEmpty()) {
                     for (Long productId : productEntityIds) {
                         ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(productId);
                         newDiscountCodeEntity.addProduct(productEntity); //2 way
@@ -193,6 +193,7 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
         }
     }
     
+    @Override
     public List<DiscountCodeEntity> retrieveDiscountCodesForCustomer(Long customerId) throws CustomerNotFoundException{
         
         CustomerEntity customer = customerEntityControllerLocal.retrieveCustomerByCustomerId(customerId);
@@ -200,7 +201,7 @@ public class DiscountCodeEntityController implements DiscountCodeEntityControlle
         List<DiscountCodeEntity> eligibleDiscountCodes = new ArrayList<>();
         
         eligibleDiscountCodes.addAll(customer.getDiscountCodeEntities());
-        
+
         Query query = em.createQuery("SELECT dc FROM DiscountCodeEntity dc WHERE SIZE(dc.customerEntities) = 0");
         eligibleDiscountCodes.addAll(query.getResultList());
         

@@ -79,6 +79,14 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     }
     
     @Override
+    public List<CustomerEntity> retireveAllCustomersOrderedByPoints(){
+        
+        Query query = entityManager.createQuery("SELECT c from CustomerEntity c ORDER BY c.pointsForCurrentMonth DESC");
+        
+        return query.getResultList();
+    }
+    
+    @Override
     public CustomerEntity retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException
     {
         if(customerId == null)
@@ -245,29 +253,35 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     private void updateMembership(CustomerEntity c)
     {
         CustomerEntity customerEntity = entityManager.find(CustomerEntity.class, c.getCustomerId());
-        if (customerEntity.getTotalPoints().compareTo(new BigDecimal("600")) >= 1)
+        if (customerEntity.getTotalPoints().compareTo(new BigDecimal("18000")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.GRANDMASTER);
-            customerEntity.setMultiplier(new BigDecimal("2.5"));
+            customerEntity.setMultiplier(new BigDecimal("3.0"));
         }
-        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("500")) >= 1)
+         else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("15000")) >= 1)
+        {
+            customerEntity.setMembershipTierEnum(MembershipTierEnum.MASTER);
+            customerEntity.setMultiplier(new BigDecimal("2.5"));
+            System.out.print("mem 1");
+        }
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("12000")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
             customerEntity.setMultiplier(new BigDecimal("2.0"));
             System.out.print("mem 1");
         }
-        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("400")) >= 1)
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("9000")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
             customerEntity.setMultiplier(new BigDecimal("1.6"));
              System.out.print("mem 2");
         }
-        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("300")) >= 1)
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("6000")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.GOLD);
             customerEntity.setMultiplier(new BigDecimal("1.4"));
         }
-        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("200")) >= 1)
+        else if (customerEntity.getTotalPoints().compareTo(new BigDecimal("3000")) >= 1)
         {
             customerEntity.setMembershipTierEnum(MembershipTierEnum.SILVER);
             customerEntity.setMultiplier(new BigDecimal("1.2"));

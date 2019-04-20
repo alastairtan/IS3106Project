@@ -63,20 +63,21 @@ export class ViewProductsComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       selectedCategory = parseInt(params['categoryId']);
       this.productService.getProductsByCategory(selectedCategory).subscribe(response => {
+        console.log(response.productEntities);
         this.allProducts = response.productEntities;
         this.filteredProducts = this.allProducts;
 
 
         // paginator
         this.pageLength = this.allProducts.length;
-        this.pageSize = 8;
+        this.pageSize = 6;
         this.currentPage = 0;
         // ********
 
         // Sorting info
         this.sortSelection = 'alphAsc';
         this.minPrice = 0;
-        this.maxPrice = 1000;
+        this.maxPrice = 10000;
         // ************
 
         this.doFilter();
@@ -104,7 +105,7 @@ export class ViewProductsComponent implements OnInit {
     const start: number = this.currentPage * this.pageSize;
     const end: number = this.currentPage * this.pageSize + this.pageSize;
     this.viewProducts = this.filteredProducts.slice(start, end);
-
+    console.log(this.viewProducts);
     // console.log("RENDER");
   }
 

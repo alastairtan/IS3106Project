@@ -45,7 +45,15 @@ export class SaleTransactionService {
 
       return this.httpClient.put<any>(this.baseUrl + '/createSaleTransaction', saleTransactionReq, httpOptions).pipe
       (
-        catchError(this.handleError)
+        catchError(error => {
+
+          if (error.status == '500') {
+            this.handleError(error);
+          } else {
+            console.log(error);
+            return JSON.stringify(error.status);
+          }
+        })
       );
   }
 

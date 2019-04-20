@@ -73,8 +73,6 @@ public class DataInitSessionBean {
     private DiscountCodeEntityControllerLocal discountCodeEntityControllerLocal;
     @EJB
     private ReviewEntityControllerLocal reviewEntityControllerLocal;
-    
-    
 
     public DataInitSessionBean() {
     }
@@ -83,7 +81,7 @@ public class DataInitSessionBean {
     public void postConstruct() {
         try {
             staffEntityControllerLocal.retrieveStaffByUsername("manager");
-            customerEntityControllerLocal.retrieveCustomerByEmail("steve@gmail.com");
+            customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com");
         } catch (StaffNotFoundException | CustomerNotFoundException ex) {
             initializeData();
         }
@@ -107,22 +105,31 @@ public class DataInitSessionBean {
             cal.setTime(startDate);
             cal.add(Calendar.DAY_OF_YEAR, 7);
             Date endDate = cal.getTime();
-            DiscountCodeEntity newDiscountCodeEntity = new DiscountCodeEntity(startDate, endDate, 10, "ABCDEF", DiscountCodeTypeEnum.PERCENTAGE, BigDecimal.valueOf(5.00));
+            DiscountCodeEntity newDiscountCodeEntity = new DiscountCodeEntity(startDate, endDate, 10, "AbCdEf", DiscountCodeTypeEnum.PERCENTAGE, BigDecimal.valueOf(5.00));
             DiscountCodeEntity dce = discountCodeEntityControllerLocal.createNewDiscountCode(newDiscountCodeEntity, customerEntityIds, productEntityIds);
 
             CategoryEntity categoryEntityElectronics = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Electronics", "Electronics"), null);
             CategoryEntity categoryEntityFashions = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Fashion", "Fashion"), null);
+
             CategoryEntity laptopsCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Laptops", "Laptops"), categoryEntityElectronics.getCategoryId());
             CategoryEntity asusCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Asus", "Asus Laptop"), laptopsCategory.getCategoryId());
             CategoryEntity dellCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Dell", "Dell Laptop"), laptopsCategory.getCategoryId());
             CategoryEntity hpCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("HP", "HP Laptop"), laptopsCategory.getCategoryId());
+
             CategoryEntity phonesCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Phones", "Mobile Phones"), categoryEntityElectronics.getCategoryId());
             CategoryEntity samsungCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Samsung", "Samsung Phones"), phonesCategory.getCategoryId());
             CategoryEntity huaweiCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Huawei", "Huawei Phones"), phonesCategory.getCategoryId());
             CategoryEntity xiaomiCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Xiaomi", "Xiaomi Phones"), phonesCategory.getCategoryId());
-            CategoryEntity zaraCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("ZARA", "Zara Clothing"), categoryEntityFashions.getCategoryId());
-            CategoryEntity topmanCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Topman", "Topman Clothing"), categoryEntityFashions.getCategoryId());
-            CategoryEntity supremeCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("SUPREME", "Supreme Clothing"), categoryEntityFashions.getCategoryId());
+
+            CategoryEntity bagsCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Bags", "Bags"), categoryEntityFashions.getCategoryId());
+            CategoryEntity superdryCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Superdry", "Superdry Bags"), bagsCategory.getCategoryId());
+            CategoryEntity herschelCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Herschel", "Herschel Bags"), bagsCategory.getCategoryId());
+            CategoryEntity coachCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Coach", "Coach"), bagsCategory.getCategoryId());
+
+            CategoryEntity shoesCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Shoes", "Shoes"), categoryEntityFashions.getCategoryId());
+            CategoryEntity sperryCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Sperry", "Sperry Shoes"), shoesCategory.getCategoryId());
+            CategoryEntity adidasCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Adidas", "Adidas Shoes"), shoesCategory.getCategoryId());
+            CategoryEntity vansCategory = categoryEntityControllerLocal.createNewCategoryEntity(new CategoryEntity("Vans", "Vans Shoes"), shoesCategory.getCategoryId());
 
             TagEntity tagEntityPopular = tagEntityControllerLocal.createNewTagEntity(new TagEntity("Popular"));
             TagEntity tagEntityDiscount = tagEntityControllerLocal.createNewTagEntity(new TagEntity("Discount"));
@@ -149,56 +156,78 @@ public class DataInitSessionBean {
 
             List<Long> tagIdsEmpty = new ArrayList<>();
 
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD001", "Asus 1", "This is Asus 2", 100, 10, new BigDecimal("10.00"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsPopular);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD002", "Asus 2", "This is Asus 2", 100, 10, new BigDecimal("25.50"), "https://sg-test-11.slatic.net/p/943418d992f48b20018d2555419cef50.jpg"), asusCategory.getCategoryId(), tagIdsDiscount);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD003", "ASUS VivoBook 14 X405", "Everyday: All-rounder for work and play. Windows 10. Full HD display", 100, 10, new BigDecimal("120.00"), "https://brain-images-ssl.cdn.dixons.com/0/4/10157740/u_10157740.jpg"), asusCategory.getCategoryId(), tagIdsPopularDiscount);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD004", "Dell Inspiron 3567", "Intel® Core™ i3-6006U, 6th Generation", 100, 10, new BigDecimal("20.00"), "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg"), dellCategory.getCategoryId(), tagIdsPopularNew);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD005", "Dell Inspiron 7370", "Dell Inspiron laptop features Intel Core i5-8250U offers seamless multitasking", 100, 10, new BigDecimal("120.00"), "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg"), dellCategory.getCategoryId(), tagIdsPopularDiscountNew);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD006", "Dell XPS 13", "Our smallest 13.3\" (33.8cm) laptop has a virtually borderless InfinityEdge display — available with touch.", 100, 10, new BigDecimal("145.00"), "https://cf2.s3.souqcdn.com/item/2017/10/18/26/03/11/71/item_XL_26031171_47987159.jpg"), dellCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD007", "HP 1", "This is HP 1", 100, 10, new BigDecimal("35.00"), "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg"), hpCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD008", "HP 2", "This is HP 2", 100, 10, new BigDecimal("20.05"), "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg"), hpCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD009", "HP 3", "This is HP 3", 100, 10, new BigDecimal("5.50"), "https://ryanscomputers.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/3/g/3gg73pa.jpg"), hpCategory.getCategoryId(), tagIdsEmpty);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD001", "ASUS ZenBook 14 UX433FA", "Creativity. Style. Innovation. These are the qualities that define the elegant new ZenBook 14. Designed to give you the freedom to discover your creative power.", 100, 10, new BigDecimal("1598.00"), "https://laz-img-sg.alicdn.com/p/b02b734a0340c3e5debddc5c4481382f.jpg_720x720q80.jpg"), asusCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD002", "ASUS ROG Zephyrus S GX531", "The all new ROG Zephyrus S is redefining ultra-slim gaming laptops yet again with innovative engineering to cool its 8th Gen Intel Core i7 processor and up to GeForce GTX 1070 with Max-Q design, so you can immerse yourself in its no-compromise 144Hz/3ms display.", 100, 10, new BigDecimal("2999.00"), "https://laz-img-sg.alicdn.com/p/ee4537225869947eed33a94999064c4f.jpg_720x720q80.jpg"), asusCategory.getCategoryId(), tagIdsDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD003", "ASUS VivoBook 14 X405", "Everyday: All-rounder for work and play. Windows 10. Full HD display", 100, 10, new BigDecimal("1200.00"), "https://brain-images-ssl.cdn.dixons.com/0/4/10157740/u_10157740.jpg"), asusCategory.getCategoryId(), tagIdsPopularDiscount);
 
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD010", "Zara 1", "This is Zara 1", 100, 10, new BigDecimal("20.00"), "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg"), zaraCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD011", "Zara 2", "This is Zara 2", 100, 10, new BigDecimal("30.50"), "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg"), zaraCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD012", "Zara 3", "This is Zara 3", 100, 10, new BigDecimal("18.50"), "https://shop.r10s.jp/jam-ing/cabinet/uploadbox2/01480/wew8413-1.jpg"), zaraCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD013", "Topman 1", "This is Topman 1", 100, 10, new BigDecimal("50.00"), "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg"), topmanCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD014", "Topman 2", "This is Topman 2", 100, 10, new BigDecimal("100.00"), "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg"), topmanCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD015", "Topman 3", "This is Topman 3", 100, 10, new BigDecimal("200.00"), "https://static-01.daraz.com.bd/original/bd2e1b0011a683bdb8b0028079efc816.jpg"), topmanCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD016", "Supreme 1", "This is Supreme 1", 100, 10, new BigDecimal("95.00"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD017", "Supreme 2", "This is Supreme 2", 100, 10, new BigDecimal("19.05"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
-            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD018", "Supreme 3", "This is Supreme 3", 100, 10, new BigDecimal("10.50"), "https://images-na.ssl-images-amazon.com/images/I/61muQxTZRBL._SL1200_.jpg"), supremeCategory.getCategoryId(), tagIdsEmpty);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD004", "Dell Inspiron 3567", "Intel® Core™ i3-6006U, 6th Generation", 100, 10, new BigDecimal("1250.00"), "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg"), dellCategory.getCategoryId(), tagIdsPopularNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD005", "Dell Inspiron 7370", "Dell Inspiron laptop features Intel Core i5-8250U offers seamless multitasking", 100, 10, new BigDecimal("1170.00"), "https://smartsystems.jo/image/cache/catalog/products/computer-systems/laptops/3567-1200x1200.jpg"), dellCategory.getCategoryId(), tagIdsPopularDiscountNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD006", "Dell XPS 13", "Our smallest 13.3\" (33.8cm) laptop has a virtually borderless InfinityEdge display — available with touch.", 100, 10, new BigDecimal("1852.00"), "https://cf2.s3.souqcdn.com/item/2017/10/18/26/03/11/71/item_XL_26031171_47987159.jpg"), dellCategory.getCategoryId(), tagIdsEmpty);
+
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD007", "HP Laptop 14s-df0004TU", "Intel® Core™ i3-8130U (2.2 GHz base frequency, up to 4 GHz with Intel® Turbo Boost Technology, 4 MB cache, 2 cores)", 100, 10, new BigDecimal("799.00"), "https://laz-img-sg.alicdn.com/p/17822154c1ec5b2a5b0f48b24767e673.jpg_720x720q80.jpg"), hpCategory.getCategoryId(), tagIdsDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD008", "HP Pavilion - 14-ce0090tx", "Intel® Core™ i5-8250U Processor (1.6 GHz base frequency, up to 3.4 GHz with Intel® Turbo Boost Technology, 6 MB cache, 4 cores)", 100, 10, new BigDecimal("1349.00"), "https://laz-img-sg.alicdn.com/original/42f121cd9468e029926f76f4306ae0ad.jpg_720x720q80.jpg"), hpCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD009", "HP ChromeBook 11 G5", "Inspire learning and help elevate productivity to the next level with HP Chromebook 11. Affordable collaboration at school and work has never been so easy with Intel processors, and a long battery life.", 100, 10, new BigDecimal("248.50"), "https://laz-img-sg.alicdn.com/p/7e6c0340ea80265a2784052fb19ba7e6.jpg_720x720q80.jpg"), hpCategory.getCategoryId(), tagIdsEmpty);
+
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD010", "Samsung Galaxy S10 128GB", "The next generation of Galaxy has arrived.", 100, 10, new BigDecimal("1298.00"), "https://laz-img-sg.alicdn.com/p/caa88493ac370e5ff7c7e1923ee0e7df.jpg_720x720q80.jpg"), samsungCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD011", "Samsung Galaxy J6 Plus 64/4GB", "Fingerprint (side-mounted), accelerometer, gyro, proximity, compass. Messaging SMS(threaded view), MMS, Email, Push Email, IM", 100, 10, new BigDecimal("234.00"), "https://laz-img-sg.alicdn.com/p/04818b0a1195e205b88fe73a68464185.jpg_720x720q80.jpg"), samsungCategory.getCategoryId(), tagIdsPopularDiscountNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD012", "Samsung Galaxy Note 9 (512GB) ", "Galaxy Note has always put powerful technology in the hands of those who demand more", 100, 10, new BigDecimal("1548.00"), "https://laz-img-sg.alicdn.com/original/466087ff32b3080fe54b9d9fe2064ffe.jpg_720x720q80.jpg"), samsungCategory.getCategoryId(), tagIdsPopularDiscount);
+
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD013", "Huawei Y6 Pro 2019 3GB RAM+32GB ROM", "EMUI 9.0 (compatible with Android 9). Screen Size: 6.09inches. Battery capacity: 3020mAh", 100, 10, new BigDecimal("198"), "https://laz-img-sg.alicdn.com/p/e5abb002682cdf84d4bb4201cec5c1bf.jpg_720x720q80.jpg"), huaweiCategory.getCategoryId(), tagIdsPopularDiscountNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD014", "Huawei Mate 20X", "Huawei Mate20X, Blue, 7.2\", 6GB+128GB, Leica Cam, Supercharge, Fingerprint 51093BDKHuawei Mate20X, Silver, 7.2\", 6GB+128GB, Leica", 100, 10, new BigDecimal("1148"), "https://laz-img-sg.alicdn.com/p/07fad8987a3be9dae8d3dc42d882fa1b.jpg_720x720q80.jpg"), huaweiCategory.getCategoryId(), tagIdsPopularNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD015", "Huawei Nova 3i 4GB RAM", "A touch of magic", 100, 10, new BigDecimal("399.00"), "https://laz-img-sg.alicdn.com/p/mdc/43e47d4399af3a7aee6845316f7fe369.jpg_720x720q80.jpg"), huaweiCategory.getCategoryId(), tagIdsEmpty);
+
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD016", "Xiaomi Redmi Note 6 Pro", "Redmi Note 6 Pro is Xiaomi’s first smartphone with AI-powered quad-camera", 100, 10, new BigDecimal("289.00"), "https://laz-img-sg.alicdn.com/original/bc85ac9401d71cab225c50dabfe83d24.jpg_720x720q80.jpg"), xiaomiCategory.getCategoryId(), tagIdsPopularDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD017", "Xiaomi Mi 8 Lite", "Gradient design (three colors). 24MP high-resolution front camera + 6.26’’ display", 100, 10, new BigDecimal("349"), "https://laz-img-sg.alicdn.com/p/7eaa950611841dbfbf90625f0a0cbab5.jpg_720x720q80.jpg"), xiaomiCategory.getCategoryId(), tagIdsPopularDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD018", "Xiaomi POCOPHONE F1", "Keep the core components of the POCOPHONE F1 nice and cool with the LiquidCool Technology designed exclusively for gaming phones.No matter how hard you're gaming, the cooled processor has no problem keeping up stability and high frequency output. Say goodbye to slow response time and frozen screens, this phone stays faster than fast.", 100, 10, new BigDecimal("367.99"), "https://my-test-11.slatic.net/original/d25a7b61c0a4e914f490254a750aabb8.jpg_720x720q80.jpg"), xiaomiCategory.getCategoryId(), tagIdsEmpty);
+
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD019", "Superdry 17 Inch Laptop Backpack", "Most backpacks look pretty boring designed with lots of functionality but not much style. This one's a little different, if you had to carry a backpack around the city, this is the one you would want to be seen with", 100, 10, new BigDecimal("66.00"), "https://laz-img-sg.alicdn.com/p/f3b87cc4dd960dcf7aee1f67331a88fa.jpg_720x720q80.jpg"), superdryCategory.getCategoryId(), tagIdsEmpty);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD020", "Original Superdry fully waterproof backpack", "Fully waterproof materials are used.", 100, 10, new BigDecimal("56.90"), "https://laz-img-sg.alicdn.com/p/42eed34d9b524f8e5fa3ba7b0cf763c1.jpg_720x720q80.jpg"), superdryCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD021", "Superdry Camo J Tarp Backpack", "Monochrome camo toned backpack with brand embossed details", 100, 10, new BigDecimal("129.00"), "https://laz-img-sg.alicdn.com/p/ef69ab42e19e3efd0ca60cd2e0544b50.jpg_720x720q80.jpg"), superdryCategory.getCategoryId(), tagIdsDiscount);
             
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD022", "Herschel Supply Co. Little America Backpack 17L", "The sized-down Herschel Little America Mid-Volume backpack is inspired by classic mountaineering style and constructed for everyday use.", 100, 10, new BigDecimal("66.00"), "https://laz-img-sg.alicdn.com/original/6f52a34b53a7fea14df1b3017b53d582.jpg_720x720q80.jpg"), herschelCategory.getCategoryId(), tagIdsPopularDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD023", "Herschel Supply Co. Retreat Backpack 19.5L", "Based on Herschel's Little America Bag, the Retreat Bag offers the same classic mountaineering inspired style, but in a more compact style for everyday use.", 100, 10, new BigDecimal("63.90"), "https://laz-img-sg.alicdn.com/p/fd4515275aea4d5b9cd7cb08d20cae26.jpg_720x720q80.jpg"), herschelCategory.getCategoryId(), tagIdsPopular);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD024", "Herschel Supply Co. Novel Duffel Bag Navy/Tan 42.5L", "An ideal weekender that features plenty of storage, including the convenient signature shoe compartment.", 100, 10, new BigDecimal("64.80"), "https://laz-img-sg.alicdn.com/p/7/herschel-supply-co-novel-duffel-bag-navytan-425l-9831-56443815-85d6365604db81d5dcd006f061817d17-catalog.jpg_720x720q80.jpg"), herschelCategory.getCategoryId(), tagIdsPopularNew);
             
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD025", "Coach F23216 Charles Crossbody With Varsity Stripes", "Adjustable strap with 53\" drop for shoulder or crossbody wear", 100, 10, new BigDecimal("239.00"), "https://laz-img-sg.alicdn.com/original/21e7eee2c554967ef11f633c9db9ed70.jpg_720x720q80.jpg"), coachCategory.getCategoryId(), tagIdsPopularDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD026", "Coach Charles Backpack", "Coach Signature coated canvas backpack", 100, 10, new BigDecimal("599.99"), "https://laz-img-sg.alicdn.com/original/222d46c69b99d26a26588b5e54d92e22.jpg_720x720q80.jpg"), coachCategory.getCategoryId(), tagIdsEmpty);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD027", "Coach Perry Slim Brief In Crossgrain Leather Black", "Detachable strap with 53 1/4\" drop for shoulder or crossbody wear", 100, 10, new BigDecimal("395.00"), "https://laz-img-sg.alicdn.com/p/d28d784a506c74c074366a55c72832d6.jpg_720x720q80.jpg"), coachCategory.getCategoryId(), tagIdsPopularDiscountNew);
             
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD028", "Sperry Men's Authentic Original 2-Eye Boat Shoes", "Genuine hand-sewn Tru-Moc construction for durable comfort", 100, 10, new BigDecimal("89.00"), "https://laz-img-sg.alicdn.com/original/dfe77df3165e94eb4b5d6518101c351b.jpg_720x720q80.jpg"), sperryCategory.getCategoryId(), tagIdsPopularNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD029", "Sperry Mens Wave Driver Shoe", "Stain and water resistant leather provides durability and lasting wear", 100, 10, new BigDecimal("280.28"), "https://my-test-11.slatic.net/original/847f140cb3ad9198e86f38c8a7c43ff0.jpg_720x720q80.jpg"), sperryCategory.getCategoryId(), tagIdsDiscount);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD030", "Sperry Womens Angelfish Metallic Linen", "The Signature Cole Haan® ballet flats.", 100, 10, new BigDecimal("242.29"), "https://my-test-11.slatic.net/original/39229555f1679075499770c64214a8e8.jpg_720x720q80.jpg"), sperryCategory.getCategoryId(), tagIdsPopular);
+            
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD031", "Adidas Originals Superstar Sneaker Shoes", "Express your creativity through our adidas originals shoes and footwear", 100, 10, new BigDecimal("87.65"), "https://my-test-11.slatic.net/p/ff31aa59c442f85dd1ca7a4ef485a479.jpg_720x720q80.jpg"), adidasCategory.getCategoryId(), tagIdsPopularDiscountNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD032", "Adidas YEEZY BOOST 350 V2", "Back with another installment, Kanye West sent the sneaker world into a frenzy once again with the Yeezy Beluga, version two of his renowned collaboration with adidas.", 100, 10, new BigDecimal("215.06"), "https://my-test-11.slatic.net/original/beec8cf42fe88002d73898daa9409f09.jpg_720x720q80.jpg"), adidasCategory.getCategoryId(), tagIdsEmpty);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD033", "Adidas PUREBOOST", "Recommended for: Street and city running; Supportive wide platform; Fitcounter heel for unrestricted fit", 100, 10, new BigDecimal("159.00"), "https://laz-img-sg.alicdn.com/p/2060c58f17c540c8bc35cf36b537820d.jpg_720x720q80.jpg"), adidasCategory.getCategoryId(), tagIdsDiscount);
+            
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD034", "Vans Sneaker Old Skool", "Features: Balanced,Light,Anti-Slippery,Support,Encapsulated,Impact resistance", 100, 10, new BigDecimal("129.00"), "https://my-test-11.slatic.net/p/3258b874dc27e4e0b8e8458f3f4436fb.jpg_720x720q80.jpg"), vansCategory.getCategoryId(), tagIdsPopularDiscountNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD035", "Vans Authentic Sneakers Unisex", "Off the wall", 100, 10, new BigDecimal("41.71"), "https://my-test-11.slatic.net/p/e581596b9f4ca610746d18956ecf434e.jpg_720x720q80.jpg"), vansCategory.getCategoryId(), tagIdsPopularNew);
+            productEntityControllerLocal.createNewProduct(new ProductEntity("PROD036", "Vans G-DRAGON Unisex", "Constructed from hard wearing leather and suede, it features contrasting leather on the side stripe and sits on top of a classic waffle sole.", 100, 10, new BigDecimal("79.90"), "https://laz-img-sg.alicdn.com/p/190cdc9429e46af18369065970b9a1e2.jpg_720x720q80.jpg"), vansCategory.getCategoryId(), tagIdsDiscount);
+            
+
             // Load transactions
             List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities = new ArrayList<>();
-            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 5, new BigDecimal(10), new BigDecimal(50)));
-            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 2, new BigDecimal(25.50), new BigDecimal(51)));
-            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 7, new BigDecimal(101), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
-            
-            
-            CommunityGoalEntity cge = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"United States", "1000 Points", "Lorem Ipsum Bla Bla Bla Bla", new BigDecimal(4), false);
-//            cge.setDescription("fsdfsd");
-//            cge.setGoalTitle("har");
-//            cge.setRewardPercentage(new BigDecimal(12));
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(001, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD001"), 1, new BigDecimal(1598), new BigDecimal(1598)));
+            saleTransactionLineItemEntities.add(new SaleTransactionLineItemEntity(002, productEntityControllerLocal.retrieveProductByProductSkuCode("PROD002"), 1, new BigDecimal(1852), new BigDecimal(1852)));
+            saleTransactionEntityControllerLocal.createNewSaleTransaction(new Long(1), new SaleTransactionEntity(2, 2, new BigDecimal(3450), new Date(), Boolean.FALSE, customerEntityControllerLocal.retrieveCustomerByEmail("Steve@gmail.com"), saleTransactionLineItemEntities, null, null));
+
+            CommunityGoalEntity cge = new CommunityGoalEntity(startDate, endDate, new BigDecimal(10000), "United States", "Impeach Donald Trump", "Get many, many points. All kinds of points. I have the best points.", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            
-            CommunityGoalEntity cge2 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Malaysia", "For the Horde", "Fight for Azeroth and claim your prize", new BigDecimal(4), false);
+
+            CommunityGoalEntity cge2 = new CommunityGoalEntity(startDate, endDate, new BigDecimal(10000), "Malaysia", "For the Horde", "Fight for Azeroth and claim your prize", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge2, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            CommunityGoalEntity cge3 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Singapore", "Nazareth", "Rax All Their Bases", new BigDecimal(4), false);
+            CommunityGoalEntity cge3 = new CommunityGoalEntity(startDate, endDate, new BigDecimal(10000), "Singapore", "Rush B", "Counter terrorists win", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge3, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            
-            CommunityGoalEntity cge4 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"United States", "Stephen Curry", "Three Pointers Only", new BigDecimal(4), false);
+
+            CommunityGoalEntity cge4 = new CommunityGoalEntity(startDate, endDate, new BigDecimal(5000), "United States", "Winter is Coming", "The North Remembers", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge4, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            CommunityGoalEntity cge5 = new CommunityGoalEntity(startDate,endDate,new BigDecimal(1000),"Singapore", "Steps is Today", "Vote for Us", new BigDecimal(4), false);
+            CommunityGoalEntity cge5 = new CommunityGoalEntity(startDate, endDate, new BigDecimal(5000), "Singapore", "National Day", "Stand up for Singapore", new BigDecimal(4), false);
             communityGoalEntityControllerLocal.createNewCommunityGoal(cge5, staffEntityControllerLocal.retrieveStaffByUsername("manager").getStaffId());
-            
-            reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 4, new Long(1) );
-            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "Asus laptop is very good", 4, new Long(1) );
-            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "What a scam", 5, new Long(1) );
-            reviewEntityControllerLocal.createNewReview(c2.getCustomerId(), "Is this good?", 4, new Long(1) );
-            
+
+            reviewEntityControllerLocal.createNewReview(c.getCustomerId(), "Not worth the price", 3, new Long(1));
+            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "Asus laptop is the best", 5, new Long(1));
+            reviewEntityControllerLocal.createNewReview(c1.getCustomerId(), "What a scam !!", 1, new Long(1));
+            reviewEntityControllerLocal.createNewReview(c2.getCustomerId(), "Broke within 2 seconds", 2, new Long(1));
 
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());
@@ -207,4 +236,3 @@ public class DataInitSessionBean {
         }
     }
 }
-

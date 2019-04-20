@@ -1,6 +1,9 @@
 .productImage {
     width: 100%;
-    height: auto;
+    border-radius: 4px;
+    object-fit: contain;
+    height: 100%;
+    background-color: white;
 }
 
 .productDetailsContainer {
@@ -29,7 +32,7 @@ h3.reviewName {
 
 .card {
     margin-top: 1vw;
-    background-color: whitesmoke;
+    background-image:url('/assets/images/green.jpg');
 }
 
 .headerText {
@@ -138,3 +141,8 @@ mat-list-item {
     align-self: baseline;
 }
 
+.outOfStock {
+    font-style: italic;
+    color: red;
+    font-size: 20px;
+}
