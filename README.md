@@ -11,6 +11,11 @@
 3. npm start (not ng serve)
 
 # To Run Netbeans Project StoreCraft
-1. Open Project in Netbeans
-2. Deploy
-3. Proceed to localhost:8080/StoreCraftStaff
+1. Open StoreCraft Project in Netbeans
+2. Create local mysql database named "storecraft" : create schema storecraft 
+3. Create new JDBC Resource (follow glassfish-resources.xml)
+  - JDBC jndi-name: jdbc/storeCraft
+  - pool-name: storeCraftConnectionPool
+  - jdbc connection pool URL: jdbc:mysql://localhost:3306/storecraft?zeroDateTimeBehavior=CONVERT_TO_NULL
+4. Deploy application
+5. Proceed to localhost:8080/StoreCraftStaff
