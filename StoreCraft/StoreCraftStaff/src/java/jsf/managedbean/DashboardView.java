@@ -32,6 +32,11 @@ import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 import util.exception.CreateNewDiscountCodeException;
 import util.exception.InputDataValidationException;
 
@@ -66,6 +71,8 @@ public class DashboardView implements Serializable {
     private int selectedMonthToDisplay;
     
     private List<ProductEntity> filteredTopSellingProductsPerMonth;
+    
+    private BarChartModel barChartModel;
 
     public DashboardView() {
         this.topCustomersAllTime = new ArrayList<>();
@@ -91,11 +98,12 @@ public class DashboardView implements Serializable {
         
         column1.addWidget("topCustomersMonth");
          
+        column1.addWidget("topCustomersAllTime"); //match the id of panel in the dashboard
         column2.addWidget("topSellingProductsMonth");
         column2.addWidget("salesForMonth");
+        column2.addWidget("barChart");
         
         
-        column2.addWidget("topCustomersAllTime"); //match the id of panel in the dashboard
         
  
 
@@ -126,9 +134,36 @@ public class DashboardView implements Serializable {
         List<CustomerEntity> allCustomersAllTime = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
         topCustomersAllTime = allCustomersAllTime.subList(0, Math.min(allCustomersAllTime.size(), 3));
 
+        List<CustomerEntity> toRemove = new ArrayList<>();
+        for(int i = 0; i < topCustomersAllTime.size(); i++) {
+            
+            if(topCustomersAllTime.get(i).getPointsForCurrentMonth().equals(BigDecimal.ZERO)) {
+                toRemove.add(topCustomersAllTime.get(i));
+            }
+        }
+        
+        for(int i = 0; i < toRemove.size(); i++) {
+            topCustomersAllTime.remove(toRemove.get(i));
+        }
+        
+        
         List<CustomerEntity> allCustomersPerMonth = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
         topCustomersForTheMonth = allCustomersPerMonth.subList(0, Math.min(allCustomersAllTime.size(), 3));
         System.out.println("topCustomers size" + topCustomersAllTime.size());
+        
+        
+        toRemove = new ArrayList<>();
+        for(int i = 0; i < topCustomersForTheMonth.size(); i++) {
+            System.out.println(i + "TOP CUST FOR THE MONTH POINTS" + topCustomersForTheMonth.get(i).getPointsForCurrentMonth());
+            if(topCustomersForTheMonth.get(i).getPointsForCurrentMonth().equals(BigDecimal.ZERO)) {
+                toRemove.add(topCustomersForTheMonth.get(i));
+            }
+        }
+        
+        for(int i = 0; i < toRemove.size(); i++) {
+            topCustomersForTheMonth.remove(toRemove.get(i));
+        }
+        
 
         saleTransactionsForTheYear = saleTransactionEntityControllerLocal.retrieveSaleTransactionForTheYear();
         System.out.println("saleTransactionsForTheYear" + saleTransactionsForTheYear.size());
@@ -138,7 +173,32 @@ public class DashboardView implements Serializable {
         topSellingProductsAllTime = productEntityControllerLocal.retrieveAllProducts();
         sortProducts(topSellingProductsAllTime);
         topSellingProductsPerMonth = saleTransactionEntityControllerLocal.retrieveSaleTransactionsPerMonth(selectedMonthToDisplay);
-        sortProducts(topSellingProductsPerMonth);
+        sortProductsPerMonth();
+        
+        createBarModel();
+        
+    }
+    
+    public void createBarModel() {
+        barChartModel = new BarChartModel();
+        ChartSeries yearly = new ChartSeries();
+        yearly.setLabel("Revenue");
+        for(int i = 0; i < months.size(); i++) {
+            yearly.set(months.get(i), saleTransactionsForTheYear.get(i));
+        }
+        
+        Calendar forChart = Calendar.getInstance();
+        int forChartYear = forChart.get(Calendar.YEAR);
+        barChartModel.addSeries(yearly);
+        barChartModel.setTitle(""+forChartYear);
+        barChartModel.setLegendPosition("ne");
+        Axis xAxis = barChartModel.getAxis(AxisType.X);
+        xAxis.setLabel("Months");
+ 
+        Axis yAxis = barChartModel.getAxis(AxisType.Y);
+        yAxis.setLabel("$");
+        yAxis.setMin(0);
+        //yAxis.setMax(10000);
     }
 
     public void handleReorder(DashboardReorderEvent event) {
@@ -275,6 +335,14 @@ public class DashboardView implements Serializable {
 
     public void setFilteredTopSellingProductsPerMonth(List<ProductEntity> filteredTopSellingProductsPerMonth) {
         this.filteredTopSellingProductsPerMonth = filteredTopSellingProductsPerMonth;
+    }
+
+    public BarChartModel getBarChartModel() {
+        return barChartModel;
+    }
+
+    public void setBarChartModel(BarChartModel barChartModel) {
+        this.barChartModel = barChartModel;
     }
 
    

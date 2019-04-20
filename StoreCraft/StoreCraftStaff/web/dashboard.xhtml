@@ -29,7 +29,7 @@
                     <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs" />
 
                     <p:panel id="topCustomersAllTime" header="Top Customers (All Time)">
-                        <p:dataTable value="#{dashboardView.topCustomersAllTime}" var="topCustomer">
+                        <p:dataTable value="#{dashboardView.topCustomersAllTime}" var="topCustomer" style="text-align: center;">
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{topCustomer.customerId}" />
                             </p:column>
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </f:facet>
-                        <p:dataTable value="#{dashboardView.topCustomersForTheMonth}" var="topCustomer">
+                        <p:dataTable value="#{dashboardView.topCustomersForTheMonth}" var="topCustomer" style="text-align: center;">
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{topCustomer.customerId}" />
                             </p:column>
@@ -130,8 +130,8 @@
 
                         <p:dataTable id="dataTableMain" value="#{dashboardView.topSellingProductsPerMonth}" var="product" 
                                      widgetVar="productTable" >
-                            <f:facet name="header">
-                                <div class="ui-g">
+                            <f:facet name="header" >
+                                <div class="ui-g" >
                                     <div class="ui-g-4" style="padding: 0">
 
                                     </div>
@@ -139,7 +139,7 @@
 
                                     </div>
                                     <div class="ui-g-4" style="padding: 0">
-                                        <p:selectOneMenu id="selCondition" value="#{dashboardView.selectedMonthToDisplay}"  >
+                                        <p:selectOneMenu id="selCondition" value="#{dashboardView.selectedMonthToDisplay}" >
                                             <f:selectItem itemValue="0" itemLabel="January"/>
                                             <f:selectItem itemValue="1" itemLabel="February" />
                                             <f:selectItem itemValue="2" itemLabel="March"/>
@@ -189,12 +189,16 @@
                             </p:column>
                         </p:dataTable>
                     </p:panel>
+                    
+                    <p:panel id="barChart" header="Revenue">
+                        <p:chart type="bar" model="#{dashboardView.barChartModel}" style="height: 300px;"/>
+                    </p:panel>
                 </p:dashboard>
 
                 <div style="clear:both" />
             </h:form>
-
-
+            
+            
         </div>
     </ui:define>
 
