@@ -221,29 +221,35 @@ public class CustomerEntity implements Serializable {
 
     public void setTotalPoints(BigDecimal totalPoints) {
         this.totalPoints = totalPoints;
-        if (this.getTotalPoints().compareTo(new BigDecimal("600")) >= 1)
+        if (this.getTotalPoints().compareTo(new BigDecimal("18000")) >= 1)
         {
             this.setMembershipTierEnum(MembershipTierEnum.GRANDMASTER);
-            this.setMultiplier(new BigDecimal("2.5"));
+            this.setMultiplier(new BigDecimal("3.0"));
         }
-        else if (this.getTotalPoints().compareTo(new BigDecimal("500")) >= 1)
+        else if (this.getTotalPoints().compareTo(new BigDecimal("15000")) >= 1)
+        {
+            this.setMembershipTierEnum(MembershipTierEnum.MASTER);
+            this.setMultiplier(new BigDecimal("2.5"));
+            System.out.print("mem 1");
+        }
+        else if (this.getTotalPoints().compareTo(new BigDecimal("12000")) >= 1)
         {
             this.setMembershipTierEnum(MembershipTierEnum.DIAMOND);
             this.setMultiplier(new BigDecimal("2.0"));
             System.out.print("mem 1");
         }
-        else if (this.getTotalPoints().compareTo(new BigDecimal("400")) >= 1)
+        else if (this.getTotalPoints().compareTo(new BigDecimal("9000")) >= 1)
         {
             this.setMembershipTierEnum(MembershipTierEnum.PLATINUM);
             this.setMultiplier(new BigDecimal("1.6"));
              System.out.print("mem 2");
         }
-        else if (this.getTotalPoints().compareTo(new BigDecimal("300")) >= 1)
+        else if (this.getTotalPoints().compareTo(new BigDecimal("6000")) >= 1)
         {
             this.setMembershipTierEnum(MembershipTierEnum.GOLD);
             this.setMultiplier(new BigDecimal("1.4"));
         }
-        else if (this.getTotalPoints().compareTo(new BigDecimal("200")) >= 1)
+        else if (this.getTotalPoints().compareTo(new BigDecimal("3000")) >= 1)
         {
             this.setMembershipTierEnum(MembershipTierEnum.SILVER);
             this.setMultiplier(new BigDecimal("1.2"));
