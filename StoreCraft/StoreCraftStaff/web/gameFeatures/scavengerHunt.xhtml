@@ -134,31 +134,31 @@
                         Current Scavenger Hunt Products
                     </f:facet>
 
-                    <p:column headerText="Product ID" sortBy="#{productEntity.productId}" filterBy="#{productEntity.productId}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="Product ID" sortBy="#{productEntity.productId}" filterBy="#{productEntity.productId}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.productId}" />
                     </p:column>    
 
-                    <p:column headerText="SKU Code" sortBy="#{productEntity.skuCode}" filterBy="#{productEntity.skuCode}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="SKU Code" sortBy="#{productEntity.skuCode}" filterBy="#{productEntity.skuCode}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.skuCode}" />
                     </p:column>
 
-                    <p:column headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.name}" />
                     </p:column>
 
-                    <p:column headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains">
+                    <p:column style="width: 40%" headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.description}" />
                     </p:column>
 
-                    <p:column headerText="Category" sortBy="#{productEntity.categoryEntity.name}" filterBy="#{productEntity.categoryEntity.name}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="Category" sortBy="#{productEntity.categoryEntity.name}" filterBy="#{productEntity.categoryEntity.name}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.categoryEntity.name}" />
                     </p:column>
 
-                    <p:column headerText="Quantity" sortBy="#{productEntity.quantityOnHand}" filterBy="#{productEntity.quantityOnHand}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="Quantity" sortBy="#{productEntity.quantityOnHand}" filterBy="#{productEntity.quantityOnHand}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.quantityOnHand}" />
                     </p:column>
 
-                    <p:column headerText="Unit Price" sortBy="#{productEntity.unitPrice}" filterBy="#{productEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                    <p:column style="width: 10%; text-align: right" headerText="Unit Price" sortBy="#{productEntity.unitPrice}" filterBy="#{productEntity.unitPrice}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.unitPrice}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>

@@ -66,7 +66,7 @@ public class CommunityGoalEntity implements Serializable {
     
     @NotNull
     @DecimalMin("0.01")
-    @DecimalMax("20.00")
+    @DecimalMax("40.00")
     private BigDecimal rewardPercentage;
     
     private boolean completed;

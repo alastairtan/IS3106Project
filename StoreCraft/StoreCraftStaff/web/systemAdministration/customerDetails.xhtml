@@ -155,24 +155,24 @@
                         </div>
                     </f:facet>
 
-                    <p:column headerText="" sortBy="#{reviewEntity.reviewId}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
+                    <p:column style="width: 10%" headerText="Review Id" sortBy="#{reviewEntity.reviewId}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
                         <h:outputText value="#{reviewEntity.reviewId}" />
                     </p:column>    
 
-                    <p:column headerText="" sortBy="#{reviewEntity.content}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
-                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    <p:column style="width: 60%" headerText="Content" sortBy="#{reviewEntity.content}" filterBy="#{reviewEntity.content}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.content}" />
                     </p:column>    
 
-                    <p:column headerText="" sortBy="#{reviewEntity.productEntity}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
-                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    <p:column style="width: 10%" headerText="Product" sortBy="#{reviewEntity.productEntity.productId}" filterBy="#{reviewEntity.productEntity.productId}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.productEntity.productId}" />
                     </p:column>    
 
-                    <p:column headerText="" sortBy="#{reviewEntity.productRating}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
-                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    <p:column style="width: 10%" headerText="Rating" sortBy="#{reviewEntity.productRating}" filterBy="#{reviewEntity.productRating}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.productRating}" />
                     </p:column>    
 
-                    <p:column headerText="" sortBy="#{reviewEntity.reviewDate}" filterBy="#{reviewEntity.reviewId}" filterMatchMode="contains">
-                        <h:outputText value="#{reviewEntity.reviewId}" />
+                    <p:column style="width: 10%" headerText="Date" sortBy="#{reviewEntity.reviewDate}" filterBy="#{reviewEntity.reviewDate}" filterMatchMode="contains">
+                        <h:outputText value="#{reviewEntity.reviewDate}" />
                     </p:column>    
 
 

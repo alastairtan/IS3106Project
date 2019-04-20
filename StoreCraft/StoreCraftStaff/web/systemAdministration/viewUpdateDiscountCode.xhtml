@@ -157,37 +157,37 @@
 
                             <p:column selectionMode="multiple" style="width:16px;text-align:center" visible="#{viewUpdateDiscountCodeManagedBean.isUpdating}" />
 
-                            <p:column headerText="Product ID" sortBy="#{productEntity.productId}" filterBy="#{productEntity.productId}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%" headerText="Product ID" sortBy="#{productEntity.productId}" filterBy="#{productEntity.productId}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.productId}" />
                             </p:column>    
 
-                            <p:column headerText="SKU Code" sortBy="#{productEntity.skuCode}" filterBy="#{productEntity.skuCode}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%" headerText="SKU Code" sortBy="#{productEntity.skuCode}" filterBy="#{productEntity.skuCode}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.skuCode}" />
                             </p:column>
 
-                            <p:column headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%" headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.name}" />
                             </p:column>
 
-                            <p:column headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 40%" headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.description}" />
                             </p:column>
 
-                            <p:column headerText="Category" sortBy="#{productEntity.categoryEntity.name}" filterBy="#{productEntity.categoryEntity.name}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%" headerText="Category" sortBy="#{productEntity.categoryEntity.name}" filterBy="#{productEntity.categoryEntity.name}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.categoryEntity.name}" />
                             </p:column>
 
-                            <p:column headerText="Quantity" sortBy="#{productEntity.quantityOnHand}" filterBy="#{productEntity.quantityOnHand}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%" headerText="Quantity" sortBy="#{productEntity.quantityOnHand}" filterBy="#{productEntity.quantityOnHand}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.quantityOnHand}" />
                             </p:column>
 
-                            <p:column headerText="Unit Price" sortBy="#{productEntity.unitPrice}" filterBy="#{productEntity.unitPrice}" filterMatchMode="contains" style="text-align: right;" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%; text-align: right" headerText="Unit Price" sortBy="#{productEntity.unitPrice}" filterBy="#{productEntity.unitPrice}" filterMatchMode="contains" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <h:outputText value="#{productEntity.unitPrice}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="More" style="text-align: center" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
+                            <p:column style="width: 10%; text-align: center" headerText="More" selectRow="#{viewUpdateDiscountCodeManagedBean.isUpdating}">
                                 <p:commandButton process="@this" update="formViewProduct" oncomplete="PF('dialogViewProduct').show(); PF('dialogViewProduct').toggleMaximize()" icon="fa fa-search" title="View">
                                     <f:setPropertyActionListener value="#{productEntity}" target="#{viewUpdateDiscountCodeManagedBean.selectedProductEntity}" />
                                     <p:resetInput target="formViewProduct"/>
