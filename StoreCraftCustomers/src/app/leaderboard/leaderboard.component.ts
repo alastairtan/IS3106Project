@@ -39,4 +39,37 @@ export class LeaderboardComponent implements OnInit {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
+  getAllTimeTopCustomers(){
+    this.customerService.retrieveCustomersBySpendingTotal().subscribe(
+      response => {
+          this.dataSource.data = response.customerEntities;
+          let rank = 1;
+          for(const customer of this.dataSource.data){
+            customer.rank = rank++;
+          }
+          setTimeout(() => {
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+          });
+      }
+    )
+  }
+
+  getThisMonthTopCustomers(){
+    this.customerService.retrieveCustomersBySpendingPerMonth().subscribe(
+      response => {
+          this.dataSource.data = response.customerEntities;
+          let rank = 1;
+          for(const customer of this.dataSource.data){
+            customer.rank = rank++;
+          }
+          setTimeout(() => {
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+          });
+      }
+    )
+  }
+
+
 }
