@@ -14,6 +14,7 @@ import entity.SaleTransactionEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
@@ -55,11 +57,21 @@ public class DashboardView implements Serializable {
     private List<BigDecimal> saleTransactionsForTheYear;
     private List<String> months = new ArrayList<>();
     private List<ProductEntity> topSellingProductsAllTime;
+    private List<ProductEntity> topSellingProductsPerMonth;
+    private int selectedMonthToDisplay;
+    
+    private List<ProductEntity> filteredTopSellingProductsPerMonth;
 
     public DashboardView() {
         this.topCustomersAllTime = new ArrayList<>();
         this.topCustomersForTheMonth = new ArrayList<>();
         this.topSellingProductsAllTime = new ArrayList<>();
+        this.topSellingProductsPerMonth = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        int currMonth = calendar.get(Calendar.MONTH);
+        selectedMonthToDisplay = currMonth;
+        
+        this.filteredTopSellingProductsPerMonth = new ArrayList<>();
     }
     
     
@@ -70,14 +82,17 @@ public class DashboardView implements Serializable {
         DashboardColumn column1 = new DefaultDashboardColumn();
         DashboardColumn column2 = new DefaultDashboardColumn();
         DashboardColumn column3 = new DefaultDashboardColumn();
-         
-        column1.addWidget("topCustomersAllTime"); //match the id of panel in the dashboard
+        
+        column1.addWidget("topSellingProductsAllTime");
+        
         column1.addWidget("topCustomersMonth");
          
-        column2.addWidget("salesForMonth");
         column2.addWidget("topSellingProductsMonth");
-         
-        column3.addWidget("topSellingProductsAllTime");
+        column2.addWidget("salesForMonth");
+        
+        
+        column2.addWidget("topCustomersAllTime"); //match the id of panel in the dashboard
+        
  
         model.addColumn(column1);
         model.addColumn(column2);
@@ -120,6 +135,8 @@ public class DashboardView implements Serializable {
         //System.out.println("topselling products size" + topSellingProductsAllTime.size());
         topSellingProductsAllTime = productEntityControllerLocal.retrieveAllProducts();
         sortProducts(topSellingProductsAllTime);
+        topSellingProductsPerMonth = saleTransactionEntityControllerLocal.retrieveSaleTransactionsPerMonth(selectedMonthToDisplay);
+        sortProducts(topSellingProductsPerMonth);
     }
     
     
@@ -141,6 +158,23 @@ public class DashboardView implements Serializable {
                 return pe1Qty < pe2Qty ? 1 : pe1Qty > pe2Qty ? -1 : 0;
             }
         });
+        
+        topSellingProductsAllTime = topSellingProductsAllTime.subList(0, Math.min(topSellingProductsAllTime.size(), 5));
+    }
+    
+    public void sortProductsPerMonth(){
+        System.out.println("selectedMonth to display" + selectedMonthToDisplay);
+        
+        topSellingProductsPerMonth = saleTransactionEntityControllerLocal.retrieveSaleTransactionsPerMonth(selectedMonthToDisplay);
+        Collections.sort(topSellingProductsPerMonth, new Comparator<ProductEntity>(){
+            public int compare(ProductEntity pe1, ProductEntity pe2){
+                int pe1Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe1.getProductId());
+                int pe2Qty = saleTransactionEntityControllerLocal.numberOfProductsSold(pe2.getProductId());
+                return pe1Qty < pe2Qty ? 1 : pe1Qty > pe2Qty ? -1 : 0;
+            }
+        });
+        
+        topSellingProductsPerMonth = topSellingProductsPerMonth.subList(0, Math.min(topSellingProductsPerMonth.size(), 5));
     }
     
     public int getNumProductsSold(Long productId){
@@ -205,6 +239,30 @@ public class DashboardView implements Serializable {
 
     public void setTopSellingProductsAllTime(List<ProductEntity> topSellingProductsAllTime) {
         this.topSellingProductsAllTime = topSellingProductsAllTime;
+    }
+
+    public List<ProductEntity> getTopSellingProductsPerMonth() {
+        return topSellingProductsPerMonth;
+    }
+
+    public void setTopSellingProductsPerMonth(List<ProductEntity> topSellingProductsPerMonth) {
+        this.topSellingProductsPerMonth = topSellingProductsPerMonth;
+    }
+
+    public int getSelectedMonthToDisplay() {
+        return selectedMonthToDisplay;
+    }
+
+    public void setSelectedMonthToDisplay(int selectedMonthToDisplay) {
+        this.selectedMonthToDisplay = selectedMonthToDisplay;
+    }
+
+    public List<ProductEntity> getFilteredTopSellingProductsPerMonth() {
+        return filteredTopSellingProductsPerMonth;
+    }
+
+    public void setFilteredTopSellingProductsPerMonth(List<ProductEntity> filteredTopSellingProductsPerMonth) {
+        this.filteredTopSellingProductsPerMonth = filteredTopSellingProductsPerMonth;
     }
 
     

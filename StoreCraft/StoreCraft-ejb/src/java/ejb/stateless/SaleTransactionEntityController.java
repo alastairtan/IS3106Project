@@ -76,8 +76,6 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-    private TreeMap treeMap;
-    private TreeMap sortedMap;
 
     public SaleTransactionEntityController() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -342,51 +340,8 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
 
     }
 
+
     @Override
-    public List<ProductEntity> retrieveTopSellingProductsAllTime() {
-//        List<ProductEntity> productEntitys = productEntityControllerLocal.retrieveAllProducts();
-//        int size = productEntitys.size();
-        countProductsSold();
-        List<ProductEntity> productEntitys = new ArrayList<>();
-        int size = Math.min(sortedMap.size(), 3);
-        for(int i = 0; i < size; i++) {
-            int topFive = (int) sortedMap.lastKey();
-            try {
-                productEntitys.add(productEntityControllerLocal.retrieveProductByProductId(Long.valueOf(topFive)));
-            } catch (ProductNotFoundException ex) {
-                ex.printStackTrace();
-            }
-            System.out.println("SORTED MAP LAST KEY: " + sortedMap.lastKey());
-            System.out.println(sortedMap);
-            
-            //int value = (int) sortedMap.get(topFive-1);
-            sortedMap.remove(topFive);
-            
-        }
-        return productEntitys;
-    }
-
-    public void countProductsSold() {
-        
-        treeMap = new TreeMap<Integer, Integer>();
-        List<ProductEntity> productEntitys = productEntityControllerLocal.retrieveAllProducts();
-        int size = productEntitys.size();
-        int[] total = new int[size];
-        for (int i = 0; i < size; i++) {
-            total[i] = numberOfProductsSold(Long.valueOf(i));
-        }
-        for (int i = 0; i < size; i++) {
-            treeMap.put(i, total[i]);
-            System.out.println("treeMap items" + total[i]);
-        }
-        System.out.println("TREE MAAAAP MAP SIZE: " +treeMap);
-        sortedMap = (TreeMap) sortByValues(treeMap);
-        System.out.println("SORTED MAP SIZE: " +sortedMap.size());
-        System.out.println(sortedMap);
-
-        //return sortedMap;
-    }
-
     public int numberOfProductsSold(Long productId) {
         List<SaleTransactionLineItemEntity> saleTransactionLineItemEntitys = retrieveSaleTransactionLineItemsByProductId(productId);
 //        BigDecimal numSold = new BigDecimal(BigInteger.ZERO);
@@ -398,28 +353,31 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         }
         return numSold;
     }
-
-
-    public static <K, V extends Comparable<V>> Map<K, V>
-            sortByValues(final Map<K, V> map) {
-        Comparator<K> valueComparator
-                = new Comparator<K>() {
-            public int compare(K k1, K k2) {
-                int compare
-                        = map.get(k1).compareTo(map.get(k2));
-                if (compare == 0) {
-                    return 0;
-                } else {
-                    return compare;
+    
+    @Override
+    public List<ProductEntity> retrieveSaleTransactionsPerMonth(int month) {
+        List<SaleTransactionEntity> saleTransactionEntitys = retrieveAllSaleTransactions();
+        List<ProductEntity> accordingToMonthSale = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        int currYear = c.get(Calendar.YEAR);
+        
+        for(SaleTransactionEntity s : saleTransactionEntitys) {
+            calendar.setTime(s.getTransactionDateTime());
+            System.out.println("inside 2nd loop");
+            if (calendar.get(Calendar.MONTH) == month && calendar.get(Calendar.YEAR) == currYear) {
+                for(SaleTransactionLineItemEntity stlie: s.getSaleTransactionLineItemEntities()) {
+                    if(!accordingToMonthSale.contains(stlie.getProductEntity().getProductId())) {
+                        accordingToMonthSale.add(stlie.getProductEntity());
+                    }
                 }
+                
             }
-        };
-
-        Map<K, V> sortedByValues
-                = new TreeMap<K, V>(valueComparator);
-        sortedByValues.putAll(map);
-        return sortedByValues;
+        }
+        return accordingToMonthSale;
     }
+
+
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
