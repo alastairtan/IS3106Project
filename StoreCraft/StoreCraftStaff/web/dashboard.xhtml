@@ -22,7 +22,7 @@
         </style>
 
         <div>
-            <h:form>
+            <h:form id="formOutside">
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:dashboard id="board" model="#{dashboardView.model}" style="width: 100%">
@@ -67,15 +67,15 @@
                     </p:panel>
 
                     <p:panel id="salesForMonth" header="Sales For The Month">
-                        <p:dataTable value="#{dashboardView.saleTransactionsForTheYear}" var="saleTransaction">                    
+<!--                        <p:dataTable value="#{dashboardView.saleTransactionsForTheYear}" var="saleTransaction">                    
                             <p:columns value="#{dashboardView.months}" var="month" >
                                 <f:facet name="header">
                                     <h:outputText value="#{month}" />
                                 </f:facet>
                                 <h:outputText value="saleTransaction"/>
                             </p:columns>
-                        </p:dataTable>
-                        <!--                        <table border="1">
+                        </p:dataTable>-->
+                                                <table class="table table-striped" >
                                                     <tr>
                                                         <th>Jan</th>
                                                         <th>Feb</th>
@@ -105,23 +105,70 @@
                                                         <td>#{dashboardView.saleTransactionsForTheYear.get(11)}</td>
                                                         
                                                     </tr>
-                                                </table>-->
+                                                </table>
 
                     </p:panel>
+
 
                     <p:panel id="topSellingProductsMonth" header="Top Selling Products (Month)">
-                        <h:outputText value="Top Selling Products (Month) Content" />
+
+                        <p:dataTable id="dataTableMain" value="#{dashboardView.topSellingProductsPerMonth}" var="product" 
+                                     widgetVar="productTable" >
+                            <f:facet name="header">
+                                <div class="ui-g">
+                                    <div class="ui-g-4" style="padding: 0">
+
+                                    </div>
+                                    <div class="ui-g-4" style="padding: 0">
+
+                                    </div>
+                                    <div class="ui-g-4" style="padding: 0">
+                                        <p:selectOneMenu id="selCondition" value="#{dashboardView.selectedMonthToDisplay}"  >
+                                            <f:selectItem itemValue="0" itemLabel="January"/>
+                                            <f:selectItem itemValue="1" itemLabel="February" />
+                                            <f:selectItem itemValue="2" itemLabel="March"/>
+                                            <f:selectItem itemValue="3" itemLabel="April"/>
+                                            <f:selectItem itemValue="4" itemLabel="May"/>
+                                            <f:selectItem itemValue="5" itemLabel="June"/>
+                                            <f:selectItem itemValue="6" itemLabel="July"/>
+                                            <f:selectItem itemValue="7" itemLabel="August"/>
+                                            <f:selectItem itemValue="8" itemLabel="September"/>
+                                            <f:selectItem itemValue="9" itemLabel="October"/>
+                                            <f:selectItem itemValue="10" itemLabel="November"/>
+                                            <f:selectItem itemValue="11" itemLabel="December"/>
+
+                                            <p:ajax process="@form" update="@form" listener="#{dashboardView.sortProductsPerMonth}" oncomplete="PF('productTable').filter()"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+
+
+                            </f:facet>
+
+                            <p:column headerText="ID" style="width: 10px;" >
+                                <h:outputText value="#{product.productId}" />
+                            </p:column>
+                            <p:column headerText="Name"  >
+                                <h:outputText value="#{product.name}" />
+                            </p:column>
+                            <p:column headerText="Amount Sold" style="width: 50px; text-align: center;">
+                                <h:outputText value="#{dashboardView.getNumProductsSold(product.productId)}"/>
+                            </p:column>
+                        </p:dataTable>
+
                     </p:panel>
 
-                    <p:panel id="topSellingProductsAllTime" header="Top Selling Products (All Time)">
+
+                    <p:panel id="topSellingProductsAllTime" header="Top 5 Selling Products (All Time)">
                         <p:dataTable value="#{dashboardView.topSellingProductsAllTime}" var="product">
                             <p:column headerText="ID" style="width: 10px;" >
                                 <h:outputText value="#{product.productId}" />
                             </p:column>
-                            <p:column headerText="Description"  >
-                                <h:outputText value="#{product.description}" />
+                            <p:column headerText="Name" >
+                                <h:outputText value="#{product.name}" />
                             </p:column>
-                            <p:column headerText="Amount Sold">
+                            
+                            <p:column headerText="Amount Sold" style="width: 50px; text-align: center;">
                                 <h:outputText value="#{dashboardView.getNumProductsSold(product.productId)}"/>
                             </p:column>
                         </p:dataTable>
@@ -130,6 +177,8 @@
 
                 <div style="clear:both" />
             </h:form>
+
+
         </div>
     </ui:define>
 

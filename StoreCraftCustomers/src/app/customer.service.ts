@@ -71,37 +71,37 @@ export class CustomerService {
     switch (membershipTierEnum) {
       case 'BRONZE': {
         response.tierMessage = 'Welcome, Bronzie!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/bronze_1.png';
+        response.tierUrl = '/assets/images/bronze_1.png';
           break;
       }
       case 'SILVER' : {
         response.tierMessage = 'Every cloud has a Silver lining!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/silver_1.png';
+        response.tierUrl = '/assets/images/silver_1.png';
         break;
       }
       case 'GOLD' : {
         response.tierMessage = 'AU YEAH!!! Gold! ';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/gold_1.png';
+        response.tierUrl = '/assets/images/gold_1.png';
         break;
       }
       case 'PLATINUM' : {
         response.tierMessage = 'Platinum means you\'re halfway there!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/platinum_1.png';
+        response.tierUrl = '/assets/images/platinum_1.png';
         break;
       }
       case 'DIAMOND' : {
         response.tierMessage = 'Shine bright like a Diamond!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/diamond_1.png';
+        response.tierUrl = '/assets/images/diamond_1.png';
         break;
       }
       case 'MASTER' : {
         response.tierMessage = 'Just a little more to go, Master!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/master_1.png';
+        response.tierUrl = '/assets/images/master_1.png';
         break;
       }
       case 'GRANDMASTER' : {
         response.tierMessage = 'RAMPAGEEE!! Congratulations, Grandmaster!';
-        response.tierUrl = 'https://opgg-static.akamaized.net/images/medals/grandmaster_1.png';
+        response.tierUrl = '/assets/images/grandmaster_1.png';
         break;
       }
     }

@@ -23,13 +23,89 @@
           </h2>
         </div>
 
-        <div class="currentRank" fxLayout="row wrap" fxLayoutAlign="center">
-          Your Current Rank: {{currentCustomerRank}} <br/>
-          Current Reward (End of month): {{getCurrentReward()}} <br/>
-          {{getNextReward()}}
+        <div class="currentRank" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="12px grid">
+          <table class="table currentRank" fxFlex="1 1 70%">
+            <tr>
+              <th colspan="2">
+                Your Standings
+              </th>
+            </tr>
+            <tr>
+              <td style="width: 30%">
+                Current Rank:
+              </td>
+              <td *ngIf="sessionService.getIsLogin()" style="width: 70%">
+                {{currentCustomerRank}}
+              </td>
+              <td *ngIf="!sessionService.getIsLogin()">
+                Login to view your information
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Current Reward:
+              </td>
+              <td *ngIf="sessionService.getIsLogin()">
+                {{getCurrentReward()}}
+              </td>
+              <td *ngIf="!sessionService.getIsLogin()">
+                Login to view your information
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Next Reward:
+              </td>
+              <td *ngIf="sessionService.getIsLogin()">
+                {{getNextReward()}}
+              </td>
+              <td *ngIf="!sessionService.getIsLogin()">
+                Login to view your information
+              </td>
+            </tr>
+          </table>
+          <table class="table prizes" fxFlex="1 1 30%">
+            <tr>
+              <th colspan="2">
+                Prizes This Month
+              </th>
+            </tr>
+            <tr>
+              <td>
+                Ranks 1-2
+              </td>
+              <td>
+                20%
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Ranks 3-4
+              </td>
+              <td>
+                15%
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Ranks 5-6
+              </td>
+              <td>
+                10%
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Noobs
+              </td>
+              <td>
+                5%
+              </td>
+            </tr>
+          </table>
         </div>
 
-        <img height="339" id="globe" src="http://cdn.dota2.com/apps/dota2/images/leaderboards/globe.png"
+        <img height="339" id="globe" src="/assets/images/globe.png"
              width="339">
 
         <div class="filterBar" fxLayout fxLayoutAlign="center center">
@@ -41,7 +117,7 @@
 
         <div style="position:relative;z-index:2;">
 
-          <table [dataSource]="dataSource" mat-table matSort>
+          <table [dataSource]="dataSource" mat-table matSort class="leaderboardTable">
 
             <ng-container matColumnDef="rank">
               <th *matHeaderCellDef class="row-rank" mat-header-cell mat-sort-header> Rank</th>
@@ -49,8 +125,8 @@
             </ng-container>
 
             <ng-container matColumnDef="email">
-              <th *matHeaderCellDef class="row-email" mat-header-cell mat-sort-header> Email</th>
-              <td *matCellDef="let customer" class="row-email" mat-cell> {{customer.email}} </td>
+              <th *matHeaderCellDef class="row-email" mat-header-cell mat-sort-header> Name </th>
+              <td *matCellDef="let customer" class="row-email" mat-cell> {{customer.firstName}} {{customer.lastName}} </td>
             </ng-container>
 
             <ng-container matColumnDef="totalPoints">

@@ -43,8 +43,8 @@ public interface SaleTransactionEntityControllerLocal {
 
     public List<BigDecimal> retrieveSaleTransactionForTheYear();
 
-    public List<ProductEntity> retrieveTopSellingProductsAllTime();
-
     public int numberOfProductsSold(Long productId);
+
+    public List<ProductEntity> retrieveSaleTransactionsPerMonth(int month);
     
 }

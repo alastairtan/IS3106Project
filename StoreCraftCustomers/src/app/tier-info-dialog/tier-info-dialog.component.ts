@@ -9,13 +9,13 @@ import {CustomerService} from '../customer.service';
 })
 export class TierInfoDialogComponent implements OnInit {
 
-  urlList: String[] = ['https://opgg-static.akamaized.net/images/medals/bronze_1.png',
-    'https://opgg-static.akamaized.net/images/medals/silver_1.png',
-    'https://opgg-static.akamaized.net/images/medals/gold_1.png',
-    'https://opgg-static.akamaized.net/images/medals/platinum_1.png',
-    'https://opgg-static.akamaized.net/images/medals/diamond_1.png',
-    'https://opgg-static.akamaized.net/images/medals/master_1.png',
-    'https://opgg-static.akamaized.net/images/medals/grandmaster_1.png',
+  urlList: String[] = ['/assets/images/bronze_1.png',
+    '/assets/images/silver_1.png',
+    '/assets/images/gold_1.png',
+    '/assets/images/platinum_1.png',
+    '/assets/images/diamond_1.png',
+    '/assets/images/master_1.png',
+    '/assets/images/grandmaster_1.png',
   ];
 
   tiers: String[] = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'GRANDMASTER'];

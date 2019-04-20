@@ -11,7 +11,7 @@
 }
 
 .mainContainer {
-  background-image: url('http://cdn.dota2.com/apps/dota2/images//leaderboards/bg_repeat.jpg');
+  background-image: url('/assets/images/bg_repeat.jpg');
   background-repeat: repeat-y;
   background-position: top center;
   font-family: 'Radiance', sans-serif;
@@ -21,7 +21,7 @@
 }
 
 .contentContainer {
-  background-image: url('http://cdn.dota2.com/apps/dota2/images//leaderboards/bg_top.jpg');
+  background-image: url('/assets/images/bg_top.jpg');
   background-position: top center;
   background-repeat: no-repeat;
 }
@@ -55,16 +55,17 @@ h1 {
   color: #555555;
 }
 
-.buttons {
-  font-weight: normal;
-  font-size: 24px;
-  color: #555555;
-  margin: 0;
-  padding: 0px 0px 0px 0px;
-  text-align: center;
-  position: inherit;
-  display: flex;
-  flex-direction: row;
+.buttons{
+    font-weight: normal;
+    font-size: 24px;
+    color: #555555;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+    text-align:center;
+    position:inherit;
+    display:flex;
+    flex-direction: row;
+    margin-bottom:30px;
 }
 
 h2 {
@@ -78,13 +79,20 @@ button {
   font-family: Radiance, serif;
 }
 
-table {
-  background-color: #222121;
-  border: solid 3px #7a7a79;
-  width: 60%;
-  table-layout: fixed;
-  margin: 20px auto 15px;
-  font-family: Radiance, serif;
+h3{
+    color: #a5a5a1;
+    font-size:18px;
+    position: relative;
+    padding-left:10%;
+}
+table{
+    margin:auto;
+    background-color: #222121;
+    border: solid 3px #7a7a79;
+    width:60%;
+    table-layout:fixed;
+    margin-bottom: 15px;
+    margin-top:20px;
 }
 
 .row-rank {
@@ -101,18 +109,18 @@ table {
 
 .row-totalPoints {
   width: 20%;
-  text-align: right;
+  text-align: left;
   border-right: solid 1px;
   padding-right: 2%;
-  padding-left: 5%;
+  padding-left: 2%;
 }
 
 .row-country {
   width: 20%;
-  padding-left: 5%;
+  padding-left: 2%;
   border-right: solid 1px;
-  text-align: right;
-  padding-right: 0.3%;
+  text-align: left;
+  padding-right: 0.3%
 }
 
 td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
@@ -168,10 +176,46 @@ mat-placeholder {
 
 .currentRank {
   position: relative;
-  color: white;
-  font-size: 20px;
-  margin-top: 40px;
-  text-align: center;
+  color: #e0e0e0;
+  font-size: 16px;
+  text-align: left;
   z-index: 2;
-  line-height: 30px;
+  background-color: unset;
+  border: none;
+  padding: 0 50px;
+  margin-right: 0 !important;
+  word-wrap: break-word;
+  table-layout: auto;
+}
+
+.prizes {
+  color: #e0e0e0;
+  border: none;
+  background-color: unset;
+  z-index: 2;
+  text-align: left;
+  border-left: 1px solid white;
+  margin-left: 0px;
+}
+
+.table td {
+  border-top: none;
+}
+
+.table th {
+  border-top: none;
+}
+
+.prizes td {
+  padding-left: 45px;
+}
+
+.prizes th {
+  padding-left: 45px;
+}
+
+.leaderboardTable{
+  font-family: Radiance, serif;
+  font-size: 14px;
+  margin-top: 0;
 }
