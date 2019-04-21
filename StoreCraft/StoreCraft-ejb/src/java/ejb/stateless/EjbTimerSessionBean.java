@@ -93,7 +93,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             discountCodeEntityControllerLocal.createNewDiscountCode(new DiscountCodeEntity(startDate, endDate, fivePercentList.size(), CryptographicHelper.getInstance().generateRandomString(6), DiscountCodeTypeEnum.PERCENTAGE, new BigDecimal(5)),
                      fivePercentList, null);
         }
-
+        resetPointOfTheMonth();
     }
 
 }
