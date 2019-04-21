@@ -66,6 +66,11 @@ public class ProductManagementManagedBean implements Serializable {
     private List<String> tagIdsStringNew;
     //****************************
     
+    
+    //*** For Creating Category ***
+    private ProductEntity newCategory;
+    //****************************
+    
     //*** For filtering ***
     private List<String> filterTagIds;
     private String condition;
@@ -361,5 +366,13 @@ public class ProductManagementManagedBean implements Serializable {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public ProductEntity getNewCategory() {
+        return newCategory;
+    }
+
+    public void setNewCategory(ProductEntity newCategory) {
+        this.newCategory = newCategory;
     }
 }

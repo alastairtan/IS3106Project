@@ -5,6 +5,7 @@
  */
 package ejb.stateless;
 
+import entity.ProductEntity;
 import entity.TagEntity;
 import java.util.List;
 import java.util.Set;
@@ -164,14 +165,18 @@ public class TagEntityController implements TagEntityControllerLocal {
     {
         TagEntity tagEntityToRemove = retrieveTagByTagId(tagId);
         
-        if(!tagEntityToRemove.getProductEntities().isEmpty())
-        {
-            throw new DeleteTagException("Tag ID " + tagId + " is associated with existing products and cannot be deleted!");
+        for(ProductEntity pe :tagEntityToRemove.getProductEntities()) {
+            pe.getTagEntities().remove(tagEntityToRemove);
         }
-        else
-        {
-            entityManager.remove(tagEntityToRemove);
-        }                
+        entityManager.remove(tagEntityToRemove);
+//        if(!tagEntityToRemove.getProductEntities().isEmpty())
+//        {
+//            throw new DeleteTagException("Tag ID " + tagId + " is associated with existing products and cannot be deleted!");
+//        }
+//        else
+//        {
+//            entityManager.remove(tagEntityToRemove);
+//        }                
     }
     
   
