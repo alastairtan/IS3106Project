@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="categoryManagement"/>
+        
+        <h:outputText class="headerBox">Community Goals</h:outputText>
+        <h:form id="formMain">
+            <p:dataTable id="dataTableMain" value="#{categoryManagedBean.categories}" var="category" 
+                         widgetVar="categoryDataTable" filteredValue="#{categoryManagedBean.filteredCategories}" rows="5" paginator="true"
+                         rowsPerPageTemplate="5,10,20" rowKey="#{category.categoryId}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         >
+                <f:facet name="header">
+                    <div class="ui-g">
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:commandButton value="Create New Category" style="float:left; align-content: center;"
+                                             oncomplete="PF('dialogCreateCategory').show(); PF('dialogCreateCategory').toggleMaximize()"
+                                             update="formCreateCategory" actionListener="#{categoryManagedBean.creating}"/> 
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            <p:inputText id="globalFilter" onkeyup="PF('categoryDataTable').filter()" style="width:90%;" placeholder="Search All Fields"/> 
+                        </div>
+                        <div class="ui-g-4" style="padding: 0">
+                            &nbsp;
+                        </div>
+                    </div>                  
+                </f:facet>
+
+                <p:column headerText="Category Id" sortBy="#{category.categoryId}" filterBy="#{category.categoryId}" filterMatchMode="contains">
+                    <h:outputText value="#{category.categoryId}" />
+                </p:column>
+                <p:column headerText="Name" sortBy="#{category.name}" filterBy="#{category.name}" filterMatchMode="contains">
+                    <h:outputText value="#{category.name}" />
+                </p:column>
+                <p:column headerText="Description" sortBy="#{category.description}" filterBy="#{category.description}" filterMatchMode="contains">
+                    <h:outputText value="#{category.description}" />
+                </p:column>
+                <p:column headerText="Parent" filterMatchMode="contains">
+                    <h:outputText rendered="#{category.parentCategoryEntity!=null}" value="#{category.parentCategoryEntity.name}" />
+                    <h:outputText rendered="#{category.parentCategoryEntity ==null}" value="-" />
+                </p:column>
+
+            </p:dataTable>
+            <p:growl id="formMainGrowl" globalOnly="true" />
+        </h:form>
+
+        <h:form id="formViewCategory">
+            <p:dialog id="dialogViewCategory" widgetVar="dialogViewCategory" closable="true" modal="true" 
+                      position="center" closeOnEscape="true">
+                <p:ajax event="close" listener="#{categoryManagedBean.closeViewDialog}" oncomplete="PF('dialogViewCategory').toggleMaximize()"/>
+                <f:facet name="header">
+                    <h:outputText rendered="#{categoryManagedBean.isUpdating}" style="color: red" value="Updating Category"/> 
+                    <h:outputText rendered="#{!categoryManagedBean.isUpdating}" value="Viewing Community Goal Details"/> 
+                </f:facet>
+
+                <p:panelGrid columns="3" style="width: 100%; height: auto" layout="grid">
+
+                    <h:outputLabel style="font-weight: bold" value="Category ID: " />
+                    <h:outputText style="width: 100%"  value="#{categoryManagedBean.selectedCategory.categoryId}" />
+                    <p:column>&nbsp;</p:column>
+
+                    <h:outputText style="font-weight: bold" value="Category Name: " />
+                    <p:inputText id="categoryName" style="width: 80%; font-weight: normal" readonly="#{!categoryManagedBean.isUpdating}"
+                                 value="#{categoryManagedBean.selectedCategory.categoryId}" required="true" requiredMessage="Name is required"/>
+                    <p:message for="categoryName"/>
+
+                    <h:outputText style="font-weight: bold" value="Description: " />
+                    <p:inputTextarea value="#{categoryManagedBean.selectedCategory.description}" autoResize="true" readonly="#{!categoryManagedBean.isUpdating}"
+                                     required="true" requiredMessage="Description is required" id="categoryDescription" 
+                                     style="width: 80%; font-weight: normal"/>
+                    <p:message for="categoryDescription"/>
+
+                    <h:outputLabel style="font-weight: bold" value="Is Leaf: " />
+                    <h:outputText rendered="#{categoryManagedBean.selectedCategory.subCategoryEntities != null}" style="width: 100%"  value="Yes" />
+                    <h:outputText rendered="#{categoryManagedBean.selectedCategory.subCategoryEntities == null}" style="width: 100%"  value="No" />
+                    <p:column>&nbsp;</p:column>
+                    
+
+                    
+
+                <p:commandButton rendered="#{!categoryManagedBean.isUpdating}" value="Update Category"  update="dialogViewCategory formMain:dataTableMain" 
+                                 actionListener="#{categoryManagedBean.isUpdating}" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" 
+                                 icon="fa fa-pencil-square" title="Update">
+                </p:commandButton>
+
+                <p:commandButton rendered="#{categoryManagedBean.isUpdating}" value="Save Changes" actionListener="#{categoryManagedBean.updateCategory}" 
+                                 update="formMain:dataTableMain dialogViewCategory" oncomplete="PF('dialogdialogViewCategory').show(); PF('dialogdialogViewCategory').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
+
+                <p:commandButton rendered="#{categoryManagedBean.isUpdating}" value="Cancel Update" actionListener="#{categoryManagedBean.cancelUpdating}" process="@this" resetValues="true"
+                                 update="dialogViewCategory formMain:dataTableMain" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
+
+                <p:commandButton  rendered="#{!categoryManagedBean.isUpdating}" value="Delete Category" actionListener="#{categoryManagedBean.deleteCategory}" 
+                                  update="formMain:dataTableMain formMain:formMainGrowl" icon="fa fa-trash" title="deleteCategory" style="color: red" oncomplete="PF('dialogViewCategory').hide()"
+                                  id="deleteCategoryButton">
+                    <p:confirm header="Confirmation" message="Are you sure you want to delete this category?" icon="fa fa-warning" />
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <div align="center">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
+                    </div>
+                </p:confirmDialog> 
+                </p:panelGrid>
+                <p:messages id="categoryUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
+            </p:dialog>
+
+        </h:form>
+        <h:form id="formCreateCategory">
+            <p:dialog id="dialogCreateCategory" widgetVar="dialogCreateCategory" closable="true" modal="true"
+                      position="center" closeOnEscape="true">
+                <p:ajax event="close" listener="#{categoryManagedBean.closeCreateCategory}" oncomplete="PF('dialogCreateCategory').toggleMaximize()"/>
+                <f:facet name="header">
+                    <h:outputText style="color: red; font-family: 'Segoe UI',Arial,sans-serif;" value="Creating Category"/> 
+                </f:facet>
+
+                <div class="ui-g">
+                    <p:panelGrid columns="3" style="width: 100%; height: auto" columnClasses="ui-g-3, ui-g-4, ui-g-5" layout="grid">
+                        <h:outputText style="font-weight: bold" value="Name: " />
+                        <p:inputText id="newCategoryName" style="width: 80%; font-weight: normal" 
+                                     value="#{categoryManagedBean.newCategory.name}" required="true" requiredMessage="Name is required"/>
+                        <p:message for="newCategoryName"/>
+
+                        <h:outputText style="font-weight: bold" value="Description: " />
+                        <p:inputTextarea value="#{categoryManagedBean.newCategory.description}" autoResize="true"
+                                         required="true" requiredMessage="Description is required" id="newCategoryDescription" style="width: 80%; font-weight: normal"/>
+                        <p:message for="newCategoryDescription"/>
+
+
+                        <h:outputText style="font-weight: bold" value="Select Parent Category: " />
+                        <p:selectOneMenu id="newCategoryParent" value="#{categoryManagedBean.newCategory.parentCategoryEntity}">
+                            <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="true" />
+                            <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category}" itemLabel="#{category.name}" />
+                        </p:selectOneMenu>
+                        <p:message for="newCategoryParent"/>
+
+                    </p:panelGrid>
+
+                    <p:commandButton value="Create Category"  update="dialogCreateCategory formMain:dataTableMain" actionListener="#{categoryManagedBean.createCategory}"
+                                     oncomplete="PF('dialogCreateCategory').show(); PF('dialogCreateCategory').toggleMaximize()" icon="fa fa-pencil-square" title="Create">
+                        <p:confirm header="Confirmation" message="Are you sure you want to create this category?" icon="fa fa-warning"  />    
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+                        <div align="center">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" 
+                                             update="dialogCreateCategory formMain:dataTableMain" oncomplete="PF('dialogCreateCategory').show(); PF('dialogCreateCategory').toggleMaximize()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" 
+                                             update="dialogCreateCategory formMain:dataTableMain" oncomplete="PF('dialogCreateCategory').show(); PF('dialogCreateCategory').toggleMaximize()"/>
+                        </div>
+                    </p:confirmDialog> 
+
+                    <p:messages id="categoryCreateMessages" globalOnly="true" redisplay="false" closable="true"/>
+
+                </div>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -223,10 +223,6 @@ public class CategoryEntityController implements CategoryEntityControllerLocal {
                         
                         categoryEntityToUpdate.setParentCategoryEntity(parentCategoryEntityToUpdate);
                     }
-                }
-                else
-                {
-                    categoryEntityToUpdate.setParentCategoryEntity(null);
                 }                
             }
             else
