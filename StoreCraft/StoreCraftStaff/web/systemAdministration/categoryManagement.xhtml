@@ -136,9 +136,9 @@
 
 
                         <h:outputText style="font-weight: bold" value="Select Parent Category: " />
-                        <p:selectOneMenu id="newCategoryParent" value="#{categoryManagedBean.newCategory.parentCategoryEntity}">
+                        <p:selectOneMenu id="newCategoryParent" value="#{categoryManagedBean.parentCategoryId}">
                             <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="true" />
-                            <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category}" itemLabel="#{category.name}" />
+                            <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
                         </p:selectOneMenu>
                         <p:message for="newCategoryParent"/>
 
