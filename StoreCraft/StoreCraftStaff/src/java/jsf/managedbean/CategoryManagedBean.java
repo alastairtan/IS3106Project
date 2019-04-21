@@ -175,4 +175,12 @@ public class CategoryManagedBean implements Serializable{
     public void setSelectedCategory(CategoryEntity selectedCategory) {
         this.selectedCategory = selectedCategory;
     }
+
+    public Long getParentCategoryId() {
+        return parentCategoryId;
+    }
+
+    public void setParentCategoryId(Long parentCategoryId) {
+        this.parentCategoryId = parentCategoryId;
+    }
 }
