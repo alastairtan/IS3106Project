@@ -60,7 +60,11 @@ export class ViewProductDetailsComponent implements OnInit {
     this.isEditing = false;
     this.isWriting = false;
     this.sessionService.isLoggedIn.subscribe(value => {
-      this.refreshWithoutDialog();
+      if (this.sessionService.getIsLogin()) {
+        this.refresh();
+      } else {
+        this.refreshWithoutDialog();
+      }
     });
   }
 
