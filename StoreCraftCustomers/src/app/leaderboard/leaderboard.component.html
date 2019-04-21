@@ -132,7 +132,7 @@
             <ng-container matColumnDef="totalPoints">
               <th *matHeaderCellDef class="row-totalPoints" mat-header-cell mat-sort-header> Total Points
               </th>
-              <td *matCellDef="let customer" class="row-totalPoints" mat-cell> {{customer.totalPoints}}
+              <td *matCellDef="let customer" class="row-totalPoints" mat-cell> {{customer.totalPoints | number:'0.0-2'}}
               </td>
             </ng-container>
 
