@@ -7,13 +7,9 @@ package jsf.managedbean;
 
 import ejb.stateless.CategoryEntityControllerLocal;
 import entity.CategoryEntity;
-import entity.CommunityGoalEntity;
-import entity.StaffEntity;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -23,12 +19,9 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.CloseEvent;
 import util.exception.CategoryNotFoundException;
-import util.exception.CommunityGoalNotFoundException;
 import util.exception.CreateNewCategoryException;
-import util.exception.CreateNewCommunityGoalException;
 import util.exception.DeleteCategoryException;
 import util.exception.InputDataValidationException;
-import util.exception.StaffNotFoundException;
 import util.exception.UpdateCategoryException;
 
 /**
@@ -46,6 +39,8 @@ public class CategoryManagedBean implements Serializable{
     private List<CategoryEntity> categories;
     //****************
     
+    private List<CategoryEntity> categoriesCanParent;
+    
     //For Search All Fields
     private List<CategoryEntity> filteredCategories;
     //****************
@@ -61,13 +56,20 @@ public class CategoryManagedBean implements Serializable{
     //***********
     
     public CategoryManagedBean() {
+        categories = new ArrayList<>();
         newCategory = new CategoryEntity();
         selectedCategory = new CategoryEntity();
+        categoriesCanParent= new ArrayList<>();
     }
     
     @PostConstruct
     public void PostConstruct(){
-        categories = categoryEntityControllerLocal.retrieveAllCategories();
+        this.categories = categoryEntityControllerLocal.retrieveAllCategories();
+        for (CategoryEntity c : this.categories){
+            if (c.getProductEntities() == null || c.getProductEntities().isEmpty()){
+                this.categoriesCanParent.add(c);
+            }
+        }
     }
     
     public void updating(ActionEvent event){
@@ -127,7 +129,7 @@ public class CategoryManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting catgory: " + ex.getMessage(), null));
         }
     }
-
+    
     public CategoryEntityControllerLocal getCategoryEntityControllerLocal() {
         return categoryEntityControllerLocal;
     }
@@ -182,5 +184,13 @@ public class CategoryManagedBean implements Serializable{
 
     public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
+    }
+
+    public List<CategoryEntity> getCategoriesCanParent() {
+        return categoriesCanParent;
+    }
+
+    public void setCategoriesCanParent(List<CategoryEntity> categoriesCanParent) {
+        this.categoriesCanParent = categoriesCanParent;
     }
 }

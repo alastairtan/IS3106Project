@@ -8,13 +8,13 @@
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        
+
         <ez:Breadcrumb pageName="categoryManagement"/>
-        
+
         <h:outputText class="headerBox">Community Goals</h:outputText>
         <h:form id="formMain">
             <p:dataTable id="dataTableMain" value="#{categoryManagedBean.categories}" var="category" 
-                         widgetVar="categoryDataTable" filteredValue="#{categoryManagedBean.filteredCategories}" rows="5" paginator="true"
+                         widgetVar="categoryDataTable" filteredValue="#{categoryManagedBean.filteredCategories}" rows="20" paginator="true"
                          rowsPerPageTemplate="5,10,20" rowKey="#{category.categoryId}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          >
@@ -43,9 +43,15 @@
                 <p:column headerText="Description" sortBy="#{category.description}" filterBy="#{category.description}" filterMatchMode="contains">
                     <h:outputText value="#{category.description}" />
                 </p:column>
-                <p:column headerText="Parent" filterMatchMode="contains">
+                <p:column headerText="Parent" sortBy="#{category.parentCategoryEntity.name}" filterBy="#{category.parentCategoryEntity.name}" filterMatchMode="contains">
                     <h:outputText rendered="#{category.parentCategoryEntity!=null}" value="#{category.parentCategoryEntity.name}" />
                     <h:outputText rendered="#{category.parentCategoryEntity ==null}" value="-" />
+                </p:column>
+                <p:column headerText="More" style="text-align: center">
+                    <p:commandButton update="formViewCategory" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" icon="fa fa-search" title="View">
+                        <f:setPropertyActionListener value="#{category}" target="#{categoryManagedBean.selectedCategory}" />
+                        <p:resetInput target="formViewCategory"/>
+                    </p:commandButton>
                 </p:column>
 
             </p:dataTable>
@@ -69,7 +75,7 @@
 
                     <h:outputText style="font-weight: bold" value="Category Name: " />
                     <p:inputText id="categoryName" style="width: 80%; font-weight: normal" readonly="#{!categoryManagedBean.isUpdating}"
-                                 value="#{categoryManagedBean.selectedCategory.categoryId}" required="true" requiredMessage="Name is required"/>
+                                 value="#{categoryManagedBean.selectedCategory.name}" required="true" requiredMessage="Name is required"/>
                     <p:message for="categoryName"/>
 
                     <h:outputText style="font-weight: bold" value="Description: " />
@@ -82,17 +88,15 @@
                     <h:outputText rendered="#{categoryManagedBean.selectedCategory.subCategoryEntities != null}" style="width: 100%"  value="Yes" />
                     <h:outputText rendered="#{categoryManagedBean.selectedCategory.subCategoryEntities == null}" style="width: 100%"  value="No" />
                     <p:column>&nbsp;</p:column>
-                    
-
-                    
+                </p:panelGrid>
 
                 <p:commandButton rendered="#{!categoryManagedBean.isUpdating}" value="Update Category"  update="dialogViewCategory formMain:dataTableMain" 
-                                 actionListener="#{categoryManagedBean.isUpdating}" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" 
+                                 actionListener="#{categoryManagedBean.updating}" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" 
                                  icon="fa fa-pencil-square" title="Update">
                 </p:commandButton>
 
                 <p:commandButton rendered="#{categoryManagedBean.isUpdating}" value="Save Changes" actionListener="#{categoryManagedBean.updateCategory}" 
-                                 update="formMain:dataTableMain dialogViewCategory" oncomplete="PF('dialogdialogViewCategory').show(); PF('dialogdialogViewCategory').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
+                                 update="dialogViewCategory formMain:dataTableMain " oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" icon="fa fa-save" title="SaveChange" />
 
                 <p:commandButton rendered="#{categoryManagedBean.isUpdating}" value="Cancel Update" actionListener="#{categoryManagedBean.cancelUpdating}" process="@this" resetValues="true"
                                  update="dialogViewCategory formMain:dataTableMain" oncomplete="PF('dialogViewCategory').show(); PF('dialogViewCategory').toggleMaximize()" icon="fa fa-times" title="CancelUpdate" style="color:red"/>
@@ -109,7 +113,7 @@
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-remove" />
                     </div>
                 </p:confirmDialog> 
-                </p:panelGrid>
+
                 <p:messages id="categoryUpdateMessages" globalOnly="true" redisplay="false" closable="true"/>
             </p:dialog>
 
@@ -117,7 +121,7 @@
         <h:form id="formCreateCategory">
             <p:dialog id="dialogCreateCategory" widgetVar="dialogCreateCategory" closable="true" modal="true"
                       position="center" closeOnEscape="true">
-                <p:ajax event="close" listener="#{categoryManagedBean.closeCreateCategory}" oncomplete="PF('dialogCreateCategory').toggleMaximize()"/>
+                <p:ajax event="close" listener="#{categoryManagedBean.closeCreateDialog}" oncomplete="PF('dialogCreateCategory').toggleMaximize()"/>
                 <f:facet name="header">
                     <h:outputText style="color: red; font-family: 'Segoe UI',Arial,sans-serif;" value="Creating Category"/> 
                 </f:facet>
@@ -138,7 +142,7 @@
                         <h:outputText style="font-weight: bold" value="Select Parent Category: " />
                         <p:selectOneMenu id="newCategoryParent" value="#{categoryManagedBean.parentCategoryId}">
                             <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="true" />
-                            <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                            <f:selectItems value="#{categoryManagedBean.categoriesCanParent}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
                         </p:selectOneMenu>
                         <p:message for="newCategoryParent"/>
 
