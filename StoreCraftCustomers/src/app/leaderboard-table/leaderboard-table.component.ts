@@ -40,6 +40,8 @@ export class LeaderboardTableComponent implements OnInit {
           this.customersLeaderboardPerMonthMax5 = this.filterCustomerByCountry(this.customersLeaderboardPerMonth,
             this.customersLeaderboardPerMonthMax5);
         }
+
+        this.customersLeaderboardPerMonthMax5 = this.customersLeaderboardPerMonthMax5.filter(customer => customer.pointsForCurrentMonth > 0)
         console.log('inside index.component.ts! customerSpendingPerMonth: '
           + this.customersLeaderboardPerMonthMax5.length);
       },
