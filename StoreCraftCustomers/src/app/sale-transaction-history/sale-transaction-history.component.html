@@ -1,23 +1,26 @@
 <table [dataSource]="saleTransactions" class="mat-elevation-z1" mat-table multiTemplateDataRows>
 
   <ng-container matColumnDef="saleTransactionId">
-    <th *matHeaderCellDef mat-header-cell> Id</th>
+    <th *matHeaderCellDef mat-header-cell> ID</th>
     <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.saleTransactionId}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="totalLineItem">
-    <th *matHeaderCellDef mat-header-cell> No. of Items </th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.totalLineItem}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="totalQuantity">
-    <th *matHeaderCellDef mat-header-cell> Quantity</th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.totalQuantity}} </td>
+  <ng-container matColumnDef="date">
+    <th *matHeaderCellDef mat-header-cell> Date </th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.transactionDateTime | date}} </td>
   </ng-container>
 
   <ng-container matColumnDef="totalAmount">
     <th *matHeaderCellDef mat-header-cell> Total Amount</th>
     <td *matCellDef="let saleTransaction" mat-cell style="width: 20%"> {{format(saleTransaction.totalAmount)}} </td>
+  </ng-container>
+              
+  <ng-container matColumnDef="refund">
+    <th *matHeaderCellDef mat-header-cell> Refund Status </th>
+    <td *matCellDef="let saleTransaction" mat-cell>
+      <span *ngIf="saleTransaction.voidRefund == true"> Refunded </span>
+      <span *ngIf="saleTransaction.voidRefund == false"> NA </span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="discountCodeUsed">

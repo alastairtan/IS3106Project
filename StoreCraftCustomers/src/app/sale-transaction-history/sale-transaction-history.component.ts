@@ -19,7 +19,7 @@ import {DiscountCode} from '../discount-code';
 export class SaleTransactionHistoryComponent implements OnInit {
 
   private saleTransactions: SaleTransaction[];
-  private columnsToDisplay = ['saleTransactionId', 'totalLineItem', 'totalQuantity', 'totalAmount', 'discountCodeUsed'];
+  private columnsToDisplay = ['saleTransactionId', 'date', 'totalAmount', 'discountCodeUsed', 'refund'];
   private displayedColumns = ['productImage', 'productName', 'quantity', 'sub-total'];
   private expandedSaleTransaction;
 

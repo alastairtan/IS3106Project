@@ -53,17 +53,26 @@ public class SaleTransactionManagedBean implements Serializable {
 //        
 //    }
     
-    public void deleteSaleTransaction(ActionEvent event) 
+    public void voidSaleTransaction(ActionEvent event) 
     {   
         try
         {
-            SaleTransactionEntity saleTransactionToDelete = (SaleTransactionEntity) event.getComponent().getAttributes().get("saleTransactionToDelete");
-            saleTransactionEntityControllerLocal.deleteSaleTransaction(saleTransactionToDelete.getSaleTransactionId());
+            SaleTransactionEntity saleTransactionToVoid = (SaleTransactionEntity) event.getComponent().getAttributes().get("saleTransactionToVoid");
+            saleTransactionEntityControllerLocal.voidRefundSaleTransaction(saleTransactionToVoid.getSaleTransactionId());
 
-            saleTransactionEntities.remove(saleTransactionToDelete);
-            System.out.println("Removing in the managed bean");
+            for(SaleTransactionEntity saleTransactionEntity : saleTransactionEntities)
+            {
+//                saleTransactionEntities.remove(saleTransactionToDelete);
+                if(saleTransactionEntity.getSaleTransactionId().equals(saleTransactionToVoid.getSaleTransactionId())) 
+                {
+                    if(!saleTransactionEntity.getVoidRefund()){
+                        saleTransactionEntity.setVoidRefund(Boolean.TRUE);
+                    }
+                }
+            }
+            System.out.println("Voiding in the managed bean");
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Transaction deleted successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Transaction has been voided successfully", null));
         } 
         catch (SaleTransactionNotFoundException ex)
         {

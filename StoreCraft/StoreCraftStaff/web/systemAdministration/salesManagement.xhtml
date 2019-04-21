@@ -67,14 +67,19 @@
                     <p:column headerText="Transaction Date Time" sortBy="#{saleTransactionEntity.transactionDateTime}" filterBy="#{saleTransactionEntity.transactionDateTime}" filterMatchMode="contains">
                         <h:outputText value="#{saleTransactionEntity.transactionDateTime}" />
                     </p:column>
+                    
+                    <p:column headerText="Refund Status" sortBy="#{saleTransactionEntity.voidRefund}" filterBy="#{saleTransactionEntity.voidRefund}" filterMatchMode="contains">
+                        <h:outputText value="Refunded" rendered="#{saleTransactionEntity.voidRefund}" />
+                        <h:outputText value="NA" rendered="#{!saleTransactionEntity.voidRefund}" />
+                    </p:column>
 
                     <p:column headerText="Action" style="text-align: center">
                         <p:commandButton update="formViewSaleTransactionLineItems" oncomplete="PF('dialogViewSaleTransactionLineItems').show()" icon="fa fa-search" title="View">
                             <f:setPropertyActionListener value="#{saleTransactionEntity}" target="#{saleTransactionManagedBean.selectedSaleTransactionEntity}" />
                         </p:commandButton>
-                        <p:commandButton icon="fa fa-trash" actionListener="#{saleTransactionManagedBean.deleteSaleTransaction}" update="formSaleTransactions:messagesSaleTransactions formSaleTransactions:dataTableSaleTransactions">
-                            <f:attribute name="saleTransactionToDelete" value="#{saleTransactionEntity}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete this transaction)?" icon="ui-icon-alert" />
+                        <p:commandButton icon="fa fa-fw fa-undo" actionListener="#{saleTransactionManagedBean.voidSaleTransaction}" update="formSaleTransactions:messagesSaleTransactions formSaleTransactions:dataTableSaleTransactions">
+                            <f:attribute name="saleTransactionToVoid" value="#{saleTransactionEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to refund this transaction)?" icon="ui-icon-alert" />
                         </p:commandButton>
 
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

@@ -281,7 +281,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
             throw new SaleTransactionAlreadyVoidedRefundedException("The sale transaction has aready been voided/refunded");
         }
     }
-
+    
     @Override
     public void updateSaleTransaction(SaleTransactionEntity saleTransactionEntity) {
         throw new UnsupportedOperationException();
