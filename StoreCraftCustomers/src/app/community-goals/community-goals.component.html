@@ -123,7 +123,7 @@
                     Discount Code
                   </div>
                   <div class="currentPoints">
-                    <strong>{{communitygoal?.currentPoints}} /
+                    <strong>{{communitygoal?.currentPoints | number:'0.0-2'}} /
                       {{communitygoal?.targetPoints}}</strong> Points Hit
                     <span
                       style="float: right !important">{{((communitygoal?.currentPoints * 100) / communitygoal?.targetPoints)|number:'0.0-2'}}
