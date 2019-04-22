@@ -110,14 +110,14 @@ export class CustomerService {
   }
 
   retrieveCustomersBySpendingPerMonth(): Observable<any> {
-    console.log('HI from spending per month');
+    // console.log('HI from spending per month');
     return this.httpClient.get<any>(this.baseUrl + '/retrieveCustomersBySpendingPerMonth').pipe(
       catchError(this.handleError)
     );
   }
 
   retrieveCustomersBySpendingTotal(): Observable<any> {
-    console.log('HI from spending total');
+    // console.log('HI from spending total');
     return this.httpClient.get<any>(this.baseUrl + '/retrieveCustomersBySpendingTotal').pipe(
       catchError(this.handleError)
     );

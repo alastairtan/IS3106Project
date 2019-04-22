@@ -87,7 +87,7 @@ export class IndexComponent implements OnInit {
             this.currentAmt = this.communityGoals[0].currentPoints;
             this.percentage = this.currentAmt * 100 / this.goalAmt;
           }
-          console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
+          // console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
         },
         error => {
           console.log('********** IndexComponent.ts: community ' + error);
@@ -104,8 +104,8 @@ export class IndexComponent implements OnInit {
           if (this.scavengerHunt.customerEntities.length != 0) {
             this.scavengerHuntWinners = this.scavengerHunt.customerEntities;
           }
-          console.log('inside index.component.ts! scavengerHunt!'
-            + this.scavengerHunt.customerEntities.length);
+          // console.log('inside index.component.ts! scavengerHunt!'
+          //  + this.scavengerHunt.customerEntities.length);
         }
       },
       error => {

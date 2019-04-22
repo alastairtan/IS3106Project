@@ -30,8 +30,8 @@ export class SearchResultComponent implements OnInit {
 
     const communityGoalEg: CommunityGoal = new CommunityGoal();
 
-    console.log('INIT');
-    console.log(this.object);
+    // console.log('INIT');
+    // console.log(this.object);
     // @ts-ignore
     if (this.object.productId != null) {
       this.product = <Product>this.object;
