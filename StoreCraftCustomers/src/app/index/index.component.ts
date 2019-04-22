@@ -56,7 +56,7 @@ export class IndexComponent implements OnInit {
     // console.log('REFRESH**********************');
     if (this.sessionService.isLoggedIn.getValue()) {
       this.customer = this.sessionService.getCurrentCustomer();
-      console.log(this.customer);
+      // console.log(this.customer);
       this.country = this.customer.country;
     }
     this.loadProducts();

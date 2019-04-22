@@ -47,9 +47,11 @@ export class LeaderboardComponent implements OnInit {
   }
 
   getCustomerRank() {
-    for (const customer of this.dataSource.data) {
-      if (customer.customerId === this.sessionService.getCurrentCustomer().customerId) {
-        this.currentCustomerRank = customer.rank;
+    if (this.sessionService.getCurrentCustomer() !== null) {
+      for (const customer of this.dataSource.data) {
+        if (customer.customerId === this.sessionService.getCurrentCustomer().customerId) {
+          this.currentCustomerRank = customer.rank;
+        }
       }
     }
   }
