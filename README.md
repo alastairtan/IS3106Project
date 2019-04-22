@@ -5,7 +5,8 @@
 - Group Member 3: Bryan Chee Guang Hao, A0167656N, e0176089@u.nus.edu, 92323154
 
 # Notes
-**Internet connection required when viewing the project**
+**Internet connection required when viewing the project**  
+  
 Default username (email) and passwords for customers in (email, password) format:
   - (Steve@gmail.com, password)
   - (peter@gmail.com, password)
