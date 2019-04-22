@@ -18,6 +18,7 @@ export class LeaderboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   currentCustomerRank: number;
+  month: boolean = false;
 
 
   constructor(public customerService: CustomerService,
@@ -102,6 +103,7 @@ export class LeaderboardComponent implements OnInit {
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.month = false;
         });
       }
     );
@@ -118,6 +120,7 @@ export class LeaderboardComponent implements OnInit {
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.month = true;
         });
       }
     );

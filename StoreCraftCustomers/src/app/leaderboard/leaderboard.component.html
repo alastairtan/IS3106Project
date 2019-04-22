@@ -105,8 +105,7 @@
           </table>
         </div>
 
-        <img height="339" id="globe" src="/assets/images/globe.png"
-             width="339">
+        <img height="339" id="globe" src="/assets/images/globe.png" width="339">
 
         <div class="filterBar" fxLayout fxLayoutAlign="center center">
           <mat-form-field fxFlex="40%">
@@ -126,13 +125,18 @@
 
             <ng-container matColumnDef="email">
               <th *matHeaderCellDef class="row-email" mat-header-cell mat-sort-header> Name </th>
-              <td *matCellDef="let customer" class="row-email" mat-cell> {{customer.firstName}} {{customer.lastName}} </td>
+              <td *matCellDef="let customer" class="row-email" mat-cell> {{customer.firstName}} {{customer.lastName}}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="totalPoints">
-              <th *matHeaderCellDef class="row-totalPoints" mat-header-cell mat-sort-header> Total Points
+              <th *matHeaderCellDef class="row-totalPoints" mat-header-cell mat-sort-header> 
+                <span *ngIf="month==false">Total Points</span>
+                <span *ngIf="month==true">Monthly Points</span>
               </th>
-              <td *matCellDef="let customer" class="row-totalPoints" mat-cell> {{customer.totalPoints}}
+              <td *matCellDef="let customer" class="row-totalPoints" mat-cell>
+                <span *ngIf="month==false"> {{customer.totalPoints | number:'0.0-2'}} </span>
+                <span *ngIf="month==true">{{customer.pointsForCurrentMonth | number:'0.0-2'}}</span>
               </td>
             </ng-container>
 
