@@ -4,6 +4,15 @@
 - Group Member 2: Tan Win Phong, A0170152U, e0191700@u.nus.edu, 86195650
 - Group Member 3: Bryan Chee Guang Hao, A0167656N, e0176089@u.nus.edu, 92323154
 
+# Notes
+**Internet connection required when viewing the project**
+Default username (email) and passwords for customers in (email, password) format:
+  - (Steve@gmail.com, password)
+  - (peter@gmail.com, password)
+  - (bruce@gmail.com, password)
+  - (ant@gmail.com, password)
+Default staff username and password in (username, password) format:
+  - (manager, password)
 
 # To Run Angular Project StoreCraftCustomers
 1. cd StoreCraftCustomers
