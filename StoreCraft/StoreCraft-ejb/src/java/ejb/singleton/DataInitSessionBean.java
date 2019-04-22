@@ -100,6 +100,9 @@ public class DataInitSessionBean {
 
             List<Long> customerEntityIds = new ArrayList<>();
             customerEntityIds.add(c.getCustomerId());
+            customerEntityIds.add(c1.getCustomerId());
+            customerEntityIds.add(c2.getCustomerId());
+            customerEntityIds.add(c3.getCustomerId());
             List<Long> productEntityIds = new ArrayList<>();
             Date startDate = new Date();
             Calendar cal = Calendar.getInstance();
