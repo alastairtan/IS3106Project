@@ -124,8 +124,15 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                             BigDecimal discountBy = newSaleTransactionEntity.getTotalAmount().multiply(discountRate);
                             newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountBy));
                         }
-//                        discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                        
                         customerEntity.getDiscountCodeEntities().remove(discountCodeEntity);
+                        discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                        discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
+
+                        if (discountCodeEntity.getCustomerEntities().isEmpty() || discountCodeEntity.getCustomerEntities() == null )
+                        {
+                            discountCodeEntity.setNumAvailable(0);
+                        }
 
                     } else { //apply only to some products
                         List<SaleTransactionLineItemEntity> lineItemsToDiscount = this.getLineItemsToApplyDiscountTo(discountCodeEntity, newSaleTransactionEntity.getSaleTransactionLineItemEntities());
@@ -156,26 +163,32 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         }
 
                         if (!discountCodeEntity.getCustomerEntities().isEmpty() ) {
-//                            discountCodeEntity.getCustomerEntities().remove(customerEntity);
+
                             customerEntity.getDiscountCodeEntities().remove(discountCodeEntity);
+                            discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                            discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
+
+                            if (discountCodeEntity.getCustomerEntities().isEmpty() ||
+                                    discountCodeEntity.getCustomerEntities() == null )
+                            {
+                                discountCodeEntity.setNumAvailable(0);
+                            }
                         }
                     }
-                    discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
                     discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
+                                        
                  }
-                System.out.print("***************BEFORE PERSIST CART1");
                 // System.out.println(newSaleTransactionEntity.getTotalAmount());
                 Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
                 //System.out.println(constraintViolations);
-
+                
+                
                 if (constraintViolations.isEmpty()) {
-                    System.out.print("***************CONSTRAINTS EMPTY");
                     entityManager.persist(newSaleTransactionEntity);
                 } else {
                     throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
                 }
-                System.out.print("***************AFTER PERSIST CART");
                 for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : newSaleTransactionEntity.getSaleTransactionLineItemEntities()) {
                     productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
 
@@ -188,9 +201,9 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         throw new InputDataValidationException(prepareInputDataValidationErrorsMessageLineItem(constraintViolationsLineItem));
                     }
                 }
-
+                
                 entityManager.flush();
-
+                
                 customerEntityControllerLocal.updateCustomerPoints(customerEntity, newSaleTransactionEntity.getTotalAmount());
 
                 BigDecimal totalPoints = newSaleTransactionEntity.getTotalAmount().multiply(customerEntity.getMultiplier());
