@@ -25,6 +25,7 @@ import util.exception.CreateNewStaffException;
 import util.exception.DeleteStaffException;
 import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
+import util.exception.UpdateStaffException;
 
 /**
  *
@@ -105,11 +106,11 @@ public class StaffManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff updated successfully", null));
             setIsUpdating(false);
         }
-        catch(StaffNotFoundException ex)
+        catch(StaffNotFoundException  | UpdateStaffException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating staff: " + ex.getMessage(), null));
         }
-        catch(Exception ex)
+        catch(InputDataValidationException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
