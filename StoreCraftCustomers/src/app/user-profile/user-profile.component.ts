@@ -5,6 +5,7 @@ import {CustomerService} from '../customer.service';
 import {MatDialog} from '@angular/material';
 import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
 import {TierInfoDialogComponent} from '../tier-info-dialog/tier-info-dialog.component';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,13 +24,18 @@ export class UserProfileComponent implements OnInit {
   constructor(
     public sessionService: SessionService,
     public customerService: CustomerService,
-    public dialog: MatDialog,) {
+    public dialog: MatDialog,
+    private router: Router) {
     this.isUpdating = false;
   }
 
   ngOnInit() {
+    if (this.sessionService.getCurrentCustomer() == null || !this.sessionService.getIsLogin()){
+      this.router.navigateByUrl('/index');
+    }
     this.customer = this.sessionService.getCurrentCustomer();
     this.setTierInfo();
+
   }
 
   openDialog() {
