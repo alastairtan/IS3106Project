@@ -61,12 +61,12 @@ public class StaffEntityController implements StaffEntityControllerLocal {
         }
 
         if (constraintViolations.isEmpty()) {
-            try{
-            entityManager.persist(newStaffEntity);
-            entityManager.flush();
+            try {
+                entityManager.persist(newStaffEntity);
+                entityManager.flush();
 
-            return newStaffEntity;
-            }catch (PersistenceException ex) {
+                return newStaffEntity;
+            } catch (PersistenceException ex) {
                 if (ex.getCause() != null
                         && ex.getCause().getCause() != null
                         && ex.getCause().getCause().getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
@@ -147,14 +147,14 @@ public class StaffEntityController implements StaffEntityControllerLocal {
     @Override
     public void updateStaff(StaffEntity staffEntity) throws InputDataValidationException, StaffNotFoundException, UpdateStaffException {
         Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(staffEntity);
-        
+
         List<StaffEntity> allStaffs = retrieveAllStaffs();
-        for(StaffEntity se : allStaffs){
-            if(staffEntity.getUsername().equals(se.getUsername())){
+        for (StaffEntity se : allStaffs) {
+            if (staffEntity.getUsername().equals(se.getUsername())) {
                 throw new UpdateStaffException("Staff with same username already exist");
             }
         }
-        
+
         if (constraintViolations.isEmpty()) {
             if (staffEntity.getStaffId() != null) {
                 StaffEntity staffEntityToUpdate = retrieveStaffByStaffId(staffEntity.getStaffId());
@@ -164,7 +164,7 @@ public class StaffEntityController implements StaffEntityControllerLocal {
                     staffEntityToUpdate.setLastName(staffEntity.getLastName());
                     staffEntityToUpdate.setUsername(staffEntity.getUsername());
                     staffEntityToUpdate.setProfilePicUrl(staffEntity.getProfilePicUrl());
-            
+
                 } else {
                     throw new UpdateStaffException("Username of staff record to be updated does not match the existing record");
                 }
@@ -194,7 +194,6 @@ public class StaffEntityController implements StaffEntityControllerLocal {
             throw new StaffNotFoundException("Staff ID not provided for staff to update password");
         }
     }
-
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StaffEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
