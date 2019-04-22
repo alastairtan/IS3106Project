@@ -4,6 +4,7 @@
 - Group Member 2: Tan Win Phong, A0170152U, e0191700@u.nus.edu, 86195650
 - Group Member 3: Bryan Chee Guang Hao, A0167656N, e0176089@u.nus.edu, 92323154
 
+**Internet connection required when viewing the project**
 
 # To Run Angular Project StoreCraftCustomers
 1. cd StoreCraftCustomers
