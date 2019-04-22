@@ -7,12 +7,12 @@
 
   <ng-container matColumnDef="date">
     <th *matHeaderCellDef mat-header-cell> Date </th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 15%"> {{saleTransaction.transactionDateTime | date}} </td>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.transactionDateTime | date}} </td>
   </ng-container>
 
   <ng-container matColumnDef="totalAmount">
     <th *matHeaderCellDef mat-header-cell> Total Amount</th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 20%"> {{format(saleTransaction.totalAmount)}} </td>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 15%"> {{format(saleTransaction.totalAmount)}} </td>
   </ng-container>
               
   <ng-container matColumnDef="refund">
@@ -25,7 +25,7 @@
 
   <ng-container matColumnDef="discountCodeUsed">
     <th *matHeaderCellDef mat-header-cell style="text-align: left"> Discount Code</th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 35%; text-align: left">
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 45%; text-align: left">
 
       <span *ngIf="saleTransaction.discountCodeEntity != null">
 
