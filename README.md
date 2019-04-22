@@ -12,6 +12,7 @@ Default username (email) and passwords for customers in (email, password) format
   - (peter@gmail.com, password)
   - (bruce@gmail.com, password)
   - (ant@gmail.com, password)
+  
 Default staff username and password in (username, password) format:
   - (manager, password)
 
