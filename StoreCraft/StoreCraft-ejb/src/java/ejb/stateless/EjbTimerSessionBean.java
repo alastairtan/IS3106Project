@@ -54,7 +54,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @Schedule(month = "*", dayOfMonth = "1", info = "leaderboardPrizes")
     public void giveLeaderBoardPrizes() throws CreateNewDiscountCodeException, InputDataValidationException {
-        List<CustomerEntity> allCustomers = customerEntityControllerLocal.retireveAllCustomersOrderedByPoints();
+        List<CustomerEntity> allCustomers = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
         //List is sorted by descending order
         //Position 1 and 2 (index 0 to 1): 20%, 3 to 4(index 2 to 3): 15%,  5 to 6(index 4 to 5): 10%, the rest: 5%
         List<Long> twentyPercentList = new ArrayList<>();

@@ -291,7 +291,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     
     @Override
     public List<CustomerEntity> retrieveCustomersBySpendingPerMonth() {
-        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce ORDER BY ce.pointsForCurrentMonth DESC");
+        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce WHERE ce.pointsForCurrentMonth > 0 ORDER BY ce.pointsForCurrentMonth DESC");
         List<CustomerEntity> customerEntitys = query.getResultList();
         
         System.out.println("customerEntitys by spending month: " + customerEntitys.size());
@@ -301,7 +301,7 @@ public class CustomerEntityController implements CustomerEntityControllerLocal {
     
     @Override
     public List<CustomerEntity> retrieveCustomersBySpendingTotal() {
-        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce ORDER BY ce.totalPoints DESC");
+        Query query = entityManager.createQuery("SELECT ce FROM CustomerEntity ce WHERE ce.totalPoints > 0 ORDER BY ce.totalPoints DESC");
         List<CustomerEntity> customerEntitys = query.getResultList();
         System.out.println("customerEntitys by TOTAL SPENDING: " + customerEntitys.size());
         
