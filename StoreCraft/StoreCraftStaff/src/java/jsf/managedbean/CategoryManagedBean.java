@@ -71,6 +71,10 @@ public class CategoryManagedBean implements Serializable {
             }
         }
     }
+    
+    public void creating(ActionEvent event){
+        this.newCategory = new CategoryEntity();
+    }
 
     public void updating(ActionEvent event) {
         setIsUpdating(true);

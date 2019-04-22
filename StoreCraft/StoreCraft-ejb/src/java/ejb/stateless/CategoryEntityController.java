@@ -63,6 +63,7 @@ public class CategoryEntityController implements CategoryEntityControllerLocal {
                     }
 
                     newCategoryEntity.setParentCategoryEntity(parentCategoryEntity);
+                    parentCategoryEntity.getSubCategoryEntities().add(newCategoryEntity);
                 }
                 
                 entityManager.persist(newCategoryEntity);
@@ -264,7 +265,8 @@ public class CategoryEntityController implements CategoryEntityControllerLocal {
     private void lazilyLoadSubCategories(CategoryEntity categoryEntity)
     {
         for(CategoryEntity ce:categoryEntity.getSubCategoryEntities())
-        {
+        {   
+            System.out.println("THIS CE GOT GET LAMBO OR NOT: " + ce.getName());
             lazilyLoadSubCategories(ce);
         }
     }
