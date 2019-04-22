@@ -165,7 +165,7 @@ public class ScavengerHuntEntityController implements ScavengerHuntEntityControl
             // Giving the reward to winner
             if (scavengerHuntEntity.getRewardTypeEnum() != RewardTypeEnum.POINTS) {
                 
-                String discountCode = CryptographicHelper.getInstance().generateRandomString(6);
+                String discountCode = "SC" + CryptographicHelper.getInstance().generateRandomString(4);
                 BigDecimal discountAmount;
                 
                 // ---------- Code to convert date to localTime for adding --------------- //
