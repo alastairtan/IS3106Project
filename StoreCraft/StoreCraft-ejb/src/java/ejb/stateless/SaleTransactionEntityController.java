@@ -76,7 +76,6 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-
     public SaleTransactionEntityController() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -91,25 +90,10 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 newSaleTransactionEntity.setCustomerEntity(customerEntity);
                 customerEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
 
-                //Discount by points
-                if (newSaleTransactionEntity.getPointsToUse() != null && newSaleTransactionEntity.getPointsToUse() > 0) {
-                    BigDecimal discountAmount = BigDecimal.valueOf(newSaleTransactionEntity.getPointsToUse() * 0.05); //5 cents per point
-                    newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountAmount));
-                    //reduce customer points
-                    if (customerEntity.getRemainingPoints().doubleValue() < (double) newSaleTransactionEntity.getPointsToUse()) {
-                        //if remaining points not enough
-                        throw new NotEnoughPointsException("You do not have enough points!");
-                    }
-                    System.out.print("***************" + customerEntity.getRemainingPoints());
-                    customerEntity.setRemainingPoints(customerEntity.getRemainingPoints().subtract(BigDecimal.valueOf((double) newSaleTransactionEntity.getPointsToUse())));
-                    System.out.print("***************" + customerEntity.getRemainingPoints());
-                }
-
                 //Discount by Discount Code
                 if (newSaleTransactionEntity.getDiscountCodeEntity() != null) {
                     DiscountCodeEntity discountCodeEntity = discountCodeEntityControllerLocal.retrieveDiscountCodeByDiscountCodeId(newSaleTransactionEntity.getDiscountCodeEntity().getDiscountCodeId());
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
-
 
                     if (discountCodeEntity.getProductEntities() == null
                             || discountCodeEntity.getProductEntities().isEmpty()) { //apply to all products
@@ -163,9 +147,9 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                         }
 
                         if (!discountCodeEntity.getCustomerEntities().isEmpty() ) {
-
                             customerEntity.getDiscountCodeEntities().remove(discountCodeEntity);
                             discountCodeEntity.getCustomerEntities().remove(customerEntity);
+                            
                             discountCodeEntity.setNumAvailable(discountCodeEntity.getNumAvailable() - 1);
 
                             if (discountCodeEntity.getCustomerEntities().isEmpty() ||
@@ -177,12 +161,23 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                     }
                     discountCodeEntity.getSaleTransactionEntities().add(newSaleTransactionEntity);
                     newSaleTransactionEntity.setDiscountCodeEntity(discountCodeEntity);
-                                        
-                 }
-                // System.out.println(newSaleTransactionEntity.getTotalAmount());
-                Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
-                //System.out.println(constraintViolations);
+                }
                 
+                //Discount by points
+                if (newSaleTransactionEntity.getPointsToUse() != null && newSaleTransactionEntity.getPointsToUse() > 0) {
+                    BigDecimal discountAmount = BigDecimal.valueOf(newSaleTransactionEntity.getPointsToUse() * 0.05); //5 cents per point
+                    newSaleTransactionEntity.setTotalAmount(newSaleTransactionEntity.getTotalAmount().subtract(discountAmount));
+                    //reduce customer points
+                    if (customerEntity.getRemainingPoints().doubleValue() < (double) newSaleTransactionEntity.getPointsToUse()) {
+                        //if remaining points not enough
+                        throw new NotEnoughPointsException("You do not have enough points!");
+                    }
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
+                    customerEntity.setRemainingPoints(customerEntity.getRemainingPoints().subtract(BigDecimal.valueOf((double) newSaleTransactionEntity.getPointsToUse())));
+                    System.out.print("***************" + customerEntity.getRemainingPoints());
+                }
+                
+                Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations = validator.validate(newSaleTransactionEntity);
                 
                 if (constraintViolations.isEmpty()) {
                     entityManager.persist(newSaleTransactionEntity);
@@ -192,8 +187,6 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
                 for (SaleTransactionLineItemEntity saleTransactionLineItemEntity : newSaleTransactionEntity.getSaleTransactionLineItemEntities()) {
                     productEntityControllerLocal.debitQuantityOnHand(saleTransactionLineItemEntity.getProductEntity().getProductId(), saleTransactionLineItemEntity.getQuantity());
 
-//                    ProductEntity productEntity = productEntityControllerLocal.retrieveProductByProductId(saleTransactionLineItemEntity.getProductEntity().getProductId());
-//                    saleTransactionLineItemEntity.setProductEntity(productEntity);
                     Set<ConstraintViolation<SaleTransactionLineItemEntity>> constraintViolationsLineItem = validator.validate(saleTransactionLineItemEntity);
                     if (constraintViolationsLineItem.isEmpty()) {
                         entityManager.persist(saleTransactionLineItemEntity);
@@ -294,7 +287,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
             throw new SaleTransactionAlreadyVoidedRefundedException("The sale transaction has aready been voided/refunded");
         }
     }
-    
+
     @Override
     public void updateSaleTransaction(SaleTransactionEntity saleTransactionEntity) {
         throw new UnsupportedOperationException();
@@ -353,7 +346,6 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
 
     }
 
-
     @Override
     public int numberOfProductsSold(Long productId) {
         List<SaleTransactionLineItemEntity> saleTransactionLineItemEntitys = retrieveSaleTransactionLineItemsByProductId(productId);
@@ -366,7 +358,7 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         }
         return numSold;
     }
-    
+
     @Override
     public List<ProductEntity> retrieveSaleTransactionsPerMonth(int month) {
         List<SaleTransactionEntity> saleTransactionEntitys = retrieveAllSaleTransactions();
@@ -374,23 +366,21 @@ public class SaleTransactionEntityController implements SaleTransactionEntityCon
         Calendar calendar = Calendar.getInstance();
         Calendar c = Calendar.getInstance();
         int currYear = c.get(Calendar.YEAR);
-        
-        for(SaleTransactionEntity s : saleTransactionEntitys) {
+
+        for (SaleTransactionEntity s : saleTransactionEntitys) {
             calendar.setTime(s.getTransactionDateTime());
             System.out.println("inside 2nd loop");
             if (calendar.get(Calendar.MONTH) == month && calendar.get(Calendar.YEAR) == currYear) {
-                for(SaleTransactionLineItemEntity stlie: s.getSaleTransactionLineItemEntities()) {
-                    if(!accordingToMonthSale.contains(stlie.getProductEntity().getProductId())) {
+                for (SaleTransactionLineItemEntity stlie : s.getSaleTransactionLineItemEntities()) {
+                    if (!accordingToMonthSale.contains(stlie.getProductEntity().getProductId())) {
                         accordingToMonthSale.add(stlie.getProductEntity());
                     }
                 }
-                
+
             }
         }
         return accordingToMonthSale;
     }
-
-
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransactionEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
