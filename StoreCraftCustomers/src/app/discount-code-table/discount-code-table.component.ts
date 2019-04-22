@@ -25,7 +25,7 @@ export class DiscountCodeTableComponent implements OnInit {
 
   errorMessage: string;
 
-  columnsToDisplay = ['Discount Code', 'Type', 'Amount', 'From', 'To', 'Products'];
+  columnsToDisplay = ['Discount Code', 'Type', 'From', 'To', 'Products'];
 
   expandedDc: DiscountCode | null;
 
