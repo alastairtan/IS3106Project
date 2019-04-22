@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CartItem } from '../cartItem';
-import { LocalService } from '../local.service';
-import { SaleTransactionService } from '../sale-transaction.service';
-import { SessionService } from '../session.service';
-import { UserProfileComponent } from '../user-profile/user-profile.component';
-import { CustomerService } from '../customer.service';
-import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
-import { DiscountCode } from '../discount-code';
-import { DiscountCodeService } from '../discount-code.service';
-import { ProductService } from '../product.service';
-import { Customer } from '../customer';
-import { Product } from '../product';
+import {Component, OnInit} from '@angular/core';
+import {CartItem} from '../cartItem';
+import {LocalService} from '../local.service';
+import {SaleTransactionService} from '../sale-transaction.service';
+import {SessionService} from '../session.service';
+import {CustomerService} from '../customer.service';
+import {DiscountCode} from '../discount-code';
+import {DiscountCodeService} from '../discount-code.service';
+import {ProductService} from '../product.service';
+import {Customer} from '../customer';
+import {Product} from '../product';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -24,6 +22,7 @@ export class ShoppingCartComponent implements OnInit {
   private totalAmountForTheCart: number;
   private totalQuantityForTheCart: number;
   private customerDiscountCodes: DiscountCode[];
+  private allDiscountCodes: DiscountCode[];
 
   // Checkout//
   private currentSelectedDiscountCode: DiscountCode;
@@ -55,13 +54,12 @@ export class ShoppingCartComponent implements OnInit {
   currentCustomer: Customer; // initial load as well
 
 
-
   constructor(private localService: LocalService,
-    private saleTransactionService: SaleTransactionService,
-    private sessionService: SessionService,
-    private customerService: CustomerService,
-    private discountCodeService: DiscountCodeService,
-    private productService: ProductService) {
+              private saleTransactionService: SaleTransactionService,
+              private sessionService: SessionService,
+              private customerService: CustomerService,
+              private discountCodeService: DiscountCodeService,
+              private productService: ProductService) {
     this.applyingDiscountForCart = false;
     this.pointsToUse = 0;
   }
@@ -79,9 +77,9 @@ export class ShoppingCartComponent implements OnInit {
 
       this.productService.getAllProducts().subscribe(response => {
         products = response.productEntities.filter(product => this.cartItems.find(cartItem =>
-          cartItem.productEntity.productId == product.productId) != null)
+          cartItem.productEntity.productId == product.productId) != null);
 
-        console.log("Product");
+        console.log('Product');
         console.log(products);
         let cartItemsCopy = JSON.parse(JSON.stringify(this.cartItems));
 
@@ -90,11 +88,11 @@ export class ShoppingCartComponent implements OnInit {
           let product = products.find(product => product.productId == cartItem.productEntity.productId);
           let productQtyOnHand = product.quantityOnHand;
 
-          console.log("How many times");
+          console.log('How many times');
           console.log(product);
 
           if (cartItem.quantity > productQtyOnHand) {
-            console.log("**** if")
+            console.log('**** if');
             if (productQtyOnHand != 0) {
               cartItem.quantity = productQtyOnHand;
               cartItem.subTotal = productQtyOnHand * cartItem.unitPrice;
@@ -102,8 +100,8 @@ export class ShoppingCartComponent implements OnInit {
               this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
               this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
               this.updateMessages.push(`Quantity of product ${product.name} in cart has been adjust to ${productQtyOnHand} due to limited stock`);
-              console.log("This is messages: " + this.updateMessages);
-              console.log(this.updateMessages.length)
+              console.log('This is messages: ' + this.updateMessages);
+              console.log(this.updateMessages.length);
             } else {
               cartItemsCopy.splice(cartItemsCopy.indexOf(cartItem), 1);
               console.log(this.cartItems);
@@ -114,7 +112,7 @@ export class ShoppingCartComponent implements OnInit {
               this.totalQuantityForTheCart = cartItemsCopy.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
             }
           } else {
-            console.log("*** else")
+            console.log('*** else');
             cartItem.productEntity.quantityOnHand = productQtyOnHand;
           }
         });
@@ -140,8 +138,9 @@ export class ShoppingCartComponent implements OnInit {
     this.cartItems = this.localService.getCart();
     this.totalAmountForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.subTotal, 0);
     this.totalQuantityForTheCart = this.cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0);
+    this.customerDiscountCodes = this.filterDiscountCodes(this.allDiscountCodes);
   }
-  
+
   clearCart() {
     this.localService.clearCart();
     this.cartItems = this.localService.getCart();
@@ -150,7 +149,8 @@ export class ShoppingCartComponent implements OnInit {
   retrieveDiscountCodesForCustomer(customerId: number) {
     this.discountCodeService.retrieveDiscountCodesForCustomer(customerId).subscribe(response => {
       // console.log(response.discountCodeEntities);
-      this.customerDiscountCodes = this.filterDiscountCodes(response.discountCodeEntities);
+      this.allDiscountCodes = response.discountCodeEntities;
+      this.customerDiscountCodes = this.filterDiscountCodes(this.allDiscountCodes);
     });
   }
 
@@ -187,7 +187,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   format(currency: number) {
-    return (new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD' }).format(currency));
+    return (new Intl.NumberFormat('en-SG', {style: 'currency', currency: 'SGD'}).format(currency));
   }
 
   checkout(cartItems: CartItem[]) {
@@ -195,11 +195,10 @@ export class ShoppingCartComponent implements OnInit {
     this.saleTransactionService.createSaleTransaction(cartItems, this.discountCodeToApply, this.pointsToUse).subscribe(response => {
 
       if (response != 0) {
-        if (response === "4") {
-          this.errorMessage = "Error checking out, reloading the page";
+        if (response === '4') {
+          this.errorMessage = 'Error checking out, reloading the page';
           window.location.reload();
-        }
-        else {
+        } else {
           this.removeMessageClose = true;
           this.infoMessageClose = false;
           this.infoMessage = 'Thank you for shopping with us!';
@@ -208,7 +207,7 @@ export class ShoppingCartComponent implements OnInit {
           this.updateCustomer(response);
         }
       }
-    })
+    });
   }
 
   updateCustomer(response) {
@@ -414,7 +413,11 @@ export class ShoppingCartComponent implements OnInit {
     return filteredDiscountCodes;
   }
 
+  filterOutMoreThanShoppingCart(discountCodes: DiscountCode[]): DiscountCode[] {
+    return discountCodes.filter(discountCode => !(discountCode.discountCodeTypeEnum.toString() == 'FLAT' && discountCode.discountAmountOrRate > this.totalAmountForTheCart));
+  }
+
   filterDiscountCodes(discountCodes: DiscountCode[]): DiscountCode[] {
-    return this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes)));
+    return this.filterOutMoreThanShoppingCart(this.filterOutUnavailableDiscountCodes(this.filterValidDiscountCodes(this.filterOutInapplicableDiscountCodes(discountCodes))));
   }
 }
