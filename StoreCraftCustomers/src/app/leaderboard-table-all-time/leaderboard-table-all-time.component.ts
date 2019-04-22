@@ -42,8 +42,8 @@ export class LeaderboardTableAllTimeComponent implements OnInit {
         }
 
         this.customersLeaderboardTotalMax5 = this.customersLeaderboardTotalMax5.filter(customer => customer.totalPoints > 0)
-        console.log('inside index.component.ts! customerSpendingTotal Max 5: '
-          + this.customersLeaderboardTotalMax5.length);
+        // console.log('inside index.component.ts! customerSpendingTotal Max 5: '
+        //  + this.customersLeaderboardTotalMax5.length);
       },
       error => {
         console.log('********** IndexComponent.ts: customerTotal Max 5 ' + error);

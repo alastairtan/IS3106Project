@@ -59,18 +59,26 @@ export class ViewProductDetailsComponent implements OnInit {
               private scavengerDialog: MatDialog) {
     this.isEditing = false;
     this.isWriting = false;
-    this.sessionService.isLoggedIn.subscribe(value => {
+    /*this.sessionService.isLoggedIn.subscribe(value => {
       if (this.sessionService.getIsLogin()) {
+        this.ngOnInit();
+      } else {
+        this.refreshWithoutDialog();
+      }
+    });*/
+  }
+
+  ngOnInit() {
+    console.log(window.location.pathname);
+    this.activatedRoute.params.subscribe(params => {
+      this.refresh();
+    });
+    this.sessionService.isLoggedIn.subscribe(value => {
+      if (this.sessionService.getIsLogin() && this.activatedRoute.snapshot.url[0].path == 'product') {
         this.refresh();
       } else {
         this.refreshWithoutDialog();
       }
-    });
-  }
-
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.refresh();
     });
   }
 
@@ -86,10 +94,16 @@ export class ViewProductDetailsComponent implements OnInit {
         this.scavengerHuntService.checkIfCustomerHasWonToday(
           this.currentCustomer.customerId).subscribe(response => {
           this.canCustomerWin = !response.hasCustomerWonToday;
+
           if (this.product != null && this.canCustomerWin && this.product.isScavengerHuntPrize) {
-            const scavengerDialogRef = this.scavengerDialog.open(ScavengerPrizeDialogComponent, {});
-            setTimeout(() => scavengerDialogRef.close(), 2500);
+            const path: string = window.location.pathname.slice(1,8);
+            if (this.scavengerDialog.openDialogs.length == 0 && path == 'product') {
+              // console.log(path);
+              const scavengerDialogRef = this.scavengerDialog.open(ScavengerPrizeDialogComponent, {});
+              setTimeout(() => scavengerDialogRef.close(), 2000);
+            }
           }
+
         });
       }
       this.productService.getRatingInfoForProduct(this.product.productId).subscribe(response => {
@@ -202,7 +216,7 @@ export class ViewProductDetailsComponent implements OnInit {
 
     this.reviewService.updateReview(this.editReviewId, this.updatedReviewContent, this.updatedProductRating).subscribe(response => {
       this.isEditing = false;
-      this.refresh();
+      this.refreshWithoutDialog();
     }, error => {
       console.log(error);
     });

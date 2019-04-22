@@ -127,7 +127,7 @@ export class HeaderComponent implements OnInit {
     return Object.keys(object).some(k => {
       if (k !== 'description') {
         if (k === 'tagEntities') {
-          console.log(object[k]);
+          // console.log(object[k]);
           let found = false;
           for (let i = 0; i < object[k].length; i++) {
             if (this.objectPropertiesHasValue(object[k][i], searchString)) {
@@ -163,7 +163,7 @@ export class HeaderComponent implements OnInit {
       categoryEmptied.subCategoryEntities = [];
       categoryEmptied.name = 'All';
       categoryItems.push(categoryEmptied);
-      console.log(categoryItems);
+      // console.log(categoryItems);
       return categoryItems;
     } else {
       return categoryItems;

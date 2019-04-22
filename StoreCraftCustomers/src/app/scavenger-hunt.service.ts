@@ -15,7 +15,7 @@ export class ScavengerHuntService {
 
 
   retrieveScavengerHuntForTheDay(): Observable<any> {
-    console.log('HI from scavenger hunt');
+    // console.log('HI from scavenger hunt');
     return this.httpClient.get<any>(this.baseUrl + '/retrieveScavengerHuntForTheDay').pipe
     (
       catchError(this.handleError)
