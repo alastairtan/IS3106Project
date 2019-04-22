@@ -27,40 +27,56 @@
           <table class="table currentRank" fxFlex="1 1 70%">
             <tr>
               <th colspan="2">
-                Your Standings
+                Your Standings (this month)
               </th>
             </tr>
             <tr>
               <td style="width: 30%">
                 Current Rank:
               </td>
-              <td *ngIf="sessionService.getIsLogin()" style="width: 70%">
+              <td *ngIf="sessionService.getCurrentCustomer() != null
+              && sessionService.getCurrentCustomer().pointsForCurrentMonth > 0" style="width: 70%">
                 {{currentCustomerRank}}
               </td>
               <td *ngIf="!sessionService.getIsLogin()">
                 Login to view your information
+              </td>
+              <td *ngIf="sessionService.getCurrentCustomer()!=null
+              && (sessionService.getCurrentCustomer().pointsForCurrentMonth == 0
+              || sessionService.getCurrentCustomer().totalPoints == 0)">
+                Make a purchase to get on the leaderboard!
               </td>
             </tr>
             <tr>
               <td>
                 Current Reward:
               </td>
-              <td *ngIf="sessionService.getIsLogin()">
+              <td *ngIf="sessionService.getCurrentCustomer() != null && sessionService.getCurrentCustomer().pointsForCurrentMonth > 0">
                 {{getCurrentReward()}}
               </td>
               <td *ngIf="!sessionService.getIsLogin()">
                 Login to view your information
+              </td>
+              <td *ngIf="sessionService.getCurrentCustomer()!=null
+              && (sessionService.getCurrentCustomer().pointsForCurrentMonth == 0
+              || sessionService.getCurrentCustomer().totalPoints == 0)">
+                Make a purchase to get on the leaderboard!
               </td>
             </tr>
             <tr>
               <td>
                 Next Reward:
               </td>
-              <td *ngIf="sessionService.getIsLogin()">
+              <td *ngIf="sessionService.getCurrentCustomer() != null && sessionService.getCurrentCustomer().pointsForCurrentMonth > 0">
                 {{getNextReward()}}
               </td>
               <td *ngIf="!sessionService.getIsLogin()">
                 Login to view your information
+              </td>
+              <td *ngIf="sessionService.getCurrentCustomer()!=null
+              && (sessionService.getCurrentCustomer().pointsForCurrentMonth == 0
+              || sessionService.getCurrentCustomer().totalPoints == 0)">
+                Make a purchase to get on the leaderboard!
               </td>
             </tr>
           </table>
