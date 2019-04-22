@@ -63,15 +63,8 @@ export class CommunityGoalsComponent implements OnInit {
 
   public doFilter(value: string) {
 
-    const temp = [];
-    if (this.communityGoals.length != 0 && value.length > 0) {
-      for (const communityGoal of this.communityGoals) {
-        if (communityGoal.country.toLowerCase().includes(value.toLowerCase())) {
-
-          temp.push(communityGoal);
-        }
-      }
-      this.communityGoals = temp;
+    if (value.length > 0) {
+      this.communityGoals = this.originalCommunityGoals.filter(goal => goal.country.toLowerCase().includes(value.toLowerCase()));
     } else {
       this.communityGoals = this.originalCommunityGoals;
     }

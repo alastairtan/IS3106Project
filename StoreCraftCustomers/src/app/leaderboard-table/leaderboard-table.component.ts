@@ -70,10 +70,10 @@ export class LeaderboardTableComponent implements OnInit {
   }
 
   getCountry(): string {
-    if (this.forCountry.length == 0 || this.sessionService.getIsLogin() === false) {
+    if (this.sessionService.getIsLogin() === false) {
       return '(Global)';
     } else {
-      return `(${this.forCountry})`;
+      return `(${this.sessionService.getCurrentCustomer().country})`;
     }
   }
 
