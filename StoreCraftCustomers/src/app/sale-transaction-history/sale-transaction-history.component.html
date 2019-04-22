@@ -42,7 +42,7 @@
 
   <ng-container matColumnDef="pointsUsed">
     <th *matHeaderCellDef mat-header-cell> Points Used </th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.pointsToUse | number:'0.0-2'}} </td>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.pointsToUse > 0 ? saleTransaction.pointsToUse : '0' | number:'0.0-2'}} </td>
   </ng-container>
 
 
