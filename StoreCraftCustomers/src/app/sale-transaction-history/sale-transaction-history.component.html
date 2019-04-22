@@ -17,7 +17,7 @@
               
   <ng-container matColumnDef="refund">
     <th *matHeaderCellDef mat-header-cell> Refund Status </th>
-    <td *matCellDef="let saleTransaction" mat-cell>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%">
       <span *ngIf="saleTransaction.voidRefund == true"> Refunded </span>
       <span *ngIf="saleTransaction.voidRefund == false"> NA </span>
     </td>
@@ -25,7 +25,7 @@
 
   <ng-container matColumnDef="discountCodeUsed">
     <th *matHeaderCellDef mat-header-cell style="text-align: left"> Discount Code</th>
-    <td *matCellDef="let saleTransaction" mat-cell style="width: 40%; text-align: left">
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 35%; text-align: left">
 
       <span *ngIf="saleTransaction.discountCodeEntity != null">
 
@@ -40,8 +40,14 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="pointsUsed">
+    <th *matHeaderCellDef mat-header-cell> Points Used </th>
+    <td *matCellDef="let saleTransaction" mat-cell style="width: 10%"> {{saleTransaction.pointsToUse | number:'0.0-2'}} </td>
+  </ng-container>
+
+
   <ng-container matColumnDef="table-header">
-    <th *matHeaderCellDef class="header" colspan="5" mat-header-cell> My Sale Transactions</th>
+    <th *matHeaderCellDef class="header" colspan="6" mat-header-cell> My Sale Transactions</th>
   </ng-container>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
