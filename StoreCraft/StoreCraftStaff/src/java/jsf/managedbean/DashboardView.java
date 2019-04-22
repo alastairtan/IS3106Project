@@ -133,10 +133,10 @@ public class DashboardView implements Serializable {
 
         List<CustomerEntity> allCustomersAllTime = customerEntityControllerLocal.retrieveCustomersBySpendingTotal();
         topCustomersAllTime = allCustomersAllTime.subList(0, Math.min(allCustomersAllTime.size(), 3));
-
+        
         List<CustomerEntity> toRemove = new ArrayList<>();
         for(int i = 0; i < topCustomersAllTime.size(); i++) {
-            
+          
             if(topCustomersAllTime.get(i).getTotalPoints().equals(BigDecimal.ZERO)) {
                 toRemove.add(topCustomersAllTime.get(i));
             }
@@ -148,7 +148,7 @@ public class DashboardView implements Serializable {
         
         
         List<CustomerEntity> allCustomersPerMonth = customerEntityControllerLocal.retrieveCustomersBySpendingPerMonth();
-        topCustomersForTheMonth = allCustomersPerMonth.subList(0, Math.min(allCustomersAllTime.size(), 3));
+        topCustomersForTheMonth = allCustomersPerMonth.subList(0, Math.min(allCustomersPerMonth.size(), 3));
         System.out.println("topCustomers size" + topCustomersAllTime.size());
         
         
@@ -159,7 +159,7 @@ public class DashboardView implements Serializable {
                 toRemove.add(topCustomersForTheMonth.get(i));
             }
         }
-        
+        System.out.println("GOT REACH HEREREERE!@#!@#");
         for(int i = 0; i < toRemove.size(); i++) {
             topCustomersForTheMonth.remove(toRemove.get(i));
         }
