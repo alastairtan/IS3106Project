@@ -20,21 +20,20 @@ export class IndexComponent implements OnInit {
   products: Product[];
   communityGoals: CommunityGoal[];
   currentDate: Date = new Date();
-  country = '';
+  country: string;
   selected: CommunityGoal;
   goalAmt: number;
   currentAmt: number;
   percentage: number;
   scavengerHunt: ScavengerHunt;
   scavengerHuntWinners: Customer[];
-  scavengerHuntCurr: Customer;
 
   customersLeaderboardPerMonth: Customer[];
   customersLeaderboardTotal: Customer[];
   customersLeaderboardPerMonthMax5: Customer[];
   customersLeaderboardTotalMax5: Customer[];
-  perMonthNotEmpty: boolean = false;
-  totalNotEmpty: boolean = false;
+  perMonthNotEmpty = false;
+  totalNotEmpty = false;
 
 
   constructor(public sessionService: SessionService,
@@ -54,10 +53,11 @@ export class IndexComponent implements OnInit {
   }
 
   refresh() {
-    if (this.sessionService.getIsLogin() === true) {
-      console.log(this.sessionService.getCurrentCustomer());
+    // console.log('REFRESH**********************');
+    if (this.sessionService.isLoggedIn.getValue()) {
       this.customer = this.sessionService.getCurrentCustomer();
-      this.country = this.sessionService.getCurrentCustomer().country;
+      console.log(this.customer);
+      this.country = this.customer.country;
     }
     this.loadProducts();
     this.loadCommunityGoals();
@@ -68,30 +68,32 @@ export class IndexComponent implements OnInit {
     this.productService.getRandomProductsForIndexPage().subscribe(
       response => {
         this.products = response.productEntities.slice(0, 8);
-        console.log('inside index.component.ts!' + this.products.length);
+        // console.log('inside index.component.ts!' + this.products.length);
       },
       error => {
-        console.log('********** IndexComponent.ts: ' + error);
+        // console.log('********** IndexComponent.ts: ' + error);
       }
     );
   }
 
   loadCommunityGoals() {
-    this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(this.country).subscribe(
-      response => {
-        this.communityGoals = response.communityGoalEntities;
-        if (this.communityGoals.length != 0) {
-          this.selected = this.communityGoals[0];
-          this.goalAmt = this.communityGoals[0].targetPoints;
-          this.currentAmt = this.communityGoals[0].currentPoints;
-          this.percentage = this.currentAmt * 100 / this.goalAmt;
+    if (this.sessionService.getIsLogin() && this.sessionService.getCurrentCustomer() != null) {
+      this.communityGoalService.retrieveCurrentCommunityGoalsByCountry(this.sessionService.getCurrentCustomer().country).subscribe(
+        response => {
+          this.communityGoals = response.communityGoalEntities;
+          if (this.communityGoals != null && this.communityGoals.length != 0) {
+            this.selected = this.communityGoals[0];
+            this.goalAmt = this.communityGoals[0].targetPoints;
+            this.currentAmt = this.communityGoals[0].currentPoints;
+            this.percentage = this.currentAmt * 100 / this.goalAmt;
+          }
+          console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
+        },
+        error => {
+          console.log('********** IndexComponent.ts: community ' + error);
         }
-        console.log('inside index.component.ts! communityGoal' + this.communityGoals.length);
-      },
-      error => {
-        console.log('********** IndexComponent.ts: community ' + error);
-      }
-    );
+      );
+    }
   }
 
   loadScavengerHunt() {
@@ -115,7 +117,7 @@ export class IndexComponent implements OnInit {
 
   filterCustomerByCountry(customers: Customer[], customersNew: Customer[]) {
     customersNew = [];
-    for (var cust of customers) {
+    for (let cust of customers) {
       if (customersNew.length <= 5) {
         if (cust.country == this.sessionService.getCurrentCustomer().country) {
           customersNew.push(cust);

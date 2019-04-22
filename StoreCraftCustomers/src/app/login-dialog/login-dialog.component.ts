@@ -1,13 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HeaderComponent } from '../header/header.component';
-import { Observable, of } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { CustomerService } from '../customer.service';
-import { SessionService } from '../session.service';
-import { Customer } from '../customer';
-import { MembershipTierEnum } from '../MembershipTierEnum.enum';
+import {CustomerService} from '../customer.service';
+import {SessionService} from '../session.service';
+import {Customer} from '../customer';
 
 
 @Component({
@@ -29,7 +26,7 @@ export class LoginDialogComponent implements OnInit {
     public customerService: CustomerService,
     public router: Router,
     private activatedRoute: ActivatedRoute
-  ) { 
+  ) {
     this.loginError = false;
   }
 
@@ -69,23 +66,22 @@ export class LoginDialogComponent implements OnInit {
         // }
 
         if (customer != null) {
-          this.sessionService.setIsLogin(true);
           this.sessionService.setCurrentCustomer(customer);
 
           console.log(this.sessionService.getCurrentCustomer());
 
           this.loginError = false;
 
-          //this.childEvent.emit();
+          // this.childEvent.emit();
 
           this.dialogRef.close();
-
-          this.router.navigate(this.activatedRoute.snapshot.url);
+          this.sessionService.setIsLogin(true);
+          // this.router.navigate(this.activatedRoute.snapshot.url);
         }
       }, error => {
         this.loginError = true;
-        this.errorMessage = "Invalid username and/or password. Please try again!";
-      })
+        this.errorMessage = 'Invalid username and/or password. Please try again!';
+      });
   }
 
 }

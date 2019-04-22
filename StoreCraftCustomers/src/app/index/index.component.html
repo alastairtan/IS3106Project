@@ -82,7 +82,7 @@
                       </mat-card-title>
                     </mat-card-header>
                   </mat-card>
-                  <mat-card style="opacity: 0.9; padding-bottom: 0" *ngIf = "communityGoals?.length == 0 && sessionService.getIsLogin()">
+                  <mat-card style="opacity: 0.9; padding-bottom: 0" *ngIf = "communityGoals != null && communityGoals.length == 0 && sessionService.getIsLogin()">
                     <mat-card-header>
                       <mat-card-title style="font-size: 2vw">
                         No Ongoing Community Goals
