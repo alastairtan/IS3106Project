@@ -15,15 +15,17 @@ Default username (email) and passwords for customers in (email, password) format
   
 Default staff username and password in (username, password) format:
   - (manager, password)
+  
 
 # To Run Angular Project StoreCraftCustomers
-1. cd StoreCraftCustomers
-2. npm install
-3. npm start (not ng serve)
+1. Unzip StoreCraftCustomers.zip
+2. cd StoreCraftCustomers
+3. npm install
+4. npm start (not ng serve)
 
 # To Run Netbeans Project StoreCraft
 1. Open StoreCraft Project in Netbeans
-2. Create local mysql database named "storecraft" : create schema storecraft 
+2. Create local mysql database named "storecraft" --> create schema storecraft 
 3. Create new JDBC Resource (follow glassfish-resources.xml)
   - JDBC jndi-name: jdbc/storeCraft
   - pool-name: storeCraftConnectionPool
