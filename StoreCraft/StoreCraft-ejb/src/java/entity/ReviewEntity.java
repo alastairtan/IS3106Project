@@ -40,8 +40,7 @@ public class ReviewEntity implements Serializable {
     private String content;
     
     @Column(nullable = true)
-    @Positive
-    @Min(1)
+    @Min(0)
     @Max(5)
     private Integer productRating; 
     

@@ -92,7 +92,7 @@
                 Write a Review
               </button>
             </mat-toolbar>
-            <app-write-review [show]="isWriting" [productId]="product?.productId" (submitted)="refresh()"
+            <app-write-review [show]="isWriting" [productId]="product?.productId" (submitted)="cancelWriteReview(); refresh();"
                               (closed)="cancelWriteReview()"></app-write-review>
             <mat-accordion displayMode="flat">
 
