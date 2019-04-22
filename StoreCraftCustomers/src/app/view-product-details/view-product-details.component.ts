@@ -59,18 +59,25 @@ export class ViewProductDetailsComponent implements OnInit {
               private scavengerDialog: MatDialog) {
     this.isEditing = false;
     this.isWriting = false;
+    /*this.sessionService.isLoggedIn.subscribe(value => {
+      if (this.sessionService.getIsLogin()) {
+        this.ngOnInit();
+      } else {
+        this.refreshWithoutDialog();
+      }
+    });*/
+  }
+
+  ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+      this.refresh();
+    });
     this.sessionService.isLoggedIn.subscribe(value => {
       if (this.sessionService.getIsLogin()) {
         this.refresh();
       } else {
         this.refreshWithoutDialog();
       }
-    });
-  }
-
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.refresh();
     });
   }
 
@@ -87,8 +94,10 @@ export class ViewProductDetailsComponent implements OnInit {
           this.currentCustomer.customerId).subscribe(response => {
           this.canCustomerWin = !response.hasCustomerWonToday;
           if (this.product != null && this.canCustomerWin && this.product.isScavengerHuntPrize) {
-            const scavengerDialogRef = this.scavengerDialog.open(ScavengerPrizeDialogComponent, {});
-            setTimeout(() => scavengerDialogRef.close(), 2500);
+            if (this.scavengerDialog.openDialogs.length == 0) {
+              const scavengerDialogRef = this.scavengerDialog.open(ScavengerPrizeDialogComponent, {});
+              setTimeout(() => scavengerDialogRef.close(), 2000);
+            }
           }
         });
       }
@@ -202,7 +211,7 @@ export class ViewProductDetailsComponent implements OnInit {
 
     this.reviewService.updateReview(this.editReviewId, this.updatedReviewContent, this.updatedProductRating).subscribe(response => {
       this.isEditing = false;
-      this.refresh();
+      this.refreshWithoutDialog();
     }, error => {
       console.log(error);
     });
