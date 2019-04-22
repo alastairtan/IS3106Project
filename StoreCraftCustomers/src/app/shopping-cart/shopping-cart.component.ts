@@ -149,7 +149,7 @@ export class ShoppingCartComponent implements OnInit {
   retrieveDiscountCodesForCustomer(customerId: number) {
     this.discountCodeService.retrieveDiscountCodesForCustomer(customerId).subscribe(response => {
       // console.log(response.discountCodeEntities);
-      this.allDiscountCodes = this.filterDiscountCodes(response.discountCodeEntities);
+      this.allDiscountCodes = response.discountCodeEntities;
       this.customerDiscountCodes = this.filterDiscountCodes(this.allDiscountCodes);
     });
   }
