@@ -58,7 +58,7 @@
                   <mat-card *ngIf="communityGoals?.length > 0 && sessionService.getIsLogin()" style="opacity: 0.9; border-radius: 0">
                     <!--community goal-->
                     <div fxLayout="row wrap">
-                      <div fxFlex="1 1 65%">Community Goal ({{country}}): ${{this.goalAmt}}</div>
+                      <div fxFlex="1 1 65%">Community Goal ({{communityGoals[0]?.country}}): ${{this.goalAmt}}</div>
                       <div fxFlex="1 1 35%">
                         <mat-select [(ngModel)]="selected" panelClass="dropDownSelector" style="text-align:right">
                           <mat-option (click)="onClickChange()" *ngFor="let cg of communityGoals" [value]="(cg)">
