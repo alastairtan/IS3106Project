@@ -31,7 +31,7 @@
                     </p:column>    
 
                     <p:column headerText="Customer" sortBy="#{saleTransactionEntity.customerEntity.email}" filterBy="#{saleTransactionEntity.customerEntity.email}" filterMatchMode="contains">
-                        <h:outputText value="#{saleTransactionEntity.customerEntity.email}" />
+                        <h:outputText value="#{saleTransactionEntity.customerEntity.email}" style="word-wrap: break-word;"/>
                     </p:column>   
 
                     <p:column headerText="Total Quantity" sortBy="#{saleTransactionEntity.totalQuantity}" style="width: 8%" filterBy="#{saleTransactionEntity.totalQuantity}" filterMatchMode="contains">
